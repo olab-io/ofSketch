@@ -8,6 +8,6 @@ Video here: https://vimeo.com/75557811
 
 Requires:
 
-https://github.com/bakercpofxHTTP
-https://github.com/bakercpofxMediaType
-https://github.com/bakercpofxJSON
+- https://github.com/bakercpofxHTTP
+- https://github.com/bakercpofxMediaType
+- https://github.com/bakercpofxJSON
