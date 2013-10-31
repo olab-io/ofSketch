@@ -1,0 +1,7 @@
+ofxHTTP
+ofxIO
+ofxJSON
+ofxLibmagic
+ofxMediaType
+ofxNetworkUtils
+ofxZeroconf
