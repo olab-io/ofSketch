@@ -1,3 +1,0 @@
-ofxHTTP
-ofxJSON
-ofxMediaType
