@@ -23,17 +23,17 @@
 // =============================================================================
 
 
-#include "AddonManager.h"
+#include "ProjectManager.h"
 
 
 namespace of {
 namespace Sketch {
 
 
-AddonManager::AddonManager(const std::string& path):
+ProjectManager::ProjectManager(const std::string& path):
     _path(path)
 {
-    _addonWatcher.addPath(ofToDataPath(_path));
+    _projectWatcher.addPath(_path);
 
     std::vector<std::string> files;
 
@@ -54,57 +54,75 @@ AddonManager::AddonManager(const std::string& path):
 
 }
 
-
-AddonManager::~AddonManager()
+ProjectManager::~ProjectManager()
 {
 }
 
+//Project ProjectManager::newProject(std::string& name)
+//{
+//
+//    return Project("");
+//}
 
-void AddonManager::setup()
+
+std::vector<Project> ProjectManager::getProjects() const
 {
+    return _projects;
 }
 
 
-void AddonManager::updateAddon(const Poco::URI&)
-{
-}
+//    std::string sketchPath = ofToDataPath("HelloWorldSketch/src/main.cpp",true);
+//
+//    ofBuffer buffer = ofBufferFromFile(sketchPath);
+//
+//    Json::Value setEditorSource;
+//    setEditorSource["method"] = "setEditorSource";
+//    Json::Value editorSource;
+//    editorSource["source"] = buffer.getText();
+//    setEditorSource["data"] = editorSource;
+//
+//    cout << setEditorSource.toStyledString() << endl;
+//
+//    evt.getConnectionRef().sendFrame(WebSocketFrame(setEditorSource.toStyledString()));
+//
+//    cout << "Connection opened from: " << evt.getConnectionRef().getClientAddress().toString() << endl;
 
 
-void AddonManager::onDirectoryWatcherItemAdded(const Poco::DirectoryWatcher::DirectoryEvent& evt)
+
+void ProjectManager::onDirectoryWatcherItemAdded(const Poco::DirectoryWatcher::DirectoryEvent& evt)
 {
     ofSendMessage("Added:    " + evt.item.path());
 }
 
 
-void AddonManager::onDirectoryWatcherItemRemoved(const Poco::DirectoryWatcher::DirectoryEvent& evt)
+void ProjectManager::onDirectoryWatcherItemRemoved(const Poco::DirectoryWatcher::DirectoryEvent& evt)
 {
     ofSendMessage("Removed:  " + evt.item.path());
 }
 
 
-void AddonManager::onDirectoryWatcherItemModified(const Poco::DirectoryWatcher::DirectoryEvent& evt)
+void ProjectManager::onDirectoryWatcherItemModified(const Poco::DirectoryWatcher::DirectoryEvent& evt)
 {
     ofSendMessage("Modified: " + evt.item.path());
 }
 
 
-void AddonManager::onDirectoryWatcherItemMovedFrom(const Poco::DirectoryWatcher::DirectoryEvent& evt)
+void ProjectManager::onDirectoryWatcherItemMovedFrom(const Poco::DirectoryWatcher::DirectoryEvent& evt)
 {
     ofLogNotice("ofApp::onDirectoryWatcherItemMovedFrom") << "Moved From: " << evt.item.path();
 }
 
 
-void AddonManager::onDirectoryWatcherItemMovedTo(const Poco::DirectoryWatcher::DirectoryEvent& evt)
+void ProjectManager::onDirectoryWatcherItemMovedTo(const Poco::DirectoryWatcher::DirectoryEvent& evt)
 {
     ofLogNotice("ofApp::onDirectoryWatcherItemMovedTo") << "Moved To: " << evt.item.path();
 }
 
-    
-void AddonManager::onDirectoryWatcherError(const Poco::Exception& exc)
+
+void ProjectManager::onDirectoryWatcherError(const Poco::Exception& exc)
 {
     ofLogError("ofApp::onDirectoryWatcherError") << "Error: " << exc.displayText();
 }
-
 
 
 } } // namespace of::Sketch

@@ -26,6 +26,11 @@
 #pragma once
 
 
+#include "Poco/Pipe.h"
+#include "Poco/Process.h"
+#include "Poco/StreamCopier.h"
+#include "Poco/PipeStream.h"
+#include "Poco/TaskManager.h"
 #include "ofMain.h"
 #include "ofxJSONElement.h"
 #include "BaseServer.h"
@@ -37,12 +42,16 @@
 #include "WebSocketFrame.h"
 #include "WebSocketRoute.h"
 #include "WebSocketRouteSettings.h"
+#include "AddonManager.h"
+#include "Project.h"
+#include "ProjectManager.h"
 
 
 using ofx::HTTP::BaseServer;
 using ofx::HTTP::BaseServerSettings;
 using ofx::HTTP::FileSystemRoute;
 using ofx::HTTP::FileSystemRouteSettings;
+using ofx::HTTP::FileUploadEventArgs;
 using ofx::HTTP::FileUploadRoute;
 using ofx::HTTP::FileUploadRouteSettings;
 using ofx::HTTP::WebSocketEventArgs;
@@ -70,10 +79,11 @@ public:
     void onWebSocketFrameSentEvent(WebSocketFrameEventArgs& evt);
     void onWebSocketErrorEvent(WebSocketEventArgs& evt);
 
-    void sendError(WebSocketConnection& connection, std::string error);
+    void sendError(const WebSocketConnection& connection, std::string error);
 
-
-    
+    void onFileUploadStarted(FileUploadEventArgs& args);
+    void onFileUploadProgress(FileUploadEventArgs& args);
+    void onFileUploadFinished(FileUploadEventArgs& args);
 
 
 private:
@@ -81,6 +91,16 @@ private:
     FileSystemRoute::SharedPtr    fileSystemRoute;
     FileUploadRoute::SharedPtr    fileUploadRoute;
     WebSocketRoute::SharedPtr     webSocketRoute;
+
+    std::map<std::string, float> uploadProgress;
+
+    Poco::TaskManager _taskManager;
+
+    ProjectManager::SharedPtr _projectManager;
+    AddonManager::SharedPtr _addonManager;
+
+    Project::SharedPtr _currentProject;
+    WebSocketConnection* _currentConnection;
 
 };
 

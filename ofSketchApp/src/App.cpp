@@ -34,9 +34,17 @@ void App::setup()
 {
     ofSetFrameRate(30);
 
+    _currentProject.reset();
+    _currentConnection = 0;
+
+    _projectManager = ProjectManager::makeShared(ofToDataPath("Projects"));
+    _addonManager = AddonManager::makeShared(ofToDataPath("openFrameworks/addons"));
+
+
     // set up file upload route
     FileUploadRouteSettings fuSettings;
     fileUploadRoute = FileUploadRoute::makeShared(fuSettings);
+    fileUploadRoute->registerFileUploadEvents(this);
 
     // set up file system route
     FileSystemRouteSettings fsSettings;
@@ -92,7 +100,6 @@ void App::onWebSocketFrameReceivedEvent(WebSocketFrameEventArgs& evt)
         return;
     }
 
-
     std::string text = evt.getFrameRef().getText();
 
     ofxJSONElement json;
@@ -104,49 +111,41 @@ void App::onWebSocketFrameReceivedEvent(WebSocketFrameEventArgs& evt)
         if(json.isMember("module"))
         {
             module = json["module"].asString();
+//            if(json.isMember("command"))
+//            {
+//                std::string command = json["command"].asString();
+//
+//                if(command == "RUN")
+//                {
+//                    cout << json << endl;
+//
+//                    if(json.isMember("data"))
+//                    {
+//                        std::string sketchPath = ofToDataPath("HelloWorldSketch",true);
+//
+//                        ofBuffer buffer(json["data"].asString());
+//
+//                        ofBufferToFile(sketchPath + "/src/main.cpp",
+//                                       buffer);
+//
+//                        cout << "got the following text from editor" << endl;
+//                        cout << json["data"].asString() << endl;
+//
+//                        //                    make(sketchPath,"Debug");
+//                        //                    make(sketchPath,"RunDebug");
+//                    }
+//                }
+//                else
+//                {
+//                    ofLogError("ofApp::onWebSocketFrameReceivedEvent") << "Unknown command: " << evt.getFrameRef().getText();
+//                }
+//            }
         }
         else
         {
             // invalid module specified
-            sendError(evt.getConnectionRef(),"Invalid module name: " + json.toStyledString());
+            sendError(evt.getConnectionRef(),"Module is not specified: " + json.toStyledString());
             return;
-        }
-
-        if(json.isMember("command"))
-        {
-
-        }
-
-
-
-        if(json.isMember("command"))
-        {
-            std::string command = json["command"].asString();
-            
-            if(command == "RUN")
-            {
-                cout << json << endl;
-
-                if(json.isMember("data"))
-                {
-                    std::string sketchPath = ofToDataPath("HelloWorldSketch",true);
-
-                    ofBuffer buffer(json["data"].asString());
-
-                    ofBufferToFile(sketchPath + "/src/main.cpp",
-                                   buffer);
-
-                    cout << "got the following text from editor" << endl;
-                    cout << json["data"].asString() << endl;
-
-//                    make(sketchPath,"Debug");
-//                    make(sketchPath,"RunDebug");
-                }
-            }
-            else
-            {
-                ofLogError("ofApp::onWebSocketFrameReceivedEvent") << "Unknown command: " << evt.getFrameRef().getText();
-            }
         }
     }
     else
@@ -165,7 +164,7 @@ void App::onWebSocketErrorEvent(WebSocketEventArgs& evt)
     cout << "Error from: " << evt.getConnectionRef().getClientAddress().toString() << endl;
 }
 
-void App::sendError(WebSocketConnection& connection, std::string error)
+void App::sendError(const WebSocketConnection& connection, std::string error)
 {
     Json::Value json;
     json["method"] = "error";
@@ -174,6 +173,26 @@ void App::sendError(WebSocketConnection& connection, std::string error)
     connection.sendFrame(json.toStyledString());
 
     ofLogError("App::sendError") << error;
+}
+
+
+void App::onFileUploadStarted(FileUploadEventArgs& args)
+{
+    uploadProgress[args.getFileName()] = 0;
+}
+
+
+void App::onFileUploadProgress(FileUploadEventArgs& args)
+{
+    // get normalized progress
+    uploadProgress[args.getFileName()] = args.getNumBytesTransferred() / (float) args.getFileSize();
+}
+
+
+void App::onFileUploadFinished(FileUploadEventArgs& args)
+{
+    uploadProgress[args.getFileName()] = 1;
+    // TODO: do something with it and delete it from the upload progres
 }
 
 

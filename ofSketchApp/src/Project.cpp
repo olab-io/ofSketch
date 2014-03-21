@@ -23,30 +23,24 @@
 // =============================================================================
 
 
-#include "Sketch.h"
+#include "Project.h"
 
 
 namespace of {
 namespace Sketch {
 
 
-Sketch::Sketch()
+Project::Project(const std::string& path): _path(path)
 {
 }
 
-Sketch::~Sketch()
+
+Project::~Project()
 {
 }
 
-void Sketch::newTab(const std::string& name)
-{
-}
 
-void Sketch::renameTab(const std::string& previousName, const std::string& newName)
-{
-}
-
-std::string Sketch::getPath() const
+std::string Project::getPath() const
 {
     return _path;
 }

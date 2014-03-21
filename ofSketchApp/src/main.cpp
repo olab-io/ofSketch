@@ -28,6 +28,6 @@
 
 int main()
 {
-	ofSetupOpenGL(100,100,OF_WINDOW);
+	ofSetupOpenGL(100, 100, OF_WINDOW);
 	ofRunApp(new of::Sketch::App());
 }

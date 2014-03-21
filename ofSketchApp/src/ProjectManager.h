@@ -26,27 +26,49 @@
 #pragma once
 
 
-#include "ofTypes.h"
+#include <vector>
+#include <string>
+#include "ofx/IO/DirectoryFilter.h"
+#include "ofx/IO/DirectoryUtils.h"
+#include "ofx/IO/DirectoryWatcherManager.h"
+#include "Project.h"
 
 
 namespace of {
 namespace Sketch {
 
 
-class Addon
+class ProjectManager
 {
 public:
-    typedef std::shared_ptr<Addon> SharedPtr;
+    typedef std::shared_ptr<ProjectManager> SharedPtr;
 
-    Addon()
+    ProjectManager(const std::string& path);
+    virtual ~ProjectManager();
+
+//    Project newProject(const std::string& name);
+
+    std::vector<Project> getProjects() const;
+
+    void onDirectoryWatcherItemAdded(const Poco::DirectoryWatcher::DirectoryEvent& evt);
+    void onDirectoryWatcherItemRemoved(const Poco::DirectoryWatcher::DirectoryEvent& evt);
+    void onDirectoryWatcherItemModified(const Poco::DirectoryWatcher::DirectoryEvent& evt);
+    void onDirectoryWatcherItemMovedFrom(const Poco::DirectoryWatcher::DirectoryEvent& evt);
+    void onDirectoryWatcherItemMovedTo(const Poco::DirectoryWatcher::DirectoryEvent& evt);
+    void onDirectoryWatcherError(const Poco::Exception& exc);
+
+    static SharedPtr makeShared(const std::string& projectsPath)
     {
+        return SharedPtr(new ProjectManager(projectsPath));
     }
 
-    virtual ~Addon()
-    {
-    }
 
+private:
+    std::string _path;
 
+    std::vector<Project> _projects;
+
+    ofx::IO::DirectoryWatcherManager _projectWatcher;
 
 };
 

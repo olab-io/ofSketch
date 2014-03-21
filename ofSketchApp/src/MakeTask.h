@@ -26,35 +26,54 @@
 #pragma once
 
 
-#include <string>
-#include "Poco/URI.h"
+#include <iostream>
+#include <set>
+#include "Poco/Process.h"
+#include "Poco/PipeStream.h"
+#include "Poco/StreamCopier.h"
+#include "Poco/Task.h"
+#include "Poco/Net/SocketAddress.h"
+#include "ofUtils.h"
+#include "Project.h"
 
 
 namespace of {
 namespace Sketch {
 
 
-class Tab
+class MakeTask: public Poco::Task
 {
 public:
-    std::string alias;
-    std::string fileName;
-};
+    struct Settings;
 
+    MakeTask(const Settings& settings,
+             Project::SharedPtr project,
+             const std::string& target);
 
-class Sketch
-{
-public:
-    Sketch();
-    ~Sketch();
+    virtual ~MakeTask();
 
-    void newTab(const std::string& name);
-    void renameTab(const std::string& previousName, const std::string& newName);
+    virtual void runTask();
 
-    std::string getPath() const;
+    struct Settings
+    {
+        std::string ofRoot;
+
+        int  numProcessors; // -j
+        bool isSilent; // -s
+
+        bool useDistccServer;
+        std::set<Poco::Net::SocketAddress> distccAddresses;
+
+        std::string cxx; // CXX=/usr/lib/distcc/arm-linux-gnueabihf-g++
+        std::string cc;  // CC=/usr/lib/distcc/arm-linux-gnueabihf-gcc
+
+        Settings();
+    };
 
 private:
-    std::string _path;
+    Settings            _settings;
+    Project::SharedPtr  _project;
+    std::string         _target;
 
 };
 

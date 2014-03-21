@@ -26,33 +26,32 @@
 #pragma once
 
 
-#include <iostream>
-#include "Poco/Process.h"
-#include "Poco/PipeStream.h"
-#include "Poco/StreamCopier.h"
-#include "ofUtils.h"
-#include "Sketch.h"
+#include <string>
+#include "Poco/URI.h"
+#include "ofTypes.h"
 
 
 namespace of {
 namespace Sketch {
 
 
-class Compiler
+class Source
 {
 public:
-    Compiler();
-    ~Compiler();
+    typedef std::shared_ptr<Source> SharedPtr;
+    typedef std::weak_ptr<Source>   WeakPtr;
 
-    void make(const Sketch& sketch, const std::string& target);
+    Source(const std::string& name, const std::string& path);
 
-private:
-    int _numProcessors; // -j
-    bool _isSilent;
-    std::string _distccServer; // ip
-    std::string _cxx; // CXX=/usr/lib/distcc/arm-linux-gnueabihf-g++
-    std::string _cc;  // CC=/usr/lib/distcc/arm-linux-gnueabihf-gcc
+    virtual ~Source();
+
+    std::string getPath() const;
+    std::string getName() const;
+
+protected:
+    std::string _name;
+    std::string _path;
 };
 
-    
+
 } } // namespace of::Sketch

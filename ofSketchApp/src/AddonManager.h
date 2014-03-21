@@ -27,7 +27,14 @@
 
 
 #include <string>
+#include <set>
 #include "Poco/URI.h"
+#include "ofx/IO/DirectoryUtils.h"
+#include "ofx/IO/DirectoryFilter.h"
+#include "ofx/IO/DirectoryWatcherManager.h"
+#include "ofEvents.h"
+#include "ofLog.h"
+#include "Addon.h"
 
 
 namespace of {
@@ -37,25 +44,33 @@ namespace Sketch {
 class AddonManager
 {
 public:
-    AddonManager()
-    {
+    typedef std::shared_ptr<AddonManager> SharedPtr;
 
+    AddonManager(const std::string& addonsPath);
+    virtual ~AddonManager();
+
+    void setup();
+
+    void updateAddon(const Poco::URI&);
+
+    void onDirectoryWatcherItemAdded(const Poco::DirectoryWatcher::DirectoryEvent& evt);
+    void onDirectoryWatcherItemRemoved(const Poco::DirectoryWatcher::DirectoryEvent& evt);
+    void onDirectoryWatcherItemModified(const Poco::DirectoryWatcher::DirectoryEvent& evt);
+    void onDirectoryWatcherItemMovedFrom(const Poco::DirectoryWatcher::DirectoryEvent& evt);
+    void onDirectoryWatcherItemMovedTo(const Poco::DirectoryWatcher::DirectoryEvent& evt);
+    void onDirectoryWatcherError(const Poco::Exception& exc);
+
+    static SharedPtr makeShared(const std::string& addonsPath)
+    {
+        return SharedPtr(new AddonManager(addonsPath));
     }
 
-    ~AddonManager()
-    {
-
-    }
-
-    void setup()
-    {
-
-    }
-
-    void updateAddon(const Poco::URI&)
+private:
+    std::string _path;
+    std::set<Addon::SharedPtr> _addons;
+    ofx::IO::DirectoryWatcherManager _addonWatcher;
 
 };
-
 
 
 } } // namespace of::Sketch

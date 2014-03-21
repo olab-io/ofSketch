@@ -23,40 +23,35 @@
 // =============================================================================
 
 
-#include "Compiler.h"
+#include "ProjectFile.h"
 
 
 namespace of {
 namespace Sketch {
 
 
-Compiler::Compiler()
+Source::Source(const std::string& name, const std::string& path):
+    _name(name),
+    _path(path)
 {
 }
 
-Compiler::~Compiler()
+
+Source::~Source()
 {
 }
 
-void Compiler::make(const Sketch& sketch, const std::string& target)
+
+std::string Source::getPath() const
 {
-    std::string cmd("make");
-    std::vector<std::string> args;
-    args.push_back("--directory=" + sketch.getPath());
-    if(_numProcessors > 1) args.push_back("-j" + ofToString(_numProcessors));
-    if(_isSilent) args.push_back("-s");
-
-    args.push_back(target);
-
-    Poco::Pipe outPipe;
-    Poco::ProcessHandle ph = Poco::Process::launch(cmd, args, 0, &outPipe, 0);
-
-    Poco::PipeInputStream istr(outPipe);
-    // could also save to text and return to web.
-    // std::ofstream ostr("processes.txt");
-    Poco::StreamCopier::copyStream(istr,std::cout);
-
+    return _path;
 }
-
+    
+    
+std::string Source::getName() const
+{
+    return _name;
+}
+    
 
 } } // namespace of::Sketch

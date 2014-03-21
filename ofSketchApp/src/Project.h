@@ -26,26 +26,33 @@
 #pragma once
 
 
-#include "ofTypes.h"
+#include <string>
+#include "Poco/URI.h"
+#include "ProjectFile.h"
 
 
 namespace of {
 namespace Sketch {
 
 
-class Addon
+class Project
 {
 public:
-    typedef std::shared_ptr<Addon> SharedPtr;
+    typedef std::shared_ptr<Project> SharedPtr;
+    typedef std::weak_ptr<Project>   WeakPtr;
 
-    Addon()
-    {
-    }
+    Project(const std::string& path);
+    ~Project();
 
-    virtual ~Addon()
-    {
-    }
+    std::string getPath() const;
+    
+protected:
 
+
+private:
+    std::string _path;
+
+    std::vector<Source> _sources;
 
 
 };
