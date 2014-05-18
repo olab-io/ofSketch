@@ -30,169 +30,209 @@ namespace of {
 namespace Sketch {
 
 
+App::App()
+{
+    ofSSLManager::registerAllEvents(this);
+
+    server.getPostRoute()->registerPostEvents(this);
+    server.getWebSocketRoute()->registerWebSocketEvents(this);
+}
+
+
+App::~App()
+{
+    server.getWebSocketRoute()->unregisterWebSocketEvents(this);
+    server.getPostRoute()->unregisterPostEvents(this);
+
+    ofSSLManager::unregisterAllEvents(this);
+}
+
+
 void App::setup()
 {
     ofSetFrameRate(30);
 
+    ofSetLogLevel(OF_LOG_VERBOSE);
+
     _currentProject.reset();
     _currentConnection = 0;
 
+    // TODO: configure these via settings files
     _projectManager = ProjectManager::makeShared(ofToDataPath("Projects"));
     _addonManager = AddonManager::makeShared(ofToDataPath("openFrameworks/addons"));
 
+    HTTP::BasicJSONRPCServerSettings settings; // TODO: load from file.
 
-    // set up file upload route
-    FileUploadRouteSettings fuSettings;
-    fileUploadRoute = FileUploadRoute::makeShared(fuSettings);
-    fileUploadRoute->registerFileUploadEvents(this);
+    server.setup(settings);
 
-    // set up file system route
-    FileSystemRouteSettings fsSettings;
-    fileSystemRoute = FileSystemRoute::makeShared(fsSettings);
+    server.registerMethod("load",
+                          "Load the requested project.",
+                          this,
+                          &App::load);
 
-    // set up websocket route
-    WebSocketRouteSettings wsSettings;
-    webSocketRoute = WebSocketRoute::makeShared(wsSettings);
-    webSocketRoute->registerWebSocketEvents(this); // listen for events here
-
-    // set up server
-    BaseServerSettings settings;
-    //settings.setPort(8080);
-    server = std::shared_ptr<BaseServer>(new BaseServer(settings));
-
-    // add routes to server (the last is evalulated first)
-    server->addRoute(fileUploadRoute);
-    server->addRoute(fileSystemRoute);
-    server->addRoute(webSocketRoute);
+    server.registerMethod("run",
+                          "Run the requested project.",
+                          this,
+                          &App::run);
 
     // start the server
-    server->start();
+    server.start();
 
     // Launch a browser with the address of the server.
-    ofLaunchBrowser(server->getURL());
+    ofLaunchBrowser(server.getURL());
 }
 
 void App::update()
 {
 }
 
+
 void App::draw()
 {
     ofBackground(0);
 }
 
-void App::onWebSocketOpenEvent(WebSocketEventArgs& evt)
+
+void App::load(const void* pSender, JSONRPC::MethodArgs& args)
+{
+
+}
+
+
+void App::run(const void* pSender, JSONRPC::MethodArgs& args)
 {
 }
 
-void App::onWebSocketCloseEvent(WebSocketEventArgs& evt)
+
+bool App::onWebSocketOpenEvent(HTTP::WebSocketEventArgs& args)
 {
-    cout << "Connection closed from: " << evt.getConnectionRef().getClientAddress().toString() << endl;
+    ofLogVerbose("App::onWebSocketOpenEvent") << "Connection opened from: " << args.getConnectionRef().getClientAddress().toString();
+    return false; // did not handle it
 }
 
-void App::onWebSocketFrameReceivedEvent(WebSocketFrameEventArgs& evt)
-{
-//    cout << "Frame from: " << evt.getConnectionRef().getClientAddress().toString() << endl;
 
-    if(evt.getFrameRef().isBinary())
+bool App::onWebSocketCloseEvent(HTTP::WebSocketEventArgs& args)
+{
+    ofLogVerbose("App::onWebSocketCloseEvent") << "Connection closed from: " << args.getConnectionRef().getClientAddress().toString();
+
+    return false; // did not handle it
+}
+
+
+bool App::onWebSocketFrameReceivedEvent(HTTP::WebSocketFrameEventArgs& args)
+{
+    ofLogVerbose("App::onWebSocketFrameReceivedEvent") << "Frame received from: " << args.getConnectionRef().getClientAddress().toString();
+
+    return false; // did not handle it
+}
+
+
+bool App::onWebSocketFrameSentEvent(HTTP::WebSocketFrameEventArgs& args)
+{
+    ofLogVerbose("App::onWebSocketFrameSentEvent") << "Frame sent to: " << args.getConnectionRef().getClientAddress().toString();
+    return false; // did not handle it
+}
+
+
+bool App::onWebSocketErrorEvent(HTTP::WebSocketEventArgs& args)
+{
+    ofLogVerbose("App::onWebSocketErrorEvent") << "Error on: " << args.getConnectionRef().getClientAddress().toString();
+
+    return false; // did not handle it
+}
+
+
+bool App::onHTTPPostEvent(HTTP::PostEventArgs& args)
+{
+    ofLogNotice("ofApp::onHTTPPostEvent") << "Data: " << args.getBuffer().getText();
+    return false;
+}
+
+
+bool App::onHTTPFormEvent(HTTP::PostFormEventArgs& args)
+{
+    ofLogNotice("ofApp::onHTTPFormEvent") << "";
+    HTTP::Utils::dumpNameValueCollection(args.getForm(), ofGetLogLevel());
+    return false;
+}
+
+
+bool App::onHTTPUploadEvent(HTTP::PostUploadEventArgs& args)
+{
+    std::string stateString = "";
+
+    switch (args.getState())
     {
-        sendError(evt.getConnectionRef(),"Binary frames are not supported.");
-        return;
+        case HTTP::PostUploadEventArgs::UPLOAD_STARTING:
+            stateString = "STARTING";
+            break;
+        case HTTP::PostUploadEventArgs::UPLOAD_PROGRESS:
+            stateString = "PROGRESS";
+            break;
+        case HTTP::PostUploadEventArgs::UPLOAD_FINISHED:
+            stateString = "FINISHED";
+            break;
     }
 
-    std::string text = evt.getFrameRef().getText();
-
-    ofxJSONElement json;
-
-    if(json.parse(text))
-    {
-        std::string module;
-
-        if(json.isMember("module"))
-        {
-            module = json["module"].asString();
-//            if(json.isMember("command"))
-//            {
-//                std::string command = json["command"].asString();
-//
-//                if(command == "RUN")
-//                {
-//                    cout << json << endl;
-//
-//                    if(json.isMember("data"))
-//                    {
-//                        std::string sketchPath = ofToDataPath("HelloWorldSketch",true);
-//
-//                        ofBuffer buffer(json["data"].asString());
-//
-//                        ofBufferToFile(sketchPath + "/src/main.cpp",
-//                                       buffer);
-//
-//                        cout << "got the following text from editor" << endl;
-//                        cout << json["data"].asString() << endl;
-//
-//                        //                    make(sketchPath,"Debug");
-//                        //                    make(sketchPath,"RunDebug");
-//                    }
-//                }
-//                else
-//                {
-//                    ofLogError("ofApp::onWebSocketFrameReceivedEvent") << "Unknown command: " << evt.getFrameRef().getText();
-//                }
-//            }
-        }
-        else
-        {
-            // invalid module specified
-            sendError(evt.getConnectionRef(),"Module is not specified: " + json.toStyledString());
-            return;
-        }
-    }
-    else
-    {
-        ofLogError("ofApp::onWebSocketFrameReceivedEvent") << "Unable to parse JSON: "  << evt.getFrameRef().getText();
-    }
-}
-
-void App::onWebSocketFrameSentEvent(WebSocketFrameEventArgs& evt)
-{
-    // frame was sent to clients
-}
-
-void App::onWebSocketErrorEvent(WebSocketEventArgs& evt)
-{
-    cout << "Error from: " << evt.getConnectionRef().getClientAddress().toString() << endl;
-}
-
-void App::sendError(const WebSocketConnection& connection, std::string error)
-{
-    Json::Value json;
-    json["method"] = "error";
-    json["data"] = error;
-
-    connection.sendFrame(json.toStyledString());
-
-    ofLogError("App::sendError") << error;
+    ofLogNotice("ofApp::onHTTPUploadEvent") << "";
+    ofLogNotice("ofApp::onHTTPUploadEvent") << "         state: " << stateString;
+    ofLogNotice("ofApp::onHTTPUploadEvent") << " formFieldName: " << args.getFormFieldName();
+    ofLogNotice("ofApp::onHTTPUploadEvent") << "orig. filename: " << args.getOriginalFilename();
+    ofLogNotice("ofApp::onHTTPUploadEvent") <<  "      filename: " << args.getFilename();
+    ofLogNotice("ofApp::onHTTPUploadEvent") <<  "      fileType: " << args.getFileType().toString();
+    ofLogNotice("ofApp::onHTTPUploadEvent") << "# bytes xfer'd: " << args.getNumBytesTransferred();
+    return false;
 }
 
 
-void App::onFileUploadStarted(FileUploadEventArgs& args)
+void App::onSSLServerVerificationError(Poco::Net::VerificationErrorArgs& args)
 {
-    uploadProgress[args.getFileName()] = 0;
+    ofLogVerbose("ofApp::onServerVerificationError") << args.errorMessage();
+
+    // if you want to proceed, you should allow your user to inspect
+    // the certificate and set:
+    //     args.setIgnoreError(true);
+    // if they approve
 }
 
 
-void App::onFileUploadProgress(FileUploadEventArgs& args)
+void App::onSSLClientVerificationError(Poco::Net::VerificationErrorArgs& args)
 {
-    // get normalized progress
-    uploadProgress[args.getFileName()] = args.getNumBytesTransferred() / (float) args.getFileSize();
+    ofLogVerbose("ofApp::onClientVerificationError") << args.errorMessage();
+
+    std::stringstream ss;
+
+    ss << "Error: " << args.errorMessage() << " #" << args.errorNumber() << " depth: " << args.errorDepth() << std::endl;
+
+    ss << "Certificate: " << std::endl;
+
+    ss << "Issued By: " << args.certificate().issuerName() << std::endl;
+    ss << "Subject Name: " << args.certificate().issuerName() << std::endl;
+    ss << "Common Name: " << args.certificate().issuerName() << std::endl;
+
+    Poco::DateTime ldtValidFrom = args.certificate().validFrom();
+    Poco::DateTime ldtExpiresOn = args.certificate().expiresOn();
+
+    ss << "Valid From: " << Poco::DateTimeFormatter::format(ldtValidFrom, "%dd %H:%M:%S.%i") << std::endl;
+    ss << "Expires On: " << Poco::DateTimeFormatter::format(ldtExpiresOn, "%dd %H:%M:%S.%i") << std::endl;
+
+    ofLogVerbose("ofApp::onServerVerificationError") << ss.str();
+
+    // if you want to proceed, you should allow your user to inspect
+    // the certificate and set:
+    //     args.setIgnoreError(true);
+    // if they approve
 }
 
 
-void App::onFileUploadFinished(FileUploadEventArgs& args)
+void App::onSSLPrivateKeyPassphraseRequired(std::string& args)
 {
-    uploadProgress[args.getFileName()] = 1;
-    // TODO: do something with it and delete it from the upload progres
+    ofLogVerbose("ofApp::onPrivateKeyPassphraseRequired") << args;
+    
+    // if you want to proceed, you should allow your user set the
+    // the certificate and set:
+    //     args.setIgnoreError(true);
+    // if they approve
 }
 
 

@@ -26,40 +26,22 @@
 #pragma once
 
 
+#include <json/json.h>
 #include "Poco/Pipe.h"
 #include "Poco/Process.h"
 #include "Poco/StreamCopier.h"
 #include "Poco/PipeStream.h"
 #include "Poco/TaskManager.h"
 #include "ofMain.h"
-#include "ofxJSONElement.h"
-#include "BaseServer.h"
-#include "FileSystemRoute.h"
-#include "FileSystemRouteSettings.h"
-#include "FileUploadRoute.h"
-#include "FileUploadRouteSettings.h"
-#include "WebSocketEvents.h"
-#include "WebSocketFrame.h"
-#include "WebSocketRoute.h"
-#include "WebSocketRouteSettings.h"
+#include "ofxHTTP.h"
+#include "ofxJSONRPC.h"
+
 #include "AddonManager.h"
 #include "Project.h"
 #include "ProjectManager.h"
 
 
-using ofx::HTTP::BaseServer;
-using ofx::HTTP::BaseServerSettings;
-using ofx::HTTP::FileSystemRoute;
-using ofx::HTTP::FileSystemRouteSettings;
-using ofx::HTTP::FileUploadEventArgs;
-using ofx::HTTP::FileUploadRoute;
-using ofx::HTTP::FileUploadRouteSettings;
-using ofx::HTTP::WebSocketEventArgs;
-using ofx::HTTP::WebSocketFrameEventArgs;
-using ofx::HTTP::WebSocketFrame;
-using ofx::HTTP::WebSocketRoute;
-using ofx::HTTP::WebSocketRouteSettings;
-using ofx::HTTP::WebSocketConnection;
+using namespace ofx;
 
 
 namespace of {
@@ -69,30 +51,31 @@ namespace Sketch {
 class App: public ofBaseApp
 {
 public:
+    App();
+    ~App();
     void setup();
     void update();
     void draw();
 
-    void onWebSocketOpenEvent(WebSocketEventArgs& evt);
-    void onWebSocketCloseEvent(WebSocketEventArgs& evt);
-    void onWebSocketFrameReceivedEvent(WebSocketFrameEventArgs& evt);
-    void onWebSocketFrameSentEvent(WebSocketFrameEventArgs& evt);
-    void onWebSocketErrorEvent(WebSocketEventArgs& evt);
+    void load(const void* pSender, JSONRPC::MethodArgs& args);
+    void run(const void* pSender, JSONRPC::MethodArgs& args);
 
-    void sendError(const WebSocketConnection& connection, std::string error);
+    bool onWebSocketOpenEvent(HTTP::WebSocketEventArgs& args);
+    bool onWebSocketCloseEvent(HTTP::WebSocketEventArgs& args);
+    bool onWebSocketFrameReceivedEvent(HTTP::WebSocketFrameEventArgs& args);
+    bool onWebSocketFrameSentEvent(HTTP::WebSocketFrameEventArgs& args);
+    bool onWebSocketErrorEvent(HTTP::WebSocketEventArgs& args);
 
-    void onFileUploadStarted(FileUploadEventArgs& args);
-    void onFileUploadProgress(FileUploadEventArgs& args);
-    void onFileUploadFinished(FileUploadEventArgs& args);
+    bool onHTTPPostEvent(HTTP::PostEventArgs& args);
+    bool onHTTPFormEvent(HTTP::PostFormEventArgs& args);
+    bool onHTTPUploadEvent(HTTP::PostUploadEventArgs& args);
 
+    void onSSLServerVerificationError(Poco::Net::VerificationErrorArgs& args);
+    void onSSLClientVerificationError(Poco::Net::VerificationErrorArgs& args);
+    void onSSLPrivateKeyPassphraseRequired(std::string& args);
 
 private:
-    BaseServer::SharedPtr         server;
-    FileSystemRoute::SharedPtr    fileSystemRoute;
-    FileUploadRoute::SharedPtr    fileUploadRoute;
-    WebSocketRoute::SharedPtr     webSocketRoute;
-
-    std::map<std::string, float> uploadProgress;
+    HTTP::BasicJSONRPCServer server;
 
     Poco::TaskManager _taskManager;
 
@@ -100,7 +83,8 @@ private:
     AddonManager::SharedPtr _addonManager;
 
     Project::SharedPtr _currentProject;
-    WebSocketConnection* _currentConnection;
+
+    HTTP::WebSocketConnection* _currentConnection;
 
 };
 
