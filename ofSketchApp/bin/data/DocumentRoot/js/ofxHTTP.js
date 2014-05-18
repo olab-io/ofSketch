@@ -22,106 +22,66 @@
 //
 // =============================================================================
 
-// HELPER //////////////////////////////////////////////////////////////////////
-Array.prototype.hasObject = (
-    !Array.indexOf ? function (o) {
-        var l = this.length + 1;
-        while (l -= 1) {
-            if (this[l - 1] === o) {
-                return true;
-            }
-        }
-        return false;
-    } : function (o) {
-        return (this.indexOf(o) !== -1);
-    }
-);
+// ofxHTTP /////////////////////////////////////////////////////////////////////
 
-// LOGGING /////////////////////////////////////////////////////////////////////
-var OF_LOG_VERBOSE     = 0;
-var OF_LOG_NOTICE      = 1;
-var OF_LOG_WARNING     = 2;
-var OF_LOG_ERROR       = 3;
-var OF_LOG_FATAL_ERROR = 4;
-var OF_LOG_SILENT      = 5;
+// function ofPixelHandler()
+// {
+//     var CMD_PIXELS = "SET_PIXELS";
 
-var logLevel = OF_LOG_VERBOSE;
+//     var OF_PIXELS_MONO   = 0;
+//     var OF_PIXELS_RGB    = 1;
+//     var OF_PIXELS_RGBA   = 2;
+//     var OF_PIXELS_BGRA   = 3;
+//     var OF_PIXELS_RGB565 = 4;
 
-function ofGetLogLevelName(_logLevel)
-{
-    switch(_logLevel)
-    {
-        case OF_LOG_VERBOSE:
-            return "OF_LOG_VERBOSE";
-        case OF_LOG_NOTICE:
-            return "OF_LOG_NOTICE";
-        case OF_LOG_WARNING:
-            return "OF_LOG_WARNING";
-        case OF_LOG_ERROR:
-            return "OF_LOG_ERROR";
-        case OF_LOG_FATAL_ERROR:
-            return "OF_LOG_FATAL_ERROR";
-        case OF_LOG_SILENT:
-            return "OF_LOG_SILENT";
-        default:
-            return "UNKNOWN_LOG_LEVEL";
-    }
-}
+//     var PIXELS_DATA_TYPE_ARRAY_BUFFER = 0;
+//     var PIXELS_DATA_TYPE_BLOB         = 1;
 
-function ofGetLogLevel()
-{
-    return logLevel;
-}
+//     var _bIsWaitingForPixels = false;
+//     var _dataType      = PIXELS_DATA_TYPE_ARRAY_BUFFER;
+//     var _type          = OF_PIXELS_RGBA;
+//     var _width         = 0;
+//     var _height        = 0;
+//     var _destination   = "";
 
-function ofSetLogLevel(_logLevel)
-{
-    logLevel = _logLevel; 
-}
+// }
 
-function ofLog(logLevel,val)
-{
-    if(logLevel >= ofGetLogLevel()) 
-    {
-        console.log(val);
-    }
-}
+// ofPixelHandler.prototype = function() 
+// {
+//     isWaitingForPixels: function() 
+//     {
+//         return this._bIsWaitingForPixels;
+//     },
+//     getPixelsDataType: function()
+//     {
+//         return this._pixelsDataType;
+//     },
+//     getPixelsType: function()
+//     {
+//         return this._pixelsType;
+//     },
+//     getWidth: function()
+//     {
+//         return this._width;
+//     },
+//     getHeight: function()
+//     {
+//         return this._height;
+//     }
+//     getDestination: function()
+//     {
+//         return this._destination;
+//     }
+//     handleMessage: function(message)
+//     {
 
-function ofLogVerbose(_message) 
-{
-    ofLog(self.OF_LOG_VERBOSE,_message);
-}
 
-function ofLogNotice(_message)
-{
-    ofLog(self.OF_LOG_NOTICE,_message);
-}
+//         return false;
 
-function ofLogWarning(_message)
-{
-    ofLog(self.OF_LOG_WARNING,_message);
-}
+//         return true;
+//     }
 
-function ofLogError(_message)
-{
-    ofLog(self.OF_LOG_ERROR,_message);
-}
-
-function ofLogFatalError(_message)
-{ 
-    ofLog(self.OF_LOG_FATAL_ERROR,_message);
-}
-
-function ofLogSilent(_message)
-{
-    ofLog(self.OF_LOG_SILENT,_message);
-}
-
-// UTILITIES ///////////////////////////////////////////////////////////////////
-
-function ofClamp(val,max,min) 
-{
-    return (val < min ? max : (val > min ? min : val));
-}
+// }
 
 //------------------------------------------------------------------------------
 function ofxHTTPBasicWebSocketClient(supportedProtocols)
@@ -144,6 +104,18 @@ function ofxHTTPBasicWebSocketClient(supportedProtocols)
 
     var _sequenceReceived       = 0;
     var _sequenceTransmited     = 0;
+
+    var _JSONRPClient = new $.JsonRpcClient({ 
+        getSocket: function() { 
+            return _ws; 
+        },
+        onmessage: function(evt) { 
+            _onMessage(evt); 
+        }
+    });
+
+    //--------------------------------------------------------------------------
+    
 
     //--------------------------------------------------------------------------
     var _onUpdateMessage = function(message)
@@ -192,10 +164,7 @@ function ofxHTTPBasicWebSocketClient(supportedProtocols)
     // i.e. ws:// or wss:// for secure connections
     this.getWebSocketURL = function() 
     {
-
 // TODO :       ws_host = window.location.href.replace(/(http|https)(:\/\/.*?)\//, 'ws$2');
-
-
         var scheme;
         var url = document.URL;
         if(url.substring(0, 5) == "https")
@@ -360,7 +329,6 @@ function ofxHTTPBasicWebSocketClient(supportedProtocols)
     {
         if("WebSocket" in window) 
         {
-
             try 
             {
                 _ws = new WebSocket(_self.getWebSocketURL(),
@@ -422,7 +390,8 @@ function ofxHTTPBasicWebSocketClient(supportedProtocols)
     //--------------------------------------------------------------------------
     this.disconnect = function()
     {
-        if(_self.isConnected()) {
+        if(_self.isConnected()) 
+        {
             window.clearInterval(_keepAliveTimeout);
             _ws.close();
             _ws = null;
