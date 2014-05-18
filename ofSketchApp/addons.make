@@ -1,7 +1,6 @@
 ofxHTTP
 ofxIO
 ofxJSON
-ofxLibmagic
+ofxJSONRPC
 ofxMediaType
-ofxNetworkUtils
-ofxZeroconf
+ofxSSLManager
