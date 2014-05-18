@@ -40,7 +40,7 @@ Project::~Project()
 }
 
 
-std::string Project::getPath() const
+const std::string& Project::getPath() const
 {
     return _path;
 }

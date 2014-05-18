@@ -24,3 +24,10 @@
 
 
 #include "Importer.h"
+
+
+namespace of {
+namespace Sketch {
+
+
+} } // namespace of::Sketch

@@ -51,7 +51,7 @@ public:
 
     void setup();
 
-    void updateAddon(const Poco::URI&);
+    void updateAddon(const Poco::URI& uri);
 
     void onDirectoryWatcherItemAdded(const Poco::DirectoryWatcher::DirectoryEvent& evt);
     void onDirectoryWatcherItemRemoved(const Poco::DirectoryWatcher::DirectoryEvent& evt);
@@ -64,6 +64,8 @@ public:
     {
         return SharedPtr(new AddonManager(addonsPath));
     }
+
+    static const std::string DEFAULT_ADDON_PATH;
 
 private:
     std::string _path;

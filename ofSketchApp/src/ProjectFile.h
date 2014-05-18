@@ -45,8 +45,8 @@ public:
 
     virtual ~Source();
 
-    std::string getPath() const;
-    std::string getName() const;
+    const std::string& getPath() const;
+    const std::string& getName() const;
 
 protected:
     std::string _name;

@@ -42,13 +42,13 @@ Source::~Source()
 }
 
 
-std::string Source::getPath() const
+const std::string& Source::getPath() const
 {
     return _path;
 }
     
     
-std::string Source::getName() const
+const std::string& Source::getName() const
 {
     return _name;
 }

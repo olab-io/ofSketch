@@ -65,7 +65,7 @@ ProjectManager::~ProjectManager()
 //}
 
 
-std::vector<Project> ProjectManager::getProjects() const
+const std::vector<Project>& ProjectManager::getProjects() const
 {
     return _projects;
 }

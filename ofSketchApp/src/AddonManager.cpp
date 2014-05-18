@@ -30,6 +30,9 @@ namespace of {
 namespace Sketch {
 
 
+const std::string AddonManager::DEFAULT_ADDON_PATH = "addons/";
+
+
 AddonManager::AddonManager(const std::string& path):
     _path(path)
 {
@@ -46,11 +49,11 @@ AddonManager::AddonManager(const std::string& path):
 
     std::vector<std::string>::iterator iter = files.begin();
 
-    while(iter != files.end())
-    {
-        cout << *iter << endl;
-        ++iter;
-    }
+//    while(iter != files.end())
+//    {
+//        cout << *iter << endl;
+//        ++iter;
+//    }
 
 }
 
@@ -65,46 +68,45 @@ void AddonManager::setup()
 }
 
 
-void AddonManager::updateAddon(const Poco::URI&)
+void AddonManager::updateAddon(const Poco::URI& uri)
 {
 }
 
 
 void AddonManager::onDirectoryWatcherItemAdded(const Poco::DirectoryWatcher::DirectoryEvent& evt)
 {
-    ofSendMessage("Added:    " + evt.item.path());
+//    ofSendMessage("Added:    " + evt.item.path());
 }
 
 
 void AddonManager::onDirectoryWatcherItemRemoved(const Poco::DirectoryWatcher::DirectoryEvent& evt)
 {
-    ofSendMessage("Removed:  " + evt.item.path());
+//    ofSendMessage("Removed:  " + evt.item.path());
 }
 
 
 void AddonManager::onDirectoryWatcherItemModified(const Poco::DirectoryWatcher::DirectoryEvent& evt)
 {
-    ofSendMessage("Modified: " + evt.item.path());
+//    ofSendMessage("Modified: " + evt.item.path());
 }
 
 
 void AddonManager::onDirectoryWatcherItemMovedFrom(const Poco::DirectoryWatcher::DirectoryEvent& evt)
 {
-    ofLogNotice("ofApp::onDirectoryWatcherItemMovedFrom") << "Moved From: " << evt.item.path();
+//    ofLogNotice("ofApp::onDirectoryWatcherItemMovedFrom") << "Moved From: " << evt.item.path();
 }
 
 
 void AddonManager::onDirectoryWatcherItemMovedTo(const Poco::DirectoryWatcher::DirectoryEvent& evt)
 {
-    ofLogNotice("ofApp::onDirectoryWatcherItemMovedTo") << "Moved To: " << evt.item.path();
+//    ofLogNotice("ofApp::onDirectoryWatcherItemMovedTo") << "Moved To: " << evt.item.path();
 }
 
     
 void AddonManager::onDirectoryWatcherError(const Poco::Exception& exc)
 {
-    ofLogError("ofApp::onDirectoryWatcherError") << "Error: " << exc.displayText();
+//    ofLogError("ofApp::onDirectoryWatcherError") << "Error: " << exc.displayText();
 }
-
 
 
 } } // namespace of::Sketch

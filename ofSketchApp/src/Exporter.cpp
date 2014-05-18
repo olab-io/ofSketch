@@ -24,3 +24,10 @@
 
 
 #include "Exporter.h"
+
+
+namespace of {
+namespace Sketch {
+
+
+} } // namespace of::Sketch

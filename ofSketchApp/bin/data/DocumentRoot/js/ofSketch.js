@@ -23,68 +23,76 @@
 // =============================================================================
 
 
-function makeCommandDataMessage(command, data) 
-{
-    txt = typeof txt !== 'undefined' ? data : null;
+var JSONRPCClient; ///< The core JSONRPC WebSocket client.
+var editor;
 
-    return JSON.stringify(
-                { 
-                    command: command, 
-                    data: txt
-                }
-            );
+function addError(error)
+{
+    console.log(error);
 }
 
-function onOpen(ws) 
+function onWebSocketOpen(ws) 
 {
-    ofLogNotice("Connection Opened " + ws);
+    console.log("on open");
+    console.log(ws);
 }
 
-function onMessage(evt) 
+function onWebSocketMessage(evt) 
 {
-
-    // console.log(evt.data);
-    // messages are sent sent 
-    var message = JSON.parse(evt.data);
-
-    if(message.method == "setEditorSource") {
-        editor.setValue(message.data.source);
-
-        // console.log(message.error.code);
-
-    } else {
-        console.log("Unknown method: " + message.method);
-    }
-
+    console.log("on message:");
+    constle.log(evt.data);
 }
 
-function onClose()
+function onWebSocketClose()
 {
-  console.log("Connection closed.");
+    console.log("on close");
 }
 
-function onError()
+function onWebSocketError()
 {
-  console.log("Connection Error.");
+    console.log("on error");
 }
 
+function play() {
+    var $this = $(this);
 
-function play()
-{
-    var message = makeCommandDataMessage("toolbar-play", editor.getValue());
-    ws.send(message);
+    // Collect the information to send to the server.
+    var params = {
+        source: editor.getValue()
+    };
+
+    JSONRPCClient.call('play', 
+        params,
+        function(result) {
+            console.log(result);
+        },
+        function(error) {
+            addError(error);
+        });
 }
 
-function stop()
-{
-    var message = makeCommandDataMessage("toobar-stop", editor.getValue());
-    ws.send(message);
+function stop() {
+    var $this = $(this);
+    JSONRPCClient.call('stop', 
+        null,
+        function(result) {
+            console.log(result);
+        },
+        function(error) {
+            addError(error);
+        });
 }
 
-function save()
-{
-    var message = makeCommandDataMessage("toobar-save", editor.getValue());
-    ws.send(message);
+function load() {
+    var $this = $(this);
+    JSONRPCClient.call('load', 
+        null,
+        function(result) {
+            editor.setValue(result.source);
+        },
+        function(error) {
+            addError(error);
+        });
 }
 
 $(document).ready( function()
@@ -99,46 +107,52 @@ $(document).ready( function()
     // ws.setOnClose(onClose);
     // ws.setOnError(onError);
 
-    // button controls
-    $("#toolbar-play").click(function() {
-        play();
-    });
-  
-    // button controls
-    $("#toobar-stop").click(function() {
-        stop();
-    });
+    // Initialize our JSONRPCClient
+    JSONRPCClient = new $.JsonRpcClient(
+        { 
+            ajaxUrl: getDefaultPostURL(),
+            socketUrl: getDefaultWebSocketURL(), // get a websocket for the localhost
+            onmessage: onWebSocketMessage,
+            onopen: onWebSocketOpen,
+            onclose: onWebSocketClose,
+            onerror: onWebSocketError
+        }
+    );
 
-    var editor = ace.edit("editor");
+    // button controls
+    $('#toolbar-play').on('click', play);
+    $('#toolbar-stop').on('click', stop);
+
+    editor = ace.edit("editor");
     editor.setTheme("ace/theme/twilight");
     editor.getSession().setMode("ace/mode/c_cpp");
 
-    editor.commands.addCommand({
-        name: 'save',
-        bindKey: {win: 'Ctrl-s',  mac: 'Command-s'},
-        exec: function(editor) {
-            console.log("Just saved!");
-        },
-        readOnly: true // false if this command should not apply in readOnly mode
-    });
+    // editor.commands.addCommand({
+    //     name: 'save',
+    //     bindKey: {win: 'Ctrl-s',  mac: 'Command-s'},
+    //     exec: function(editor) {
+    //         console.log("Just saved!");
+    //     },
+    //     readOnly: true // false if this command should not apply in readOnly mode
+    // });
 
-    editor.commands.addCommand({
-        name: 'run',
-        bindKey: {win: 'Ctrl-R',  mac: 'Command-R'},
-        exec: function(editor) {
-          console.log("Just Ran!");
-          },
-        readOnly: true // false if this command should not apply in readOnly mode
-    });
+    // editor.commands.addCommand({
+    //     name: 'run',
+    //     bindKey: {win: 'Ctrl-R',  mac: 'Command-R'},
+    //     exec: function(editor) {
+    //       console.log("Just Ran!");
+    //       },
+    //     readOnly: true // false if this command should not apply in readOnly mode
+    // });
 
-    editor.commands.addCommand({
-        name: 'present',
-        bindKey: {win: 'Shift-Ctrl-r',  mac: 'Shift-Command-r'},
-        exec: function(editor) {
-          console.log("Just presented!");
-        },
-        readOnly: true // false if this command should not apply in readOnly mode
-    });
+    // editor.commands.addCommand({
+    //     name: 'present',
+    //     bindKey: {win: 'Shift-Ctrl-r',  mac: 'Shift-Command-r'},
+    //     exec: function(editor) {
+    //       console.log("Just presented!");
+    //     },
+    //     readOnly: true // false if this command should not apply in readOnly mode
+    // });
     // // connect to the websocket
     
     // ws.connect();
@@ -185,5 +199,6 @@ $(document).ready( function()
       // $('#toolbar-export-project').tooltip()
 
 
+      load();
 
 });

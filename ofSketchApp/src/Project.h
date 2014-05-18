@@ -39,12 +39,12 @@ class Project
 {
 public:
     typedef std::shared_ptr<Project> SharedPtr;
-    typedef std::weak_ptr<Project>   WeakPtr;
+    typedef std::weak_ptr<Project> WeakPtr;
 
     Project(const std::string& path);
     ~Project();
 
-    std::string getPath() const;
+    const std::string& getPath() const;
     
 protected:
 

@@ -24,3 +24,10 @@
 
 
 #pragma once
+
+
+namespace of {
+namespace Sketch {
+
+
+} } // namespace of::Sketch

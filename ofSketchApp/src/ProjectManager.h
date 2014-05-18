@@ -48,7 +48,7 @@ public:
 
 //    Project newProject(const std::string& name);
 
-    std::vector<Project> getProjects() const;
+    const std::vector<Project>& getProjects() const;
 
     void onDirectoryWatcherItemAdded(const Poco::DirectoryWatcher::DirectoryEvent& evt);
     void onDirectoryWatcherItemRemoved(const Poco::DirectoryWatcher::DirectoryEvent& evt);

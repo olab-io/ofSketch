@@ -30,8 +30,9 @@ namespace of {
 namespace Sketch {
 
 
-App::App()
+App::App(): _currentConnection(0)
 {
+    // Must register for all events before initializing server.
     ofSSLManager::registerAllEvents(this);
 
     server.getPostRoute()->registerPostEvents(this);
@@ -54,14 +55,21 @@ void App::setup()
 
     ofSetLogLevel(OF_LOG_VERBOSE);
 
-    _currentProject.reset();
-    _currentConnection = 0;
+    ofSSLManager::initializeServer(new Poco::Net::Context(Poco::Net::Context::SERVER_USE,
+                                                          ofToDataPath("ssl/privateKey.nopassword.pem"),
+                                                          ofToDataPath("ssl/selfSignedCertificate.nopassword.pem"),
+                                                          ofToDataPath("ssl/cacert.pem")));
+
+
+
 
     // TODO: configure these via settings files
     _projectManager = ProjectManager::makeShared(ofToDataPath("Projects"));
     _addonManager = AddonManager::makeShared(ofToDataPath("openFrameworks/addons"));
 
     HTTP::BasicJSONRPCServerSettings settings; // TODO: load from file.
+
+    // settings.setUseSSL(true);
 
     server.setup(settings);
 
@@ -70,10 +78,15 @@ void App::setup()
                           this,
                           &App::load);
 
-    server.registerMethod("run",
-                          "Run the requested project.",
+    server.registerMethod("play",
+                          "Play the requested project.",
                           this,
-                          &App::run);
+                          &App::play);
+
+    server.registerMethod("stop",
+                          "Stop the requested project.",
+                          this,
+                          &App::stop);
 
     // start the server
     server.start();
@@ -95,92 +108,166 @@ void App::draw()
 
 void App::load(const void* pSender, JSONRPC::MethodArgs& args)
 {
-
+    ofBuffer project = ofBufferFromFile("Projects/HelloWorld/src/main.cpp");
+    args.result["source"] = project.getText();
 }
 
 
-void App::run(const void* pSender, JSONRPC::MethodArgs& args)
+void App::play(const void* pSender, JSONRPC::MethodArgs& args)
 {
+    if (args.params.isMember("source"))
+    {
+        ofBuffer sourceBuffer(args.params["source"].asString());
+        ofBufferToFile("Projects/HelloWorld/src/main.cpp", sourceBuffer);
+
+        std::string cmd("make");
+
+        std::vector<std::string> args;
+
+        args.push_back("--directory=" + ofToDataPath("Projects/HelloWorld/", true));
+//        if(_settings.numProcessors > 1)
+//        {
+//            args.push_back("-j" + ofToString(_settings.numProcessors));
+//        }
+
+//        if(_settings.isSilent)
+//        {
+//            args.push_back("-s");
+//        }
+
+//        args.push_back(_target);
+
+        args.push_back("OF_ROOT=" + ofToDataPath("openFrameworks/", true));
+
+        Poco::Pipe inPipe; // this needs to be passed in
+        Poco::Pipe outAndErrPipe;
+        //    Poco::Pipe errPipe;
+
+        Poco::ProcessHandle ph = Poco::Process::launch(cmd, args, &inPipe, &outAndErrPipe, &outAndErrPipe);
+
+        Poco::PipeInputStream istr(outAndErrPipe);
+
+//        const std::size_t bufferSize = 8192;
+//        char buffer[bufferSize];
+//
+//        while(istr.good() && !istr.fail())
+//        {
+//            if(isCancelled())
+//            {
+//                Poco::Process::kill(ph);
+//            }
+//            
+//            istr.getline(buffer,bufferSize);
+//            cout << "LINE>>" << buffer << "<<LINE" << endl;
+//        }
+
+        Poco::StreamCopier::copyStream(istr, std::cout);
+
+        
+        int exitCode = ph.wait();
+
+        cout << "exit code: " << exitCode << endl;
+
+        args.push_back("run");
+
+        ph = Poco::Process::launch(cmd, args, &inPipe, &outAndErrPipe, &outAndErrPipe);
+
+        Poco::PipeInputStream istr2(outAndErrPipe);
+        Poco::StreamCopier::copyStream(istr2, std::cout);
+
+        exitCode = ph.wait();
+
+        cout << "exit code: " << exitCode << endl;
+
+    }
+    else
+    {
+        // Pass error in this case.
+    }
+}
+
+
+void App::stop(const void* pSender, JSONRPC::MethodArgs& args)
+{
+    std::cout << "stop: " << std::endl;
+    std::cout << args.params.toStyledString() << std::endl;
 }
 
 
 bool App::onWebSocketOpenEvent(HTTP::WebSocketEventArgs& args)
 {
-    ofLogVerbose("App::onWebSocketOpenEvent") << "Connection opened from: " << args.getConnectionRef().getClientAddress().toString();
+//    ofLogVerbose("App::onWebSocketOpenEvent") << "Connection opened from: " << args.getConnectionRef().getClientAddress().toString();
     return false; // did not handle it
 }
 
 
 bool App::onWebSocketCloseEvent(HTTP::WebSocketEventArgs& args)
 {
-    ofLogVerbose("App::onWebSocketCloseEvent") << "Connection closed from: " << args.getConnectionRef().getClientAddress().toString();
-
+//    ofLogVerbose("App::onWebSocketCloseEvent") << "Connection closed from: " << args.getConnectionRef().getClientAddress().toString();
     return false; // did not handle it
 }
 
 
 bool App::onWebSocketFrameReceivedEvent(HTTP::WebSocketFrameEventArgs& args)
 {
-    ofLogVerbose("App::onWebSocketFrameReceivedEvent") << "Frame received from: " << args.getConnectionRef().getClientAddress().toString();
-
+//    ofLogVerbose("App::onWebSocketFrameReceivedEvent") << "Frame received from: " << args.getConnectionRef().getClientAddress().toString();
     return false; // did not handle it
 }
 
 
 bool App::onWebSocketFrameSentEvent(HTTP::WebSocketFrameEventArgs& args)
 {
-    ofLogVerbose("App::onWebSocketFrameSentEvent") << "Frame sent to: " << args.getConnectionRef().getClientAddress().toString();
+//    ofLogVerbose("App::onWebSocketFrameSentEvent") << "Frame sent to: " << args.getConnectionRef().getClientAddress().toString();
     return false; // did not handle it
 }
 
 
 bool App::onWebSocketErrorEvent(HTTP::WebSocketEventArgs& args)
 {
-    ofLogVerbose("App::onWebSocketErrorEvent") << "Error on: " << args.getConnectionRef().getClientAddress().toString();
-
+//    ofLogVerbose("App::onWebSocketErrorEvent") << "Error on: " << args.getConnectionRef().getClientAddress().toString();
     return false; // did not handle it
 }
 
 
 bool App::onHTTPPostEvent(HTTP::PostEventArgs& args)
 {
-    ofLogNotice("ofApp::onHTTPPostEvent") << "Data: " << args.getBuffer().getText();
+//    ofLogNotice("ofApp::onHTTPPostEvent") << "Data: " << args.getBuffer().getText();
     return false;
 }
 
 
 bool App::onHTTPFormEvent(HTTP::PostFormEventArgs& args)
 {
-    ofLogNotice("ofApp::onHTTPFormEvent") << "";
-    HTTP::Utils::dumpNameValueCollection(args.getForm(), ofGetLogLevel());
+//    ofLogNotice("ofApp::onHTTPFormEvent") << "";
+//    HTTP::Utils::dumpNameValueCollection(args.getForm(), ofGetLogLevel());
     return false;
 }
 
 
 bool App::onHTTPUploadEvent(HTTP::PostUploadEventArgs& args)
 {
-    std::string stateString = "";
-
-    switch (args.getState())
-    {
-        case HTTP::PostUploadEventArgs::UPLOAD_STARTING:
-            stateString = "STARTING";
-            break;
-        case HTTP::PostUploadEventArgs::UPLOAD_PROGRESS:
-            stateString = "PROGRESS";
-            break;
-        case HTTP::PostUploadEventArgs::UPLOAD_FINISHED:
-            stateString = "FINISHED";
-            break;
-    }
-
-    ofLogNotice("ofApp::onHTTPUploadEvent") << "";
-    ofLogNotice("ofApp::onHTTPUploadEvent") << "         state: " << stateString;
-    ofLogNotice("ofApp::onHTTPUploadEvent") << " formFieldName: " << args.getFormFieldName();
-    ofLogNotice("ofApp::onHTTPUploadEvent") << "orig. filename: " << args.getOriginalFilename();
-    ofLogNotice("ofApp::onHTTPUploadEvent") <<  "      filename: " << args.getFilename();
-    ofLogNotice("ofApp::onHTTPUploadEvent") <<  "      fileType: " << args.getFileType().toString();
-    ofLogNotice("ofApp::onHTTPUploadEvent") << "# bytes xfer'd: " << args.getNumBytesTransferred();
+//    std::string stateString = "";
+//
+//    switch (args.getState())
+//    {
+//        case HTTP::PostUploadEventArgs::UPLOAD_STARTING:
+//            stateString = "STARTING";
+//            break;
+//        case HTTP::PostUploadEventArgs::UPLOAD_PROGRESS:
+//            stateString = "PROGRESS";
+//            break;
+//        case HTTP::PostUploadEventArgs::UPLOAD_FINISHED:
+//            stateString = "FINISHED";
+//            break;
+//    }
+//
+//    ofLogNotice("ofApp::onHTTPUploadEvent") << "";
+//    ofLogNotice("ofApp::onHTTPUploadEvent") << "         state: " << stateString;
+//    ofLogNotice("ofApp::onHTTPUploadEvent") << " formFieldName: " << args.getFormFieldName();
+//    ofLogNotice("ofApp::onHTTPUploadEvent") << "orig. filename: " << args.getOriginalFilename();
+//    ofLogNotice("ofApp::onHTTPUploadEvent") <<  "      filename: " << args.getFilename();
+//    ofLogNotice("ofApp::onHTTPUploadEvent") <<  "      fileType: " << args.getFileType().toString();
+//    ofLogNotice("ofApp::onHTTPUploadEvent") << "# bytes xfer'd: " << args.getNumBytesTransferred();
     return false;
 }
 
@@ -231,8 +318,7 @@ void App::onSSLPrivateKeyPassphraseRequired(std::string& args)
     
     // if you want to proceed, you should allow your user set the
     // the certificate and set:
-    //     args.setIgnoreError(true);
-    // if they approve
+    args = "password";
 }
 
 

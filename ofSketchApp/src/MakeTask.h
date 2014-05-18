@@ -71,9 +71,9 @@ public:
     };
 
 private:
-    Settings            _settings;
-    Project::SharedPtr  _project;
-    std::string         _target;
+    Settings _settings;
+    Project::SharedPtr _project;
+    std::string _target;
 
 };
 
