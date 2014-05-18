@@ -130,9 +130,11 @@ void App::play(const void* pSender, JSONRPC::MethodArgs& args)
 //            args.push_back("-j" + ofToString(_settings.numProcessors));
 //        }
 
+            args.push_back("-j" + ofToString(8));
+
 //        if(_settings.isSilent)
 //        {
-//            args.push_back("-s");
+            args.push_back("-s");
 //        }
 
 //        args.push_back(_target);
