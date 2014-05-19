@@ -32,10 +32,14 @@ example/obj
 [Rr]elease/
 x64/
 build/
-[Bb]in/
+*/[Bb]in/data/openFrameworks
+*/[Bb]in/data/uploads
+*/[Bb]in/data/Projects
 [Oo]bj/
 
-![Bb]in/data/DocumentRoot/*
+!*/[Bb]in/data
+
+
 
 # Enable "build/" folder in the NuGet Packages folder since NuGet packages use it for MSBuild targets
 !packages/*/build/
