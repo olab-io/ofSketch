@@ -25,6 +25,8 @@
 
 var JSONRPCClient; ///< The core JSONRPC WebSocket client.
 var editor;
+var settings;
+var editSessions = [];
 
 function addError(error)
 {
@@ -97,108 +99,107 @@ function load() {
 
 $(document).ready( function()
 {
+    $.getJSON('editorsettings.json', function(data){
+        settings = data;
+        // Initialize our JSONRPCClient
+        JSONRPCClient = new $.JsonRpcClient(
+            { 
+                ajaxUrl: getDefaultPostURL(),
+                socketUrl: getDefaultWebSocketURL(), // get a websocket for the localhost
+                onmessage: onWebSocketMessage,
+                onopen: onWebSocketOpen,
+                onclose: onWebSocketClose,
+                onerror: onWebSocketError
+            }
+        );
 
-    // // create the new socket
-    // var ws = new ofxHTTPBasicWebSocketClient();//['of','off']);
+        // button controls
+        $('#toolbar-play').on('click', play);
+        $('#toolbar-stop').on('click', stop);
 
-    // // // set callbacks
-    // ws.setOnOpen(onOpen);
-    // ws.setOnMessage(onMessage);
-    // ws.setOnClose(onClose);
-    // ws.setOnError(onError);
-
-    // Initialize our JSONRPCClient
-    JSONRPCClient = new $.JsonRpcClient(
-        { 
-            ajaxUrl: getDefaultPostURL(),
-            socketUrl: getDefaultWebSocketURL(), // get a websocket for the localhost
-            onmessage: onWebSocketMessage,
-            onopen: onWebSocketOpen,
-            onclose: onWebSocketClose,
-            onerror: onWebSocketError
-        }
-    );
-
-    // button controls
-    $('#toolbar-play').on('click', play);
-    $('#toolbar-stop').on('click', stop);
-
-    editor = ace.edit("editor");
-    editor.setTheme("ace/theme/twilight");
-    editor.getSession().setMode("ace/mode/c_cpp");
-
-    // editor.commands.addCommand({
-    //     name: 'save',
-    //     bindKey: {win: 'Ctrl-s',  mac: 'Command-s'},
-    //     exec: function(editor) {
-    //         console.log("Just saved!");
-    //     },
-    //     readOnly: true // false if this command should not apply in readOnly mode
-    // });
-
-    // editor.commands.addCommand({
-    //     name: 'run',
-    //     bindKey: {win: 'Ctrl-R',  mac: 'Command-R'},
-    //     exec: function(editor) {
-    //       console.log("Just Ran!");
-    //       },
-    //     readOnly: true // false if this command should not apply in readOnly mode
-    // });
-
-    // editor.commands.addCommand({
-    //     name: 'present',
-    //     bindKey: {win: 'Shift-Ctrl-r',  mac: 'Shift-Command-r'},
-    //     exec: function(editor) {
-    //       console.log("Just presented!");
-    //     },
-    //     readOnly: true // false if this command should not apply in readOnly mode
-    // });
-    // // connect to the websocket
-    
-    // ws.connect();
-
-    // editor.getSession().on('change', 
-    //     function(e) {
-    //         console.log("on change: ");
-    //         console.log(e);
-    //     }
-    // );
-
-    // editor.getSession().selection.on('changeSelection', 
-    //     function(e) {
-    //         console.log("selection change: ");
-    //         console.log(e);
-    //     }
-    // );
-
-    // editor.getSession().selection.on('changeCursor', 
-    //     function(e) {
-    //         console.log("cursor change: ");
-    //         console.log(e);
-    //     }
-    // );
+        editor = ace.edit("editor");
+        editor.setTheme(settings.editorTheme);
+        editor.getSession().setMode(settings.editorMode);
+        editor.getSession().setTabSize(settings.tabSize);
+        document.getElementById('editor').style.fontSize = settings.fontSize + 'px';
+        editor.setHighlightActiveLine(settings.editorHighlightActiveLine);
+        editor.setShowPrintMargin(settings.editorShowPrintMargin);
+        editor.setShowInvisibles(settings.editorShowInvisibles);
+        editor.setBehavioursEnabled(settings.editorAutopairCharacters);
 
 
-    // $("#toolbar-play").disable();
-    // $("#toolbar-stop").disable();
-    // $("#toolbar-upload-media").disable();
-    // $("#toolbar-new-project").disable();
-    // $("#toolbar-open-project").disable();
-    // $("#toolbar-import-project").disable();
-    // $("#toolbar-export-project").disable();
-    // $("#toolbar-settings").disable();
+        // editor.commands.addCommand({
+        //     name: 'save',
+        //     bindKey: {win: settings.keys.save.win,  mac: settings.keys.save.mac},
+        //     exec: function(editor) {
+                
+        //     },
+        //     readOnly: true // false if this command should not apply in readOnly mode
+        // });
+
+        // editor.commands.addCommand({
+        //     name: 'run',
+        //     bindKey: {win: settings.keys.run.win,  mac: settings.keys.run.mac},
+        //     exec: function(editor) {
+        //       //play();
+        //     },
+        //     readOnly: true // false if this command should not apply in readOnly mode
+        // });
+
+        // editor.commands.addCommand({
+        //     name: 'present',
+        //     bindKey: {win: 'Shift-Ctrl-r',  mac: 'Shift-Command-r'},
+        //     exec: function(editor) {
+        //       console.log("Just presented!");
+        //     },
+        //     readOnly: true // false if this command should not apply in readOnly mode
+        // });
+        // // connect to the websocket
+        
+        // ws.connect();
+
+        // editor.getSession().on('change', 
+        //     function(e) {
+        //         console.log("on change: ");
+        //         console.log(e);
+        //     }
+        // );
+
+        // editor.getSession().selection.on('changeSelection', 
+        //     function(e) {
+        //         console.log("selection change: ");
+        //         console.log(e);
+        //     }
+        // );
+
+        // editor.getSession().selection.on('changeCursor', 
+        //     function(e) {
+        //         console.log("cursor change: ");
+        //         console.log(e);
+        //     }
+        // );
+
+
+        // $("#toolbar-play").disable();
+        // $("#toolbar-stop").disable();
+        // $("#toolbar-upload-media").disable();
+        // $("#toolbar-new-project").disable();
+        // $("#toolbar-open-project").disable();
+        // $("#toolbar-import-project").disable();
+        // $("#toolbar-export-project").disable();
+        // $("#toolbar-settings").disable();
 
 
 
-      // $('#toolbar-play').tooltip()
-      // $('#toolbar-stop').tooltip()
-      // $('#toolbar-upload-media').tooltip()
-      // $('#toolbar-new-project').tooltip()
-      // $('#toolbar-open-project').tooltip()
-      // $('#toolbar-import-project').tooltip()
-      // $('#toolbar-export-project').tooltip()
+          // $('#toolbar-play').tooltip()
+          // $('#toolbar-stop').tooltip()
+          // $('#toolbar-upload-media').tooltip()
+          // $('#toolbar-new-project').tooltip()
+          // $('#toolbar-open-project').tooltip()
+          // $('#toolbar-import-project').tooltip()
+          // $('#toolbar-export-project').tooltip()
 
 
-      load();
-
+        load();
+    });
 });

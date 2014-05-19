@@ -1,6 +1,7 @@
 // =============================================================================
 //
 // Copyright (c) 2013 Christopher Baker <http://christopherbaker.net>
+//               2014 Brannon Dorsey <http://brannondorsey.com>
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -22,8 +23,22 @@
 //
 // =============================================================================
 
+#include "ofxJSON.h"
 
 namespace of {
 namespace Sketch {
 
+class Settings {
+public:
+    Settings();
+    bool save();
+    bool load();
+    const JSON::Value& getSettings();
+    JSON::Value& getSettingsRef();
+    
+private:
+    ofParameter<JSON::Value> _value;
+
+};
+    
 } } // namespace of::Sketch
