@@ -30,7 +30,7 @@ namespace of {
 namespace Sketch {
 
 
-App::App(): _currentConnection(0)
+App::App()
 {
     // Must register for all events before initializing server.
     ofSSLManager::registerAllEvents(this);
@@ -59,9 +59,6 @@ void App::setup()
                                                           ofToDataPath("ssl/privateKey.nopassword.pem"),
                                                           ofToDataPath("ssl/selfSignedCertificate.nopassword.pem"),
                                                           ofToDataPath("ssl/cacert.pem")));
-
-
-
 
     // TODO: configure these via settings files
     _projectManager = ProjectManager::makeShared(ofToDataPath("Projects"));

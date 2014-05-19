@@ -35,7 +35,6 @@
 #include "ofMain.h"
 #include "ofxHTTP.h"
 #include "ofxJSONRPC.h"
-
 #include "AddonManager.h"
 #include "Project.h"
 #include "ProjectManager.h"
@@ -84,8 +83,6 @@ private:
     AddonManager::SharedPtr _addonManager;
 
     Project::SharedPtr _currentProject;
-
-    HTTP::WebSocketConnection* _currentConnection;
 
 };
 
