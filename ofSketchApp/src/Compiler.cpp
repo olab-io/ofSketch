@@ -23,55 +23,50 @@
 // =============================================================================
 
 
-#pragma once
-
-
-#include <string>
-#include "Poco/URI.h"
-#include "ProjectFile.h"
-#include "ofxJSONElement.h"
-#include "ofMain.h"
-
+#include "Compiler.h"
 
 namespace of {
 namespace Sketch {
-
-
-class Project
+    
+Compiler::Compiler(std::string pathToTemplates):
+_pathToTemplates(pathToTemplates)
 {
-public:
+    _projectFileTemplate = ofBufferFromFile(ofToDataPath(_pathToTemplates + "/main.txt")).getText();
+    _classTemplate = ofBufferFromFile(ofToDataPath(_pathToTemplates + "/class.txt")).getText();
+}
+
+void Compiler::make(const Project& project)
+{
     
-    typedef std::shared_ptr<Project> SharedPtr;
-    typedef std::weak_ptr<Project> WeakPtr;
-
-    Project(const std::string& path);
-    ~Project();
-
-    const std::string& getPath() const;
-    std::string getName() const;
+}
     
-    bool create(const std::string& path);
-    bool rename(const std::string& name);
-    bool save(ofxJSONElement data);
-    bool load(const std::string path,
-              const std::string& name);
-    bool isLoaded();
-    bool hasClasses() const;
+void Compiler::run(const Project& project)
+{
     
-    const ofxJSONElement& getData() const;
+    _generateSource(project);
+}
+
+void Compiler::_generateSource(const Project& project)
+{
+    ofxJSONElement projectData = project.getData();
+    std::string projectFile = _projectFileTemplate;
+    ofStringReplace(projectFile, "<projectfile>", projectData["projectFile"]["fileContents"].asString());
+    if (project.hasClasses()) {
+        
+    }
+    // ofBuffer sourceBuffer(args.params["source"].asString());
+    // ofBufferToFile("Projects/HelloWorld/src/main.cpp", sourceBuffer);
+}
     
-protected:
-
-
-private:
+void Compiler::_parseAddons()
+{
     
-    std::string _path;
-    std::vector<Source> _sources;
+}
     
-    bool _isLoaded;
-    ofxJSONElement _data;
+void Compiler::_getAddons()
+{
+    
+}
 
-};
-
-
+    
 } } // namespace of::Sketch

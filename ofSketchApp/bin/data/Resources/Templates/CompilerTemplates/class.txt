@@ -1,0 +1,11 @@
+// #pragma once
+
+#include "ofMain.h"
+<includes>
+
+class <classname>
+{
+
+<classfile>
+ 
+};

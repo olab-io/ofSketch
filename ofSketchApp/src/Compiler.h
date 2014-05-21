@@ -1,6 +1,6 @@
 // =============================================================================
 //
-// Copyright (c) 2013 Christopher Baker <http://christopherbaker.net>
+// Copyright (c) 2014 Brannon Dorsey <http://christopherbaker.net>
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -28,50 +28,34 @@
 
 #include <string>
 #include "Poco/URI.h"
-#include "ProjectFile.h"
-#include "ofxJSONElement.h"
+#include "ofTypes.h"
+#include "Project.h"
 #include "ofMain.h"
 
 
 namespace of {
 namespace Sketch {
-
-
-class Project
+    
+    
+class Compiler
 {
 public:
     
-    typedef std::shared_ptr<Project> SharedPtr;
-    typedef std::weak_ptr<Project> WeakPtr;
-
-    Project(const std::string& path);
-    ~Project();
-
-    const std::string& getPath() const;
-    std::string getName() const;
+    Compiler(){};
+    Compiler(std::string pathToTemplates);
+    void make(const Project& project);
+    void run(const Project& project);
     
-    bool create(const std::string& path);
-    bool rename(const std::string& name);
-    bool save(ofxJSONElement data);
-    bool load(const std::string path,
-              const std::string& name);
-    bool isLoaded();
-    bool hasClasses() const;
-    
-    const ofxJSONElement& getData() const;
-    
-protected:
-
-
 private:
     
-    std::string _path;
-    std::vector<Source> _sources;
+    std::string _pathToTemplates;
+    std::string _projectFileTemplate;
+    std::string _classTemplate;
     
-    bool _isLoaded;
-    ofxJSONElement _data;
-
+    void _generateSource(const Project& project);
+    void _parseAddons();
+    void _getAddons();
 };
-
-
+    
 } } // namespace of::Sketch
+

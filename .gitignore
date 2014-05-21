@@ -9,7 +9,7 @@ build
 #*.a
 
 # OSX
-.DS_Store
+*.DS_Store
 
 # codeblocks
 *.layout

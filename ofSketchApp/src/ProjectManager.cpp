@@ -111,7 +111,7 @@ void ProjectManager::loadProject(const void* pSender, JSONRPC::MethodArgs& args)
                     if (!project.isLoaded()) {
                         project.load(project.getPath(), projectName);
                     }
-                    args.result = project.getJson();
+                    args.result = project.getData();
                     return;
                 }
             }

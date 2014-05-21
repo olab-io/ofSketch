@@ -33,26 +33,26 @@
 
 namespace of {
 namespace Sketch {
-
-
+    
+    
 class Source
 {
 public:
     typedef std::shared_ptr<Source> SharedPtr;
     typedef std::weak_ptr<Source>   WeakPtr;
-
+    
     Source(const std::string& name, const std::string& path);
-
+    
     virtual ~Source();
-
+    
     const std::string& getPath() const;
     const std::string& getName() const;
-
+    
 protected:
     std::string _name;
     std::string _path;
-
+    
 };
-
-
+    
 } } // namespace of::Sketch
+

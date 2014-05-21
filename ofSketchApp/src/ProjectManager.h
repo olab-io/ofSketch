@@ -59,6 +59,7 @@ public:
     void updateProject(const std::string& projectName);
     
     bool projectExists(const std::string& projectName);
+    const Project& getProject(const std::string& projectName);
     
     void onDirectoryWatcherItemAdded(const Poco::DirectoryWatcher::DirectoryEvent& evt);
     void onDirectoryWatcherItemRemoved(const Poco::DirectoryWatcher::DirectoryEvent& evt);

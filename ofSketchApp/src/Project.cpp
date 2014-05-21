@@ -53,18 +53,18 @@ bool Project::load(const std::string path, const std::string& name)
             cout<<"File"<<file.getFileName()<<" can be read: "<<file.canRead()<<endl;
             if (file.getBaseName() == name) {
                 file.open(file.getAbsolutePath());
-                _json["projectFile"]["name"] = file.getBaseName();
-                _json["projectFile"]["fileName"] = file.getFileName();
-                _json["projectFile"]["fileContents"] = file.readToBuffer().getText();
+                _data["projectFile"]["name"] = file.getBaseName();
+                _data["projectFile"]["fileName"] = file.getFileName();
+                _data["projectFile"]["fileContents"] = file.readToBuffer().getText();
             } else if (file.getExtension() == "sketch") {
                 file.open(file.getAbsolutePath());
-                _json["classes"][classCounter]["name"] = file.getBaseName();
-                _json["classes"][classCounter]["fileName"] = file.getFileName();
-                _json["classes"][classCounter]["fileContents"] = file.readToBuffer().getText();
+                _data["classes"][classCounter]["name"] = file.getBaseName();
+                _data["classes"][classCounter]["fileName"] = file.getFileName();
+                _data["classes"][classCounter]["fileContents"] = file.readToBuffer().getText();
                 classCounter++;
             }
         }
-        cout<<_json.getRawString()<<endl;
+        cout<<_data.getRawString()<<endl;
         _isLoaded = true;
         return true;
     } else return false;
@@ -75,7 +75,7 @@ bool Project::isLoaded()
     return _isLoaded;
 }
 
-bool Project::save(ofxJSONElement json){
+bool Project::save(ofxJSONElement data){
     
 }
     
@@ -96,6 +96,11 @@ bool Project::rename(const std::string& name)
 {
     
 }
+    
+bool Project::hasClasses() const
+{
+    return _data["classes"].size() > 0;
+}
 
 const std::string& Project::getPath() const
 {
@@ -108,9 +113,9 @@ std::string Project::getName() const
     return project.getBaseName();
 }
     
-ofxJSONElement Project::getJson()
+const ofxJSONElement& Project::getData() const
 {
-    return _json;
+    return _data;
 }
 
 } } // namespace of::Sketch

@@ -38,6 +38,7 @@
 #include "AddonManager.h"
 #include "Project.h"
 #include "ProjectManager.h"
+#include "Compiler.h"
 
 
 using namespace ofx;
@@ -84,6 +85,7 @@ private:
     AddonManager::SharedPtr _addonManager;
 
     Project::SharedPtr _currentProject;
+    Compiler _compiler;
 
 };
 

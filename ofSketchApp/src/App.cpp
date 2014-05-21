@@ -63,6 +63,7 @@ void App::setup()
     // TODO: configure these via settings files
     _projectManager = ProjectManager::makeShared(ofToDataPath("Projects"));
     _addonManager = AddonManager::makeShared(ofToDataPath("openFrameworks/addons"));
+    _compiler = Compiler(ofToDataPath("Resources/Templates/CompilerTemplates"));
 
     HTTP::BasicJSONRPCServerSettings settings; // TODO: load from file.
 
