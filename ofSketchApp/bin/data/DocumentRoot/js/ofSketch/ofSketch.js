@@ -117,6 +117,11 @@ $(document).ready( function()
     var sketchEditor = new SketchEditor(function()
     {
 
+
+        $('.file-tab a, #new-class a, .action-menu li a').on('click', function(e) {
+            e.preventDefault(); 
+        });
+
         // button controls
         $('#toolbar-play').on('click', play);
         $('#toolbar-stop').on('click', stop);
@@ -125,6 +130,10 @@ $(document).ready( function()
             // sketchEditor.loadProject();
         });
 
+        $('.new-class').on('click', function(){
+            $('#newClassModal').modal();
+        });
+        
         $('#create-class').on('click', function()
         {
             var className = $('#new-class-name').val();

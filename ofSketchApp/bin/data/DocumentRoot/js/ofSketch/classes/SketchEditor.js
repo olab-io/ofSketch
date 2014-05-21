@@ -60,9 +60,7 @@ function SketchEditor(callback)
 
 	var _registerEvents = function()
 	{
-		$('.file-tab a, #new-class a').on('click', function(e) {
-		    e.preventDefault(); 
-		});
+		
 	}
 
 	var _registerTabEvent = function(tabElement)
