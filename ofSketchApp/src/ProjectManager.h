@@ -52,8 +52,9 @@ public:
 
     const std::vector<Project>& getProjects() const;
     
-    void sendProjectList(const void* pSender, ofx::JSONRPC::MethodArgs& args);
-    void sendProject(const void* pSender, ofx::JSONRPC::MethodArgs& args);
+    void getProjectList(const void* pSender, ofx::JSONRPC::MethodArgs& args);
+    void loadProject(const void* pSender, ofx::JSONRPC::MethodArgs& args);
+    void saveProject(const void* pSender, ofx::JSONRPC::MethodArgs& args);
     void reloadProjects();
     void updateProject(const std::string& projectName);
     

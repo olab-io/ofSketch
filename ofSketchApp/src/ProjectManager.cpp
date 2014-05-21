@@ -88,7 +88,7 @@ const std::vector<Project>& ProjectManager::getProjects() const
 //
 //    cout << "Connection opened from: " << evt.getConnectionRef().getClientAddress().toString() << endl;
 
-void ProjectManager::sendProjectList(const void* pSender, JSONRPC::MethodArgs& args)
+void ProjectManager::getProjectList(const void* pSender, JSONRPC::MethodArgs& args)
 {
     Json::Value projectList;
     cout<<args.params["foobar"]<<endl;
@@ -100,7 +100,7 @@ void ProjectManager::sendProjectList(const void* pSender, JSONRPC::MethodArgs& a
     args.result = projectList;
 }
     
-void ProjectManager::sendProject(const void* pSender, JSONRPC::MethodArgs& args)
+void ProjectManager::loadProject(const void* pSender, JSONRPC::MethodArgs& args)
 {
     if (args.params.isMember("projectName")){
         std::string projectName = args.params["projectName"].asString();
@@ -118,6 +118,11 @@ void ProjectManager::sendProject(const void* pSender, JSONRPC::MethodArgs& args)
             cout<<"Project "<<projectName<<" was not found."<<endl;
         } else cout<<"ProjectManager::sendProject: Error loading project"<<endl;
     } else cout<<"projectName is not a member"<<endl;
+}
+    
+void ProjectManager::saveProject(const void* pSender, ofx::JSONRPC::MethodArgs& args)
+{
+    
 }
     
 bool ProjectManager::projectExists(const std::string& projectName)

@@ -73,7 +73,7 @@ void App::setup()
     server.registerMethod("load-project",
                           "Load the requested project.",
                           this,
-                          &App::sendProject);
+                          &App::loadProject);
 
     server.registerMethod("play",
                           "Play the requested project.",
@@ -85,10 +85,10 @@ void App::setup()
                           this,
                           &App::stop);
     
-    server.registerMethod("request-project-list",
+    server.registerMethod("get-project-list",
                           "Get list of all projects in the Project directory.",
                           this,
-                          &App::sendProjectList);
+                          &App::getProjectList);
 
     // start the server
     server.start();
@@ -108,9 +108,9 @@ void App::draw()
 }
 
 
-void App::sendProject(const void* pSender, JSONRPC::MethodArgs& args)
+void App::loadProject(const void* pSender, JSONRPC::MethodArgs& args)
 {
-    _projectManager->sendProject(pSender, args);
+    _projectManager->loadProject(pSender, args);
 }
 
 
@@ -195,9 +195,9 @@ void App::stop(const void* pSender, JSONRPC::MethodArgs& args)
     std::cout << args.params.toStyledString() << std::endl;
 }
 
-void App::sendProjectList(const void* pSender, JSONRPC::MethodArgs& args)
+void App::getProjectList(const void* pSender, JSONRPC::MethodArgs& args)
 {
-    _projectManager->sendProjectList(pSender, args);
+    _projectManager->getProjectList(pSender, args);
 };
 
 bool App::onWebSocketOpenEvent(HTTP::WebSocketEventArgs& args)
