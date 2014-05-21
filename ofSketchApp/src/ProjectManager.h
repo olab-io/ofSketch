@@ -31,8 +31,10 @@
 #include "ofx/IO/DirectoryFilter.h"
 #include "ofx/IO/DirectoryUtils.h"
 #include "ofx/IO/DirectoryWatcherManager.h"
+#include "ofxJSONRPC.h"
+#include "ofxJSONElement.h"
+#include "ofx/JSONRPC/Utils.h"
 #include "Project.h"
-
 
 namespace of {
 namespace Sketch {
@@ -49,7 +51,14 @@ public:
 //    Project newProject(const std::string& name);
 
     const std::vector<Project>& getProjects() const;
-
+    
+    void sendProjectList(const void* pSender, ofx::JSONRPC::MethodArgs& args);
+    void sendProject(const void* pSender, ofx::JSONRPC::MethodArgs& args);
+    void reloadProjects();
+    void updateProject(const std::string& projectName);
+    
+    bool projectExists(const std::string& projectName);
+    
     void onDirectoryWatcherItemAdded(const Poco::DirectoryWatcher::DirectoryEvent& evt);
     void onDirectoryWatcherItemRemoved(const Poco::DirectoryWatcher::DirectoryEvent& evt);
     void onDirectoryWatcherItemModified(const Poco::DirectoryWatcher::DirectoryEvent& evt);

@@ -1,6 +1,7 @@
 public: 
-	<classname>(){
 
-	}
+<classname>(){
+
+}
 
 private:

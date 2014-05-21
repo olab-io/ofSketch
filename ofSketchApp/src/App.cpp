@@ -70,10 +70,10 @@ void App::setup()
 
     server.setup(settings);
 
-    server.registerMethod("load",
+    server.registerMethod("load-project",
                           "Load the requested project.",
                           this,
-                          &App::load);
+                          &App::sendProject);
 
     server.registerMethod("play",
                           "Play the requested project.",
@@ -84,6 +84,11 @@ void App::setup()
                           "Stop the requested project.",
                           this,
                           &App::stop);
+    
+    server.registerMethod("request-project-list",
+                          "Get list of all projects in the Project directory.",
+                          this,
+                          &App::sendProjectList);
 
     // start the server
     server.start();
@@ -103,10 +108,9 @@ void App::draw()
 }
 
 
-void App::load(const void* pSender, JSONRPC::MethodArgs& args)
+void App::sendProject(const void* pSender, JSONRPC::MethodArgs& args)
 {
-    ofBuffer project = ofBufferFromFile("Projects/HelloWorld/src/main.cpp");
-    args.result["source"] = project.getText();
+    _projectManager->sendProject(pSender, args);
 }
 
 
@@ -185,13 +189,16 @@ void App::play(const void* pSender, JSONRPC::MethodArgs& args)
     }
 }
 
-
 void App::stop(const void* pSender, JSONRPC::MethodArgs& args)
 {
     std::cout << "stop: " << std::endl;
     std::cout << args.params.toStyledString() << std::endl;
 }
 
+void App::sendProjectList(const void* pSender, JSONRPC::MethodArgs& args)
+{
+    _projectManager->sendProjectList(pSender, args);
+};
 
 bool App::onWebSocketOpenEvent(HTTP::WebSocketEventArgs& args)
 {

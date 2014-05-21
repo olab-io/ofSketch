@@ -29,6 +29,8 @@
 #include <string>
 #include "Poco/URI.h"
 #include "ProjectFile.h"
+#include "ofxJSONElement.h"
+#include "ofMain.h"
 
 
 namespace of {
@@ -38,6 +40,7 @@ namespace Sketch {
 class Project
 {
 public:
+    
     typedef std::shared_ptr<Project> SharedPtr;
     typedef std::weak_ptr<Project> WeakPtr;
 
@@ -45,15 +48,27 @@ public:
     ~Project();
 
     const std::string& getPath() const;
+    std::string getName() const;
+    
+    bool create(const std::string& path);
+    bool rename(const std::string& name);
+    bool save(ofxJSONElement json);
+    bool load(const std::string path,
+              const std::string& name);
+    bool isLoaded();
+    
+    ofxJSONElement getJson();
     
 protected:
 
 
 private:
+    
     std::string _path;
-
     std::vector<Source> _sources;
-
+    
+    bool _isLoaded;
+    ofxJSONElement _json;
 
 };
 

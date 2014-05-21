@@ -45,63 +45,105 @@ function SketchEditor(callback)
 	var _classTemplate;
 
 	var _editor = ace.edit('editor');
-    _editor.setTheme(settings.editorTheme);
-    _editor.getSession().setMode(settings.editorMode);
-    _editor.getSession().setTabSize(settings.tabSize);
-    _document.getElementById('editor').style.fontSize = settings.fontSize + 'px';
-    _editor.setHighlightActiveLine(settings.editorHighlightActiveLine);
-    _editor.setShowPrintMargin(settings.editorShowPrintMargin);
-    _editor.setShowInvisibles(settings.editorShowInvisibles);
-    _editor.setBehavioursEnabled(settings.editorAutopairCharacters);
+
+	var _applySettings = function()
+	{
+		_editor.setTheme(_settings.editorTheme);
+	    _editor.getSession().setMode(_settings.editorMode);
+	    _editor.getSession().setTabSize(_settings.tabSize);
+	    document.getElementById('editor').style.fontSize = _settings.fontSize + 'px';
+	    _editor.setHighlightActiveLine(_settings.editorHighlightActiveLine);
+	    _editor.setShowPrintMargin(_settings.editorShowPrintMargin);
+	    _editor.setShowInvisibles(_settings.editorShowInvisibles);
+	    _editor.setBehavioursEnabled(_settings.editorAutopairCharacters);
+	}
 
 	var _registerEvents = function()
 	{
-		$('#create-class').on('click', _self.createClassFile);
-		$('.project-tab').on('click', function(){
+		$('.file-tab a, #new-class a').on('click', function(e) {
+		    e.preventDefault(); 
+		});
+
+		$('#new-class a').on('click', function(){});
+
+		$('#create-class').on('click', function(){
+			_self.createClassFile('MyNewClass', function(){});
+		});
+	}
+
+	var _registerTabEvent = function(tabElement)
+	{
+		$(tabElement).on('click', function(){
+			$(this).parent().find('li').removeClass("active");
+			$(this).toggleClass('active');
 			_self.renderTab($(this).text());
 		});
 	}
 
-	this.load = function(projectName, callback)
+	var _addTab = function(name, fileName, isProjectFile, editSession)
 	{
-		_project = new Project(projectName, callback);
-		
-		var projectFile = _project.getProjectFile();
-		_tabs.push({
-			name: getPrettyFileName(projectFile.fileName),
-			fileName: projectFile.fileName,
-			isProjectFile: true,
-			editSession: new ace.EditSession(_project.getProjectFile().fileContents,
-											 _settings.editorMode);
-		});
-
-		var classes = _project.getClasses();
-		_.each(classes, function(c){
-			_tabs.push({
-				name: getPrettyFileName(c.fileName),
-				fileName: projectFile.fileName,
-				isProjectFile: false,
-				editSession: new ace.EditSession(_c.fileContents, _settings.editorMode);
-			});
-		});
-
+		var tab = {
+			name: name,
+			fileName: fileName,
+			isProjectFile: isProjectFile,
+			editSession: editSession
+		}
+		_tabs.push(tab);
+		var tabElement = $('<li class="file-tab"><a href="#" onclick="return false;">' + tab.name + '</a></li>');
+		_registerTabEvent(tabElement);
+		if (tab.isProjectFile) tabElement.addClass('active');
+		$('ul.nav-tabs li:last').prev().after(tabElement);
 	}
 
-	this.save = function(callback)
+	this.loadProject = function(projectName, callback)
+	{
+		_project = new Project(projectName, function()
+		{
+		
+			_tabs = [];
+
+			var projectFile = _project.getProjectFile();
+			_addTab(getPrettyFileName(projectFile.fileName),
+					projectFile.fileName,
+					true,
+					new ace.EditSession(_project.getProjectFile().fileContents,
+												 _settings.editorMode));
+
+			var classes = _project.getClasses();
+			_.each(classes, function(c){
+				_addTab(getPrettyFileName(c.fileName),
+						projectFile.fileName,
+						false,
+					new ace.EditSession(c.fileContents, _settings.editorMode));
+			});
+
+			_self.renderTab(projectName);
+			callback();
+		});
+	}
+
+	this.saveProject = function(callback)
 	{
 		_project.save(callback);
 	}
 
 	this.createClassFile = function(className, callback)
-	{
-		var c = _classTemplate;
-		_classTemplate.replace("<classname>", className);
-		_project.addClass(className + '.' + _settings.classExtension, callback);
+	{	
+		var classFile = {
+			name: className,
+			fileName: className + '.' + _settings.classExtension,
+			fileContents: _classTemplate.replace("<classname>", className)
+		}
+		
+		_project.addClassFile(classFile);
+		_addTab(classFile.name, classFile.fileName, false, new ace.EditSession(classFile.fileContents, 
+																			   _settings.editorMode));
+		callback();
 	}
 
 	this.renderTab = function(name)
 	{
-		var tab = _.find(_tabs, function(tab){ return tab.name == name; }));
+		var tab = _.find(_tabs, function(tab){ return tab.name == name; });
 		if (tab) {
 			_editor.setSession(tab.editSession);
 		}
@@ -113,7 +155,9 @@ function SketchEditor(callback)
 		loadFile(_projectFileTemplateFile, function(data){
 			_projectFileTemplate = data;
 			loadFile(_classTemplateFile, function(data){
-				_self._registerEvents();
+				_classTemplate = data;
+				_applySettings();
+				_registerEvents();
 				callback();
 			});
 		});

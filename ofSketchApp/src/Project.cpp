@@ -29,21 +29,87 @@
 namespace of {
 namespace Sketch {
 
-
-Project::Project(const std::string& path): _path(path)
-{
-}
-
-
 Project::~Project()
 {
 }
 
+Project::Project(const std::string& path):
+    _path(path),
+    _isLoaded(false)
+{
+    load(_path, getName());
+}
+
+bool Project::load(const std::string path, const std::string& name)
+{
+    ofDirectory sketchDir(ofToDataPath(path + "/sketch"));
+    if (sketchDir.exists()) {
+        sketchDir.listDir();
+        std::vector<ofFile> files = sketchDir.getFiles();
+        int classCounter = 0;
+        for (int i = 0; i < files.size(); i++) {
+            ofFile file = files[i];
+            cout<<"File"<<file.getFileName()<<" can be read: "<<file.canRead()<<endl;
+            if (file.getBaseName() == name) {
+                file.open(file.getAbsolutePath());
+                _json["projectFile"]["name"] = file.getBaseName();
+                _json["projectFile"]["fileName"] = file.getFileName();
+                _json["projectFile"]["fileContents"] = file.readToBuffer().getText();
+            } else if (file.getExtension() == "sketch") {
+                file.open(file.getAbsolutePath());
+                _json["classes"][classCounter]["name"] = file.getBaseName();
+                _json["classes"][classCounter]["fileName"] = file.getFileName();
+                _json["classes"][classCounter]["fileContents"] = file.readToBuffer().getText();
+                classCounter++;
+            }
+        }
+        cout<<_json.getRawString()<<endl;
+        _isLoaded = true;
+        return true;
+    } else return false;
+}
+    
+bool Project::isLoaded()
+{
+    return _isLoaded;
+}
+
+bool Project::save(ofxJSONElement json){
+    
+}
+    
+bool Project::create(const std::string& path)
+{
+    ofDirectory project(ofToDataPath(path));
+    if (!project.exists()) {
+        ofDirectory temp(ofToDataPath("Resources/Templates/SimpleTemplate"));
+        temp.copyTo(ofToDataPath(path));
+        return true;
+    }
+    
+    return false;
+    
+}
+
+bool Project::rename(const std::string& name)
+{
+    
+}
 
 const std::string& Project::getPath() const
 {
     return _path;
 }
-
+    
+std::string Project::getName() const
+{
+    ofFile project(_path);
+    return project.getBaseName();
+}
+    
+ofxJSONElement Project::getJson()
+{
+    return _json;
+}
 
 } } // namespace of::Sketch

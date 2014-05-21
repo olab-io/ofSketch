@@ -43,13 +43,19 @@ function Project(projectName, callback)
 {
 	var _settings;
 	var _data;
+	var _file = {
+		name: "",
+		fileName: "",
+		fileContents: "",
+	}
 
-	this.load = function(callback)
+	this.load = function(projectName, callback)
 	{
 		JSONRPCClient.call('load-project', 
-        					projectName,
+        					{ projectName: projectName },
 					        function(result) {
-					            _data = result.data;
+					            _data = result;
+					            callback();
 					        },
 					        function(error) {
 					            addError(error);
@@ -59,7 +65,7 @@ function Project(projectName, callback)
 	this.save = function(callback)
 	{
 		JSONRPCClient.call('save-project', 
-        					projectName,
+        					{ projectName: projectName },
 					        function(result) {
 					            console.log(result);
 					        },
@@ -90,8 +96,10 @@ function Project(projectName, callback)
 		return _data.classes;
 	}
 
-	this.addClass = function(c)
+	this.addClassFile = function(c)
 	{
 		_data.classes.push(c);
 	}
+
+	this.load(projectName, callback);
 }

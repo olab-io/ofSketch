@@ -25,6 +25,7 @@
 
 #include "ProjectManager.h"
 
+using namespace ofx;
 
 namespace of {
 namespace Sketch {
@@ -49,6 +50,7 @@ ProjectManager::ProjectManager(const std::string& path):
     while(iter != files.end())
     {
         cout << *iter << endl;
+        _projects.push_back(Project(*iter));
         ++iter;
     }
 
@@ -70,7 +72,6 @@ const std::vector<Project>& ProjectManager::getProjects() const
     return _projects;
 }
 
-
 //    std::string sketchPath = ofToDataPath("HelloWorldSketch/src/main.cpp",true);
 //
 //    ofBuffer buffer = ofBufferFromFile(sketchPath);
@@ -87,7 +88,57 @@ const std::vector<Project>& ProjectManager::getProjects() const
 //
 //    cout << "Connection opened from: " << evt.getConnectionRef().getClientAddress().toString() << endl;
 
+void ProjectManager::sendProjectList(const void* pSender, JSONRPC::MethodArgs& args)
+{
+    Json::Value projectList;
+    cout<<args.params["foobar"]<<endl;
+    for (int i = 0; i < _projects.size(); i++) {
 
+        projectList[i]["projectName"] = _projects[i].getName();
+        projectList[i]["projectPath"] = _projects[i].getPath();
+    }
+    args.result = projectList;
+}
+    
+void ProjectManager::sendProject(const void* pSender, JSONRPC::MethodArgs& args)
+{
+    if (args.params.isMember("projectName")){
+        std::string projectName = args.params["projectName"].asString();
+        if (projectExists(projectName)) {
+            for (int i = 0; i < _projects.size(); i++) {
+                if (_projects[i].getName() == projectName) {
+                    Project& project = _projects[i];
+                    if (!project.isLoaded()) {
+                        project.load(project.getPath(), projectName);
+                    }
+                    args.result = project.getJson();
+                    return;
+                }
+            }
+            cout<<"Project "<<projectName<<" was not found."<<endl;
+        } else cout<<"ProjectManager::sendProject: Error loading project"<<endl;
+    } else cout<<"projectName is not a member"<<endl;
+}
+    
+bool ProjectManager::projectExists(const std::string& projectName)
+{
+    for (int i = 0; i < _projects.size(); i++) {
+        if (projectName == _projects[i].getName())
+            return true;
+    }
+    
+    return false;
+}
+    
+void ProjectManager::reloadProjects()
+{
+    
+}
+    
+void ProjectManager::updateProject(const std::string& projectName)
+{
+    
+}
 
 void ProjectManager::onDirectoryWatcherItemAdded(const Poco::DirectoryWatcher::DirectoryEvent& evt)
 {

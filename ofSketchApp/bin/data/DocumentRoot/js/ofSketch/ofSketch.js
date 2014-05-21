@@ -63,10 +63,12 @@ function play() {
 
     JSONRPCClient.call('play', 
         params,
-        function(result) {
+        function(result) 
+        {
             console.log(result);
         },
-        function(error) {
+        function(error) 
+        {
             addError(error);
         });
 }
@@ -75,10 +77,12 @@ function stop() {
     var $this = $(this);
     JSONRPCClient.call('stop', 
         null,
-        function(result) {
+        function(result) 
+        {
             console.log(result);
         },
-        function(error) {
+        function(error) 
+        {
             addError(error);
         });
 }
@@ -87,31 +91,44 @@ function load() {
     var $this = $(this);
     JSONRPCClient.call('load', 
         null,
-        function(result) {
+        function(result) 
+        {
             editor.setValue(result.source);
         },
-        function(error) {
+        function(error) 
+        {
             addError(error);
         });
 }
 
 $(document).ready( function()
 {
-    var sketchEditor = new SketchEditor(function(){
-        JSONRPCClient = new $.JsonRpcClient(
-            { 
-                ajaxUrl: getDefaultPostURL(),
-                socketUrl: getDefaultWebSocketURL(), // get a websocket for the localhost
-                onmessage: onWebSocketMessage,
-                onopen: onWebSocketOpen,
-                onclose: onWebSocketClose,
-                onerror: onWebSocketError
-            }
-        );
+    JSONRPCClient = new $.JsonRpcClient(
+        { 
+            ajaxUrl: getDefaultPostURL(),
+            socketUrl: getDefaultWebSocketURL(), // get a websocket for the localhost
+            onmessage: onWebSocketMessage,
+            onopen: onWebSocketOpen,
+            onclose: onWebSocketClose,
+            onerror: onWebSocketError
+        }
+    );
+
+    var sketchEditor = new SketchEditor(function()
+    {
 
         // button controls
         $('#toolbar-play').on('click', play);
         $('#toolbar-stop').on('click', stop);
+        $('#load-project').on('click', function()
+        {
+            // sketchEditor.loadProject();
+        });
+
+        sketchEditor.loadProject("HelloWorld", function()
+        {
+            console.log("Project loaded!");
+        });
     });
 
         // editor.commands.addCommand({
@@ -184,5 +201,4 @@ $(document).ready( function()
           // $('#toolbar-open-project').tooltip()
           // $('#toolbar-import-project').tooltip()
           // $('#toolbar-export-project').tooltip()
-    });
 });

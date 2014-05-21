@@ -56,9 +56,10 @@ public:
     void update();
     void draw();
 
-    void load(const void* pSender, JSONRPC::MethodArgs& args);
+    void sendProject(const void* pSender, JSONRPC::MethodArgs& args);
     void play(const void* pSender, JSONRPC::MethodArgs& args);
     void stop(const void* pSender, JSONRPC::MethodArgs& args);
+    void sendProjectList(const void* pSender, JSONRPC::MethodArgs& args);
 
     bool onWebSocketOpenEvent(HTTP::WebSocketEventArgs& args);
     bool onWebSocketCloseEvent(HTTP::WebSocketEventArgs& args);

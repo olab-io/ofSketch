@@ -211,7 +211,31 @@
         </div><!-- /.modal-dialog -->
       </div><!-- /.modal -->
 
+      <!-- New Class Modal -->
+      <div class="modal fade" id="newClassModal" tabindex="-1" role="dialog" aria-labelledby="notImplementedModal" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+              <h4 class="modal-title">Not implemented yet ...</h4>
+            </div>
+            <div class="modal-body">
+              To be implemented.
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+          </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+      </div><!-- /.modal -->
 
+      <div class="input-group">
+          <span class="input-group-btn">
+            <button class="btn btn-default" type="button">Go!</button>
+          </span>
+          <input type="text" class="form-control">
+        </div><!-- /input-group -->
 
       <div class="container">
 
@@ -232,30 +256,30 @@
                 <li><a href="#">HelloWorld</a></li>
               </ul>
           </li>
-          <li class="active"><a href="#">HelloWorld</a></li>
-          <li class=""><a href="#" class="glyphicon glyphicon-plus"> </a></li>
+          <!--<li class="active file-tab"><a href="#">HelloWorld</a></li>-->
+          <li id="new-class">
+            <a href="#newClassModal" class="glyphicon glyphicon-plus" data-toggle="modal" data-target="#newClassModal"> </a>
+          </li>
         </ul>
-
+    
       <pre id="editor">loading...</pre>
-        
+      <div id="compiler-alert-box"></div>
+      <pre id="console">Console</pre>
+
       </div>
     </div>
 
     <div id="footer">
-      <div class="container">
-        <pre id="editor">Console</pre>
-      </div>
+
     </div>
 
 
 <script src="./js/jquery.min.js"></script>
 <script src="./js/bootstrap.min.js"></script>
-<script src="./js/ofxHTTP.js"></script>
-<script src="./js/ofxUtils.js"></script>
-<script src="./js/ofSketch.js"></script>
 <script src="./js/jquery.jsonrpcclient.js"></script>
 <script src="./js/jquery.json.js"></script>
 <script src="./js/prism.js"></script>
+<script src="./js/underscore.js"></script>
 
 <!-- The jQuery UI widget factory, can be omitted if jQuery UI is already included -->
 <script src="js/vendor/jquery.ui.widget.js"></script>
@@ -280,6 +304,15 @@
 <script src="js/jquery.fileupload-video.js"></script>
 <!-- The File Upload validation plugin -->
 <script src="js/jquery.fileupload-validate.js"></script>
+
+<script src="./js/ofxHTTP.js"></script>
+<script src="./js/ofxUtils.js"></script>
+<script src="./js/ofSketch/helpers.js"></script>
+
+<script src="./js/ofSketch/classes/Project.js"></script>
+<script src="./js/ofSketch/classes/SketchEditor.js"></script>
+<script src="./js/ofSketch/ofSketch.js"></script>
+
 <script>
 /*jslint unparam: true, regexp: true */
 /*global window, $ */
