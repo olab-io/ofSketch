@@ -63,12 +63,6 @@ function SketchEditor(callback)
 		$('.file-tab a, #new-class a').on('click', function(e) {
 		    e.preventDefault(); 
 		});
-
-		$('#new-class a').on('click', function(){});
-
-		$('#create-class').on('click', function(){
-			_self.createClassFile('MyNewClass', function(){});
-		});
 	}
 
 	var _registerTabEvent = function(tabElement)
@@ -127,7 +121,7 @@ function SketchEditor(callback)
 		_project.save(callback);
 	}
 
-	this.createClassFile = function(className, callback)
+	this.createClassFile = function(className)
 	{	
 		var classFile = {
 			name: className,
@@ -138,7 +132,6 @@ function SketchEditor(callback)
 		_project.addClassFile(classFile);
 		_addTab(classFile.name, classFile.fileName, false, new ace.EditSession(classFile.fileContents, 
 																			   _settings.editorMode));
-		callback();
 	}
 
 	this.renderTab = function(name)

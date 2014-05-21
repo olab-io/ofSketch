@@ -125,10 +125,19 @@ $(document).ready( function()
             // sketchEditor.loadProject();
         });
 
+        $('#create-class').on('click', function()
+        {
+            var className = $('#new-class-name').val();
+            sketchEditor.createClassFile(className, function(){});
+            sketchEditor.renderTab(className);
+            $('#new-class-name').val('');
+        });
+
         sketchEditor.loadProject("HelloWorld", function()
         {
             console.log("Project loaded!");
         });
+
     });
 
         // editor.commands.addCommand({
