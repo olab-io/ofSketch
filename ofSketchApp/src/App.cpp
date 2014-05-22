@@ -1,6 +1,7 @@
 // =============================================================================
 //
-// Copyright (c) 2013 Christopher Baker <http://christopherbaker.net>
+// Copyright (c) 2013-2014 Christopher Baker <http://christopherbaker.net>
+//               2014 Brannon Dorsey <http://brannondorsey.com>
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -76,6 +77,11 @@ void App::setup()
                           this,
                           &App::loadProject);
 
+    server.registerMethod("run",
+                          "Run the requested project.",
+                          this,
+                          &App::run);
+    
     server.registerMethod("play",
                           "Play the requested project.",
                           this,
@@ -100,20 +106,23 @@ void App::setup()
 
 void App::update()
 {
+    
 }
-
 
 void App::draw()
 {
     ofBackground(0);
 }
 
-
 void App::loadProject(const void* pSender, JSONRPC::MethodArgs& args)
 {
     _projectManager->loadProject(pSender, args);
 }
-
+    
+void App::saveProject(const void* pSender, JSONRPC::MethodArgs& args)
+{
+    _projectManager->saveProject(pSender, args);
+}
 
 void App::play(const void* pSender, JSONRPC::MethodArgs& args)
 {
@@ -187,6 +196,19 @@ void App::play(const void* pSender, JSONRPC::MethodArgs& args)
     else
     {
         // Pass error in this case.
+    }
+}
+
+void App::run(const void* pSender, JSONRPC::MethodArgs& args)
+{
+    std::cout << "run: " << std::endl;
+    std::string projectName = args.params["projectData"]["projectFile"]["name"].asString();
+    cout<<args.params.toStyledString();
+    if (_projectManager->projectExists(projectName)) {
+        
+        _projectManager->saveProject(pSender, args);
+        const Project& project = _projectManager->getProject(projectName);
+        _compiler.run(project);
     }
 }
 

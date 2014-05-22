@@ -1,28 +1,35 @@
 // #pragma once
 
 #include "ofMain.h"
+#include "MyClass.h"
+
 
 class ofApp: public ofBaseApp
 {
 public:
-    float scale;
 
-    void setup()
+float scale = 1;
+
+void setup()
+{
+    ofSetWindowShape(800,600);
+    ofSetFrameRate(30);
+}
+
+void draw()
+{
+    scale += 0.2;
+
+    if(scale > 2)
     {
-        ofSetFrameRate(30);
-        scale = 1;
+        scale = 0;
     }
 
-    void draw()
-    {
-        scale += 0.2;
-        if(scale > 2) {
-            scale = 0;
-        }
+    ofBackgroundGradient(ofMap(scale,0,2,0,255),ofMap(scale,0,2,255,0));
+    ofDrawBitmapStringHighlight("Hello!",110,120,ofColor(200),ofColor(0));
+}
 
-        ofBackgroundGradient(ofMap(scale,0,2,0,255),ofMap(scale,0,2,255,0));
-        ofDrawBitmapStringHighlight("Hello!",110,120,ofColor(200),ofColor(0));
-    }
+
 };
 
 int main()
@@ -30,4 +37,5 @@ int main()
     ofSetupOpenGL(320,240,OF_WINDOW);
     ofRunApp(new ofApp());
 }
+
 

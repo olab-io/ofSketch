@@ -101,5 +101,10 @@ function Project(projectName, callback)
 		_data.classes.push(c);
 	}
 
+	this.getData = function()
+	{
+		return _data;
+	}
+
 	this.load(projectName, callback);
 }

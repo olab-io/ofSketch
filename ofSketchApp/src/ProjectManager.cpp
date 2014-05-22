@@ -55,18 +55,22 @@ ProjectManager::ProjectManager(const std::string& path):
     }
 
 }
-
+    
 ProjectManager::~ProjectManager()
 {
 }
 
-//Project ProjectManager::newProject(std::string& name)
-//{
-//
-//    return Project("");
-//}
-
-
+const Project& ProjectManager::getProject(const std::string& projectName) const
+{
+    for (int i = 0; i < _projects.size(); i++) {
+        if (_projects[i].getName() == projectName) {
+            return _projects[i];
+        }
+    }
+    
+    return _projects[0]; //fallback
+}
+    
 const std::vector<Project>& ProjectManager::getProjects() const
 {
     return _projects;
@@ -125,7 +129,7 @@ void ProjectManager::saveProject(const void* pSender, ofx::JSONRPC::MethodArgs& 
     
 }
     
-bool ProjectManager::projectExists(const std::string& projectName)
+bool ProjectManager::projectExists(const std::string& projectName) const
 {
     for (int i = 0; i < _projects.size(); i++) {
         if (projectName == _projects[i].getName())

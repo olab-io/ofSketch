@@ -1,6 +1,7 @@
 // =============================================================================
 //
-// Copyright (c) 2013 Christopher Baker <http://christopherbaker.net>
+// Copyright (c) 2013-2014 Christopher Baker <http://christopherbaker.net>
+//               2014 Brannon Dorsey <http://brannondorsey.com>
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -49,14 +50,14 @@ public:
 
     const std::string& getPath() const;
     std::string getName() const;
+    bool isLoaded() const;
+    bool hasClasses() const;
     
     bool create(const std::string& path);
     bool rename(const std::string& name);
     bool save(ofxJSONElement data);
     bool load(const std::string path,
               const std::string& name);
-    bool isLoaded();
-    bool hasClasses() const;
     
     const ofxJSONElement& getData() const;
     

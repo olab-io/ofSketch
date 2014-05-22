@@ -1,6 +1,7 @@
 // =============================================================================
 //
-// Copyright (c) 2013 Christopher Baker <http://christopherbaker.net>
+// Copyright (c) 2013-2014 Christopher Baker <http://christopherbaker.net>
+//               2014 Brannon Dorsey <http://brannondorsey.com>
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -58,6 +59,8 @@ public:
     void draw();
 
     void loadProject(const void* pSender, JSONRPC::MethodArgs& args);
+    void saveProject(const void* pSender, JSONRPC::MethodArgs& args);
+    void run(const void* pSender, JSONRPC::MethodArgs& args);
     void play(const void* pSender, JSONRPC::MethodArgs& args);
     void stop(const void* pSender, JSONRPC::MethodArgs& args);
     void getProjectList(const void* pSender, JSONRPC::MethodArgs& args);

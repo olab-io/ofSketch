@@ -58,8 +58,8 @@ public:
     void reloadProjects();
     void updateProject(const std::string& projectName);
     
-    bool projectExists(const std::string& projectName);
-    const Project& getProject(const std::string& projectName);
+    bool projectExists(const std::string& projectName) const;
+    const Project& getProject(const std::string& projectName) const;
     
     void onDirectoryWatcherItemAdded(const Poco::DirectoryWatcher::DirectoryEvent& evt);
     void onDirectoryWatcherItemRemoved(const Poco::DirectoryWatcher::DirectoryEvent& evt);

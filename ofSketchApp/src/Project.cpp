@@ -1,7 +1,7 @@
 // =============================================================================
 //
-// Copyright (c) 2013 Christopher Baker <http://christopherbaker.net>
-
+// Copyright (c) 2013-2014 Christopher Baker <http://christopherbaker.net>
+//               2014 Brannon Dorsey <http://brannondorsey.com>
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -50,7 +50,6 @@ bool Project::load(const std::string path, const std::string& name)
         int classCounter = 0;
         for (int i = 0; i < files.size(); i++) {
             ofFile file = files[i];
-            cout<<"File"<<file.getFileName()<<" can be read: "<<file.canRead()<<endl;
             if (file.getBaseName() == name) {
                 file.open(file.getAbsolutePath());
                 _data["projectFile"]["name"] = file.getBaseName();
@@ -64,13 +63,12 @@ bool Project::load(const std::string path, const std::string& name)
                 classCounter++;
             }
         }
-        cout<<_data.getRawString()<<endl;
         _isLoaded = true;
         return true;
     } else return false;
 }
     
-bool Project::isLoaded()
+bool Project::isLoaded() const
 {
     return _isLoaded;
 }

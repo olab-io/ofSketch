@@ -119,6 +119,20 @@ function SketchEditor(callback)
 		_project.save(callback);
 	}
 
+	this.run = function(callback)
+	{
+		console.log("project data:");
+		console.log(_project.getData());
+		JSONRPCClient.call('run', 
+        					{ projectData: _project.getData() },
+					        function(result) {
+					            callback(result);
+					        },
+					        function(error) {
+					            addError(error);
+					        });
+	}
+
 	this.createClassFile = function(className)
 	{	
 		var classFile = {

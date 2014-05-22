@@ -145,8 +145,11 @@ $(document).ready( function()
         sketchEditor.loadProject("HelloWorld", function()
         {
             console.log("Project loaded!");
+            sketchEditor.run(function()
+            {
+                console.log("Project running!");
+            });
         });
-
     });
 
         // editor.commands.addCommand({

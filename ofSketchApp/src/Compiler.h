@@ -49,6 +49,7 @@ public:
 private:
     
     std::string _pathToTemplates;
+    std::string _pathToSrc;
     std::string _projectFileTemplate;
     std::string _classTemplate;
     
