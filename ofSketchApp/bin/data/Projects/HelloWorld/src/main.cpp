@@ -2,6 +2,7 @@
 
 #include "ofMain.h"
 #include "MyClass.h"
+#include "FooBar.h"
 
 
 class ofApp: public ofBaseApp

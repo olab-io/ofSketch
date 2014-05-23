@@ -59,11 +59,13 @@ public:
     void load(const std::string path,
               const std::string& name);
     
-    void createClass(const std::string& className);
     void deleteClass(const std::string& className);
     void renameClass(const std::string& currentName,
                      const std::string& newName);
     
+    int getNumClasses() const;
+    
+    Json::Value createClass(const std::string& className);
     const ofxJSONElement& getData() const;
     
 protected:
@@ -72,6 +74,8 @@ protected:
 private:
     
     std::string _path;
+    std::string _projectFileTemplate;
+    std::string _classFileTemplate;
     std::vector<Source> _sources;
     
     bool _isLoaded;

@@ -79,8 +79,8 @@ public:
 
 
 private:
+    
     std::string _path;
-
     std::vector<Project> _projects;
 
     ofx::IO::DirectoryWatcherManager _projectWatcher;

@@ -53,7 +53,6 @@ ProjectManager::ProjectManager(const std::string& path):
         _projects.push_back(Project(*iter));
         ++iter;
     }
-
 }
     
 ProjectManager::~ProjectManager()

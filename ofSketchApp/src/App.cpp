@@ -179,7 +179,18 @@ void App::renameProject(const void* pSender, JSONRPC::MethodArgs& args)
 
 void App::createClass(const void* pSender, JSONRPC::MethodArgs& args)
 {
-    
+    std::string projectName = args.params["projectName"].asString();
+    if (_projectManager->projectExists(projectName)) {
+        
+        std::string className = args.params["className"].asString();
+        cout<<"Creating new class..."<<endl;
+        Project& project = _projectManager->getProjectRef(projectName);
+        args.result["classFile"] = project.createClass(className);
+        
+    } else {
+        args.error = "Incorrect parameters.";
+        cout<<"Incorrect JSONRPC parameters sent to createClass."<<endl;
+    }
 }
 
 void App::deleteClass(const void* pSender, JSONRPC::MethodArgs& args)

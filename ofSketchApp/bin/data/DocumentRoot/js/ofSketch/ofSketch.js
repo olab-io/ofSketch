@@ -146,7 +146,7 @@ $(document).ready( function()
         $('#create-class').on('click', function()
         {
             var className = $('#new-class-name').val();
-            sketchEditor.createClassFile(className, function(){});
+            sketchEditor.createClass(className, function(){});
             sketchEditor.renderTab(className);
             $('#new-class-name').val('');
         });
@@ -155,7 +155,8 @@ $(document).ready( function()
         {
             if (sketchEditor.projectLoaded())
             {
-                sketchEditor.saveProject(function(){
+                sketchEditor.saveProject(function()
+                {
                     sketchEditor.run(function()
                     {
                         console.log("Project running!");

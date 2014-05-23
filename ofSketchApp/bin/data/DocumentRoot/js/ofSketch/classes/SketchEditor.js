@@ -36,7 +36,6 @@ function SketchEditor(callback)
 
 	var _editorSettingsFile = "editorsettings.json";
 	var _projectFileTemplateFile = "templates/project.txt";
-	var _classTemplateFile = "templates/class.txt";
 
 	var _settings;
 	var _tabs = [];
@@ -163,17 +162,28 @@ function SketchEditor(callback)
 					        });
 	}
 
-	this.createClassFile = function(className)
+	this.createClass = function(className, callback)
 	{	
-		var classFile = {
-			name: className,
-			fileName: className + '.' + _settings.classExtension,
-			fileContents: _classTemplate.replace("<classname>", className)
-		}
-		
-		_project.addClassFile(classFile);
-		_addTab(classFile.name, classFile.fileName, false, new ace.EditSession(classFile.fileContents, 
-																			   _settings.editorMode));
+		console.log("Creating class...");
+		_project.createClass(className, function(classFile)
+		{
+			console.log(classFile);
+			_addTab(classFile.name, 
+					classFile.fileName, 
+					false, 
+					new ace.EditSession(classFile.fileContents, 
+										_settings.editorMode));
+		});
+	}
+
+	this.deleteClass = function(className, callback)
+	{	
+		_project.deleteClass(className, callback);
+	}
+
+	this.renameClass = function(className, newClassName, callback)
+	{	
+		_project.renameClass(className, newClassName, callback);
 	}
 
 	this.renderTab = function(name)
@@ -186,15 +196,9 @@ function SketchEditor(callback)
 	}
 
 	$.getJSON(_editorSettingsFile, function(data){
-		_settings = data;
-		loadFile(_projectFileTemplateFile, function(data){
-			_projectFileTemplate = data;
-			loadFile(_classTemplateFile, function(data){
-				_classTemplate = data;
-				_applySettings();
-				_registerEvents();
-				callback();
-			});
-		});
+		_settings = data;			
+		_applySettings();
+		_registerEvents();
+		callback();
 	});
 }

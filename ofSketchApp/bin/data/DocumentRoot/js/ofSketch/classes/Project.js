@@ -89,6 +89,61 @@ function Project(projectName, callback)
 					        });
 	}
 
+	this.createClass = function(className, callback)
+	{
+		JSONRPCClient.call('create-class', 
+        					{ 
+        						projectName: _self.getName(),
+        						className: className 
+        					},
+					        function(result) {
+					            var classFile = result.classFile;
+					            _self.getClasses().push(classFile);
+								callback(classFile);
+					        },
+					        function(error) {
+					            addError(error);
+					        });
+	}
+
+	this.deleteClass = function(className, callback)
+	{
+		JSONRPCClient.call('delete-class', 
+        					{ 
+        						projectName: _self.getName(),
+        						className: className 
+        					},
+					        function(result) {
+					        	callback(result);
+					        },
+					        function(error) {
+					            addError(error);
+					            callback(error);
+					        });
+	}
+
+	this.renameClass = function(className, newClassName, callback)
+	{
+		JSONRPCClient.call('rename-class', 
+        					{ 
+        						projectName: _self.getName(),
+        						className: className,
+        						newClassName: newClassName
+        					},
+					        function(result) {
+					        	callback(result);
+					        },
+					        function(error) {
+					            addError(error);
+					            callback(error);
+					        });
+	}
+
+	this.getName = function()
+	{
+		return _data.projectFile.name;
+	}
+
 	this.getProjectFile = function()
 	{
 		return _data.projectFile;

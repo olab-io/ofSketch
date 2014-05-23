@@ -38,6 +38,10 @@ Project::Project(const std::string& path):
     _path(path),
     _isLoaded(false)
 {
+    // this is not efficient at all! I am just keeping these FileTemplate loads in the project
+    // constructor because it makes the most sense architecure wise.
+    _projectFileTemplate = ofBufferFromFile(ofToDataPath("Resources/Templates/SketchTemplates/project.txt")).getText();
+    _classFileTemplate = ofBufferFromFile(ofToDataPath("Resources/Templates/SketchTemplates/class.txt")).getText();
     load(_path, getName());
 }
 
@@ -72,7 +76,7 @@ bool Project::isLoaded() const
     return _isLoaded;
 }
 
-// needs to
+// saves differences only
 void Project::save(ofxJSONElement data){
     
     // this is not working for some reason...
@@ -108,7 +112,7 @@ void Project::save(ofxJSONElement data){
                 }
             }
             
-            // if (!matchFound) deletedClasses.push_back(classFile);
+            if (!matchFound) _saveFile(classFile); // class is new
         }
         
     
@@ -135,10 +139,41 @@ bool Project::rename(const std::string& name)
 {
     
 }
+
+Json::Value Project::createClass(const std::string& className)
+{
+
+    std::string fileContents = _classFileTemplate;
+    ofStringReplace(fileContents, "<classname>", className);
+    cout<<"fileContents: "<<fileContents<<endl;
+    Json::Value classFile;
+    // TODO: Load extension from settings
+    classFile["fileName"] = className + ".sketch";
+    classFile["name"] = className;
+    classFile["fileContents"] = fileContents;
+    _data["classes"][getNumClasses()] = classFile;
+    _saveFile(classFile);
+    return classFile;
+}
+    
+void Project::deleteClass(const std::string& className)
+{
+    
+}
+    
+void Project::renameClass(const std::string& currentName, const std::string& newName)
+{
+    
+}
     
 bool Project::hasClasses() const
 {
     return _data["classes"].size() > 0;
+}
+    
+int Project::getNumClasses() const
+{
+    return _data["classes"].size();
 }
 
 const std::string& Project::getPath() const
