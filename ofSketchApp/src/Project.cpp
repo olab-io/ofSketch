@@ -41,7 +41,7 @@ Project::Project(const std::string& path):
     load(_path, getName());
 }
 
-bool Project::load(const std::string path, const std::string& name)
+void Project::load(const std::string path, const std::string& name)
 {
     ofDirectory sketchDir(ofToDataPath(path + "/sketch"));
     if (sketchDir.exists()) {
@@ -64,8 +64,7 @@ bool Project::load(const std::string path, const std::string& name)
             }
         }
         _isLoaded = true;
-        return true;
-    } else return false;
+    }
 }
     
 bool Project::isLoaded() const
@@ -73,8 +72,50 @@ bool Project::isLoaded() const
     return _isLoaded;
 }
 
-bool Project::save(ofxJSONElement data){
+// needs to
+void Project::save(ofxJSONElement data){
     
+    // this is not working for some reason...
+    if (_data != data) {
+        
+        cout<<data.toStyledString()<<endl;
+        if (_data["projectFile"] != data["projectFile"]) {
+            _data["projectFile"] = data["projectFile"];
+            _saveFile(_data["projectFile"]);
+        }
+        
+            
+        // uses nested for loop in case classes are not in the same order
+        std::vector<Json::Value> newClasses;
+        std::vector<Json::Value> deletedClasses;
+        
+
+        for (int i = 0; i < _data["classes"].size(); i++) {
+            
+            Json::Value& classFile = _data["classes"][i];
+            bool matchFound = false;
+            
+            for (int j = 0; j < data.size(); j++) {
+                
+                Json::Value& newClassFile = data["classes"][j];
+                
+                if (classFile["fileName"] == newClassFile["fileName"]) {
+                    
+                    if (classFile != newClassFile) classFile = newClassFile;
+                    _saveFile(classFile);
+                    matchFound = true;
+                    break;
+                }
+            }
+            
+            // if (!matchFound) deletedClasses.push_back(classFile);
+        }
+        
+    
+    } else {
+        std::cout<<"Project data is the same. Not saving project."<<std::endl;
+        return true;
+    }
 }
     
 bool Project::create(const std::string& path)
@@ -114,6 +155,12 @@ std::string Project::getName() const
 const ofxJSONElement& Project::getData() const
 {
     return _data;
+}
+
+void Project::_saveFile(const Json::Value& fileData)
+{
+    ofBuffer fileBuffer(fileData["fileContents"].asString());
+    ofBufferToFile(getPath() + "/sketch/" + fileData["fileName"].asString(), fileBuffer);
 }
 
 } } // namespace of::Sketch

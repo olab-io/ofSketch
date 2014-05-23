@@ -41,9 +41,9 @@
             <a class="navbar-brand" href="#"><img src="./img/openFrameworks_header.png"/></a>
           </div>
           <div class="collapse navbar-collapse">
-            <ul class="nav navbar-nav">
+            <ul id="toolbar" class="nav navbar-nav">
               <li>
-                <a id="toolbar-play" 
+                <a id="toolbar-run" 
                     href="#" 
                     class="glyphicon glyphicon-play" 
                     title="Run Program"></a>
@@ -53,6 +53,14 @@
                 <a id="toolbar-stop" 
                    href="#" 
                    class="glyphicon glyphicon-stop" 
+                   title="Stop Program">
+                 </a>
+              </li>
+
+              <li>
+                <a id="toolbar-save" 
+                   href="#" 
+                   class="glyphicon glyphicon-floppy-save" 
                    title="Stop Program">
                  </a>
               </li>
@@ -255,7 +263,7 @@
         </ul>
     
       <pre id="editor">loading...</pre>
-      <div id="compiler-alert-box"></div>
+      <div id="editor-message-container"></div>
       <pre id="console">Console</pre>
 
       </div>

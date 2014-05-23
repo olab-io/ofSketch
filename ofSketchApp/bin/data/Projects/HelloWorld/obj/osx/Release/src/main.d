@@ -169,7 +169,8 @@ obj/osx/Release/src/main.o: src/main.cpp \
   /Users/bdorse/Documents/of_v0.8.1_osx_release/apps/ofSketch/ofSketchApp/bin/data/openFrameworks//libs/openFrameworks/video/ofQTKitPlayer.h \
   /Users/bdorse/Documents/of_v0.8.1_osx_release/apps/ofSketch/ofSketchApp/bin/data/openFrameworks//libs/openFrameworks/video/ofQTKitMovieRenderer.h \
   /Users/bdorse/Documents/of_v0.8.1_osx_release/apps/ofSketch/ofSketchApp/bin/data/openFrameworks//libs/openFrameworks/3d/ofCamera.h \
-  /Users/bdorse/Documents/of_v0.8.1_osx_release/apps/ofSketch/ofSketchApp/bin/data/openFrameworks//libs/openFrameworks/3d/ofEasyCam.h
+  /Users/bdorse/Documents/of_v0.8.1_osx_release/apps/ofSketch/ofSketchApp/bin/data/openFrameworks//libs/openFrameworks/3d/ofEasyCam.h \
+  src/MyClass.h
 
 /Users/bdorse/Documents/of_v0.8.1_osx_release/apps/ofSketch/ofSketchApp/bin/data/openFrameworks//libs/openFrameworks/ofMain.h:
 
@@ -512,3 +513,5 @@ obj/osx/Release/src/main.o: src/main.cpp \
 /Users/bdorse/Documents/of_v0.8.1_osx_release/apps/ofSketch/ofSketchApp/bin/data/openFrameworks//libs/openFrameworks/3d/ofCamera.h:
 
 /Users/bdorse/Documents/of_v0.8.1_osx_release/apps/ofSketch/ofSketchApp/bin/data/openFrameworks//libs/openFrameworks/3d/ofEasyCam.h:
+
+src/MyClass.h:

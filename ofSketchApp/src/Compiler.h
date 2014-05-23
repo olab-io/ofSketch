@@ -27,7 +27,10 @@
 
 
 #include <string>
-#include "Poco/URI.h"
+#include "Poco/Pipe.h"
+#include "Poco/Process.h"
+#include "Poco/StreamCopier.h"
+#include "Poco/PipeStream.h"
 #include "ofTypes.h"
 #include "Project.h"
 #include "ofMain.h"
@@ -43,8 +46,8 @@ public:
     
     Compiler(){};
     Compiler(std::string pathToTemplates);
-    void make(const Project& project);
     void run(const Project& project);
+    void generateSourceFiles(const Project& project);
     
 private:
     
@@ -53,7 +56,6 @@ private:
     std::string _projectFileTemplate;
     std::string _classTemplate;
     
-    void _generateSource(const Project& project);
     void _parseAddons();
     void _getAddons();
 };

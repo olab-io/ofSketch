@@ -60,7 +60,19 @@ ProjectManager::~ProjectManager()
 {
 }
 
+// can this function be: return getProjectRef(projectName); only?
 const Project& ProjectManager::getProject(const std::string& projectName) const
+{
+    for (int i = 0; i < _projects.size(); i++) {
+        if (_projects[i].getName() == projectName) {
+            return _projects[i];
+        }
+    }
+    
+    return _projects[0]; //fallback
+}
+    
+Project& ProjectManager::getProjectRef(const std::string& projectName)
 {
     for (int i = 0; i < _projects.size(); i++) {
         if (_projects[i].getName() == projectName) {
@@ -126,7 +138,16 @@ void ProjectManager::loadProject(const void* pSender, JSONRPC::MethodArgs& args)
     
 void ProjectManager::saveProject(const void* pSender, ofx::JSONRPC::MethodArgs& args)
 {
-    
+    if (args.params.isMember("projectData")) {
+        std::cout<<"Saving project..."<<std::endl;
+        Json::Value projectData = args.params["projectData"];
+        std::string projectName = projectData["projectFile"]["name"].asString();
+        if (projectExists(projectName)) {
+            Project& project = getProjectRef(projectName);
+            project.save(projectData);
+        }
+        
+    } else args.error = "A projectData object was not sent.";
 }
     
 bool ProjectManager::projectExists(const std::string& projectName) const

@@ -10,14 +10,12 @@ public:
 
 float scale = 1;
 
-void setup()
-{
-    ofSetWindowShape(800,600);
+void setup() {
+    ofSetWindowShape(100,200);
     ofSetFrameRate(30);
 }
 
-void draw()
-{
+void draw() {
     scale += 0.2;
 
     if(scale > 2)

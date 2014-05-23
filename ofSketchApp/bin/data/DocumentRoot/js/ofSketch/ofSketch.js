@@ -117,20 +117,29 @@ $(document).ready( function()
     var sketchEditor = new SketchEditor(function()
     {
 
-
-        $('.file-tab a, #new-class a, .action-menu li a').on('click', function(e) {
+        $('#toolbar li a, .file-tab a, #new-class a, .action-menu li a').on('click', function(e) {
             e.preventDefault(); 
         });
 
-        // button controls
-        $('#toolbar-play').on('click', play);
         $('#toolbar-stop').on('click', stop);
         $('#load-project').on('click', function()
         {
             // sketchEditor.loadProject();
         });
 
-        $('.new-class').on('click', function(){
+        $('#toolbar-save').on('click', function()
+        {
+            if (sketchEditor.projectLoaded())
+            {
+                sketchEditor.saveProject(function(){
+                    console.log("Project saved!");
+                });
+            }
+        });
+
+
+        $('.new-class').on('click', function()
+        {
             $('#newClassModal').modal();
         });
         
@@ -142,14 +151,24 @@ $(document).ready( function()
             $('#new-class-name').val('');
         });
 
+        $('#toolbar-run').on('click', function()
+        {
+            if (sketchEditor.projectLoaded())
+            {
+                sketchEditor.saveProject(function(){
+                    sketchEditor.run(function()
+                    {
+                        console.log("Project running!");
+                    });
+                });
+            }
+        });
+
         sketchEditor.loadProject("HelloWorld", function()
         {
             console.log("Project loaded!");
-            sketchEditor.run(function()
-            {
-                console.log("Project running!");
-            });
         });
+
     });
 
         // editor.commands.addCommand({

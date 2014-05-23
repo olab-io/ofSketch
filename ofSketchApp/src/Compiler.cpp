@@ -35,17 +35,68 @@ _pathToTemplates(pathToTemplates)
     _classTemplate = ofBufferFromFile(ofToDataPath(_pathToTemplates + "/class.txt")).getText();
 }
 
-void Compiler::make(const Project& project)
-{
-    
-}
-    
 void Compiler::run(const Project& project)
 {
-    _generateSource(project);
+    
+    std::string cmd("make");
+    std::vector<std::string> args;
+    
+    args.push_back("--directory=" + ofToDataPath("Projects/HelloWorld/", true));
+    //        if(_settings.numProcessors > 1)
+    //        {
+    //            args.push_back("-j" + ofToString(_settings.numProcessors));
+    //        }
+    
+    args.push_back("-j" + ofToString(8));
+    
+    //        if(_settings.isSilent)
+    //        {
+    args.push_back("-s");
+    //        }
+    
+    //        args.push_back(_target);
+    
+    args.push_back("OF_ROOT=" + ofToDataPath("openFrameworks/", true));
+    
+    Poco::Pipe inPipe; // this needs to be passed in
+    Poco::Pipe outAndErrPipe;
+    
+    Poco::ProcessHandle ph = Poco::Process::launch(cmd, args, &inPipe, &outAndErrPipe, &outAndErrPipe);
+    Poco::PipeInputStream istr(outAndErrPipe);
+    
+    //        const std::size_t bufferSize = 8192;
+    //        char buffer[bufferSize];
+    //
+    //        while(istr.good() && !istr.fail())
+    //        {
+    //            if(isCancelled())
+    //            {
+    //                Poco::Process::kill(ph);
+    //            }
+    //
+    //            istr.getline(buffer,bufferSize);
+    //            cout << "LINE>>" << buffer << "<<LINE" << endl;
+    //        }
+    
+    Poco::StreamCopier::copyStream(istr, std::cout);
+    
+    int exitCode = ph.wait();
+    
+    cout << "exit code: " << exitCode << endl;
+    
+    args.push_back("run");
+    
+    ph = Poco::Process::launch(cmd, args, &inPipe, &outAndErrPipe, &outAndErrPipe);
+    
+    Poco::PipeInputStream istr2(outAndErrPipe);
+    Poco::StreamCopier::copyStream(istr2, std::cout);
+    
+    exitCode = ph.wait();
+    
+    cout << "exit code: " << exitCode << endl;
 }
 
-void Compiler::_generateSource(const Project& project)
+void Compiler::generateSourceFiles(const Project& project)
 {
     ofxJSONElement projectData = project.getData();
     std::string projectFile = _projectFileTemplate;
@@ -67,6 +118,7 @@ void Compiler::_generateSource(const Project& project)
             ofStringReplace(classFile, "<includes>", ""); // temporary
             
             ofBuffer sourceBuffer(classFile);
+            cout<<"Class name: "<<c["name"].asString()<<endl;
             ofBufferToFile(project.getPath() + "/src/" + c["name"].asString() + ".h", sourceBuffer);
         }
         

@@ -76,16 +76,16 @@ void App::setup()
                           "Load the requested project.",
                           this,
                           &App::loadProject);
+    
+    server.registerMethod("save-project",
+                          "Save the current project.",
+                          this,
+                          &App::saveProject);
 
     server.registerMethod("run",
                           "Run the requested project.",
                           this,
                           &App::run);
-    
-    server.registerMethod("play",
-                          "Play the requested project.",
-                          this,
-                          &App::play);
 
     server.registerMethod("stop",
                           "Stop the requested project.",
@@ -121,94 +121,27 @@ void App::loadProject(const void* pSender, JSONRPC::MethodArgs& args)
     
 void App::saveProject(const void* pSender, JSONRPC::MethodArgs& args)
 {
-    _projectManager->saveProject(pSender, args);
-}
-
-void App::play(const void* pSender, JSONRPC::MethodArgs& args)
-{
-    if (args.params.isMember("source"))
-    {
-        ofBuffer sourceBuffer(args.params["source"].asString());
-        ofBufferToFile("Projects/HelloWorld/src/main.cpp", sourceBuffer);
-
-        std::string cmd("make");
-
-        std::vector<std::string> args;
-
-        args.push_back("--directory=" + ofToDataPath("Projects/HelloWorld/", true));
-//        if(_settings.numProcessors > 1)
-//        {
-//            args.push_back("-j" + ofToString(_settings.numProcessors));
-//        }
-
-            args.push_back("-j" + ofToString(8));
-
-//        if(_settings.isSilent)
-//        {
-            args.push_back("-s");
-//        }
-
-//        args.push_back(_target);
-
-        args.push_back("OF_ROOT=" + ofToDataPath("openFrameworks/", true));
-
-        Poco::Pipe inPipe; // this needs to be passed in
-        Poco::Pipe outAndErrPipe;
-        //    Poco::Pipe errPipe;
-
-        Poco::ProcessHandle ph = Poco::Process::launch(cmd, args, &inPipe, &outAndErrPipe, &outAndErrPipe);
-
-        Poco::PipeInputStream istr(outAndErrPipe);
-
-//        const std::size_t bufferSize = 8192;
-//        char buffer[bufferSize];
-//
-//        while(istr.good() && !istr.fail())
-//        {
-//            if(isCancelled())
-//            {
-//                Poco::Process::kill(ph);
-//            }
-//            
-//            istr.getline(buffer,bufferSize);
-//            cout << "LINE>>" << buffer << "<<LINE" << endl;
-//        }
-
-        Poco::StreamCopier::copyStream(istr, std::cout);
-
-        
-        int exitCode = ph.wait();
-
-        cout << "exit code: " << exitCode << endl;
-
-        args.push_back("run");
-
-        ph = Poco::Process::launch(cmd, args, &inPipe, &outAndErrPipe, &outAndErrPipe);
-
-        Poco::PipeInputStream istr2(outAndErrPipe);
-        Poco::StreamCopier::copyStream(istr2, std::cout);
-
-        exitCode = ph.wait();
-
-        cout << "exit code: " << exitCode << endl;
-
-    }
-    else
-    {
-        // Pass error in this case.
+    std::string projectName = args.params["projectData"]["projectFile"]["name"].asString();
+    
+    if (_projectManager->projectExists(projectName)) {
+    
+        cout<<"Project Saved!"<<endl;
+        _projectManager->saveProject(pSender, args);
+        const Project& project = _projectManager->getProject(projectName);
+        _compiler.generateSourceFiles(project);
     }
 }
 
 void App::run(const void* pSender, JSONRPC::MethodArgs& args)
 {
-    std::cout << "run: " << std::endl;
     std::string projectName = args.params["projectData"]["projectFile"]["name"].asString();
-    cout<<args.params.toStyledString();
+    
     if (_projectManager->projectExists(projectName)) {
         
-        _projectManager->saveProject(pSender, args);
+        cout<<"Running project..."<<endl;
         const Project& project = _projectManager->getProject(projectName);
         _compiler.run(project);
+        
     }
 }
 

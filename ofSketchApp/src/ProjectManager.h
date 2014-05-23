@@ -60,6 +60,7 @@ public:
     
     bool projectExists(const std::string& projectName) const;
     const Project& getProject(const std::string& projectName) const;
+    Project& getProjectRef(const std::string& projectName);
     
     void onDirectoryWatcherItemAdded(const Poco::DirectoryWatcher::DirectoryEvent& evt);
     void onDirectoryWatcherItemRemoved(const Poco::DirectoryWatcher::DirectoryEvent& evt);

@@ -40,7 +40,7 @@ function SketchEditor(callback)
 
 	var _settings;
 	var _tabs = [];
-	var _project;
+	var _project = undefined;
 	var _projectFileTemplate;
 	var _classTemplate;
 
@@ -87,6 +87,25 @@ function SketchEditor(callback)
 		$('ul.nav-tabs li:last').prev().after(tabElement);
 	}
 
+	var _updateProject = function()
+	{
+		var projectData = _project.getData();
+		projectTab = _.find(_tabs, function(tab){ return tab.isProjectFile });
+		projectData.projectFile.fileName = projectTab.fileName;
+		projectData.projectFile.fileContents = projectTab.editSession.getValue();
+
+		var classTabs = _.filter(_tabs, function(tab){ return !tab.isProjectFile });
+		var classFiles = projectData.classes;
+
+		_.each(classFiles, function(classFile, i)
+		{
+			var tab = _.findWhere(classTabs, { fileName: classFile.fileName });
+			if (!_.isUndefined(tab)) {
+				classFiles[i].fileContents = tab.editSession.getValue();
+			}
+		});
+	}
+
 	this.loadProject = function(projectName, callback)
 	{
 		_project = new Project(projectName, function()
@@ -104,7 +123,7 @@ function SketchEditor(callback)
 			var classes = _project.getClasses();
 			_.each(classes, function(c){
 				_addTab(getPrettyFileName(c.fileName),
-						projectFile.fileName,
+						c.fileName,
 						false,
 					new ace.EditSession(c.fileContents, _settings.editorMode));
 			});
@@ -116,7 +135,18 @@ function SketchEditor(callback)
 
 	this.saveProject = function(callback)
 	{
+		_updateProject();
 		_project.save(callback);
+	}
+
+	this.getProject = function()
+	{
+		return _project;
+	}
+
+	this.projectLoaded = function()
+	{
+		return !_.isUndefined(_project);
 	}
 
 	this.run = function(callback)

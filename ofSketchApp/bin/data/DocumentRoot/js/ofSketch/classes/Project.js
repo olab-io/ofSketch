@@ -41,12 +41,13 @@ _data = {
 
 function Project(projectName, callback) 
 {
+	var _self = this;
 	var _settings;
 	var _data;
 	var _file = {
 		name: "",
 		fileName: "",
-		fileContents: "",
+		fileContents: ""
 	}
 
 	this.load = function(projectName, callback)
@@ -59,18 +60,20 @@ function Project(projectName, callback)
 					        },
 					        function(error) {
 					            addError(error);
+					            callback();
 					        });
 	}
 
 	this.save = function(callback)
 	{
 		JSONRPCClient.call('save-project', 
-        					{ projectName: projectName },
+        					{ projectData: _self.getData() },
 					        function(result) {
-					            console.log(result);
+					            callback(result);
 					        },
 					        function(error) {
 					            addError(error);
+					            callback(error);
 					        });
 	}
 

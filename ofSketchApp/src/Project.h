@@ -55,8 +55,8 @@ public:
     
     bool create(const std::string& path);
     bool rename(const std::string& name);
-    bool save(ofxJSONElement data);
-    bool load(const std::string path,
+    void save(ofxJSONElement data);
+    void load(const std::string path,
               const std::string& name);
     
     const ofxJSONElement& getData() const;
@@ -71,6 +71,8 @@ private:
     
     bool _isLoaded;
     ofxJSONElement _data;
+    
+    void _saveFile(const Json::Value& fileData);
 
 };
 
