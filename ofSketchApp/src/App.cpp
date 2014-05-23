@@ -131,7 +131,37 @@ void App::saveProject(const void* pSender, JSONRPC::MethodArgs& args)
         _compiler.generateSourceFiles(project);
     }
 }
+    
+void App::createProject(const void* pSender, JSONRPC::MethodArgs& args)
+{
+    
+}
+    
+void App::deleteProject(const void* pSender, JSONRPC::MethodArgs& args)
+{
+    
+}
 
+void App::renameProject(const void* pSender, JSONRPC::MethodArgs& args)
+{
+    
+}
+
+void App::createClass(const void* pSender, JSONRPC::MethodArgs& args)
+{
+    
+}
+
+void App::deleteClass(const void* pSender, JSONRPC::MethodArgs& args)
+{
+    
+}
+
+void App::renameClass(const void* pSender, JSONRPC::MethodArgs& args)
+{
+    
+}
+    
 void App::run(const void* pSender, JSONRPC::MethodArgs& args)
 {
     std::string projectName = args.params["projectData"]["projectFile"]["name"].asString();
