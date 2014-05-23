@@ -59,6 +59,11 @@ public:
     void load(const std::string path,
               const std::string& name);
     
+    void createClass(const std::string& className);
+    void deleteClass(const std::string& className);
+    void renameClass(const std::string& currentName,
+                     const std::string& newName);
+    
     const ofxJSONElement& getData() const;
     
 protected:

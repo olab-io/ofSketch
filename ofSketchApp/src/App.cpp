@@ -81,6 +81,36 @@ void App::setup()
                           "Save the current project.",
                           this,
                           &App::saveProject);
+    
+    server.registerMethod("create-project",
+                          "Create a new project.",
+                          this,
+                          &App::createProject);
+    
+    server.registerMethod("delete-project",
+                          "Delete the current project.",
+                          this,
+                          &App::deleteProject);
+    
+    server.registerMethod("rename-project",
+                          "Rename the current project.",
+                          this,
+                          &App::renameProject);
+    
+    server.registerMethod("create-class",
+                          "Create a new class for the current project.",
+                          this,
+                          &App::createClass);
+    
+    server.registerMethod("delete-class",
+                          "Delete a select class from for the current project.",
+                          this,
+                          &App::deleteClass);
+    
+    server.registerMethod("rename-class",
+                          "Rename a select class from for the current project.",
+                          this,
+                          &App::deleteClass);
 
     server.registerMethod("run",
                           "Run the requested project.",

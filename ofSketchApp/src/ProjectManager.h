@@ -36,6 +36,7 @@
 #include "ofx/JSONRPC/Utils.h"
 #include "Project.h"
 
+
 namespace of {
 namespace Sketch {
 
@@ -48,15 +49,17 @@ public:
     ProjectManager(const std::string& path);
     virtual ~ProjectManager();
 
-//    Project newProject(const std::string& name);
-
     const std::vector<Project>& getProjects() const;
     
     void getProjectList(const void* pSender, ofx::JSONRPC::MethodArgs& args);
     void loadProject(const void* pSender, ofx::JSONRPC::MethodArgs& args);
     void saveProject(const void* pSender, ofx::JSONRPC::MethodArgs& args);
+    void createProject(const void* pSender, ofx::JSONRPC::MethodArgs& args);
+    void deleteProject(const void* pSender, ofx::JSONRPC::MethodArgs& args);
+    void renameProject(const void* pSender, ofx::JSONRPC::MethodArgs& args);
     void reloadProjects();
     void updateProject(const std::string& projectName);
+    
     
     bool projectExists(const std::string& projectName) const;
     const Project& getProject(const std::string& projectName) const;
