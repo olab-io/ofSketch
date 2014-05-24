@@ -30,8 +30,52 @@
     <div id="wrap">
 
       <!-- Fixed navbar -->
-      <div class="navbar navbar-default navbar-fixed-top">
+      <div class="navbar navbar-default navbar-fixed-top" >
         <div class="container">
+          <div class="navbar-header">
+            <a class="navbar-brand" href="http://openframeworks.cc" target="_blank" >
+              <img src="./img/openFrameworks_header.png"/>
+            </a>
+          </div>
+            <div class="btn-toolbar" role="toolbar" style="margin-top: 8px;">
+              <div class="btn-group">
+                <button id="toolbar-run" type="button" class="btn btn-default" title="Run Program">
+                  <span class="glyphicon glyphicon-play"></span> 
+                </button>
+                <button id="toolbar-stop" type="button" class="btn btn-default" title="Stop Program">
+                  <span class="glyphicon glyphicon-stop"></span> 
+                </button>
+              </div>
+              <div class="btn-group">
+                <button id="toolbar-save" type="button" class="btn btn-default" title="Save Project">
+                  <span class="glyphicon glyphicon-floppy-save"></span> 
+                </button>
+                <button id="toolbar-open-project" type="button" class="btn btn-default" title="Open Project">
+                  <span class="glyphicon glyphicon-folder-open"></span> 
+                </button>
+                <button id="toolbar-create-project" type="button" class="btn btn-default" title="New Project">
+                  <span class="glyphicon glyphicon-folder-close"></span> 
+                </button>
+              </div>
+              <div class="btn-group">
+                <button id="toolbar-upload-media" type="button" class="btn btn-default" title="Upload File">
+                  <span class="glyphicon glyphicon-paperclip"></span> 
+                </button>
+              </div>
+              <div class="btn-group" style="float: right;">
+                <button type="button" class="btn btn-default" title="openFrameworks Reference">
+                    <a href="http://openframeworks.cc/documentation" target="_blank">Reference</a>
+                </button>
+                <button type="button" class="btn btn-default" title="openFrameworks Forum">
+                    <a href="http://forum.openframeworks.cc/" target="_blank"> Forum</a>
+                </button>
+                <button id="toolbar-settings" type="button" class="btn btn-default" title="Settings">
+                    <span class="glyphicon glyphicon-cog"></span> 
+                </button>
+              </div>
+            </div> <!-- btn-toolbar -->
+        </div> <!-- container -->
+        <div class="container" style="display: none;">
           <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
               <span class="icon-bar"></span>
@@ -78,7 +122,7 @@
               </li>
 
               <li>
-                <a id="toolbar-new-project" 
+                <a id="toolbar-create-project" 
                    href="#notImplementedModal" 
                    class="glyphicon glyphicon-file" 
                    data-toggle="modal" 
