@@ -146,7 +146,12 @@ void App::draw()
 
 void App::loadProject(const void* pSender, JSONRPC::MethodArgs& args)
 {
-    _projectManager->loadProject(pSender, args);
+    if (args.params.isMember("projectName")) {
+        std::string projectName = args.params["projectName"].asString();
+        if (_projectManager->projectExists(projectName)) {
+            _projectManager->loadProject(pSender, args);
+        } else args.error["message"] = "The requested project does not exist.";
+    } else args.error["message"] = "Incorrect parameters sent to load-project method.";
 }
     
 void App::saveProject(const void* pSender, JSONRPC::MethodArgs& args)
@@ -155,11 +160,10 @@ void App::saveProject(const void* pSender, JSONRPC::MethodArgs& args)
     
     if (_projectManager->projectExists(projectName)) {
     
-        cout<<"Project Saved!"<<endl;
         _projectManager->saveProject(pSender, args);
         const Project& project = _projectManager->getProject(projectName);
         _compiler.generateSourceFiles(project);
-    }
+    } else args.error["message"] = "The requested project does not exist.";
 }
     
 void App::createProject(const void* pSender, JSONRPC::MethodArgs& args)
@@ -187,10 +191,7 @@ void App::createClass(const void* pSender, JSONRPC::MethodArgs& args)
         Project& project = _projectManager->getProjectRef(projectName);
         args.result["classFile"] = project.createClass(className);
         
-    } else {
-        args.error["error"] = "Incorrect parameters.";
-        cout<<"Incorrect JSONRPC parameters sent to createClass."<<endl;
-    }
+    } else args.error["message"] = "The requested project does not exist.";
 }
 
 void App::deleteClass(const void* pSender, JSONRPC::MethodArgs& args)
@@ -213,7 +214,7 @@ void App::run(const void* pSender, JSONRPC::MethodArgs& args)
         const Project& project = _projectManager->getProject(projectName);
         _compiler.run(project);
         
-    }
+    } else args.error["message"] = "The requested project does not exist.";
 }
 
 void App::stop(const void* pSender, JSONRPC::MethodArgs& args)

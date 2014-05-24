@@ -39,7 +39,7 @@ _data = {
 }
  */
 
-function Project(projectName, callback) 
+function Project(projectName, onSuccess, onError) 
 {
 	var _self = this;
 	var _settings;
@@ -50,46 +50,47 @@ function Project(projectName, callback)
 		fileContents: ""
 	}
 
-	this.load = function(projectName, callback)
+	this.load = function(projectName, onSuccess, onError)
 	{
 		JSONRPCClient.call('load-project', 
         					{ projectName: projectName },
 					        function(result) {
 					            _data = result;
-					            callback();
+					            onSuccess(result);
 					        },
 					        function(error) {
-					            addError(error);
-					            callback();
+					            onError(error);
 					        });
 	}
 
-	this.save = function(callback)
+	this.save = function(onSuccess, onError)
 	{
 		JSONRPCClient.call('save-project', 
         					{ projectData: _self.getData() },
 					        function(result) {
-					            callback(result);
+					            onSuccess(result);
 					        },
 					        function(error) {
-					            addError(error);
-					            callback(error);
+					            onError(error);
 					        });
 	}
 
-	this.rename = function(callback)
+	this.rename = function(newProjectName, onSuccess, onError)
 	{
 		JSONRPCClient.call('rename-project', 
-        					projectName,
+        					{
+        						projectName: _self.getName(),
+        						newProjectName: newProjectName
+        					},
 					        function(result) {
-					            console.log(result);
+					            onSuccess(result);
 					        },
 					        function(error) {
-					            addError(error);
+					            onError(error);
 					        });
 	}
 
-	this.createClass = function(className, callback)
+	this.createClass = function(className, onSuccess, onError)
 	{
 		JSONRPCClient.call('create-class', 
         					{ 
@@ -98,15 +99,16 @@ function Project(projectName, callback)
         					},
 					        function(result) {
 					            var classFile = result.classFile;
+					            if (!_self.hasClasses()) _data.classes = [];
 					            _self.getClasses().push(classFile);
-								callback(classFile);
+								onSuccess(classFile);
 					        },
 					        function(error) {
-					            addError(error);
+					            onError(error);
 					        });
 	}
 
-	this.deleteClass = function(className, callback)
+	this.deleteClass = function(className, onSuccess, onError)
 	{
 		JSONRPCClient.call('delete-class', 
         					{ 
@@ -114,15 +116,14 @@ function Project(projectName, callback)
         						className: className 
         					},
 					        function(result) {
-					        	callback(result);
+					        	onSuccess(result);
 					        },
 					        function(error) {
-					            addError(error);
-					            callback(error);
+					            onError(error);
 					        });
 	}
 
-	this.renameClass = function(className, newClassName, callback)
+	this.renameClass = function(className, newClassName, onSuccess, onError)
 	{
 		JSONRPCClient.call('rename-class', 
         					{ 
@@ -131,11 +132,10 @@ function Project(projectName, callback)
         						newClassName: newClassName
         					},
 					        function(result) {
-					        	callback(result);
+					        	onSuccess(result);
 					        },
 					        function(error) {
-					            addError(error);
-					            callback(error);
+					            onError(error);
 					        });
 	}
 
@@ -147,6 +147,11 @@ function Project(projectName, callback)
 	this.getProjectFile = function()
 	{
 		return _data.projectFile;
+	}
+
+	this.hasClasses = function()
+	{
+		return !_.isUndefined(_data.classes);
 	}
 
 	this.getClasses = function()
@@ -164,5 +169,5 @@ function Project(projectName, callback)
 		return _data;
 	}
 
-	this.load(projectName, callback);
+	_self.load(projectName, onSuccess, onError);
 }

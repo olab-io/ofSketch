@@ -33,9 +33,8 @@ Assumes that the following are globally pre-defined:
 function SketchEditor(callback) 
 {
 	var _self = this;
-
+	
 	var _editorSettingsFile = "editorsettings.json";
-	var _projectFileTemplateFile = "templates/project.txt";
 
 	var _settings;
 	var _tabs = [];
@@ -105,10 +104,9 @@ function SketchEditor(callback)
 		});
 	}
 
-	this.loadProject = function(projectName, callback)
+	this.loadProject = function(projectName, onSuccess, onError)
 	{
-		_project = new Project(projectName, function()
-		{
+		_project = new Project(projectName, function(result) {
 		
 			_tabs = [];
 
@@ -128,14 +126,15 @@ function SketchEditor(callback)
 			});
 
 			_self.renderTab(projectName);
-			callback();
-		});
+			onSuccess(result);
+
+		}, onError);
 	}
 
-	this.saveProject = function(callback)
+	this.saveProject = function(onSuccess, onError)
 	{
 		_updateProject();
-		_project.save(callback);
+		_project.save(onSuccess, onError);
 	}
 
 	this.getProject = function()
@@ -148,42 +147,39 @@ function SketchEditor(callback)
 		return !_.isUndefined(_project);
 	}
 
-	this.run = function(callback)
+	this.run = function(onSuccess, onError)
 	{
-		console.log("project data:");
-		console.log(_project.getData());
 		JSONRPCClient.call('run', 
         					{ projectData: _project.getData() },
 					        function(result) {
-					            callback(result);
+					            onSuccess(result);
 					        },
 					        function(error) {
-					            addError(error);
+					            onError(error);
 					        });
 	}
 
-	this.createClass = function(className, callback)
+	this.createClass = function(className, onSuccess, onError)
 	{	
-		console.log("Creating class...");
-		_project.createClass(className, function(classFile)
-		{
-			console.log(classFile);
+		_project.createClass(className, function(classFile) {
+			
 			_addTab(classFile.name, 
 					classFile.fileName, 
 					false, 
 					new ace.EditSession(classFile.fileContents, 
 										_settings.editorMode));
-		});
+			onSuccess(); // should I pass result object?
+		}, onError);
 	}
 
-	this.deleteClass = function(className, callback)
+	this.deleteClass = function(className, onSuccess, onError)
 	{	
-		_project.deleteClass(className, callback);
+		_project.deleteClass(className, onSuccess, onError);
 	}
 
-	this.renameClass = function(className, newClassName, callback)
+	this.renameClass = function(className, newClassName, onSuccess, onError)
 	{	
-		_project.renameClass(className, newClassName, callback);
+		_project.renameClass(className, newClassName, onSuccess, onError);
 	}
 
 	this.renderTab = function(name)
