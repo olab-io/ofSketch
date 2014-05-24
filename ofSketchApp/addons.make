@@ -4,3 +4,4 @@ ofxJSON
 ofxJSONRPC
 ofxMediaType
 ofxSSLManager
+ofxTaskQueue
