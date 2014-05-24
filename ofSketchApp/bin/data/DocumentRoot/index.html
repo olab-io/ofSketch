@@ -33,7 +33,7 @@
       <div class="navbar navbar-default navbar-fixed-top" >
         <div class="container">
           <div class="navbar-header">
-            <a class="navbar-brand" href="http://openframeworks.cc" target="_blank" >
+            <a class="navbar-brand" href="http://openframeworks.cc" title="openFrameworks Website" target="_blank" >
               <img src="./img/openFrameworks_header.png"/>
             </a>
           </div>
@@ -50,7 +50,7 @@
                 <button id="toolbar-save" type="button" class="btn btn-default" title="Save Project">
                   <span class="glyphicon glyphicon-floppy-save"></span> 
                 </button>
-                <button id="toolbar-open-project" type="button" class="btn btn-default" title="Open Project">
+                <button id="toolbar-open-project" type="button" class="btn btn-default" title="Open Project" data-toggle="modal" data-target="#open-project-modal">
                   <span class="glyphicon glyphicon-folder-open"></span> 
                 </button>
                 <button id="toolbar-create-project" type="button" class="btn btn-default" title="New Project">
@@ -58,7 +58,7 @@
                 </button>
               </div>
               <div class="btn-group">
-                <button id="toolbar-upload-media" type="button" class="btn btn-default" title="Upload File">
+                <button id="toolbar-upload-media" type="button" class="btn btn-default" title="Upload File" data-toggle="modal" data-target="#upload-media-modal">
                   <span class="glyphicon glyphicon-paperclip"></span> 
                 </button>
               </div>
@@ -67,111 +67,21 @@
                     <a href="http://openframeworks.cc/documentation" target="_blank">Reference</a>
                 </button>
                 <button type="button" class="btn btn-default" title="openFrameworks Forum">
-                    <a href="http://forum.openframeworks.cc/" target="_blank"> Forum</a>
+                    <a href="http://forum.openframeworks.cc/" target="_blank">Forum</a>
                 </button>
-                <button id="toolbar-settings" type="button" class="btn btn-default" title="Settings">
+                <button type="button" class="btn btn-default" title="ofxAddons Website">
+                    <a href="http://ofxaddons.com/" target="_blank">ofxAddons</a>
+                </button>
+                <button id="toolbar-settings" type="button" class="btn btn-default" title="Settings" data-toggle="modal" data-target="#settings-modal">
                     <span class="glyphicon glyphicon-cog"></span> 
                 </button>
               </div>
             </div> <!-- btn-toolbar -->
         </div> <!-- container -->
-        <div class="container" style="display: none;">
-          <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="#"><img src="./img/openFrameworks_header.png"/></a>
-          
-            <ul id="toolbar" class="nav navbar-nav">
-              <li>
-                <a id="toolbar-run" 
-                    href="#" 
-                    class="glyphicon glyphicon-play" 
-                    title="Run Program"></a>
-              </li>
-              <li>
-                <!-- TODO: disable stop button when not running -->
-                <a id="toolbar-stop" 
-                   href="#" 
-                   class="glyphicon glyphicon-stop" 
-                   title="Stop Program">
-                 </a>
-              </li>
-
-              <li>
-                <a id="toolbar-save" 
-                   href="#" 
-                   class="glyphicon glyphicon-floppy-save" 
-                   title="Stop Program">
-                 </a>
-              </li>
-
-              <li>
-                <a id="toolbar-addons" 
-                   href="#addonsModal" 
-                   class="glyphicon glyphicon-plus" 
-                   data-toggle="modal"></a>
-              </li>
-              <li>
-                <a id="toolbar-upload-media" 
-                   href="#uploadMediaModal" 
-                   class="glyphicon glyphicon-paperclip" 
-                   data-toggle="modal"></a>
-              </li>
-
-              <li>
-                <a id="toolbar-create-project" 
-                   href="#notImplementedModal" 
-                   class="glyphicon glyphicon-file" 
-                   data-toggle="modal" 
-                   title="Create New Project">
-                </a>
-              </li>
-
-              <li>
-                <a id="toolbar-open-project" 
-                   href="#notImplementedModal" 
-                   class="glyphicon glyphicon-open" 
-                   data-toggle="modal" title="Open Project">
-                 </a>
-              </li>
-
-              <li>
-                <a id="toolbar-import-project" 
-                   href="#notImplementedModal" 
-                   class="glyphicon glyphicon-import" 
-                   data-toggle="modal" 
-                   title="Import Project">
-                 </a>
-              </li>
-
-              <li>
-                <a id="toolbar-export-project" 
-                   href="#notImplementedModal" 
-                   class="glyphicon glyphicon-export" 
-                   data-toggle="modal" 
-                   title="Export Project">
-                 </a>
-              </li>
-
-              <li>
-                <a id="toolbar-settings" 
-                   href="#settingsModal" 
-                   class="glyphicon glyphicon-cog"
-                   data-toggle="modal" 
-                   title="Settings">
-                </a>
-              </li>          
-
-            </ul>
-          </div><!--/.nav-collapse -->
-        </div>
-      </div>
+      </div> <!-- navbar -->
 
       <!-- Upload Modal -->
-      <div class="modal fade" id="uploadMediaModal" tabindex="-1" role="dialog" aria-labelledby="uploadMediaModal" aria-hidden="true">
+      <div class="modal fade" id="upload-media-modal" tabindex="-1" role="dialog" aria-labelledby="uploadMediaModal" aria-hidden="true" target="toolbar-upload-media">
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
@@ -203,27 +113,8 @@
         </div><!-- /.modal-dialog -->
       </div><!-- /.modal -->
 
-      <!-- Addons Modal -->
-      <div class="modal fade" id="addonsModal" tabindex="-1" role="dialog" aria-labelledby="addonsModal" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-              <h4 class="modal-title">Addons</h4>
-            </div>
-            <div class="modal-body">
-              To be implemented.
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary">Save changes</button>
-            </div>
-          </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-      </div><!-- /.modal -->
-
       <!-- Settings Modal -->
-      <div class="modal fade" id="settingsModal" tabindex="-1" role="dialog" aria-labelledby="settingsModalLabel" aria-hidden="true">
+      <div class="modal fade" id="settings-modal" tabindex="-1" role="dialog" aria-labelledby="settingsModalLabel" aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
@@ -241,44 +132,45 @@
         </div><!-- /.modal-dialog -->
       </div><!-- /.modal -->
 
-      <!-- Settings Modal -->
-      <div class="modal fade" id="notImplementedModal" tabindex="-1" role="dialog" aria-labelledby="notImplementedModal" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-              <h4 class="modal-title">Not implemented yet ...</h4>
-            </div>
-            <div class="modal-body">
-              To be implemented.
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary">Save changes</button>
+
+      <!-- New Class Modal -->   
+      <div class="modal fade" id="newClassModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">New Class</h4>
+              </div>
+              <div class="modal-body">
+                <div class="input-group">
+                  <input id="new-class-name" type="text" class="form-control" placeholder="MyClass">
+                  <span class="input-group-btn">
+                    <button id="create-class" class="btn btn-default" type="button" data-dismiss="modal">Create</button>
+                  </span>
+                </div>
             </div>
           </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
       </div><!-- /.modal -->
 
-      <!-- New Class Modal -->   
-      <div class="modal fade" id="newClassModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-sm">
+      <!-- Open Project Modal -->
+      <div class="modal fade" id="open-project-modal" tabindex="-1" role="dialog" aria-labelledby="open-project-modal" aria-hidden="true">
+        <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-              <h4 class="modal-title">New Class</h4>
+              <h4 class="modal-title">Open Project</h4>
             </div>
             <div class="modal-body">
-              <div class="input-group">
-                <input id="new-class-name" type="text" class="form-control" placeholder="MyClass">
-                <span class="input-group-btn">
-                  <button id="create-class" class="btn btn-default" type="button" data-dismiss="modal">Create</button>
-                </span>
-              </div>
-          </div>
-        </div><!-- /.modal-content -->
-      </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
+              Select a project to open.
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+          </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+      </div><!-- /.modal -->
+
 
     <div class="container">
 
