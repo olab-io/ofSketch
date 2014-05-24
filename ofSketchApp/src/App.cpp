@@ -188,7 +188,7 @@ void App::createClass(const void* pSender, JSONRPC::MethodArgs& args)
         args.result["classFile"] = project.createClass(className);
         
     } else {
-        args.error = "Incorrect parameters.";
+        args.error["error"] = "Incorrect parameters.";
         cout<<"Incorrect JSONRPC parameters sent to createClass."<<endl;
     }
 }
