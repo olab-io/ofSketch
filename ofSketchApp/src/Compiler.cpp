@@ -41,7 +41,7 @@ void Compiler::run(const Project& project)
     std::string cmd("make");
     std::vector<std::string> args;
     
-    args.push_back("--directory=" + ofToDataPath("Projects/HelloWorld/", true));
+    args.push_back("--directory=" + ofToDataPath("Projects/Bounce/", true));
     //        if(_settings.numProcessors > 1)
     //        {
     //            args.push_back("-j" + ofToString(_settings.numProcessors));
@@ -101,33 +101,49 @@ void Compiler::generateSourceFiles(const Project& project)
     ofxJSONElement projectData = project.getData();
     std::string projectFile = _projectFileTemplate;
     ofStringReplace(projectFile, "<projectfile>", projectData["projectFile"]["fileContents"].asString());
-    
+    _replaceIncludes(projectFile);
+    ofBuffer sourceBuffer(projectFile);
+    ofBufferToFile(project.getPath() + "/src/main.cpp", sourceBuffer);
+
     if (project.hasClasses()) {
-        
-        std::string includes;
-        std::vector<std::string> classFiles;
         
         for (int i = 0; i < projectData["classes"].size(); i++) {
             
             ofxJSONElement c = projectData["classes"][i];
-            includes += "#include \"" + c["name"].asString() + ".h\"\n";
             
             std::string classFile = _classTemplate;
             ofStringReplace(classFile, "<classname>", c["name"].asString());
             ofStringReplace(classFile, "<classfile>", c["fileContents"].asString());
-            ofStringReplace(classFile, "<includes>", ""); // temporary
+            _replaceIncludes(classFile);
             
             ofBuffer sourceBuffer(classFile);
-            cout<<"Class name: "<<c["name"].asString()<<endl;
             ofBufferToFile(project.getPath() + "/src/" + c["name"].asString() + ".h", sourceBuffer);
         }
-        
-        ofStringReplace(projectFile, "<includes>", includes);
-        
-        ofBuffer sourceBuffer(projectFile);
-        ofBufferToFile(project.getPath() + "/src/main.cpp", sourceBuffer);
+    }
+}
     
-    } else ofStringReplace(projectFile, "<includes>", "");
+void Compiler::_replaceIncludes(std::string& fileContents) {
+    
+    Poco::RegularExpression includesExpression("#include .*");
+    Poco::RegularExpression::Match match;
+    
+    std::vector<std::string> includes;
+    
+    int numMatches = 0;
+    std::size_t matchOffset = 0;
+    
+    while (matchOffset < fileContents.size()) {
+        if (includesExpression.match(fileContents, matchOffset, match) == 0) break;
+        std::string include;
+        includesExpression.extract(fileContents, match.offset, include);
+        includes.push_back(include);
+        matchOffset = match.offset + match.length;
+        numMatches++;
+    }
+    
+    includesExpression.subst(fileContents, "", Poco::RegularExpression::RE_GLOBAL);
+    ofStringReplace(fileContents, "<includes>", ofJoinString(includes, "\n"));
+
 }
     
 void Compiler::_parseAddons()

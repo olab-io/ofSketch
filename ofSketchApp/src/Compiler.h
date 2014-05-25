@@ -31,6 +31,7 @@
 #include "Poco/Process.h"
 #include "Poco/StreamCopier.h"
 #include "Poco/PipeStream.h"
+#include "Poco/RegularExpression.h"
 #include "ofTypes.h"
 #include "Project.h"
 #include "ofMain.h"
@@ -58,6 +59,8 @@ private:
     
     void _parseAddons();
     void _getAddons();
+    
+    void _replaceIncludes(std::string& fileContents);
 };
     
 } } // namespace of::Sketch

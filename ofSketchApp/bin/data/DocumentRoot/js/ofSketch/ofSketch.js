@@ -124,7 +124,7 @@ $(document).ready( function()
             }
         });
 
-        sketchEditor.loadProject("HelloWorld", function() {
+        sketchEditor.loadProject("Bounce", function() {
             console.log("Project loaded!");
             }, function(error) {
                 console.log("Error:");

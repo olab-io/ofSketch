@@ -33,6 +33,12 @@ namespace Sketch {
 
 App::App()
 {
+    ofx::HTTP::BasicJSONRPCServer::Settings settings;
+    int bufferSize = 100000000;
+    settings.setBufferSize(bufferSize);
+    cout<<"The buffer size is: "<<settings.getBufferSize()<<endl;
+    server.setup(settings);
+    
     // Must register for all events before initializing server.
     ofSSLManager::registerAllEvents(this);
 
@@ -258,6 +264,7 @@ bool App::onWebSocketFrameSentEvent(HTTP::WebSocketFrameEventArgs& args)
 
 bool App::onWebSocketErrorEvent(HTTP::WebSocketEventArgs& args)
 {
+    cout<<"Error: "<<args.getError()<<endl;
 //    ofLogVerbose("App::onWebSocketErrorEvent") << "Error on: " << args.getConnectionRef().getClientAddress().toString();
     return false; // did not handle it
 }
