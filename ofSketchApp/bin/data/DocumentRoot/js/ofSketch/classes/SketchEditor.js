@@ -64,9 +64,7 @@ function SketchEditor(callback)
 	var _registerTabEvent = function(tabElement)
 	{
 		$(tabElement).on('click', function(){
-			$(this).parent().find('li').removeClass("active");
-			$(this).toggleClass('active');
-			_self.renderTab($(this).text());
+			_self.selectTab($(this).text());
 		});
 	}
 
@@ -76,13 +74,24 @@ function SketchEditor(callback)
 			name: name,
 			fileName: fileName,
 			isProjectFile: isProjectFile,
+			isSelected: false,
 			editSession: editSession
 		}
+
 		_tabs.push(tab);
 		var tabElement = $('<li class="file-tab"><a href="#" onclick="return false;">' + tab.name + '</a></li>');
 		_registerTabEvent(tabElement);
 		if (tab.isProjectFile) tabElement.addClass('active');
 		$('ul.nav-tabs li:last').prev().after(tabElement);
+	}
+
+	var _renderTab = function(name)
+	{
+		var tab = _.find(_tabs, function(tab){ return tab.name == name; });
+		if (tab) {
+			_editor.setSession(tab.editSession);
+		}
+		return tab;
 	}
 
 	var _updateProject = function()
@@ -125,7 +134,7 @@ function SketchEditor(callback)
 					new ace.EditSession(c.fileContents, _settings.editorMode));
 			});
 
-			_self.renderTab(projectName);
+			_self.selectTab(projectName);
 			onSuccess(result);
 
 		}, onError);
@@ -182,13 +191,20 @@ function SketchEditor(callback)
 		_project.renameClass(className, newClassName, onSuccess, onError);
 	}
 
-	this.renderTab = function(name)
+	this.selectTab = function(name)
 	{
-		var tab = _.find(_tabs, function(tab){ return tab.name == name; });
-		if (tab) {
-			_editor.setSession(tab.editSession);
-		}
-		return tab;
+		$('.file-tab').each(function(){
+			
+			$(this).removeClass('active');
+			if ($(this).text() == name) {
+				$(this).addClass('active');
+				_renderTab($(this).text());
+			}
+		});
+	}
+
+	this.getSelectedTabName = function() {
+		
 	}
 
 	$.getJSON(_editorSettingsFile, function(data){

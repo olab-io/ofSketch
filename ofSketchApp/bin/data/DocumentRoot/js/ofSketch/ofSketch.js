@@ -80,6 +80,10 @@ $(document).ready( function()
             e.preventDefault(); 
         });
 
+        $('.file-tab a').on('click', function() {
+            
+        });
+
         $('#toolbar-stop').on('click', function() {
 
         });
@@ -102,11 +106,12 @@ $(document).ready( function()
         });
         
         $('#create-class').on('click', function() {
+            
             var className = $('#new-class-name').val();
             
             sketchEditor.createClass(className, function() {
                 
-                sketchEditor.renderTab(className);
+                sketchEditor.selectTab(className);
                 sketchEditor.saveProject(function(){
                     saveAlert();
                 }, saveError)}, createClassError);
