@@ -116,6 +116,7 @@ function Project(projectName, onSuccess, onError)
         						className: className 
         					},
 					        function(result) {
+					        	_data.classes = _.without(_self.getClasses(), _.findWhere(_self.getClasses(), { name: className }));
 					        	onSuccess(result);
 					        },
 					        function(error) {

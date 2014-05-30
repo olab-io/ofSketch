@@ -70,16 +70,17 @@ function SketchEditor(callback)
 
 	var _addTab = function(name, fileName, isProjectFile, editSession)
 	{
+		var tabElement = $('<li class="file-tab"><a href="#" onclick="return false;">' + name + '</a></li>');
 		var tab = {
 			name: name,
 			fileName: fileName,
 			isProjectFile: isProjectFile,
 			isSelected: false,
-			editSession: editSession
+			editSession: editSession,
+			tabElement: tabElement
 		}
 
 		_tabs.push(tab);
-		var tabElement = $('<li class="file-tab"><a href="#" onclick="return false;">' + tab.name + '</a></li>');
 		_registerTabEvent(tabElement);
 		if (tab.isProjectFile) tabElement.addClass('active');
 		$('ul.nav-tabs li:last').prev().after(tabElement);
@@ -183,7 +184,12 @@ function SketchEditor(callback)
 
 	this.deleteClass = function(className, onSuccess, onError)
 	{	
-		_project.deleteClass(className, onSuccess, onError);
+		_project.deleteClass(className, function(result){
+			var tab = _.findWhere(_tabs, { name: className });
+			tab.tabElement.remove();
+			_tabs = _.without(_tabs, tab);
+			onSuccess(result);
+		}, onError);
 	}
 
 	this.renameClass = function(className, newClassName, onSuccess, onError)
@@ -204,7 +210,7 @@ function SketchEditor(callback)
 	}
 
 	this.getSelectedTabName = function() {
-		
+		return $('.file-tab.active a').text();
 	}
 
 	$.getJSON(_editorSettingsFile, function(data){

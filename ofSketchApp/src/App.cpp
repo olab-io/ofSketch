@@ -34,10 +34,12 @@ namespace Sketch {
 App::App()
 {
     ofx::HTTP::BasicJSONRPCServer::Settings settings;
-    int bufferSize = 100000000;
+    int bufferSize = 10000;
     settings.setBufferSize(bufferSize);
-    cout<<"The buffer size is: "<<settings.getBufferSize()<<endl;
+    cout<<"The buffer should be: "<<settings.getBufferSize()<<endl;
     server.setup(settings);
+    // uncomment line below to recieve error
+    // cout<<"Settings that the server is using think that the buffer size is: "<<server.getSettings().getBufferSize()<<endl;
     
     // Must register for all events before initializing server.
     ofSSLManager::registerAllEvents(this);
@@ -202,7 +204,16 @@ void App::createClass(const void* pSender, JSONRPC::MethodArgs& args)
 
 void App::deleteClass(const void* pSender, JSONRPC::MethodArgs& args)
 {
-    
+    std::string projectName = args.params["projectName"].asString();
+    if (_projectManager->projectExists(projectName)) {
+        
+        std::string className = args.params["className"].asString();
+        cout<<"Deleting class..."<<endl;
+        Project& project = _projectManager->getProjectRef(projectName);
+        if (project.deleteClass(className)) {
+            args.result["message"] = className + "class deleted.";
+        } else args.error["message"] = "Error deleting the class.";
+    } else args.error["message"] = "The requested project does not exist.";
 }
 
 void App::renameClass(const void* pSender, JSONRPC::MethodArgs& args)

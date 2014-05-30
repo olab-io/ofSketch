@@ -47,10 +47,11 @@ Project::Project(const std::string& path):
 
 void Project::load(const std::string path, const std::string& name)
 {
-    ofDirectory sketchDir(ofToDataPath(path + "/sketch"));
-    if (sketchDir.exists()) {
-        sketchDir.listDir();
-        std::vector<ofFile> files = sketchDir.getFiles();
+    _sketchDir = ofDirectory(ofToDataPath(path + "/sketch"));
+    _data.clear();
+    if (_sketchDir.exists()) {
+        _sketchDir.listDir();
+        std::vector<ofFile> files = _sketchDir.getFiles();
         int classCounter = 0;
         for (int i = 0; i < files.size(); i++) {
             ofFile file = files[i];
@@ -105,8 +106,11 @@ void Project::save(ofxJSONElement data){
                 
                 if (classFile["fileName"] == newClassFile["fileName"]) {
                     
-                    if (classFile != newClassFile) classFile = newClassFile;
-                    _saveFile(classFile);
+                    if (classFile != newClassFile) {
+                        classFile = newClassFile;
+                        _saveFile(classFile);
+                    }
+                   
                     matchFound = true;
                     break;
                 }
@@ -156,9 +160,21 @@ Json::Value Project::createClass(const std::string& className)
     return classFile;
 }
     
-void Project::deleteClass(const std::string& className)
+bool Project::deleteClass(const std::string& className)
 {
+    if (isLoaded()) {
+        ofFile file(_sketchDir.getAbsolutePath() + "/" + className + ".sketch");
+        if (file.exists()) {
+            file.remove();
+            // TODO: re-loading is a terribly slow way to delete. Come back and optimize.
+            // Simply need to remove the Json::Value class in _data["classes"]
+            load(_path, getName());
+            cout<<"Project re-loaded!"<<endl;
+            return true;
+        }
+    }
     
+    return false;
 }
     
 void Project::renameClass(const std::string& currentName, const std::string& newName)

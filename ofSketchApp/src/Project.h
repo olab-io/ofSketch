@@ -59,7 +59,7 @@ public:
     void load(const std::string path,
               const std::string& name);
     
-    void deleteClass(const std::string& className);
+    bool deleteClass(const std::string& className);
     void renameClass(const std::string& currentName,
                      const std::string& newName);
     
@@ -77,6 +77,7 @@ private:
     std::string _projectFileTemplate;
     std::string _classFileTemplate;
     std::vector<Source> _sources;
+    ofDirectory _sketchDir;
     
     bool _isLoaded;
     ofxJSONElement _data;

@@ -24,6 +24,7 @@
 // =============================================================================
 
 var JSONRPCClient; ///< The core JSONRPC WebSocket client.
+var alertBox;
 
 function onWebSocketOpen(ws) {
     console.log("on open");
@@ -60,7 +61,17 @@ function createClassError(err) {
 
 function saveAlert(message) {
     var m = message || "Project saved."
-    console.log(m);
+    alertMessage(message, "alert-success");
+}
+
+function alertMessage(message, c) {
+
+    alertBox.removeClass();
+    alertBox.addClass('alert', c);
+    alertBox.show();
+    setTimeout(function(){
+        alertBox.hide();
+    }, 2000);
 }
 
 $(document).ready( function()
@@ -74,6 +85,9 @@ $(document).ready( function()
             onerror: onWebSocketError
         });
 
+    alertBox = $('#editor-messages.alert');
+    alertBox.hide();
+
     var sketchEditor = new SketchEditor(function() {
 
         $('#toolbar li a, .file-tab a, #new-class a, .action-menu li a').on('click', function(e) {
@@ -83,6 +97,18 @@ $(document).ready( function()
         $('.file-tab a').on('click', function() {
             
         });
+
+        $('.nav-tabs .dropdown').on('click', function(){
+            var tabName = sketchEditor.getSelectedTabName();
+            if (tabName == sketchEditor.getProject().getName()) {
+                $('.rename-class, .delete-class').addClass('disabled');
+                $('.selected-tab-name').text('');
+            } else {
+                $('.rename-class, .delete-class').removeClass('disabled');
+                $('.selected-tab-name').text(tabName);
+            }
+            
+        })
 
         $('#toolbar-stop').on('click', function() {
 
@@ -101,9 +127,23 @@ $(document).ready( function()
         });
 
 
+        // Modals
         $('.new-class').on('click', function() {
-            $('#newClassModal').modal();
+            $('#new-class-modal').modal();
         });
+
+        $('.rename-class').on('click', function() {
+            if (!$(this).hasClass('disabled')) {
+                $('#rename-class-modal').modal();
+            }
+        });
+
+        $('.delete-class').on('click', function() {
+            if (!$(this).hasClass('disabled')) {
+                $('#delete-class-modal').modal();
+            }
+        });
+
         
         $('#create-class').on('click', function() {
             
@@ -117,6 +157,20 @@ $(document).ready( function()
                 }, saveError)}, createClassError);
 
             $('#new-class-name').val('');
+        });
+
+        $('#delete-class').on('click', function() {
+            
+            var projectName = sketchEditor.getProject().getName();
+            var tabName = sketchEditor.getSelectedTabName();
+            if (tabName != projectName) {
+                sketchEditor.deleteClass(tabName, function() {
+                    sketchEditor.selectTab(projectName);
+                }, function(err) {
+                    console.log("Error deleting class: ");
+                    console.log(err)
+                });
+            }
         });
 
         $('#toolbar-run').on('click', function() {

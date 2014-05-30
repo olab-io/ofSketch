@@ -134,7 +134,7 @@
 
 
       <!-- New Class Modal -->   
-      <div class="modal fade" id="newClassModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+      <div class="modal fade" id="new-class-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
           <div class="modal-dialog modal-sm">
             <div class="modal-content">
               <div class="modal-header">
@@ -149,6 +149,45 @@
                   </span>
                 </div>
             </div>
+          </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+      </div><!-- /.modal -->
+
+      <!-- Rename Class Modal -->   
+      <div class="modal fade" id="rename-class-modal" tabindex="-1" role="dialog" aria-hidden="true">
+          <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Rename <span class="selected-tab-name"></span> Class</h4>
+              </div>
+              <div class="modal-body">
+                <div class="input-group">
+                  <input id="renamed-class-name" type="text" class="form-control" placeholder="MyNewClassName">
+                  <span class="input-group-btn">
+                    <button id="rename-class" class="btn btn-default" type="button" data-dismiss="modal">Rename</button>
+                  </span>
+                </div>
+            </div>
+          </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+      </div><!-- /.modal -->
+
+      <!-- Delete Class Modal -->   
+      <div class="modal fade" id="delete-class-modal" tabindex="-1" role="dialog" aria-hidden="true">
+          <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Delete Class</h4>
+              </div>
+              <div class="modal-body">
+                Are you sure that you want to delete the <strong><span class="selected-tab-name"></span></strong> class?
+              </div>
+              <div class="modal-footer">
+                <button class="btn btn-default" type="button" data-dismiss="modal">Nevermind</button>
+                <button id="delete-class" class="btn btn-danger" type="button" data-dismiss="modal">Delete</button>
+              </div>
           </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
       </div><!-- /.modal -->
@@ -182,9 +221,9 @@
               </a>
               <ul class="dropdown-menu action-menu" role="menu">
 
-                <li><a href="#" class="new-class">New Class</a></li>
-                <li><a href="#">Rename Class</a></li>
-                <li><a href="#">Delete Class</a></li>
+                <li class="new-class"><a href="#" >New Class</a></li>
+                <li class="rename-class"><a href="#">Rename <span class="selected-tab-name"></span> Class</a></li>
+                <li class="delete-class"><a href="#">Delete <span class="selected-tab-name"></span> Class</a></li>
                 <li class="divider"></li>
                 <li><a href="#">Rename Project</a></li>
                 <li><a href="#">Delete Project</a></li>
@@ -194,12 +233,12 @@
           </li>
           <!--<li class="active file-tab"><a href="#">HelloWorld</a></li>-->
           <li class="new-class">
-            <a href="#newClassModal" class="glyphicon glyphicon-plus"> </a>
+            <a href="#new-class-modal" class="glyphicon glyphicon-plus"> </a>
           </li>
         </ul>
     
       <pre id="editor">loading...</pre>
-      <div id="editor-message-container"></div>
+      <div id="editor-messages" class="alert"></div>
       <pre id="console">Console</pre>
 
       </div>
