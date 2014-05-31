@@ -25,6 +25,7 @@
 
 var JSONRPCClient; ///< The core JSONRPC WebSocket client.
 var alertBox;
+var alertTimeout;
 
 function onWebSocketOpen(ws) {
     console.log("on open");
@@ -47,29 +48,34 @@ function onWebSocketError() {
 function saveError(err) {
     console.log("Error saving project");
     console.log(err);
+    alertMessage('Save Error!', '', 'alert-danger');
 }
 
 function loadError(err) {
     console.log("Error loading project");
     console.log(err);
+    alertMessage('Load Error!', '', 'alert-danger');
 }
 
 function createClassError(err) {
     console.log("Error creating class");
-    console.log(err);
+    alertMessage('Error Creating Class!', '', 'alert-danger');
 }
 
-function saveAlert(message) {
-    var m = message || "Project saved."
-    alertMessage(message, "alert-success");
+function saveAlert(message, subMessage) {
+    var m = message || "Project saved!";
+    var s = subMessage || '';
+    alertMessage(m, s, "alert-success");
 }
 
-function alertMessage(message, c) {
+function alertMessage(message, subMessage, c) {
 
+    clearTimeout(alertTimeout);
     alertBox.removeClass();
-    alertBox.addClass('alert', c);
+    alertBox.addClass('alert ' + c);
+    alertBox.html('<strong>' + message + '</strong> ' + subMessage);
     alertBox.show();
-    setTimeout(function(){
+    alertTimeout = setTimeout(function(){
         alertBox.hide();
     }, 2000);
 }
