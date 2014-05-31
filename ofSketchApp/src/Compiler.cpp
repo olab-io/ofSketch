@@ -98,12 +98,16 @@ void Compiler::run(const Project& project)
 
 void Compiler::generateSourceFiles(const Project& project)
 {
+    ofDirectory src(project.getPath() + "/src");
+    src.remove(true);
+    src.create(true);
+    
     ofxJSONElement projectData = project.getData();
     std::string projectFile = _projectFileTemplate;
     ofStringReplace(projectFile, "<projectfile>", projectData["projectFile"]["fileContents"].asString());
     _replaceIncludes(projectFile);
     ofBuffer sourceBuffer(projectFile);
-    ofBufferToFile(project.getPath() + "/src/main.cpp", sourceBuffer);
+    ofBufferToFile(src.getAbsolutePath() + "/main.cpp", sourceBuffer);
 
     if (project.hasClasses()) {
         
@@ -117,7 +121,7 @@ void Compiler::generateSourceFiles(const Project& project)
             _replaceIncludes(classFile);
             
             ofBuffer sourceBuffer(classFile);
-            ofBufferToFile(project.getPath() + "/src/" + c["name"].asString() + ".h", sourceBuffer);
+            ofBufferToFile(src.getAbsolutePath() + "/" + c["name"].asString() + ".h", sourceBuffer);
         }
     }
 }
