@@ -85,7 +85,7 @@ public:
     void onSSLPrivateKeyPassphraseRequired(std::string& args);
 
 private:
-    HTTP::BasicJSONRPCServer server;
+    HTTP::BasicJSONRPCServer::SharedPtr server;
 
     Poco::TaskManager _taskManager;
 

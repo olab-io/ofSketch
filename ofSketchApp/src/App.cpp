@@ -33,26 +33,22 @@ namespace Sketch {
 
 App::App()
 {
-    ofx::HTTP::BasicJSONRPCServer::Settings settings;
-    int bufferSize = 10000;
-    settings.setBufferSize(bufferSize);
-    cout<<"The buffer should be: "<<settings.getBufferSize()<<endl;
-    server.setup(settings);
-    // uncomment line below to recieve error
-    // cout<<"Settings that the server is using think that the buffer size is: "<<server.getSettings().getBufferSize()<<endl;
+    HTTP::BasicJSONRPCServerSettings settings; // TODO: load from file.
+    settings.setBufferSize(1024 * 512); // 512MB
+    server = ofx::HTTP::BasicJSONRPCServer::makeShared(settings);
     
     // Must register for all events before initializing server.
     ofSSLManager::registerAllEvents(this);
 
-    server.getPostRoute()->registerPostEvents(this);
-    server.getWebSocketRoute()->registerWebSocketEvents(this);
+    server->getPostRoute()->registerPostEvents(this);
+    server->getWebSocketRoute()->registerWebSocketEvents(this);
 }
 
 
 App::~App()
 {
-    server.getWebSocketRoute()->unregisterWebSocketEvents(this);
-    server.getPostRoute()->unregisterPostEvents(this);
+    server->getWebSocketRoute()->unregisterWebSocketEvents(this);
+    server->getPostRoute()->unregisterPostEvents(this);
 
     ofSSLManager::unregisterAllEvents(this);
 }
@@ -74,72 +70,66 @@ void App::setup()
     _addonManager = AddonManager::makeShared(ofToDataPath("openFrameworks/addons"));
     _compiler = Compiler(ofToDataPath("Resources/Templates/CompilerTemplates"));
 
-    HTTP::BasicJSONRPCServerSettings settings; // TODO: load from file.
-
-    // settings.setUseSSL(true);
-
-    server.setup(settings);
-
-    server.registerMethod("load-project",
+    server->registerMethod("load-project",
                           "Load the requested project.",
                           this,
                           &App::loadProject);
     
-    server.registerMethod("save-project",
+    server->registerMethod("save-project",
                           "Save the current project.",
                           this,
                           &App::saveProject);
     
-    server.registerMethod("create-project",
+    server->registerMethod("create-project",
                           "Create a new project.",
                           this,
                           &App::createProject);
     
-    server.registerMethod("delete-project",
+    server->registerMethod("delete-project",
                           "Delete the current project.",
                           this,
                           &App::deleteProject);
     
-    server.registerMethod("rename-project",
+    server->registerMethod("rename-project",
                           "Rename the current project.",
                           this,
                           &App::renameProject);
     
-    server.registerMethod("create-class",
+    server->registerMethod("create-class",
                           "Create a new class for the current project.",
                           this,
                           &App::createClass);
     
-    server.registerMethod("delete-class",
+    server->registerMethod("delete-class",
                           "Delete a select class from for the current project.",
                           this,
                           &App::deleteClass);
     
-    server.registerMethod("rename-class",
+    server->registerMethod("rename-class",
                           "Rename a select class from for the current project.",
                           this,
                           &App::renameClass);
 
-    server.registerMethod("run",
+    server->registerMethod("run",
                           "Run the requested project.",
                           this,
                           &App::run);
 
-    server.registerMethod("stop",
+    server->registerMethod("stop",
                           "Stop the requested project.",
                           this,
                           &App::stop);
     
-    server.registerMethod("get-project-list",
+    server->registerMethod("get-project-list",
                           "Get list of all projects in the Project directory.",
                           this,
                           &App::getProjectList);
 
     // start the server
-    server.start();
+    server->start();
 
     // Launch a browser with the address of the server.
-    ofLaunchBrowser(server.getURL());
+    ofLaunchBrowser(server->getURL());
 }
 
 void App::update()
