@@ -156,6 +156,8 @@ Json::Value Project::createClass(const std::string& className)
     classFile["name"] = className;
     classFile["fileContents"] = fileContents;
     _data["classes"][getNumClasses()] = classFile;
+    // TODO: re-loading is a terribly slow way to delete. Come back and optimize.
+    // Simply need to remove the Json::Value class in _data["classes"]
     _saveFile(classFile);
     return classFile;
 }
@@ -169,7 +171,6 @@ bool Project::deleteClass(const std::string& className)
             // TODO: re-loading is a terribly slow way to delete. Come back and optimize.
             // Simply need to remove the Json::Value class in _data["classes"]
             load(_path, getName());
-            cout<<"Project re-loaded!"<<endl;
             return true;
         }
     }
@@ -186,6 +187,8 @@ bool Project::renameClass(const std::string& currentName, const std::string& new
             for (int i = 0; i < getNumClasses(); i++) {
                 if (_data["classes"][i]["name"] == currentName) {
                     _data["classes"][i]["name"] = newName;
+                    _data["classes"][i]["fileName"] = newName + ".sketch";
+                    cout<<"NEW NAME DATA IS "<<newName<<endl;
                     file.renameTo(_sketchDir.getAbsolutePath() + "/" + newName + ".sketch");
                     return true;
                 }
