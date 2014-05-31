@@ -118,7 +118,7 @@ void App::setup()
     server.registerMethod("rename-class",
                           "Rename a select class from for the current project.",
                           this,
-                          &App::deleteClass);
+                          &App::renameClass);
 
     server.registerMethod("run",
                           "Run the requested project.",
@@ -195,7 +195,6 @@ void App::createClass(const void* pSender, JSONRPC::MethodArgs& args)
     if (_projectManager->projectExists(projectName)) {
         
         std::string className = args.params["className"].asString();
-        cout<<"Creating new class..."<<endl;
         Project& project = _projectManager->getProjectRef(projectName);
         args.result["classFile"] = project.createClass(className);
         
@@ -208,7 +207,6 @@ void App::deleteClass(const void* pSender, JSONRPC::MethodArgs& args)
     if (_projectManager->projectExists(projectName)) {
         
         std::string className = args.params["className"].asString();
-        cout<<"Deleting class..."<<endl;
         Project& project = _projectManager->getProjectRef(projectName);
         if (project.deleteClass(className)) {
             args.result["message"] = className + "class deleted.";
@@ -218,7 +216,17 @@ void App::deleteClass(const void* pSender, JSONRPC::MethodArgs& args)
 
 void App::renameClass(const void* pSender, JSONRPC::MethodArgs& args)
 {
-    
+    std::string projectName = args.params["projectName"].asString();
+    if (_projectManager->projectExists(projectName)) {
+        
+        std::string className = args.params["className"].asString();
+        std::string newClassName = args.params["newClassName"].asString();
+        Project& project = _projectManager->getProjectRef(projectName);
+        if (project.renameClass(className, newClassName)) {
+            args.result["message"] = className + " class renamed to " + newClassName;
+        } else args.error["message"] = "Error renaming " + className + " class.";
+    } else args.error["message"] = "The requested project does not exist.";
+
 }
     
 void App::run(const void* pSender, JSONRPC::MethodArgs& args)

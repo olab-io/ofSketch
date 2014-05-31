@@ -60,8 +60,10 @@ public:
               const std::string& name);
     
     bool deleteClass(const std::string& className);
-    void renameClass(const std::string& currentName,
+    bool renameClass(const std::string& currentName,
                      const std::string& newName);
+    
+    bool isClassName(const std::string& className) const;
     
     int getNumClasses() const;
     

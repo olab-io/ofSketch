@@ -194,7 +194,19 @@ function SketchEditor(callback)
 
 	this.renameClass = function(className, newClassName, onSuccess, onError)
 	{	
-		_project.renameClass(className, newClassName, onSuccess, onError);
+		_project.renameClass(className, newClassName, function(result){
+			
+			// TODO: come back and change this to use _.without
+			_.each(_tabs, function(tab, i) {
+				if (tab.name == className) {
+					_tabs[i].name = newClassName;
+					_tabs[i].fileName = newClassName + ".sketch";
+					_tabs[i].tabElement.find('a').text(newClassName);
+				}
+			});
+
+			onSuccess(result);
+		}, onError);
 	}
 
 	this.selectTab = function(name)

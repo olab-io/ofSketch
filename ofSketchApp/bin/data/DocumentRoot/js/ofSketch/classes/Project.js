@@ -133,6 +133,10 @@ function Project(projectName, onSuccess, onError)
         						newClassName: newClassName
         					},
 					        function(result) {
+					        	
+					        	var c = _.findWhere(_self.getClasses(), { name: className });
+					        	c.name = newClassName;
+					        	c.fileName = newClassName + '.sketch';
 					        	onSuccess(result);
 					        },
 					        function(error) {
@@ -143,6 +147,12 @@ function Project(projectName, onSuccess, onError)
 	this.getName = function()
 	{
 		return _data.projectFile.name;
+	}
+
+	this.isClassName = function(className)
+	{
+		return _self.hasClasses() && 
+			   !_.isUndefined(_.findWhere(_self.getClasses(), { name: className } ));
 	}
 
 	this.getProjectFile = function()

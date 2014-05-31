@@ -148,13 +148,15 @@ $(document).ready( function()
         $('#create-class').on('click', function() {
             
             var className = $('#new-class-name').val();
-            
-            sketchEditor.createClass(className, function() {
-                
-                sketchEditor.selectTab(className);
-                sketchEditor.saveProject(function(){
-                    saveAlert();
-                }, saveError)}, createClassError);
+            if (!sketchEditor.getProject().isClassName(className)) {
+                sketchEditor.createClass(className, function() {
+                    sketchEditor.selectTab(className);
+                    sketchEditor.saveProject(function(){
+                        saveAlert();
+                    }, saveError)}, createClassError);
+            } else {
+                // class name already exists.
+            }
 
             $('#new-class-name').val('');
         });
@@ -171,6 +173,28 @@ $(document).ready( function()
                     console.log(err)
                 });
             }
+        });
+
+        $('#rename-class').on('click', function() {
+            
+            var projectName = sketchEditor.getProject().getName();
+            var tabName = sketchEditor.getSelectedTabName();
+            var newClassName = $('#renamed-class-name').val();
+            
+            if (tabName != projectName) {
+                if (!sketchEditor.getProject().isClassName(newClassName)) {
+                    sketchEditor.renameClass(tabName, newClassName, function() {
+                       console.log('class renamed!');
+                    }, function(err) {
+                        console.log('Error renaming class: ');
+                        console.log(err);
+                    });
+                } else {
+                    // renamed class is already taken.
+                }
+            }
+
+            $('#renamed-class-name').val('');
         });
 
         $('#toolbar-run').on('click', function() {

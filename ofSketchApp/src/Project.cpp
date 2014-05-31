@@ -177,14 +177,41 @@ bool Project::deleteClass(const std::string& className)
     return false;
 }
     
-void Project::renameClass(const std::string& currentName, const std::string& newName)
+bool Project::renameClass(const std::string& currentName, const std::string& newName)
 {
+    if (isLoaded()) {
+        cout<<"Renaming class..."<<endl;
+        ofFile file(_sketchDir.getAbsolutePath() + "/" + currentName + ".sketch");
+        if (file.exists() && hasClasses()) {
+            for (int i = 0; i < getNumClasses(); i++) {
+                if (_data["classes"][i]["name"] == currentName) {
+                    _data["classes"][i]["name"] = newName;
+                    file.renameTo(_sketchDir.getAbsolutePath() + "/" + newName + ".sketch");
+                    return true;
+                }
+            }
+        }
+    }
     
+    return false;
 }
     
 bool Project::hasClasses() const
 {
     return _data["classes"].size() > 0;
+}
+    
+bool Project::isClassName(const std::string& className) const
+{
+    if (hasClasses()) {
+        for (int i = 0; i < getNumClasses(); i++) {
+            if (_data["classes"][i]["name"] == className) {
+                return true;
+            }
+        }
+    }
+    
+    return false;
 }
     
 int Project::getNumClasses() const
