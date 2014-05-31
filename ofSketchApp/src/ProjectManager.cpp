@@ -106,11 +106,8 @@ const std::vector<Project>& ProjectManager::getProjects() const
 void ProjectManager::getProjectList(const void* pSender, JSONRPC::MethodArgs& args)
 {
     Json::Value projectList;
-    cout<<args.params["foobar"]<<endl;
     for (int i = 0; i < _projects.size(); i++) {
-
         projectList[i]["projectName"] = _projects[i].getName();
-        projectList[i]["projectPath"] = _projects[i].getPath();
     }
     args.result = projectList;
 }

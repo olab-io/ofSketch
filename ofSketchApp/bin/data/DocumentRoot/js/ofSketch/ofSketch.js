@@ -94,10 +94,6 @@ $(document).ready( function()
             e.preventDefault(); 
         });
 
-        $('.file-tab a').on('click', function() {
-            
-        });
-
         $('.nav-tabs .dropdown').on('click', function(){
             var tabName = sketchEditor.getSelectedTabName();
             if (tabName == sketchEditor.getProject().getName()) {
@@ -126,6 +122,25 @@ $(document).ready( function()
             }
         });
 
+        $('#toolbar-open-project, .open-project').on('click', function() {
+            sketchEditor.getProjectList(function(result) {
+
+                var projectList = $('#project-list');
+                projectList.empty();
+                _.each(result, function(project) {
+                    var linkElement = $('<a href="' + location.protocol + '//' + location.host + '/?project=' 
+                                         + encodeURIComponent(project.projectName)
+                                         + '" class="list-group-item" target="_blank">' + project.projectName + '</a>');
+                    projectList.append(linkElement);
+                });
+
+                $('#open-project-modal').modal();
+
+            }, function(err) {
+                console.log("Error requesting project list: ");
+                console.log(err);
+            });
+        });
 
         // Modals
         $('.new-class').on('click', function() {

@@ -225,6 +225,17 @@ function SketchEditor(callback)
 		return $('.file-tab.active a').text();
 	}
 
+	this.getProjectList = function(onSuccess, onError) {
+		JSONRPCClient.call('get-project-list', 
+        					{},
+					        function(result) {
+					            onSuccess(result);
+					        },
+					        function(error) {
+					            onError(error);
+					        });
+	}
+
 	$.getJSON(_editorSettingsFile, function(data){
 		_settings = data;			
 		_applySettings();

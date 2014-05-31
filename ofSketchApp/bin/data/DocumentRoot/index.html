@@ -50,7 +50,7 @@
                 <button id="toolbar-save" type="button" class="btn btn-default" title="Save Project">
                   <span class="glyphicon glyphicon-floppy-save"></span> 
                 </button>
-                <button id="toolbar-open-project" type="button" class="btn btn-default" title="Open Project" data-toggle="modal" data-target="#open-project-modal">
+                <button id="toolbar-open-project" type="button" class="btn btn-default" title="Open Project">
                   <span class="glyphicon glyphicon-folder-open"></span> 
                 </button>
                 <button id="toolbar-create-project" type="button" class="btn btn-default" title="New Project">
@@ -201,7 +201,13 @@
               <h4 class="modal-title">Open Project</h4>
             </div>
             <div class="modal-body">
-              Select a project to open.
+              <div id="project-list" class="list-group">
+                <a href="#" class="list-group-item">Cras justo odio</a>
+                <a href="#" class="list-group-item">Dapibus ac facilisis in</a>
+                <a href="#" class="list-group-item">Morbi leo risus</a>
+                <a href="#" class="list-group-item">Porta ac consectetur ac</a>
+                <a href="#" class="list-group-item">Vestibulum at eros</a>
+              </div>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
