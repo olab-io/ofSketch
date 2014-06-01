@@ -94,6 +94,8 @@ $(document).ready( function()
     alertBox = $('#editor-messages.alert');
     alertBox.hide();
 
+    var consoleEmulator = new ConsoleEmulator();
+    
     var sketchEditor = new SketchEditor(function() {
 
         $('#toolbar li a, .file-tab a, #new-class a, .action-menu li a').on('click', function(e) {
