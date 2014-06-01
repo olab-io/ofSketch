@@ -53,6 +53,7 @@ public:
     
     void getProjectList(const void* pSender, ofx::JSONRPC::MethodArgs& args);
     void loadProject(const void* pSender, ofx::JSONRPC::MethodArgs& args);
+    void loadAnonymousProject(const void* pSender, ofx::JSONRPC::MethodArgs& args);
     void saveProject(const void* pSender, ofx::JSONRPC::MethodArgs& args);
     void createProject(const void* pSender, ofx::JSONRPC::MethodArgs& args);
     void deleteProject(const void* pSender, ofx::JSONRPC::MethodArgs& args);

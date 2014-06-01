@@ -152,6 +152,11 @@ void App::loadProject(const void* pSender, JSONRPC::MethodArgs& args)
     } else args.error["message"] = "Incorrect parameters sent to load-project method.";
 }
     
+void App::loadAnonymousProject(const void* pSender, JSONRPC::MethodArgs& args)
+{
+    _projectManager->loadAnonymousProject(pSender, args);
+}
+    
 void App::saveProject(const void* pSender, JSONRPC::MethodArgs& args)
 {
     std::string projectName = args.params["projectData"]["projectFile"]["name"].asString();

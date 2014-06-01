@@ -1,6 +1,7 @@
 // =============================================================================
 //
 // Copyright (c) 2013 Christopher Baker <http://christopherbaker.net>
+//               2014 Brannon Dorsey <http://brannondorsey.com>
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -132,6 +133,11 @@ void ProjectManager::loadProject(const void* pSender, JSONRPC::MethodArgs& args)
     } else cout<<"projectName is not a member"<<endl;
 }
     
+void ProjectManager::loadAnonymousProject(const void *pSender, JSONRPC::MethodArgs &args)
+{
+    
+}
+    
 void ProjectManager::saveProject(const void* pSender, ofx::JSONRPC::MethodArgs& args)
 {
     if (args.params.isMember("projectData")) {
@@ -145,7 +151,12 @@ void ProjectManager::saveProject(const void* pSender, ofx::JSONRPC::MethodArgs& 
         
     } else args.error = "A projectData object was not sent.";
 }
+
+void createProject(const void* pSender, ofx::JSONRPC::MethodArgs& args)
+{
     
+}
+
 bool ProjectManager::projectExists(const std::string& projectName) const
 {
     for (int i = 0; i < _projects.size(); i++) {

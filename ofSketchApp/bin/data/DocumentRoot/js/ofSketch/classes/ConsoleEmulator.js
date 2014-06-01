@@ -72,6 +72,5 @@ function ConsoleEmulator()
 	_applySettings();
 	_editor.on('blur', function() {
 		_self.placeCursorAtEnd();
-		_editor.clearAnnotations();
 	});
 }

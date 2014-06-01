@@ -22,66 +22,79 @@
 // THE SOFTWARE.
 //
 // =============================================================================
-
-var JSONRPCClient; ///< The core JSONRPC WebSocket client.
-var alertBox;
-var alertTimeout;
-
-function onWebSocketOpen(ws) {
-    console.log("on open");
-    console.log(ws);
-}
-
-function onWebSocketMessage(evt) {
-    console.log("on message:");
-    constle.log(evt.data);
-}
-
-function onWebSocketClose() {
-    console.log("on close");
-}
-
-function onWebSocketError() {
-    console.log("on error");
-}
-
-function saveError(err) {
-    console.log("Error saving project");
-    console.log(err);
-    alertMessage('Save Error!', '', 'alert-danger');
-}
-
-function loadError(err) {
-    console.log("Error loading project");
-    console.log(err);
-    alertMessage('Load Error!', '', 'alert-danger');
-}
-
-function createClassError(err) {
-    console.log("Error creating class");
-    alertMessage('Error Creating Class!', '', 'alert-danger');
-}
-
-function saveAlert(message, subMessage) {
-    var m = message || "Project saved!";
-    var s = subMessage || '';
-    alertMessage(m, s, "alert-success");
-}
-
-function alertMessage(message, subMessage, c) {
-
-    clearTimeout(alertTimeout);
-    alertBox.removeClass();
-    alertBox.addClass('alert ' + c);
-    alertBox.html('<strong>' + message + '</strong> ' + subMessage);
-    alertBox.show();
-    alertTimeout = setTimeout(function(){
-        alertBox.hide();
-    }, 2000);
-}
+var JSONRPCClient;
 
 $(document).ready( function()
 {
+
+    function onWebSocketOpen(ws) {
+        console.log("on open");
+        console.log(ws);
+    }
+
+    function onWebSocketMessage(evt) {
+        console.log("on message:");
+        constle.log(evt.data);
+    }
+
+    function onWebSocketClose() {
+        console.log("on close");
+    }
+
+    function onWebSocketError() {
+        console.log("on error");
+    }
+
+    function saveError(err) {
+        console.log("Error saving project");
+        console.log(err);
+        alertMessage('Save Error!', '', 'alert-danger');
+    }
+
+    function loadError(err) {
+        console.log("Error loading project");
+        console.log(err);
+        alertMessage('Load Error!', '', 'alert-danger');
+    }
+
+    function createClassError(err) {
+        console.log("Error creating class");
+        alertMessage('Error Creating Class!', '', 'alert-danger');
+    }
+
+    function saveAlert(message, subMessage) {
+        var m = message || "Project saved!";
+        var s = subMessage || '';
+        alertMessage(m, s, "alert-success");
+    }
+
+    function alertMessage(message, subMessage, c) {
+
+        clearTimeout(alertTimeout);
+        alertBox.removeClass();
+        alertBox.addClass('alert ' + c);
+        alertBox.html('<strong>' + message + '</strong> ' + subMessage);
+        alertBox.show();
+        alertTimeout = setTimeout(function(){
+            alertBox.hide();
+        }, 2000);
+    }
+
+    function parseURLParameters()
+    {
+        var project = getURLParameter('project');
+        if (project) {
+            sketchEditor.loadProject(project, function() {
+                console.log("Project loaded!");
+            }, function(error) {
+                console.log("Error:");
+                console.log(error);
+            });
+        }
+    }
+    
+    var alertTimeout;
+
     JSONRPCClient = new $.JsonRpcClient({ 
             ajaxUrl: getDefaultPostURL(),
             socketUrl: getDefaultWebSocketURL(), // get a websocket for the localhost
@@ -91,11 +104,12 @@ $(document).ready( function()
             onerror: onWebSocketError
         });
 
+    var alertBox;
     alertBox = $('#editor-messages.alert');
     alertBox.hide();
 
     var consoleEmulator = new ConsoleEmulator();
-    
+
     var sketchEditor = new SketchEditor(function() {
 
         $('#toolbar li a, .file-tab a, #new-class a, .action-menu li a').on('click', function(e) {
@@ -230,12 +244,6 @@ $(document).ready( function()
             }
         });
 
-        sketchEditor.loadProject("Bounce", function() {
-            console.log("Project loaded!");
-            }, function(error) {
-                console.log("Error:");
-                console.log(error);
-            });
+        parseURLParameters();
     });
-
 });
