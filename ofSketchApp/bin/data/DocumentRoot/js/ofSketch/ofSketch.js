@@ -86,10 +86,11 @@ $(document).ready( function()
         if (project) {
             sketchEditor.loadProject(project, function() {
                 console.log("Project loaded!");
-            }, function(error) {
-                console.log("Error:");
-                console.log(error);
-            });
+            }, loadError);
+        } else {
+            sketchEditor.loadTemplateProject(function() {
+                console.log("Template project loaded!");
+            }, loadError);
         }
     }
     
@@ -138,9 +139,13 @@ $(document).ready( function()
 
         $('#toolbar-save').on('click', function() {
             if (sketchEditor.projectLoaded()) {
-                sketchEditor.saveProject(function() {
-                    saveAlert();
-                }, saveError);
+                if (!sketchEditor.getProject().isTemplate()) {
+                    sketchEditor.saveProject(function() {
+                        saveAlert();
+                    }, saveError);
+                } else {
+                    $('#name-project-modal').modal();
+                }   
             }
         });
 
@@ -232,6 +237,30 @@ $(document).ready( function()
             }
 
             $('#renamed-class-name').val('');
+        });
+
+        $('#name-project').on('click', function() {
+            
+            var projectName = $('#new-project-name').val();
+            // TODO: validate name doesn't already exist below
+            if (true) {
+                sketchEditor.createProject(projectName, function() {
+                   console.log('Created project!');
+                   sketchEditor.saveProject(function(){
+                        // reload to reset the tabs and data
+                        // sketchEditor.loadProject(projectName, function() {
+
+                        // }, loadError);
+                   }, saveError);
+                }, function(err) {
+                    console.log('Error creating project: ');
+                    console.log(err);
+                });
+            } else {
+                // Project name is already taken.
+            }
+
+            $('#new-project-name').val('');
         });
 
         $('#toolbar-run').on('click', function() {

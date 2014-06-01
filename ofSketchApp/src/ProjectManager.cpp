@@ -33,7 +33,8 @@ namespace Sketch {
 
 
 ProjectManager::ProjectManager(const std::string& path):
-    _path(path)
+    _path(path),
+    _templateProject(ofToDataPath("Resources/Templates/NewProject"))
 {
     _projectWatcher.addPath(_path);
 
@@ -54,6 +55,7 @@ ProjectManager::ProjectManager(const std::string& path):
         _projects.push_back(Project(*iter));
         ++iter;
     }
+    
 }
     
 ProjectManager::~ProjectManager()
@@ -133,9 +135,13 @@ void ProjectManager::loadProject(const void* pSender, JSONRPC::MethodArgs& args)
     } else cout<<"projectName is not a member"<<endl;
 }
     
-void ProjectManager::loadAnonymousProject(const void *pSender, JSONRPC::MethodArgs &args)
+void ProjectManager::loadTemplateProject(const void *pSender, JSONRPC::MethodArgs &args)
 {
     
+    if (!_templateProject.isLoaded()) {
+        _templateProject.load(_templateProject.getPath(), _templateProject.getName());
+    }
+    args.result = _templateProject.getData();
 }
     
 void ProjectManager::saveProject(const void* pSender, ofx::JSONRPC::MethodArgs& args)
@@ -152,9 +158,19 @@ void ProjectManager::saveProject(const void* pSender, ofx::JSONRPC::MethodArgs& 
     } else args.error = "A projectData object was not sent.";
 }
 
-void createProject(const void* pSender, ofx::JSONRPC::MethodArgs& args)
+void ProjectManager::createProject(const void* pSender, ofx::JSONRPC::MethodArgs& args)
 {
+    Json::Value projectData = args.params["projectData"];
+    std::string projectName = args.params["projectData"]["projectFile"]["name"].asString();
+    ofDirectory projectDir(_templateProject.getPath());
+    projectDir.copyTo(ofToDataPath("Projects/" + projectName));
+    ofFile templateProjectFile(ofToDataPath("Projects/" + projectName) + "/sketch/NewProject.sketch");
+    templateProjectFile.remove();
     
+    Project project(ofToDataPath("Projects/" + projectName));
+    project.save(projectData);
+    _projects.push_back(project);
+    args.result = project.getData();
 }
 
 bool ProjectManager::projectExists(const std::string& projectName) const

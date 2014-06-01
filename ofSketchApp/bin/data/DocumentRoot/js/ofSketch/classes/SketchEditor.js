@@ -68,6 +68,28 @@ function SketchEditor(callback)
 		});
 	}
 
+	var _initTabs = function()
+	{
+		_tabs = [];
+
+		var projectFile = _project.getProjectFile();
+		_addTab(getPrettyFileName(projectFile.fileName),
+				projectFile.fileName,
+				true,
+				new ace.EditSession(_project.getProjectFile().fileContents,
+											 _settings.editorMode));
+
+		var classes = _project.getClasses();
+		_.each(classes, function(c){
+			_addTab(getPrettyFileName(c.fileName),
+					c.fileName,
+					false,
+				new ace.EditSession(c.fileContents, _settings.editorMode));
+		});
+
+		_self.selectTab(_project.getName());
+	}
+
 	var _addTab = function(name, fileName, isProjectFile, editSession)
 	{
 		var tabElement = $('<li class="file-tab"><a href="#" onclick="return false;">' + name + '</a></li>');
@@ -95,6 +117,18 @@ function SketchEditor(callback)
 		return tab;
 	}
 
+	var _renameTab = function(name, newName)
+	{
+		// TODO: come back and change this to use _.without
+		_.each(_tabs, function(tab, i) {
+			if (tab.name == name) {
+				_tabs[i].name = newName;
+				_tabs[i].fileName = newName + ".sketch";
+				_tabs[i].tabElement.find('a').text(newName);
+			}
+		});
+	}
+
 	var _updateProject = function()
 	{
 		var projectData = _project.getData();
@@ -117,34 +151,37 @@ function SketchEditor(callback)
 	this.loadProject = function(projectName, onSuccess, onError)
 	{
 		_project = new Project(projectName, function(result) {
-		
-			_tabs = [];
 
-			var projectFile = _project.getProjectFile();
-			_addTab(getPrettyFileName(projectFile.fileName),
-					projectFile.fileName,
-					true,
-					new ace.EditSession(_project.getProjectFile().fileContents,
-												 _settings.editorMode));
-
-			var classes = _project.getClasses();
-			_.each(classes, function(c){
-				_addTab(getPrettyFileName(c.fileName),
-						c.fileName,
-						false,
-					new ace.EditSession(c.fileContents, _settings.editorMode));
-			});
-
-			_self.selectTab(projectName);
+			_initTabs();
 			onSuccess(result);
 
 		}, onError);
+	}
+
+	this.loadTemplateProject = function(onSuccess, onError)
+	{
+		_project = new Project('', function(result) {
+
+			_initTabs();
+			onSuccess(result);
+
+		}, onError,
+		true); // signifies isTemplate
 	}
 
 	this.saveProject = function(onSuccess, onError)
 	{
 		_updateProject();
 		_project.save(onSuccess, onError);
+	}
+
+	this.createProject = function(projectName, onSuccess, onError)
+	{
+		var oldName = _project.getName();
+		_project.assignName(projectName);
+		_renameTab(oldName, projectName);
+		_updateProject();
+		_project.create(onSuccess, onError);
 	}
 
 	this.getProject = function()
@@ -196,14 +233,7 @@ function SketchEditor(callback)
 	{	
 		_project.renameClass(className, newClassName, function(result){
 			
-			// TODO: come back and change this to use _.without
-			_.each(_tabs, function(tab, i) {
-				if (tab.name == className) {
-					_tabs[i].name = newClassName;
-					_tabs[i].fileName = newClassName + ".sketch";
-					_tabs[i].tabElement.find('a').text(newClassName);
-				}
-			});
+			_renameTab(className, newClassName);
 
 			onSuccess(result);
 		}, onError);

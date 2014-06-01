@@ -39,11 +39,12 @@ _data = {
 }
  */
 
-function Project(projectName, onSuccess, onError) 
+function Project(projectName, onSuccess, onError, isTemplate) 
 {
 	var _self = this;
 	var _settings;
 	var _data;
+	var _isTemplate;
 	var _file = {
 		name: "",
 		fileName: "",
@@ -56,6 +57,33 @@ function Project(projectName, onSuccess, onError)
         					{ projectName: projectName },
 					        function(result) {
 					            _data = result;
+					            onSuccess(result);
+					        },
+					        function(error) {
+					            onError(error);
+					        });
+	}
+
+	this.loadTemplate = function(onSuccess, onError)
+	{
+		JSONRPCClient.call('load-template-project', 
+        					{},
+					        function(result) {
+					            _data = result;
+					            onSuccess(result);
+					        },
+					        function(error) {
+					            onError(error);
+					        });
+	}
+
+	// used only if isAnonymous()
+	this.create = function(onSuccess, onError)
+	{
+		JSONRPCClient.call('create-project', 
+        					{ projectData: _self.getData() },
+					        function(result) {
+					        	_isTemplate = false;
 					            onSuccess(result);
 					        },
 					        function(error) {
@@ -144,6 +172,15 @@ function Project(projectName, onSuccess, onError)
 					        });
 	}
 
+	// used to assign the name of a template project only
+	this.assignName = function(name)
+	{
+		if (_self.isTemplate()) {
+			_data.projectFile.name = name;
+			_data.projectFile.fileName = name + ".sketch";
+		}
+	}
+
 	this.getName = function()
 	{
 		return _data.projectFile.name;
@@ -153,6 +190,11 @@ function Project(projectName, onSuccess, onError)
 	{
 		return _self.hasClasses() && 
 			   !_.isUndefined(_.findWhere(_self.getClasses(), { name: className } ));
+	}
+
+	this.isTemplate = function()
+	{
+		return _isTemplate;
 	}
 
 	this.getProjectFile = function()
@@ -180,5 +222,11 @@ function Project(projectName, onSuccess, onError)
 		return _data;
 	}
 
-	_self.load(projectName, onSuccess, onError);
+	if (isTemplate) {
+		_self.loadTemplate(onSuccess, onError);
+		_isTemplate = true;
+	} else {
+		_self.load(projectName, onSuccess, onError);
+		_isTemplate = false;
+	}
 }

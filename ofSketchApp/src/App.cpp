@@ -75,6 +75,11 @@ void App::setup()
                           this,
                           &App::loadProject);
     
+    server->registerMethod("load-template-project",
+                           "Load an anonymous project.",
+                           this,
+                           &App::loadTemplateProject);
+    
     server->registerMethod("save-project",
                           "Save the current project.",
                           this,
@@ -152,9 +157,9 @@ void App::loadProject(const void* pSender, JSONRPC::MethodArgs& args)
     } else args.error["message"] = "Incorrect parameters sent to load-project method.";
 }
     
-void App::loadAnonymousProject(const void* pSender, JSONRPC::MethodArgs& args)
+void App::loadTemplateProject(const void* pSender, JSONRPC::MethodArgs& args)
 {
-    _projectManager->loadAnonymousProject(pSender, args);
+    _projectManager->loadTemplateProject(pSender, args);
 }
     
 void App::saveProject(const void* pSender, JSONRPC::MethodArgs& args)
@@ -171,7 +176,10 @@ void App::saveProject(const void* pSender, JSONRPC::MethodArgs& args)
     
 void App::createProject(const void* pSender, JSONRPC::MethodArgs& args)
 {
-    
+    std::string projectName = args.params["projectName"].asString();
+    if (!_projectManager->projectExists(projectName)) {
+        _projectManager->createProject(pSender, args);
+    } else args.error["message"] = "That project name already exists.";
 }
     
 void App::deleteProject(const void* pSender, JSONRPC::MethodArgs& args)

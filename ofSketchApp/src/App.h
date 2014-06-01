@@ -59,7 +59,7 @@ public:
     void draw();
 
     void loadProject(const void* pSender, JSONRPC::MethodArgs& args);
-    void loadAnonymousProject(const void* pSender, JSONRPC::MethodArgs& args);
+    void loadTemplateProject(const void* pSender, JSONRPC::MethodArgs& args);
     void saveProject(const void* pSender, JSONRPC::MethodArgs& args);
     void createProject(const void* pSender, JSONRPC::MethodArgs& args);
     void deleteProject(const void* pSender, JSONRPC::MethodArgs& args);

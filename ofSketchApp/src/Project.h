@@ -76,7 +76,7 @@ protected:
 private:
     
     std::string _path;
-    std::string _projectFileTemplate;
+    std::string _classFileTemplate;
     std::vector<Source> _sources;
     ofDirectory _sketchDir;
     
