@@ -172,6 +172,23 @@ void ProjectManager::createProject(const void* pSender, ofx::JSONRPC::MethodArgs
     _projects.push_back(project);
     args.result = project.getData();
 }
+    
+void ProjectManager::deleteProject(const void *pSender, ofx::JSONRPC::MethodArgs &args)
+{
+    std::string projectName = args.params["projectName"].asString();
+    Project& project = getProjectRef(projectName);
+    project.remove();
+
+    for (int i = 0; i < _projects.size(); i++) {
+        if (_projects[i].getName() == projectName) {
+            _projects.erase(_projects.begin() + i);
+            
+            args.result["message"] = "Deleted " + projectName + " project.";
+            return;
+        }
+    }
+    args.error["message"] = "Error deleting " + projectName + " project.";
+}
 
 bool ProjectManager::projectExists(const std::string& projectName) const
 {

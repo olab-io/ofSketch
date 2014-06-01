@@ -54,6 +54,7 @@ public:
     bool hasClasses() const;
     
     bool create(const std::string& path);
+    bool remove();
     bool rename(const std::string& name);
     void save(ofxJSONElement data);
     void load(const std::string path,

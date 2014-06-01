@@ -207,6 +207,10 @@ $(document).ready( function()
             }
         });
 
+        $('.delete-project').on('click', function() {
+            $('#delete-project-modal').modal();
+        });
+
         
         $('#create-class').on('click', function() {
             
@@ -277,6 +281,23 @@ $(document).ready( function()
             }
 
             $('#new-project-name').val('');
+        });
+
+        $('#delete-project').on('click', function() {
+            if (!sketchEditor.getProject().isTemplate()) {
+                sketchEditor.deleteProject(function(){
+                    navigateToNewProject();
+                }, function(){
+
+                });
+            } else {
+                navigateToNewProject();
+            }
+
+            function navigateToNewProject() {
+                window.location.href = window.location.protocol 
+                                               + "//" + window.location.host;
+            }
         });
 
         $('#toolbar-run').on('click', function() {

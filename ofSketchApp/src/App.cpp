@@ -184,7 +184,10 @@ void App::createProject(const void* pSender, JSONRPC::MethodArgs& args)
     
 void App::deleteProject(const void* pSender, JSONRPC::MethodArgs& args)
 {
-    
+    std::string projectName = args.params["projectName"].asString();
+    if (_projectManager->projectExists(projectName)) {
+        _projectManager->deleteProject(pSender, args);
+    } else args.error["message"] = "The project that you are trying to delete does not exist.";
 }
 
 void App::renameProject(const void* pSender, JSONRPC::MethodArgs& args)

@@ -229,6 +229,14 @@ function SketchEditor(callback)
 		}, onError);
 	}
 
+	this.deleteProject = function(onSuccess, onError)
+	{
+		JSONRPCClient.call('delete-project', 
+        					{ projectName: _project.getName() },
+					        onSuccess,
+					        onError);
+	}
+
 	this.renameClass = function(className, newClassName, onSuccess, onError)
 	{	
 		_project.renameClass(className, newClassName, function(result){

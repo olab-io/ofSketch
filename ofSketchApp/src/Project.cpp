@@ -137,6 +137,12 @@ bool Project::create(const std::string& path)
     return false;
     
 }
+    
+bool Project::remove()
+{
+    ofDirectory project(_path);
+    return project.remove(true);
+}
 
 bool Project::rename(const std::string& name)
 {
