@@ -41,7 +41,7 @@ void Compiler::run(const Project& project)
     std::string cmd("make");
     std::vector<std::string> args;
     
-    args.push_back("--directory=" + ofToDataPath("Projects/Bounce/", true));
+    args.push_back("--directory=" + project.getPath());
     //        if(_settings.numProcessors > 1)
     //        {
     //            args.push_back("-j" + ofToString(_settings.numProcessors));

@@ -57,6 +57,11 @@ $(document).ready( function()
         alertMessage('Load Error!', '', 'alert-danger');
     }
 
+    function createProjectError(err) {
+        console.log('Error creating project: ');
+        console.log(err);
+    }
+
     function createClassError(err) {
         console.log("Error creating class");
         alertMessage('Error Creating Class!', '', 'alert-danger');
@@ -171,7 +176,12 @@ $(document).ready( function()
 
         // Modals
         $('.new-class').on('click', function() {
-            $('#new-class-modal').modal();
+            if (!sketchEditor.getProject().isTemplate()) {
+                $('#new-class-modal').modal();
+            } else {
+                $('#name-project-modal').modal();
+            }
+            
         });
 
         $('.rename-class').on('click', function() {
@@ -245,17 +255,12 @@ $(document).ready( function()
             // TODO: validate name doesn't already exist below
             if (true) {
                 sketchEditor.createProject(projectName, function() {
-                   console.log('Created project!');
                    sketchEditor.saveProject(function(){
-                        // reload to reset the tabs and data
-                        // sketchEditor.loadProject(projectName, function() {
-
-                        // }, loadError);
+                        window.location.href = window.location.protocol 
+                                               + "//" + window.location.host 
+                                               + "/?project=" + encodeURIComponent(projectName);
                    }, saveError);
-                }, function(err) {
-                    console.log('Error creating project: ');
-                    console.log(err);
-                });
+                }, createProjectError);
             } else {
                 // Project name is already taken.
             }

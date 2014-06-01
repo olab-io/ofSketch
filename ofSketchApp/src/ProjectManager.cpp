@@ -34,7 +34,7 @@ namespace Sketch {
 
 ProjectManager::ProjectManager(const std::string& path):
     _path(path),
-    _templateProject(ofToDataPath("Resources/Templates/NewProject"))
+    _templateProject(ofToDataPath("Resources/Templates/NewProject", true))
 {
     _projectWatcher.addPath(_path);
 
@@ -42,7 +42,7 @@ ProjectManager::ProjectManager(const std::string& path):
 
     ofx::IO::DirectoryFilter filter;
 
-    ofx::IO::DirectoryUtils::list(ofToDataPath(_path),
+    ofx::IO::DirectoryUtils::list(ofToDataPath(_path, true),
                                   files,
                                   true,
                                   &filter);

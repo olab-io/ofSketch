@@ -197,7 +197,7 @@ function SketchEditor(callback)
 	this.run = function(onSuccess, onError)
 	{
 		JSONRPCClient.call('run', 
-        					{ projectData: _project.getData() },
+        					{ projectName: _project.getName() },
 					        function(result) {
 					            onSuccess(result);
 					        },

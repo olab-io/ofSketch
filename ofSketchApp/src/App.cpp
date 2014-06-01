@@ -234,11 +234,11 @@ void App::renameClass(const void* pSender, JSONRPC::MethodArgs& args)
     
 void App::run(const void* pSender, JSONRPC::MethodArgs& args)
 {
-    std::string projectName = args.params["projectData"]["projectFile"]["name"].asString();
-    
+
+    std::string projectName = args.params["projectName"].asString();
     if (_projectManager->projectExists(projectName)) {
         
-        cout<<"Running project..."<<endl;
+        cout<<"Running project: "<<projectName<<endl;
         const Project& project = _projectManager->getProject(projectName);
         _compiler.run(project);
         
