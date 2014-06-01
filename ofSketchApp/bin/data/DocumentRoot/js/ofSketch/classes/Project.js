@@ -45,11 +45,6 @@ function Project(projectName, onSuccess, onError, isTemplate)
 	var _settings;
 	var _data;
 	var _isTemplate;
-	var _file = {
-		name: "",
-		fileName: "",
-		fileContents: ""
-	}
 
 	this.load = function(projectName, onSuccess, onError)
 	{

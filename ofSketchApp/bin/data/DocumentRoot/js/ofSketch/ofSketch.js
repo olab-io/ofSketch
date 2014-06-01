@@ -62,6 +62,11 @@ $(document).ready( function()
         console.log(err);
     }
 
+    function runError(err) {
+        console.log('Error running project: ');
+        console.log(err);
+    }
+
     function createClassError(err) {
         console.log("Error creating class");
         alertMessage('Error Creating Class!', '', 'alert-danger');
@@ -71,6 +76,12 @@ $(document).ready( function()
         var m = message || "Project saved!";
         var s = subMessage || '';
         alertMessage(m, s, "alert-success");
+    }
+
+    function runAlert(message, subMessage) {
+        var m = message || "Running Project...";
+        var s = subMessage || '';
+        alertMessage(m, s, "alert-info");
     }
 
     function alertMessage(message, subMessage, c) {
@@ -138,10 +149,6 @@ $(document).ready( function()
 
         });
 
-        $('#load-project').on('click', function() {
-            // sketchEditor.loadProject();
-        });
-
         $('#toolbar-save').on('click', function() {
             if (sketchEditor.projectLoaded()) {
                 if (!sketchEditor.getProject().isTemplate()) {
@@ -154,7 +161,7 @@ $(document).ready( function()
             }
         });
 
-        $('#toolbar-open-project, .open-project').on('click', function() {
+        $('.open-project').on('click', function() {
             sketchEditor.getProjectList(function(result) {
 
                 var projectList = $('#project-list');
@@ -172,6 +179,10 @@ $(document).ready( function()
                 console.log("Error requesting project list: ");
                 console.log(err);
             });
+        });
+
+        $('.new-project').on('click', function() {
+            window.open(window.location.protocol + '//' + window.location.host, '_blank');
         });
 
         // Modals
@@ -271,13 +282,12 @@ $(document).ready( function()
         $('#toolbar-run').on('click', function() {
             if (sketchEditor.projectLoaded()) {
                 sketchEditor.saveProject(function() {
-                    sketchEditor.run(function() {
-                        console.log("Project running!");
-                    });
+                    sketchEditor.run(runAlert, runError);
                 }, saveError);
             }
         });
 
         parseURLParameters();
+
     });
 });
