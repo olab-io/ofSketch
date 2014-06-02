@@ -249,17 +249,17 @@ void App::run(const void* pSender, JSONRPC::MethodArgs& args)
     std::string projectName = args.params["projectName"].asString();
     if (_projectManager->projectExists(projectName)) {
         
-        cout<<"Running project: "<<projectName<<endl;
+        ofLogNotice("App::run") << "Running project: " << projectName;
         const Project& project = _projectManager->getProject(projectName);
         _compiler.run(project);
         
-    } else args.error["message"] = "The requested project does not exist.";
+    }
+    else args.error["message"] = "The requested project does not exist.";
 }
 
 void App::stop(const void* pSender, JSONRPC::MethodArgs& args)
 {
-    std::cout << "stop: " << std::endl;
-    std::cout << args.params.toStyledString() << std::endl;
+    ofLogNotice("App::stop") << "Stop: " << args.params.toStyledString();
 }
 
 void App::getProjectList(const void* pSender, JSONRPC::MethodArgs& args)
@@ -297,7 +297,8 @@ bool App::onWebSocketFrameSentEvent(HTTP::WebSocketFrameEventArgs& args)
 
 bool App::onWebSocketErrorEvent(HTTP::WebSocketEventArgs& args)
 {
-    cout<<"Error: "<<args.getError()<<endl;
+    ofLogError("App::onWebSocketErrorEvent") << "Stop: " << args.getError();
+
 //    ofLogVerbose("App::onWebSocketErrorEvent") << "Error on: " << args.getConnectionRef().getClientAddress().toString();
     return false; // did not handle it
 }
