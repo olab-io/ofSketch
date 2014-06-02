@@ -280,8 +280,9 @@ bool App::onWebSocketOpenEvent(HTTP::WebSocketEventArgs& args)
 
     Json::Value json = App::toJSONMethod("TaskQueue", "taskList", params);
     ofx::HTTP::WebSocketFrame frame(App::toJSONString(json));
-    server->getWebSocketRoute()->broadcast(frame);
 
+    // Send the update to the client that just connected.
+    args.getConnectionRef().sendFrame(frame);
     return false; // did not handle it
 }
 
