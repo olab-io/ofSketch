@@ -42,11 +42,19 @@ App::App()
 
     server->getPostRoute()->registerPostEvents(this);
     server->getWebSocketRoute()->registerWebSocketEvents(this);
+
+    // Set up websocket logger.
+    _loggerChannel = WebSocketLoggerChannel::makeShared();
+    _loggerChannel->setWebSocketRoute(server->getWebSocketRoute());
+    ofSetLoggerChannel(_loggerChannel);
 }
 
 
 App::~App()
 {
+    // Reset default logger.
+    ofLogToConsole();
+
     server->getWebSocketRoute()->unregisterWebSocketEvents(this);
     server->getPostRoute()->unregisterPostEvents(this);
 

@@ -40,6 +40,7 @@
 #include "Project.h"
 #include "ProjectManager.h"
 #include "Compiler.h"
+#include "WebSocketLoggerChannel.h"
 
 
 using namespace ofx;
@@ -95,6 +96,8 @@ private:
 
     Project::SharedPtr _currentProject;
     Compiler _compiler;
+
+    WebSocketLoggerChannel::SharedPtr _loggerChannel;
 
 };
 
