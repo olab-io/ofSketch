@@ -200,7 +200,11 @@ void App::deleteProject(const void* pSender, JSONRPC::MethodArgs& args)
 
 void App::renameProject(const void* pSender, JSONRPC::MethodArgs& args)
 {
-    
+    std::string projectName = args.params["projectName"].asString();
+    if (_projectManager->projectExists(projectName)) {
+        _projectManager->renameProject(pSender, args);
+    } else args.error["message"] = "The project that you are trying to delete does not exist.";
+//    args.error["foo"] = "bar";
 }
 
 void App::createClass(const void* pSender, JSONRPC::MethodArgs& args)
@@ -249,7 +253,7 @@ void App::run(const void* pSender, JSONRPC::MethodArgs& args)
     std::string projectName = args.params["projectName"].asString();
     if (_projectManager->projectExists(projectName)) {
         
-        ofLogNotice("App::run") << "Running project: " << projectName;
+        ofLogNotice("App::run") << "Running " << projectName << " project";
         const Project& project = _projectManager->getProject(projectName);
         _compiler.run(project);
         
@@ -259,7 +263,7 @@ void App::run(const void* pSender, JSONRPC::MethodArgs& args)
 
 void App::stop(const void* pSender, JSONRPC::MethodArgs& args)
 {
-    ofLogNotice("App::stop") << "Stop: " << args.params.toStyledString();
+    ofLogNotice("App::stop") << "Stop:  " << args.params.toStyledString();
 }
 
 void App::getProjectList(const void* pSender, JSONRPC::MethodArgs& args)

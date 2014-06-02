@@ -55,7 +55,7 @@ public:
     
     bool create(const std::string& path);
     bool remove();
-    bool rename(const std::string& name);
+    bool rename(const std::string& newName);
     void save(ofxJSONElement data);
     void load(const std::string path,
               const std::string& name);

@@ -62,6 +62,11 @@ $(document).ready( function()
         console.log(err);
     }
 
+    function renameProjectError(err) {
+        console.log('Error renaming project: ');
+        console.log(err);
+    }
+
     function runError(err) {
         console.log('Error running project: ');
         console.log(err);
@@ -211,6 +216,10 @@ $(document).ready( function()
             $('#delete-project-modal').modal();
         });
 
+        $('.rename-project').on('click', function() {
+            $('#rename-project-modal').modal();
+        });
+
         
         $('#create-class').on('click', function() {
             
@@ -283,21 +292,20 @@ $(document).ready( function()
             $('#new-project-name').val('');
         });
 
-        $('#delete-project').on('click', function() {
+        $('#rename-project').on('click', function() {
+
+            var newProjectName = $('#renamed-project-name').val();
             if (!sketchEditor.getProject().isTemplate()) {
-                sketchEditor.deleteProject(function(){
-                    navigateToNewProject();
-                }, function(){
+                
+                sketchEditor.renameProject(newProjectName, function(){
+                    
+                }, renameProjectError);
 
-                });
             } else {
-                navigateToNewProject();
+                // project is template
             }
 
-            function navigateToNewProject() {
-                window.location.href = window.location.protocol 
-                                               + "//" + window.location.host;
-            }
+            $('#renamed-project-name').val('');
         });
 
         $('#toolbar-run').on('click', function() {

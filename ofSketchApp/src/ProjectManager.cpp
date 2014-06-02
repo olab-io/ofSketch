@@ -197,6 +197,18 @@ void ProjectManager::deleteProject(const void *pSender, ofx::JSONRPC::MethodArgs
     }
     args.error["message"] = "Error deleting " + projectName + " project.";
 }
+    
+void ProjectManager::renameProject(const void *pSender, ofx::JSONRPC::MethodArgs &args)
+{
+    std::string projectName = args.params["projectName"].asString();
+    std::string newProjectName = args.params["newProjectName"].asString();
+    Project& project = getProjectRef(projectName);
+    if (project.rename(newProjectName)) {
+        args.result["message"] = "Renamed " + projectName + " project to " + newProjectName + ".";
+    } else {
+        args.error["message"] = "Error renaming " + projectName + " project.";
+    }
+}
 
 bool ProjectManager::projectExists(const std::string& projectName) const
 {

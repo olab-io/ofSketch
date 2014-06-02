@@ -143,13 +143,30 @@ bool Project::create(const std::string& path)
     
 bool Project::remove()
 {
-    ofDirectory project(_path);
-    return project.remove(true);
+    ofDirectory projectDir(getPath());
+    return projectDir.remove(true);
 }
 
-bool Project::rename(const std::string& name)
+bool Project::rename(const std::string& newName)
 {
+    if (isLoaded()) {
+        ofLogVerbose("Project::rename") << "renaming project \"" << getName() << "\" to \"" << newName + "\"";
+        ofFile projectDir(getPath());
+        ofLogVerbose("Project::rename") << "project path: " << getPath();
+        ofLogVerbose("Project::rename") << "renamed to: " << projectDir.getEnclosingDirectory() + newName;
+        if (!projectDir.renameTo(projectDir.getEnclosingDirectory() + newName)) return false;
+        _path = projectDir.getAbsolutePath();
+        ofLogVerbose("Project::rename") << "projectDir path after rename: " << projectDir.getAbsolutePath();
+        ofFile projectFile(projectDir.getAbsolutePath() + "/sketch/" + getName() + ".sketch");
+        ofLogVerbose("Project::rename") << "projectFile path: " << projectFile.getAbsolutePath();
+        if (!projectFile.renameTo(projectDir.getAbsolutePath() + "/sketch/" + newName + ".sketch")) return false;
+        ofLogVerbose("Project::rename") << "projectFile path after rename: " << projectFile.getAbsolutePath();
+        _data["projectFile"]["name"] = newName;
+        _data["projectFile"]["fileName"] = newName + ".sketch";
+        return true;
+    }
     
+    return false;
 }
 
 Json::Value Project::createClass(const std::string& className)
@@ -200,8 +217,6 @@ bool Project::renameClass(const std::string& currentName, const std::string& new
                 if (_data["classes"][i]["name"] == currentName) {
                     _data["classes"][i]["name"] = newName;
                     _data["classes"][i]["fileName"] = newName + ".sketch";
-
-                    ofLogVerbose("Project::createClass") <<"NEW NAME DATA IS "<<newName;
 
                     file.renameTo(_sketchDir.getAbsolutePath() + "/" + newName + ".sketch");
                     return true;

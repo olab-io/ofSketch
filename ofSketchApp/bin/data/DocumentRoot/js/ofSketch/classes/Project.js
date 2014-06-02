@@ -106,10 +106,13 @@ function Project(projectName, onSuccess, onError, isTemplate)
         						newProjectName: newProjectName
         					},
 					        function(result) {
+					        	_data.projectFile.name = newProjectName;
+					        	_data.projectFile.fileName = newProjectName + ".sketch";
 					            onSuccess(result);
-					        },
-					        function(error) {
-					            onError(error);
+					        }, function(err){
+					        	console.log("Rename project error:");
+					        	console.log(err);
+					        	onError(err);
 					        });
 	}
 

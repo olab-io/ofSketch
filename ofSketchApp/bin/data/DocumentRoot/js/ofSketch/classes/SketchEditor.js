@@ -184,6 +184,25 @@ function SketchEditor(callback)
 		_project.create(onSuccess, onError);
 	}
 
+	this.deleteProject = function(onSuccess, onError)
+	{
+		JSONRPCClient.call('delete-project', 
+        					{ projectName: _project.getName() },
+					        onSuccess,
+					        onError);
+	}
+
+	this.renameProject = function(newProjectName, onSuccess, onError)
+	{
+		var oldProjectName = _project.getName();
+		_project.rename(newProjectName, function(result){
+			console.log("renaming tab");
+			_renameTab(oldProjectName, newProjectName);
+			onSuccess(result);
+		
+		}, onError);
+	}
+
 	this.getProject = function()
 	{
 		return _project;
@@ -227,14 +246,6 @@ function SketchEditor(callback)
 			_tabs = _.without(_tabs, tab);
 			onSuccess(result);
 		}, onError);
-	}
-
-	this.deleteProject = function(onSuccess, onError)
-	{
-		JSONRPCClient.call('delete-project', 
-        					{ projectName: _project.getName() },
-					        onSuccess,
-					        onError);
 	}
 
 	this.renameClass = function(className, newClassName, onSuccess, onError)
