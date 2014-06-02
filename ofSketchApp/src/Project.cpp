@@ -82,7 +82,8 @@ void Project::save(ofxJSONElement data){
     // this is not working for some reason...
     if (_data != data) {
         
-        cout<<data.toStyledString()<<endl;
+        ofLogVerbose("Project::save") << data.toStyledString();
+        
         if (_data["projectFile"] != data["projectFile"]) {
             _data["projectFile"] = data["projectFile"];
             _saveFile(_data["projectFile"]);
@@ -119,8 +120,10 @@ void Project::save(ofxJSONElement data){
         }
         
     
-    } else {
-        std::cout<<"Project data is the same. Not saving project."<<std::endl;
+    }
+    else
+    {
+        ofLogNotice("Project::save") << "Project data is the same. Not saving project.";
         return true;
     }
 }
@@ -154,7 +157,9 @@ Json::Value Project::createClass(const std::string& className)
 
     std::string fileContents = _classFileTemplate;
     ofStringReplace(fileContents, "<classname>", className);
-    cout<<"fileContents: "<<fileContents<<endl;
+
+    ofLogVerbose("Project::createClass") << "fileContents: "<< fileContents;
+
     Json::Value classFile;
     // TODO: Load extension from settings
     classFile["fileName"] = className + ".sketch";
@@ -186,6 +191,8 @@ bool Project::deleteClass(const std::string& className)
 bool Project::renameClass(const std::string& currentName, const std::string& newName)
 {
     if (isLoaded()) {
+        ofLogVerbose("Project::createClass") << "Renaming class...";
+
         cout<<"Renaming class..."<<endl;
         ofFile file(_sketchDir.getAbsolutePath() + "/" + currentName + ".sketch");
         if (file.exists() && hasClasses()) {
@@ -193,7 +200,9 @@ bool Project::renameClass(const std::string& currentName, const std::string& new
                 if (_data["classes"][i]["name"] == currentName) {
                     _data["classes"][i]["name"] = newName;
                     _data["classes"][i]["fileName"] = newName + ".sketch";
-                    cout<<"NEW NAME DATA IS "<<newName<<endl;
+
+                    ofLogVerbose("Project::createClass") <<"NEW NAME DATA IS "<<newName;
+
                     file.renameTo(_sketchDir.getAbsolutePath() + "/" + newName + ".sketch");
                     return true;
                 }

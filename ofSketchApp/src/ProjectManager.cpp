@@ -51,7 +51,7 @@ ProjectManager::ProjectManager(const std::string& path):
 
     while(iter != files.end())
     {
-        cout << *iter << endl;
+        ofLogVerbose("ProjectManager::ProjectManager") << *iter;
         _projects.push_back(Project(*iter));
         ++iter;
     }
@@ -130,9 +130,17 @@ void ProjectManager::loadProject(const void* pSender, JSONRPC::MethodArgs& args)
                     return;
                 }
             }
-            cout<<"Project "<<projectName<<" was not found."<<endl;
-        } else cout<<"ProjectManager::sendProject: Error loading project"<<endl;
-    } else cout<<"projectName is not a member"<<endl;
+            ofLogError("Project::loadProject") << "Project: "<< projectName << " was not found.";
+        }
+        else
+        {
+            ofLogError("Project::loadProject") << "Error loading project";
+        }
+    }
+    else
+    {
+        ofLogError("Project::loadProject") << "ProjectName is not a member.";
+    }
 }
     
 void ProjectManager::loadTemplateProject(const void *pSender, JSONRPC::MethodArgs &args)
@@ -147,7 +155,7 @@ void ProjectManager::loadTemplateProject(const void *pSender, JSONRPC::MethodArg
 void ProjectManager::saveProject(const void* pSender, ofx::JSONRPC::MethodArgs& args)
 {
     if (args.params.isMember("projectData")) {
-        std::cout<<"Saving project..."<<std::endl;
+        ofLogNotice("ProjectManager::saveProject") << "Saving project...";
         Json::Value projectData = args.params["projectData"];
         std::string projectName = projectData["projectFile"]["name"].asString();
         if (projectExists(projectName)) {

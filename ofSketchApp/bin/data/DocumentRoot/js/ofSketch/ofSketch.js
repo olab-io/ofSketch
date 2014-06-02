@@ -33,8 +33,8 @@ $(document).ready( function()
     }
 
     function onWebSocketMessage(evt) {
-        console.log("on message:");
-        constle.log(evt.data);
+        console.log("on raw message:");
+        console.log(evt.data);
     }
 
     function onWebSocketClose() {

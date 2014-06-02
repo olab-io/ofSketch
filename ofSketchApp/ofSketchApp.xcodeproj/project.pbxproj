@@ -86,6 +86,7 @@
 		E7E077E515D3B63C0020DFD4 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7E077E415D3B63C0020DFD4 /* CoreVideo.framework */; };
 		E7E077E815D3B6510020DFD4 /* QTKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7E077E715D3B6510020DFD4 /* QTKit.framework */; };
 		E7F985F815E0DEA3003869B5 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7F985F515E0DE99003869B5 /* Accelerate.framework */; };
+		FD410BD8193BED2400630207 /* WebSocketLoggerChannel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FD410BD6193BED2400630207 /* WebSocketLoggerChannel.cpp */; };
 		a3a89d02d2411fa23a03836bf50785d3 /* MakeTask.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 71b9d10d4931309e684aa1fd89344653 /* MakeTask.cpp */; };
 		a74756e4cb27d44fb96d076ea8212fdf /* DefaultClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 12545da8c2bc9bcaf4e8f43300ca42ee /* DefaultClient.cpp */; };
 		a747cf15c723fceaa2282746ee029460 /* BaseRouteSettings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 396b25119fdb479254d8e67a5bdf1ded /* BaseRouteSettings.cpp */; };
@@ -350,6 +351,8 @@
 		E7E077E415D3B63C0020DFD4 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = /System/Library/Frameworks/CoreVideo.framework; sourceTree = "<absolute>"; };
 		E7E077E715D3B6510020DFD4 /* QTKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QTKit.framework; path = /System/Library/Frameworks/QTKit.framework; sourceTree = "<absolute>"; };
 		E7F985F515E0DE99003869B5 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = /System/Library/Frameworks/Accelerate.framework; sourceTree = "<absolute>"; };
+		FD410BD6193BED2400630207 /* WebSocketLoggerChannel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WebSocketLoggerChannel.cpp; sourceTree = "<group>"; };
+		FD410BD7193BED2400630207 /* WebSocketLoggerChannel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebSocketLoggerChannel.h; sourceTree = "<group>"; };
 		a03872290789ee7aa6a28395e36979d8 /* ClientEvents.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ClientEvents.cpp; path = ../../../addons/ofxHTTP/libs/ofxHTTP/src/ClientEvents.cpp; sourceTree = SOURCE_ROOT; };
 		a139aad0e138e28cd680d9b4d09117d5 /* CookieUtils.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = CookieUtils.h; path = ../../../addons/ofxHTTP/libs/ofxHTTP/include/ofx/HTTP/CookieUtils.h; sourceTree = SOURCE_ROOT; };
 		a2941ca3b0cf610ba8a71765d491ccad /* DefaultSessionProvider.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = DefaultSessionProvider.h; path = ../../../addons/ofxHTTP/libs/ofxHTTP/include/ofx/HTTP/DefaultSessionProvider.h; sourceTree = SOURCE_ROOT; };
@@ -933,6 +936,8 @@
 				e865953230ff49dd1339ce7e698e130c /* ProjectFile.h */,
 				8e9bf742600bdd67a2c1c7075c637e32 /* ProjectManager.cpp */,
 				3621818ea5ff99900091c481f29b7a82 /* ProjectManager.h */,
+				FD410BD6193BED2400630207 /* WebSocketLoggerChannel.cpp */,
+				FD410BD7193BED2400630207 /* WebSocketLoggerChannel.h */,
 			);
 			path = src;
 			sourceTree = SOURCE_ROOT;
@@ -1377,6 +1382,7 @@
 				ee785ef526c01df6efe00ffed8ad8a0c /* BaseRequest.cpp in Sources */,
 				272951916f9204e4960463e3a7dc288c /* BaseResponse.cpp in Sources */,
 				f6afeb8afa51c11e04d848a5e851f4be /* BaseRouteHandler.cpp in Sources */,
+				FD410BD8193BED2400630207 /* WebSocketLoggerChannel.cpp in Sources */,
 				a747cf15c723fceaa2282746ee029460 /* BaseRouteSettings.cpp in Sources */,
 				ac517fc7ce444339ca5012fabc95e7fe /* BaseServerSettings.cpp in Sources */,
 				e77ee97ef5eea571099d1006058d75a2 /* BasicIPVideoServer.cpp in Sources */,
