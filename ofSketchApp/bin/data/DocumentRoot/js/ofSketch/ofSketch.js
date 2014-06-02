@@ -139,6 +139,7 @@ $(document).ready( function()
         });
 
         $('.nav-tabs .dropdown').on('click', function(){
+            
             var tabName = sketchEditor.getSelectedTabName();
             if (tabName == sketchEditor.getProject().getName()) {
                 $('.rename-class, .delete-class').addClass('disabled');
@@ -147,8 +148,7 @@ $(document).ready( function()
                 $('.rename-class, .delete-class').removeClass('disabled');
                 $('.selected-tab-name').text(tabName);
             }
-            
-        })
+        });
 
         $('#toolbar-run').on('click', function() {
             
@@ -313,7 +313,13 @@ $(document).ready( function()
             if (!sketchEditor.getProject().isTemplate()) {
                 
                 sketchEditor.renameProject(newProjectName, function(){
-                    
+                    console.log("RENAME: renamed...");
+                    sketchEditor.saveProject(function(){
+                        console.log("RENAME: saved...");
+                        window.location.href = window.location.protocol 
+                                               + "//" + window.location.host 
+                                               + "/?project=" + encodeURIComponent(newProjectName);
+                   }, saveError);
                 }, renameProjectError);
 
             } else {

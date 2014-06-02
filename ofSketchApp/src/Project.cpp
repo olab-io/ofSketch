@@ -152,12 +152,13 @@ bool Project::rename(const std::string& newName)
     if (isLoaded()) {
         ofLogVerbose("Project::rename") << "renaming project \"" << getName() << "\" to \"" << newName + "\"";
         ofFile projectDir(getPath());
+        std::string oldProjectName = getName();
         ofLogVerbose("Project::rename") << "project path: " << getPath();
         ofLogVerbose("Project::rename") << "renamed to: " << projectDir.getEnclosingDirectory() + newName;
         if (!projectDir.renameTo(projectDir.getEnclosingDirectory() + newName)) return false;
         _path = projectDir.getAbsolutePath();
+        ofFile projectFile(projectDir.getAbsolutePath() + "/sketch/" + oldProjectName + ".sketch");
         ofLogVerbose("Project::rename") << "projectDir path after rename: " << projectDir.getAbsolutePath();
-        ofFile projectFile(projectDir.getAbsolutePath() + "/sketch/" + getName() + ".sketch");
         ofLogVerbose("Project::rename") << "projectFile path: " << projectFile.getAbsolutePath();
         if (!projectFile.renameTo(projectDir.getAbsolutePath() + "/sketch/" + newName + ".sketch")) return false;
         ofLogVerbose("Project::rename") << "projectFile path after rename: " << projectFile.getAbsolutePath();
