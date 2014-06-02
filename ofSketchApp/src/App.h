@@ -41,6 +41,7 @@
 #include "ProjectManager.h"
 #include "Compiler.h"
 #include "WebSocketLoggerChannel.h"
+#include "ProcessTaskQueue.h"
 
 
 using namespace ofx;
@@ -86,10 +87,25 @@ public:
     void onSSLClientVerificationError(Poco::Net::VerificationErrorArgs& args);
     void onSSLPrivateKeyPassphraseRequired(std::string& args);
 
+    bool onTaskStarted(const ofx::TaskStartedEventArgs& args);
+    bool onTaskCancelled(const ofx::TaskCancelledEventArgs& args);
+    bool onTaskFinished(const ofx::TaskFinishedEventArgs& args);
+    bool onTaskFailed(const ofx::TaskFailedEventArgs& args);
+    bool onTaskProgress(const ofx::TaskProgressEventArgs& args);
+    bool onTaskData(const ofx::TaskDataEventArgs<std::string>& args);
+
+    // TODO: Move this.
+    // Wraps a json method in the ofSketch protocol headers.
+    static Json::Value toJSONMethod(const std::string& module,
+                                    const std::string& method,
+                                    const Json::Value& params);
+
+    // TODO: Move this.
+    // This is a utility method for quickly converting a json value to a string.
+    static std::string toJSONString(const Json::Value& json);
+
 private:
     HTTP::BasicJSONRPCServer::SharedPtr server;
-
-    Poco::TaskManager _taskManager;
 
     ProjectManager::SharedPtr _projectManager;
     AddonManager::SharedPtr _addonManager;
@@ -99,6 +115,8 @@ private:
 
     WebSocketLoggerChannel::SharedPtr _loggerChannel;
 
+    Poco::ThreadPool _threadPool;
+    ProcessTaskQueue _taskQueue;
 };
 
 

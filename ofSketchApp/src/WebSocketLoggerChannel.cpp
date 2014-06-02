@@ -25,6 +25,7 @@
 
 #include "WebSocketLoggerChannel.h"
 #include "Poco/Buffer.h"
+#include "App.h"
 
 
 namespace of {
@@ -56,13 +57,10 @@ void WebSocketLoggerChannel::log(ofLogLevel level,
         params["module"] = module;
         params["message"] = message;
 
-        Json::Value json;
-        json["ofSketch"] = "1.0";
-        json["method"] = "logger";
-        json["params"] = params;
+        Json::Value json = App::toJSONMethod("Logger", "message", params);
 
-        Json::FastWriter writer;
-        ofx::HTTP::WebSocketFrame frame(writer.write(json));
+        ofx::HTTP::WebSocketFrame frame(App::toJSONString(json));
+
         route->broadcast(frame);
     }
 }
