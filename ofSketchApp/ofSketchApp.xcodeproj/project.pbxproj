@@ -87,6 +87,8 @@
 		E7E077E815D3B6510020DFD4 /* QTKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7E077E715D3B6510020DFD4 /* QTKit.framework */; };
 		E7F985F815E0DEA3003869B5 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7F985F515E0DE99003869B5 /* Accelerate.framework */; };
 		FD410BD8193BED2400630207 /* WebSocketLoggerChannel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FD410BD6193BED2400630207 /* WebSocketLoggerChannel.cpp */; };
+		FD410BED193CDA7700630207 /* BaseProcessTask.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FD410BEB193CDA7700630207 /* BaseProcessTask.cpp */; };
+		FD410BF0193CDCF400630207 /* ProcessTaskQueue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FD410BEE193CDCF400630207 /* ProcessTaskQueue.cpp */; };
 		a3a89d02d2411fa23a03836bf50785d3 /* MakeTask.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 71b9d10d4931309e684aa1fd89344653 /* MakeTask.cpp */; };
 		a74756e4cb27d44fb96d076ea8212fdf /* DefaultClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 12545da8c2bc9bcaf4e8f43300ca42ee /* DefaultClient.cpp */; };
 		a747cf15c723fceaa2282746ee029460 /* BaseRouteSettings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 396b25119fdb479254d8e67a5bdf1ded /* BaseRouteSettings.cpp */; };
@@ -353,6 +355,10 @@
 		E7F985F515E0DE99003869B5 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = /System/Library/Frameworks/Accelerate.framework; sourceTree = "<absolute>"; };
 		FD410BD6193BED2400630207 /* WebSocketLoggerChannel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WebSocketLoggerChannel.cpp; sourceTree = "<group>"; };
 		FD410BD7193BED2400630207 /* WebSocketLoggerChannel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebSocketLoggerChannel.h; sourceTree = "<group>"; };
+		FD410BEB193CDA7700630207 /* BaseProcessTask.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BaseProcessTask.cpp; sourceTree = "<group>"; };
+		FD410BEC193CDA7700630207 /* BaseProcessTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseProcessTask.h; sourceTree = "<group>"; };
+		FD410BEE193CDCF400630207 /* ProcessTaskQueue.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ProcessTaskQueue.cpp; sourceTree = "<group>"; };
+		FD410BEF193CDCF400630207 /* ProcessTaskQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProcessTaskQueue.h; sourceTree = "<group>"; };
 		a03872290789ee7aa6a28395e36979d8 /* ClientEvents.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ClientEvents.cpp; path = ../../../addons/ofxHTTP/libs/ofxHTTP/src/ClientEvents.cpp; sourceTree = SOURCE_ROOT; };
 		a139aad0e138e28cd680d9b4d09117d5 /* CookieUtils.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = CookieUtils.h; path = ../../../addons/ofxHTTP/libs/ofxHTTP/include/ofx/HTTP/CookieUtils.h; sourceTree = SOURCE_ROOT; };
 		a2941ca3b0cf610ba8a71765d491ccad /* DefaultSessionProvider.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = DefaultSessionProvider.h; path = ../../../addons/ofxHTTP/libs/ofxHTTP/include/ofx/HTTP/DefaultSessionProvider.h; sourceTree = SOURCE_ROOT; };
@@ -912,6 +918,10 @@
 		E4B69E1C0A3A1BDC003C02F2 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				FD410BEE193CDCF400630207 /* ProcessTaskQueue.cpp */,
+				FD410BEF193CDCF400630207 /* ProcessTaskQueue.h */,
+				FD410BEB193CDA7700630207 /* BaseProcessTask.cpp */,
+				FD410BEC193CDA7700630207 /* BaseProcessTask.h */,
 				E4B69E1D0A3A1BDC003C02F2 /* main.cpp */,
 				e91c4375638a4e613a6a83584b423049 /* Addon.cpp */,
 				0a7b769c45381fbf374dc71b3fdc8ddc /* Addon.h */,
@@ -1455,6 +1465,7 @@
 				1cc07c1a616f29eb8eec3d21fc4303e8 /* SearchPath.cpp in Sources */,
 				51667194330cbd16f8345b692ff776f3 /* DirectoryWatcher.cpp in Sources */,
 				bfb6c2dabb7995e4e5a30dd41b942c7e /* RecursiveDirectoryIterator.cpp in Sources */,
+				FD410BED193CDA7700630207 /* BaseProcessTask.cpp in Sources */,
 				ca92728f8f4d9f34c80adc58ffe32cab /* RecursiveDirectoryIteratorStategies.cpp in Sources */,
 				bedfee7400c58ea4e412b757bd605a7b /* ofxJSONElement.cpp in Sources */,
 				7ced9fcc5bf62c4915c8d09f62ad86a7 /* json_reader.cpp in Sources */,
@@ -1463,6 +1474,7 @@
 				ff980e849e802376597006f20a558b68 /* BasicJSONRPCServer.cpp in Sources */,
 				d5e7ad644fb83a08b697911011db029e /* BaseMessage.cpp in Sources */,
 				4b9af9399f7da7a1ca3d2c58331a5213 /* Deserializer.cpp in Sources */,
+				FD410BF0193CDCF400630207 /* ProcessTaskQueue.cpp in Sources */,
 				78ba1fd4e09251d06176cdd6c699b635 /* Error.cpp in Sources */,
 				3ecbbd88e4445067add3b75bd86bce3a /* Errors.cpp in Sources */,
 				7fc21e7a1a5f55f52854c237cc7eeec3 /* MethodRegistry.cpp in Sources */,

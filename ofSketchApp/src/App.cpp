@@ -31,7 +31,9 @@ namespace of {
 namespace Sketch {
 
 
-App::App()
+App::App():
+    _threadPool("ofSketchThreadPool"),
+    _taskQueue(ofx::TaskQueue_<std::string>::UNLIMITED_TASKS, _threadPool)
 {
     HTTP::BasicJSONRPCServerSettings settings; // TODO: load from file.
     settings.setBufferSize(1024 * 512); // 512 KB
@@ -269,7 +271,17 @@ void App::getProjectList(const void* pSender, JSONRPC::MethodArgs& args)
 
 bool App::onWebSocketOpenEvent(HTTP::WebSocketEventArgs& args)
 {
-//    ofLogVerbose("App::onWebSocketOpenEvent") << "Connection opened from: " << args.getConnectionRef().getClientAddress().toString();
+    ofLogVerbose("App::onWebSocketOpenEvent") << "Connection opened from: " << args.getConnectionRef().getClientAddress().toString();
+
+    // Here, we need to send all initial values, settings, etc to the
+    // client before any other messages arrive.
+
+    Json::Value params = _taskQueue.toJson();
+
+    Json::Value json = App::toJSONMethod("TaskQueue", "taskList", params);
+    ofx::HTTP::WebSocketFrame frame(App::toJSONString(json));
+    server->getWebSocketRoute()->broadcast(frame);
+
     return false; // did not handle it
 }
 
@@ -394,6 +406,103 @@ void App::onSSLPrivateKeyPassphraseRequired(std::string& args)
     // if you want to proceed, you should allow your user set the
     // the certificate and set:
     args = "password";
+}
+
+
+bool App::onTaskStarted(const ofx::TaskStartedEventArgs& args)
+{
+    Json::Value params;
+    params["name"] = args.getTaskName();
+    params["uuid"] = args.getTaskId().toString();
+    Json::Value json = App::toJSONMethod("TaskQueue", "taskStarted", params);
+    ofx::HTTP::WebSocketFrame frame(App::toJSONString(json));
+    server->getWebSocketRoute()->broadcast(frame);
+    return false;
+}
+
+
+bool App::onTaskCancelled(const ofx::TaskCancelledEventArgs& args)
+{
+    Json::Value params;
+    params["name"] = args.getTaskName();
+    params["uuid"] = args.getTaskId().toString();
+    Json::Value json = App::toJSONMethod("TaskQueue", "taskCancelled", params);
+    ofx::HTTP::WebSocketFrame frame(App::toJSONString(json));
+    server->getWebSocketRoute()->broadcast(frame);
+    return false;
+}
+
+
+bool App::onTaskFinished(const ofx::TaskFinishedEventArgs& args)
+{
+    Json::Value params;
+    params["name"] = args.getTaskName();
+    params["uuid"] = args.getTaskId().toString();
+    Json::Value json = App::toJSONMethod("TaskQueue", "taskFinished", params);
+    ofx::HTTP::WebSocketFrame frame(App::toJSONString(json));
+    server->getWebSocketRoute()->broadcast(frame);
+    return false;
+}
+
+
+bool App::onTaskFailed(const ofx::TaskFailedEventArgs& args)
+{
+    Json::Value params;
+    params["name"] = args.getTaskName();
+    params["uuid"] = args.getTaskId().toString();
+    params["exception"] = args.getException().displayText();
+    Json::Value json = App::toJSONMethod("TaskQueue", "taskFailed", params);
+    ofx::HTTP::WebSocketFrame frame(App::toJSONString(json));
+    server->getWebSocketRoute()->broadcast(frame);
+    return false;
+}
+
+
+bool App::onTaskProgress(const ofx::TaskProgressEventArgs& args)
+{
+    Json::Value params;
+    params["name"] = args.getTaskName();
+    params["uuid"] = args.getTaskId().toString();
+    params["progress"] = args.getProgress();
+    Json::Value json = App::toJSONMethod("TaskQueue", "taskProgress", params);
+    ofx::HTTP::WebSocketFrame frame(App::toJSONString(json));
+    server->getWebSocketRoute()->broadcast(frame);
+    return false;
+}
+
+
+bool App::onTaskData(const ofx::TaskDataEventArgs<std::string>& args)
+{
+    // We use the custom events to send status messages, and other custom
+    // events for custom data specific events.
+    Json::Value params;
+    params["name"] = args.getTaskName();
+    params["uuid"] = args.getTaskId().toString();
+    params["message"] = args.getData();
+    Json::Value json = App::toJSONMethod("TaskQueue", "taskMessage", params);
+    ofx::HTTP::WebSocketFrame frame(App::toJSONString(json));
+    server->getWebSocketRoute()->broadcast(frame);
+    return false;
+}
+
+
+Json::Value App::toJSONMethod(const std::string& module,
+                              const std::string& method,
+                              const Json::Value& params)
+{
+    Json::Value json;
+    json["ofSketch"] = "1.0";
+    json["module"] = module;
+    json["method"] = method;
+    json["params"] = params;
+    return json;
+}
+
+
+std::string App::toJSONString(const Json::Value& json)
+{
+    Json::FastWriter writer;
+    return writer.write(json);
 }
 
 
