@@ -24,8 +24,77 @@
 // =============================================================================
 var JSONRPCClient;
 
-$(document).ready( function()
-{
+$(document).ready(function() {
+
+    // TODO: move this
+    function handleLoggerEvent(evt) {
+        console.log(evt);
+
+        if (evt.method == "message")
+        {
+            // check log level ... ?
+        }
+    }
+
+    function handleTaskQueueEvent(evt) {
+        console.log(evt);
+ 
+        if (evt.method == "taskList") {
+            // TODO: this is a mess.
+            // Needs to be filled out by someone with better HTML js skills :)
+
+            // var li = $("<li/>", {
+            //     class: 'list-group-item',
+            //     id: 'uuidaiusdiudasduidasd'
+            // }).appendTo($('#task-queue-list'));
+
+            // var progressBarContainer = $("<div/>", {
+            //     class: 'progress progress-striped active'
+            // }).appendTo(li);
+
+            // var progressBar = $("<div/>", {
+            //     class: 'progress-bar',
+            //     role: 'progressbar',
+            //     style: 'width: 100%'
+            // }).attr('aria-valuenow','100').attr('aria-valuemin', '0').attr('aria-valuemax', '100');
+
+            // progressBar.appendTo(progressBarContainer);
+
+            // var progressInfo = $("<span/>", {
+            //     class: 'sr-only',
+            //     text: '0% Complete'
+            // }).appendTo(progressBarContainer);         
+
+            // var button = $('<button/>', {
+            //     type: 'button',
+            //     class: 'btn btn-default btn-sm glyphicon glyphicon-remove',
+            //     click: function() {
+            //         console.log("Task Cancel clicked.");
+            //     }
+            // }).appendTo(li);
+
+        } else if (evt.method == "taskStarted") {
+            // add a task for the uuid
+
+        } else if (evt.method == "taskCancelled") {
+            // remove the task with the uuid
+
+        } else if (evt.method == "taskFinished") {
+            // remove the task with the uuid
+
+        } else if (evt.method == "taskFailed") {
+            // remove the task with the uuid
+
+        } else if (evt.method == "taskProgress") {
+            // remove the task with the uuid
+
+        } else if (evt.method == "taskMessage") {
+            // remove the task with the uuid
+            // update the message in the li with the message
+        } else {
+            console.log("Unknown Task Queue method.");
+        }
+    }
 
     function onWebSocketOpen(ws) {
         console.log("on open");
@@ -33,8 +102,21 @@ $(document).ready( function()
     }
 
     function onWebSocketMessage(evt) {
-        console.log("on raw message:");
-        console.log(evt.data);
+        try {
+            var json = JSON.parse(evt.data);
+
+            if (json.module == "Logger") {
+                handleLoggerEvent(json);
+            } else if (json.module == "TaskQueue") {
+                handleTaskQueueEvent(json);
+            } else {
+                console.log("Unknown Module: " + json.module);
+                console.log(json);
+            }
+
+        } catch (e) {
+            console.log("NOT JSON:" + evt.data);
+        }
     }
 
     function onWebSocketClose() {
@@ -91,13 +173,12 @@ $(document).ready( function()
         alertBox.addClass('alert ' + c);
         alertBox.html('<strong>' + message + '</strong> ' + subMessage);
         alertBox.show();
-        alertTimeout = setTimeout(function(){
+        alertTimeout = setTimeout(function() {
             alertBox.hide();
         }, 2000);
     }
 
-    function parseURLParameters()
-    {
+    function parseURLParameters() {
         var project = getURLParameter('project');
         if (project) {
             sketchEditor.loadProject(project, function() {
@@ -109,17 +190,17 @@ $(document).ready( function()
             }, loadError);
         }
     }
-    
+
     var alertTimeout;
 
-    JSONRPCClient = new $.JsonRpcClient({ 
-            ajaxUrl: getDefaultPostURL(),
-            socketUrl: getDefaultWebSocketURL(), // get a websocket for the localhost
-            onmessage: onWebSocketMessage,
-            onopen: onWebSocketOpen,
-            onclose: onWebSocketClose,
-            onerror: onWebSocketError
-        });
+    JSONRPCClient = new $.JsonRpcClient({
+        ajaxUrl: getDefaultPostURL(),
+        socketUrl: getDefaultWebSocketURL(), // get a websocket for the localhost
+        onmessage: onWebSocketMessage,
+        onopen: onWebSocketOpen,
+        onclose: onWebSocketClose,
+        onerror: onWebSocketError
+    });
 
     var alertBox;
     alertBox = $('#editor-messages.alert');
@@ -130,10 +211,10 @@ $(document).ready( function()
     var sketchEditor = new SketchEditor(function() {
 
         $('#toolbar li a, .file-tab a, #new-class a, .action-menu li a').on('click', function(e) {
-            e.preventDefault(); 
+            e.preventDefault();
         });
 
-        $('.nav-tabs .dropdown').on('click', function(){
+        $('.nav-tabs .dropdown').on('click', function() {
             var tabName = sketchEditor.getSelectedTabName();
             if (tabName == sketchEditor.getProject().getName()) {
                 $('.rename-class, .delete-class').addClass('disabled');
@@ -142,7 +223,7 @@ $(document).ready( function()
                 $('.rename-class, .delete-class').removeClass('disabled');
                 $('.selected-tab-name').text(tabName);
             }
-            
+
         })
 
         $('#toolbar-stop').on('click', function() {
@@ -157,7 +238,7 @@ $(document).ready( function()
                     }, saveError);
                 } else {
                     $('#name-project-modal').modal();
-                }   
+                }
             }
         });
 
@@ -167,9 +248,7 @@ $(document).ready( function()
                 var projectList = $('#project-list');
                 projectList.empty();
                 _.each(result, function(project) {
-                    var linkElement = $('<a href="' + location.protocol + '//' + location.host + '/?project=' 
-                                         + encodeURIComponent(project.projectName)
-                                         + '" class="list-group-item" target="_blank">' + project.projectName + '</a>');
+                    var linkElement = $('<a href="' + location.protocol + '//' + location.host + '/?project=' + encodeURIComponent(project.projectName) + '" class="list-group-item" target="_blank">' + project.projectName + '</a>');
                     projectList.append(linkElement);
                 });
 
@@ -192,7 +271,7 @@ $(document).ready( function()
             } else {
                 $('#name-project-modal').modal();
             }
-            
+
         });
 
         $('.rename-class').on('click', function() {
@@ -211,16 +290,17 @@ $(document).ready( function()
             $('#delete-project-modal').modal();
         });
 
-        
+
         $('#create-class').on('click', function() {
-            
+
             var className = $('#new-class-name').val();
             if (!sketchEditor.getProject().isClassName(className)) {
                 sketchEditor.createClass(className, function() {
                     sketchEditor.selectTab(className);
-                    sketchEditor.saveProject(function(){
+                    sketchEditor.saveProject(function() {
                         saveAlert();
-                    }, saveError)}, createClassError);
+                    }, saveError)
+                }, createClassError);
             } else {
                 // class name already exists.
             }
@@ -229,7 +309,7 @@ $(document).ready( function()
         });
 
         $('#delete-class').on('click', function() {
-            
+
             var projectName = sketchEditor.getProject().getName();
             var tabName = sketchEditor.getSelectedTabName();
             if (tabName != projectName) {
@@ -243,15 +323,15 @@ $(document).ready( function()
         });
 
         $('#rename-class').on('click', function() {
-            
+
             var projectName = sketchEditor.getProject().getName();
             var tabName = sketchEditor.getSelectedTabName();
             var newClassName = $('#renamed-class-name').val();
-            
+
             if (tabName != projectName) {
                 if (!sketchEditor.getProject().isClassName(newClassName)) {
                     sketchEditor.renameClass(tabName, newClassName, function() {
-                       console.log('class renamed!');
+                        console.log('class renamed!');
                     }, function(err) {
                         console.log('Error renaming class: ');
                         console.log(err);
@@ -265,16 +345,14 @@ $(document).ready( function()
         });
 
         $('#name-project').on('click', function() {
-            
+
             var projectName = $('#new-project-name').val();
             // TODO: validate name doesn't already exist below
             if (true) {
                 sketchEditor.createProject(projectName, function() {
-                   sketchEditor.saveProject(function(){
-                        window.location.href = window.location.protocol 
-                                               + "//" + window.location.host 
-                                               + "/?project=" + encodeURIComponent(projectName);
-                   }, saveError);
+                    sketchEditor.saveProject(function() {
+                        window.location.href = window.location.protocol + "//" + window.location.host + "/?project=" + encodeURIComponent(projectName);
+                    }, saveError);
                 }, createProjectError);
             } else {
                 // Project name is already taken.
@@ -285,9 +363,9 @@ $(document).ready( function()
 
         $('#delete-project').on('click', function() {
             if (!sketchEditor.getProject().isTemplate()) {
-                sketchEditor.deleteProject(function(){
+                sketchEditor.deleteProject(function() {
                     navigateToNewProject();
-                }, function(){
+                }, function() {
 
                 });
             } else {
@@ -295,8 +373,7 @@ $(document).ready( function()
             }
 
             function navigateToNewProject() {
-                window.location.href = window.location.protocol 
-                                               + "//" + window.location.host;
+                window.location.href = window.location.protocol + "//" + window.location.host;
             }
         });
 

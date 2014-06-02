@@ -67,7 +67,7 @@ bool ProcessTaskQueue::onTaskCancelled(const ofx::TaskCancelledEventArgs& args)
 {
     if (tasks.find(args.getTaskId()) != tasks.end())
     {
-        tasks[args.getTaskId()].progress = -1;
+        tasks[args.getTaskId()].progress = 0;
     }
     else
     {
@@ -101,7 +101,7 @@ bool ProcessTaskQueue::onTaskFailed(const ofx::TaskFailedEventArgs& args)
 {
     if (tasks.find(args.getTaskId()) != tasks.end())
     {
-        tasks[args.getTaskId()].progress = -1;
+        tasks[args.getTaskId()].progress = 0;
         tasks[args.getTaskId()].message = args.getException().displayText();
     }
     else
