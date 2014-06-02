@@ -194,6 +194,7 @@ void App::createProject(const void* pSender, JSONRPC::MethodArgs& args)
     
 void App::deleteProject(const void* pSender, JSONRPC::MethodArgs& args)
 {
+    
     std::string projectName = args.params["projectName"].asString();
     if (_projectManager->projectExists(projectName)) {
         _projectManager->deleteProject(pSender, args);

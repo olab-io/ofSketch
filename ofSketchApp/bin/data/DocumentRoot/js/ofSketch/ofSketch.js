@@ -307,6 +307,23 @@ $(document).ready( function()
             $('#new-project-name').val('');
         });
 
+        $('#delete-project').on('click', function() {
+            if (!sketchEditor.getProject().isTemplate()) {
+                sketchEditor.deleteProject(function(){
+                    navigateToNewProject();
+                }, function(){
+
+                });
+            } else {
+                navigateToNewProject();
+            }
+
+            function navigateToNewProject() {
+                window.location.href = window.location.protocol 
+                                               + "//" + window.location.host;
+            }
+        });
+
         $('#rename-project').on('click', function() {
 
             var newProjectName = $('#renamed-project-name').val();
