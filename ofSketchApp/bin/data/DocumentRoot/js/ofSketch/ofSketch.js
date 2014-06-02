@@ -150,6 +150,17 @@ $(document).ready( function()
             
         })
 
+        $('#toolbar-run').on('click', function() {
+            
+            if (!sketchEditor.getProject().isTemplate()) {
+                sketchEditor.saveProject(function() {
+                    sketchEditor.run(runAlert, runError);
+                }, saveError);
+            } else {
+                $('#name-project-modal').modal();
+            }
+        });
+
         $('#toolbar-stop').on('click', function() {
 
         });
@@ -217,7 +228,11 @@ $(document).ready( function()
         });
 
         $('.rename-project').on('click', function() {
-            $('#rename-project-modal').modal();
+            if (!sketchEditor.getProject().isTemplate()) {
+                $('#rename-project-modal').modal();
+            } else {
+                $('#name-project-modal').modal();
+            }
         });
 
         
@@ -306,14 +321,6 @@ $(document).ready( function()
             }
 
             $('#renamed-project-name').val('');
-        });
-
-        $('#toolbar-run').on('click', function() {
-            if (sketchEditor.projectLoaded()) {
-                sketchEditor.saveProject(function() {
-                    sketchEditor.run(runAlert, runError);
-                }, saveError);
-            }
         });
 
         parseURLParameters();
