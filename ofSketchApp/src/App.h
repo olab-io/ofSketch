@@ -73,11 +73,11 @@ public:
     void stop(const void* pSender, JSONRPC::MethodArgs& args);
     void getProjectList(const void* pSender, JSONRPC::MethodArgs& args);
 
-    bool onWebSocketOpenEvent(HTTP::WebSocketEventArgs& args);
-    bool onWebSocketCloseEvent(HTTP::WebSocketEventArgs& args);
+    bool onWebSocketOpenEvent(HTTP::WebSocketOpenEventArgs& args);
+    bool onWebSocketCloseEvent(HTTP::WebSocketCloseEventArgs& args);
     bool onWebSocketFrameReceivedEvent(HTTP::WebSocketFrameEventArgs& args);
     bool onWebSocketFrameSentEvent(HTTP::WebSocketFrameEventArgs& args);
-    bool onWebSocketErrorEvent(HTTP::WebSocketEventArgs& args);
+    bool onWebSocketErrorEvent(HTTP::WebSocketErrorEventArgs& args);
 
     bool onHTTPPostEvent(HTTP::PostEventArgs& args);
     bool onHTTPFormEvent(HTTP::PostFormEventArgs& args);

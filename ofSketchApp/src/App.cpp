@@ -269,7 +269,7 @@ void App::getProjectList(const void* pSender, JSONRPC::MethodArgs& args)
     _projectManager->getProjectList(pSender, args);
 };
 
-bool App::onWebSocketOpenEvent(HTTP::WebSocketEventArgs& args)
+bool App::onWebSocketOpenEvent(HTTP::WebSocketOpenEventArgs& args)
 {
     ofLogVerbose("App::onWebSocketOpenEvent") << "Connection opened from: " << args.getConnectionRef().getClientAddress().toString();
 
@@ -287,9 +287,15 @@ bool App::onWebSocketOpenEvent(HTTP::WebSocketEventArgs& args)
 }
 
 
-bool App::onWebSocketCloseEvent(HTTP::WebSocketEventArgs& args)
+bool App::onWebSocketCloseEvent(HTTP::WebSocketCloseEventArgs& args)
 {
-//    ofLogVerbose("App::onWebSocketCloseEvent") << "Connection closed from: " << args.getConnectionRef().getClientAddress().toString();
+    std::stringstream ss;
+
+    ss << "Connection closed from: " << args.getConnectionRef().getClientAddress().toString() << " ";
+    ss << "Code: " << args.getCode() << " Reason: " << args.getReason();
+
+    ofLogVerbose("App::onWebSocketCloseEvent") << ss.str();
+
     return false; // did not handle it
 }
 
@@ -308,7 +314,7 @@ bool App::onWebSocketFrameSentEvent(HTTP::WebSocketFrameEventArgs& args)
 }
 
 
-bool App::onWebSocketErrorEvent(HTTP::WebSocketEventArgs& args)
+bool App::onWebSocketErrorEvent(HTTP::WebSocketErrorEventArgs& args)
 {
     ofLogError("App::onWebSocketErrorEvent") << "Stop: " << args.getError();
 
