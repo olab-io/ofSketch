@@ -34,7 +34,7 @@ namespace Sketch {
 App::App()
 {
     HTTP::BasicJSONRPCServerSettings settings; // TODO: load from file.
-    settings.setBufferSize(1024 * 512); // 512MB
+    settings.setBufferSize(1024 * 512); // 512 KB
     server = ofx::HTTP::BasicJSONRPCServer::makeShared(settings);
     
     // Must register for all events before initializing server.
