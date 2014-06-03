@@ -26,6 +26,75 @@ var JSONRPCClient;
 
 $(document).ready( function()
 {
+        // TODO: move this
+    function handleLoggerEvent(evt) {
+        console.log(evt);
+
+        if (evt.method == "message")
+        {
+            // check log level ... ?
+        }
+    }
+
+    function handleTaskQueueEvent(evt) {
+        console.log(evt);
+ 
+        if (evt.method == "taskList") {
+            // TODO: this is a mess.
+            // Needs to be filled out by someone with better HTML js skills :)
+
+            // var li = $("<li/>", {
+            //     class: 'list-group-item',
+            //     id: 'uuidaiusdiudasduidasd'
+            // }).appendTo($('#task-queue-list'));
+
+            // var progressBarContainer = $("<div/>", {
+            //     class: 'progress progress-striped active'
+            // }).appendTo(li);
+
+            // var progressBar = $("<div/>", {
+            //     class: 'progress-bar',
+            //     role: 'progressbar',
+            //     style: 'width: 100%'
+            // }).attr('aria-valuenow','100').attr('aria-valuemin', '0').attr('aria-valuemax', '100');
+
+            // progressBar.appendTo(progressBarContainer);
+
+            // var progressInfo = $("<span/>", {
+            //     class: 'sr-only',
+            //     text: '0% Complete'
+            // }).appendTo(progressBarContainer);         
+
+            // var button = $('<button/>', {
+            //     type: 'button',
+            //     class: 'btn btn-default btn-sm glyphicon glyphicon-remove',
+            //     click: function() {
+            //         console.log("Task Cancel clicked.");
+            //     }
+            // }).appendTo(li);
+
+        } else if (evt.method == "taskStarted") {
+            // TODO: add a task for the uuid
+
+        } else if (evt.method == "taskCancelled") {
+            // TODO: remove the task with the uuid
+
+        } else if (evt.method == "taskFinished") {
+            // TODO: remove the task with the uuid
+
+        } else if (evt.method == "taskFailed") {
+            // TODO: remove the task with the uuid
+
+        } else if (evt.method == "taskProgress") {
+            // TODO: remove the task with the uuid
+
+        } else if (evt.method == "taskMessage") {
+            // TODO: remove the task with the uuid
+            // update the message in the li with the message
+        } else {
+            console.log("Unknown Task Queue method.");
+        }
+    }
 
     function onWebSocketOpen(ws) {
         console.log("on open");
@@ -33,8 +102,22 @@ $(document).ready( function()
     }
 
     function onWebSocketMessage(evt) {
-        console.log("on raw message:");
-        console.log(evt.data);
+        try {
+            var json = JSON.parse(evt.data);
+
+            if (json.module == "Logger") {
+                handleLoggerEvent(json);
+            } else if (json.module == "TaskQueue") {
+                handleTaskQueueEvent(json);
+            } else {
+                console.log("Unknown Module: " + json.module);
+                console.log(json);
+            }
+        } catch (e) {
+            console.log(e);
+            console.log("Unknown Websocket Data Type");
+            console.log(evt.data);
+        }
     }
 
     function onWebSocketClose() {
