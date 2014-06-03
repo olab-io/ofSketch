@@ -107,16 +107,14 @@ public:
 private:
     HTTP::BasicJSONRPCServer::SharedPtr server;
 
-    ProjectManager::SharedPtr _projectManager;
-    AddonManager::SharedPtr _addonManager;
-
-    Project::SharedPtr _currentProject;
-    Compiler _compiler;
-
     WebSocketLoggerChannel::SharedPtr _loggerChannel;
 
     Poco::ThreadPool _threadPool;
     ProcessTaskQueue _taskQueue;
+    Compiler _compiler;
+    ProjectManager _projectManager;
+    AddonManager _addonManager;
+
 };
 
 

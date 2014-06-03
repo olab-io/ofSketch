@@ -44,6 +44,8 @@ function SketchEditor(callback)
 
 	var _editor = ace.edit('editor');
 
+	var _currentRunTaskId = undefined;
+
 	var _applySettings = function()
 	{
 		_editor.setTheme(_settings.editorTheme);
@@ -218,11 +220,28 @@ function SketchEditor(callback)
 		JSONRPCClient.call('run', 
         					{ projectName: _project.getName() },
 					        function(result) {
+					        	_currentRunTaskId = result;
 					            onSuccess(result);
 					        },
 					        function(error) {
 					            onError(error);
 					        });
+	}
+
+	this.stop = function(onSuccess, onError)
+	{
+		if (_currentRunTaskId != undefined)
+		{
+			JSONRPCClient.call('stop', 
+					{ taskId: _currentRunTaskId },
+			        function(result) {
+			            onSuccess(result);
+			            _currentRunTaskId = undefined;
+			        },
+			        function(error) {
+			            onError(error);
+			        });
+		}
 	}
 
 	this.createClass = function(className, onSuccess, onError)

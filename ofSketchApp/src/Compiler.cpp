@@ -25,75 +25,37 @@
 
 #include "Compiler.h"
 
+
 namespace of {
 namespace Sketch {
-    
-    Compiler::Compiler(std::string pathToTemplates):
-_pathToTemplates(pathToTemplates)
+
+
+Compiler::Compiler(ProcessTaskQueue& taskQueue, std::string pathToTemplates):
+    _taskQueue(taskQueue),
+    _pathToTemplates(pathToTemplates),
+    _projectFileTemplate(ofBufferFromFile(ofToDataPath(_pathToTemplates + "/main.txt")).getText()),
+    _classTemplate(ofBufferFromFile(ofToDataPath(_pathToTemplates + "/class.txt")).getText())
 {
-    _projectFileTemplate = ofBufferFromFile(ofToDataPath(_pathToTemplates + "/main.txt")).getText();
-    _classTemplate = ofBufferFromFile(ofToDataPath(_pathToTemplates + "/class.txt")).getText();
 }
 
-void Compiler::run(const Project& project)
+
+Poco::UUID Compiler::compile(const Project& project)
 {
-    
-    std::string cmd("make");
-    std::vector<std::string> args;
-    
-    args.push_back("--directory=" + project.getPath());
-    //        if(_settings.numProcessors > 1)
-    //        {
-    //            args.push_back("-j" + ofToString(_settings.numProcessors));
-    //        }
-    
-    args.push_back("-j" + ofToString(8));
-    
-    //        if(_settings.isSilent)
-    //        {
-    args.push_back("-s");
-    //        }
-    
-    //        args.push_back(_target);
-    
-    args.push_back("OF_ROOT=" + ofToDataPath("openFrameworks/", true));
-    
-    Poco::Pipe inPipe; // this needs to be passed in
-    Poco::Pipe outAndErrPipe;
-    
-    Poco::ProcessHandle ph = Poco::Process::launch(cmd, args, &inPipe, &outAndErrPipe, &outAndErrPipe);
-    Poco::PipeInputStream istr(outAndErrPipe);
-    
-    //        const std::size_t bufferSize = 8192;
-    //        char buffer[bufferSize];
-    //
-    //        while(istr.good() && !istr.fail())
-    //        {
-    //            if(isCancelled())
-    //            {
-    //                Poco::Process::kill(ph);
-    //            }
-    //
-    //            istr.getline(buffer,bufferSize);
-    //            cout << "LINE>>" << buffer << "<<LINE" << endl;
-    //        }
-    
-    Poco::StreamCopier::copyStream(istr, std::cout);
-    
-    int exitCode = ph.wait();
-    
-    cout << "exit code: " << exitCode << endl;
-    
-    args.push_back("run");
-    
-    ph = Poco::Process::launch(cmd, args, &inPipe, &outAndErrPipe, &outAndErrPipe);
-    
-    Poco::PipeInputStream istr2(outAndErrPipe);
-    Poco::StreamCopier::copyStream(istr2, std::cout);
-    
-    exitCode = ph.wait();
-    
-    cout << "exit code: " << exitCode << endl;
+    return Poco::UUID::null();
+}
+
+
+Poco::UUID Compiler::run(const Project& project)
+{
+    MakeTask::Settings settings;
+
+    // We don't return this handle yet, but it is available in the callback.
+    // Compile task.
+    _taskQueue.start(new MakeTask(settings, project, "Release"));
+
+    // Run task.
+    return _taskQueue.start(new MakeTask(settings, project, "RunRelease"));
+
 }
 
 void Compiler::generateSourceFiles(const Project& project)

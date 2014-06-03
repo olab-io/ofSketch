@@ -33,8 +33,13 @@ namespace Sketch {
 
 App::App():
     _threadPool("ofSketchThreadPool"),
-    _taskQueue(ofx::TaskQueue_<std::string>::UNLIMITED_TASKS, _threadPool)
+    _taskQueue(ofx::TaskQueue_<std::string>::UNLIMITED_TASKS, _threadPool),
+    _compiler(_taskQueue, ofToDataPath("Resources/Templates/CompilerTemplates")),
+    _projectManager(ofToDataPath("Projects")),
+    _addonManager(ofToDataPath("openFrameworks/addons"))
 {
+    _taskQueue.registerTaskEvents(this);
+
     HTTP::BasicJSONRPCServerSettings settings; // TODO: load from file.
     settings.setBufferSize(1024 * 512); // 512 KB
     server = ofx::HTTP::BasicJSONRPCServer::makeShared(settings);
@@ -54,6 +59,8 @@ App::App():
 
 App::~App()
 {
+    _taskQueue.unregisterTaskEvents(this);
+
     // Reset default logger.
     ofLogToConsole();
 
@@ -76,9 +83,6 @@ void App::setup()
                                                           ofToDataPath("ssl/cacert.pem")));
 
     // TODO: configure these via settings files
-    _projectManager = ProjectManager::makeShared(ofToDataPath("Projects"));
-    _addonManager = AddonManager::makeShared(ofToDataPath("openFrameworks/addons"));
-    _compiler = Compiler(ofToDataPath("Resources/Templates/CompilerTemplates"));
 
     server->registerMethod("load-project",
                           "Load the requested project.",
@@ -91,66 +95,66 @@ void App::setup()
                            &App::loadTemplateProject);
     
     server->registerMethod("save-project",
-                          "Save the current project.",
-                          this,
-                          &App::saveProject);
+                           "Save the current project.",
+                           this,
+                           &App::saveProject);
     
     server->registerMethod("create-project",
-                          "Create a new project.",
-                          this,
-                          &App::createProject);
+                           "Create a new project.",
+                           this,
+                           &App::createProject);
     
     server->registerMethod("delete-project",
-                          "Delete the current project.",
-                          this,
-                          &App::deleteProject);
+                           "Delete the current project.",
+                           this,
+                           &App::deleteProject);
     
     server->registerMethod("rename-project",
-                          "Rename the current project.",
-                          this,
-                          &App::renameProject);
+                           "Rename the current project.",
+                           this,
+                           &App::renameProject);
     
     server->registerMethod("create-class",
-                          "Create a new class for the current project.",
-                          this,
-                          &App::createClass);
+                           "Create a new class for the current project.",
+                           this,
+                           &App::createClass);
     
     server->registerMethod("delete-class",
-                          "Delete a select class from for the current project.",
-                          this,
-                          &App::deleteClass);
+                           "Delete a select class from for the current project.",
+                           this,
+                           &App::deleteClass);
     
     server->registerMethod("rename-class",
-                          "Rename a select class from for the current project.",
-                          this,
-                          &App::renameClass);
+                           "Rename a select class from for the current project.",
+                           this,
+                           &App::renameClass);
 
     server->registerMethod("run",
-                          "Run the requested project.",
-                          this,
-                          &App::run);
+                           "Run the requested project.",
+                           this,
+                           &App::run);
 
     server->registerMethod("stop",
-                          "Stop the requested project.",
-                          this,
-                          &App::stop);
+                           "Stop the requested project.",
+                           this,
+                           &App::stop);
     
     server->registerMethod("get-project-list",
-                          "Get list of all projects in the Project directory.",
-                          this,
-                          &App::getProjectList);
+                           "Get list of all projects in the Project directory.",
+                           this,
+                           &App::getProjectList);
 
-    // start the server
     server->start();
 
     // Launch a browser with the address of the server.
     ofLaunchBrowser(server->getURL());
 }
 
+
 void App::update()
 {
-    
 }
+
 
 void App::draw()
 {
@@ -161,118 +165,141 @@ void App::loadProject(const void* pSender, JSONRPC::MethodArgs& args)
 {
     if (args.params.isMember("projectName")) {
         std::string projectName = args.params["projectName"].asString();
-        if (_projectManager->projectExists(projectName)) {
-            _projectManager->loadProject(pSender, args);
+        if (_projectManager.projectExists(projectName)) {
+            _projectManager.loadProject(pSender, args);
         } else args.error["message"] = "The requested project does not exist.";
     } else args.error["message"] = "Incorrect parameters sent to load-project method.";
 }
-    
+
+
 void App::loadTemplateProject(const void* pSender, JSONRPC::MethodArgs& args)
 {
-    _projectManager->loadTemplateProject(pSender, args);
+    _projectManager.loadTemplateProject(pSender, args);
 }
-    
+
+
 void App::saveProject(const void* pSender, JSONRPC::MethodArgs& args)
 {
     std::string projectName = args.params["projectData"]["projectFile"]["name"].asString();
     
-    if (_projectManager->projectExists(projectName)) {
+    if (_projectManager.projectExists(projectName)) {
     
-        _projectManager->saveProject(pSender, args);
-        const Project& project = _projectManager->getProject(projectName);
+        _projectManager.saveProject(pSender, args);
+        const Project& project = _projectManager.getProject(projectName);
         _compiler.generateSourceFiles(project);
     } else args.error["message"] = "The requested project does not exist.";
 }
-    
+
+
 void App::createProject(const void* pSender, JSONRPC::MethodArgs& args)
 {
     std::string projectName = args.params["projectName"].asString();
-    if (!_projectManager->projectExists(projectName)) {
-        _projectManager->createProject(pSender, args);
+    if (!_projectManager.projectExists(projectName)) {
+        _projectManager.createProject(pSender, args);
     } else args.error["message"] = "That project name already exists.";
 }
-    
+
+
 void App::deleteProject(const void* pSender, JSONRPC::MethodArgs& args)
 {
     
     std::string projectName = args.params["projectName"].asString();
-    if (_projectManager->projectExists(projectName)) {
-        _projectManager->deleteProject(pSender, args);
+    if (_projectManager.projectExists(projectName)) {
+        _projectManager.deleteProject(pSender, args);
     } else args.error["message"] = "The project that you are trying to delete does not exist.";
 }
+
 
 void App::renameProject(const void* pSender, JSONRPC::MethodArgs& args)
 {
     std::string projectName = args.params["projectName"].asString();
-    if (_projectManager->projectExists(projectName)) {
-        _projectManager->renameProject(pSender, args);
+    if (_projectManager.projectExists(projectName)) {
+        _projectManager.renameProject(pSender, args);
     } else args.error["message"] = "The project that you are trying to delete does not exist.";
 //    args.error["foo"] = "bar";
 }
 
+
 void App::createClass(const void* pSender, JSONRPC::MethodArgs& args)
 {
     std::string projectName = args.params["projectName"].asString();
-    if (_projectManager->projectExists(projectName)) {
+    if (_projectManager.projectExists(projectName)) {
         
         std::string className = args.params["className"].asString();
-        Project& project = _projectManager->getProjectRef(projectName);
+        Project& project = _projectManager.getProjectRef(projectName);
         args.result["classFile"] = project.createClass(className);
         
     } else args.error["message"] = "The requested project does not exist.";
 }
 
+
 void App::deleteClass(const void* pSender, JSONRPC::MethodArgs& args)
 {
     std::string projectName = args.params["projectName"].asString();
-    if (_projectManager->projectExists(projectName)) {
+    if (_projectManager.projectExists(projectName)) {
         
         std::string className = args.params["className"].asString();
-        Project& project = _projectManager->getProjectRef(projectName);
+        Project& project = _projectManager.getProjectRef(projectName);
         if (project.deleteClass(className)) {
             args.result["message"] = className + "class deleted.";
         } else args.error["message"] = "Error deleting the class.";
     } else args.error["message"] = "The requested project does not exist.";
 }
 
+
 void App::renameClass(const void* pSender, JSONRPC::MethodArgs& args)
 {
     std::string projectName = args.params["projectName"].asString();
-    if (_projectManager->projectExists(projectName)) {
+    if (_projectManager.projectExists(projectName)) {
         
         std::string className = args.params["className"].asString();
         std::string newClassName = args.params["newClassName"].asString();
-        Project& project = _projectManager->getProjectRef(projectName);
+        Project& project = _projectManager.getProjectRef(projectName);
         if (project.renameClass(className, newClassName)) {
             args.result["message"] = className + " class renamed to " + newClassName;
         } else args.error["message"] = "Error renaming " + className + " class.";
     } else args.error["message"] = "The requested project does not exist.";
 
 }
-    
+
+
 void App::run(const void* pSender, JSONRPC::MethodArgs& args)
 {
 
     std::string projectName = args.params["projectName"].asString();
-    if (_projectManager->projectExists(projectName)) {
+    if (_projectManager.projectExists(projectName)) {
         
         ofLogNotice("App::run") << "Running " << projectName << " project";
-        const Project& project = _projectManager->getProject(projectName);
-        _compiler.run(project);
-        
+        const Project& project = _projectManager.getProject(projectName);
+        Poco::UUID taskId = _compiler.run(project);
+        args.result = taskId.toString();
     }
     else args.error["message"] = "The requested project does not exist.";
 }
 
+
 void App::stop(const void* pSender, JSONRPC::MethodArgs& args)
 {
+    if (args.params.isMember("taskId"))
+    {
+        Poco::UUID taskId(args.params["taskId"].asString());
+        _taskQueue.cancel(taskId);
+    }
+    else
+    {
+        // Invalid.
+        args.error = "No task id.";
+    }
+
     ofLogNotice("App::stop") << "Stop:  " << args.params.toStyledString();
 }
 
+
 void App::getProjectList(const void* pSender, JSONRPC::MethodArgs& args)
 {
-    _projectManager->getProjectList(pSender, args);
+    _projectManager.getProjectList(pSender, args);
 };
+
 
 bool App::onWebSocketOpenEvent(HTTP::WebSocketOpenEventArgs& args)
 {

@@ -24,6 +24,7 @@
 
 
 #include "MakeTask.h"
+#include "Poco/TaskNotification.h"
 
 
 namespace of {
@@ -42,13 +43,31 @@ MakeTask::Settings::Settings():
 
 
 MakeTask::MakeTask(const Settings& settings,
-                   Project::SharedPtr project,
+                   const Project& project,
                    const std::string& target):
-    Poco::Task(project->getPath()),
+    BaseProcessTask(project.getPath(), "make"),
     _settings(settings),
     _project(project),
     _target(target)
 {
+    _args.push_back("--directory=" + ofToDataPath(_project.getPath()));
+
+    if(_settings.numProcessors > 1)
+    {
+        _args.push_back("-j" + ofToString(_settings.numProcessors));
+    }
+
+    if(_settings.isSilent)
+    {
+        _args.push_back("-s");
+    }
+
+    _args.push_back(_target);
+//    _args.push_back("OF_ROOT=" + _settings.ofRoot);
+
+    cout << "--------" << endl;
+    cout << ofToString(_args) << endl;
+    cout << "--------" << endl;
 }
 
 
@@ -57,54 +76,9 @@ MakeTask::~MakeTask()
 }
 
 
-void MakeTask::runTask()
+void MakeTask::processLine(const std::string& line)
 {
-    std::string cmd("make");
-
-    std::vector<std::string> args;
-
-    args.push_back("--directory=" + _project->getPath());
-    if(_settings.numProcessors > 1)
-    {
-        args.push_back("-j" + ofToString(_settings.numProcessors));
-    }
-
-    if(_settings.isSilent)
-    {
-        args.push_back("-s");
-    }
-
-    args.push_back(_target);
-
-    args.push_back("OF_ROOT=" + _settings.ofRoot);
-
-    Poco::Pipe inPipe; // this needs to be passed in
-    Poco::Pipe outAndErrPipe;
-//    Poco::Pipe errPipe;
-
-    Poco::ProcessHandle ph = Poco::Process::launch(cmd, args, &inPipe, &outAndErrPipe, &outAndErrPipe);
-
-    Poco::PipeInputStream istr(outAndErrPipe);
-
-    const std::size_t bufferSize = 8192;
-    char buffer[bufferSize];
-
-    while(istr.good() && !istr.fail())
-    {
-        if(isCancelled())
-        {
-            Poco::Process::kill(ph);
-        }
-
-        istr.getline(buffer,bufferSize);
-        cout << "LINE>>" << buffer << "<<LINE" << endl;
-    }
-
-
-    int exitCode = ph.wait();
-
-    cout << "exit code: " << exitCode << endl;
-
+    postNotification(new Poco::TaskCustomNotification<std::string>(this, line));
 }
 
 
