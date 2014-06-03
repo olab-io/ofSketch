@@ -37,6 +37,7 @@ ProjectManager::ProjectManager(const std::string& path):
     _templateProject(ofToDataPath("Resources/Templates/NewProject", true))
 {
     _projectWatcher.addPath(_path);
+    ofLogNotice("ProjectManager::ProjectManager") << _path;
 
     std::vector<std::string> files;
 
@@ -171,11 +172,11 @@ void ProjectManager::createProject(const void* pSender, ofx::JSONRPC::MethodArgs
     Json::Value projectData = args.params["projectData"];
     std::string projectName = args.params["projectData"]["projectFile"]["name"].asString();
     ofDirectory projectDir(_templateProject.getPath());
-    projectDir.copyTo(ofToDataPath("Projects/" + projectName));
-    ofFile templateProjectFile(ofToDataPath("Projects/" + projectName) + "/sketch/NewProject.sketch");
+    projectDir.copyTo(_path + "/" + projectName);
+    ofFile templateProjectFile(_path + "/" + projectName + "/sketch/NewProject.sketch");
     templateProjectFile.remove();
     
-    Project project(ofToDataPath("Projects/" + projectName));
+    Project project(_path + "/" + projectName);
     project.save(projectData);
     _projects.push_back(project);
     args.result = project.getData();
