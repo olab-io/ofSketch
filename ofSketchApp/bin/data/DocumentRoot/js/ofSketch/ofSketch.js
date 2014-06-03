@@ -245,7 +245,7 @@ $(document).ready( function()
         });
 
         $('#toolbar-stop').on('click', function() {
-
+            sketchEditor.stop(runAlert, runError);
         });
 
         $('#toolbar-save').on('click', function() {

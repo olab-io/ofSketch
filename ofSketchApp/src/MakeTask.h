@@ -35,24 +35,25 @@
 #include "Poco/Net/SocketAddress.h"
 #include "ofUtils.h"
 #include "Project.h"
+#include "BaseProcessTask.h"
 
 
 namespace of {
 namespace Sketch {
 
 
-class MakeTask: public Poco::Task
+class MakeTask: public BaseProcessTask
 {
 public:
     struct Settings;
 
     MakeTask(const Settings& settings,
-             Project::SharedPtr project,
+             const Project& project,
              const std::string& target);
 
     virtual ~MakeTask();
 
-    virtual void runTask();
+    virtual void processLine(const std::string& line);
 
     struct Settings
     {
@@ -72,7 +73,7 @@ public:
 
 private:
     Settings _settings;
-    Project::SharedPtr _project;
+    const Project& _project;
     std::string _target;
 
 };

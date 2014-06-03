@@ -27,6 +27,7 @@
 #include "Poco/Buffer.h"
 #include "Poco/PipeStream.h"
 #include "Poco/Process.h"
+#include <iostream>
 
 
 namespace of {
@@ -85,7 +86,6 @@ void BaseProcessTask::runTask()
                 processLine(str);
             }
         }
-
     }
 
     int exitCode = ph.wait();

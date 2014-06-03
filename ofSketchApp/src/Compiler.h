@@ -28,6 +28,7 @@
 
 #include <string>
 #include "Poco/Pipe.h"
+#include "Poco/UUID.h"
 #include "Poco/Process.h"
 #include "Poco/StreamCopier.h"
 #include "Poco/PipeStream.h"
@@ -35,23 +36,27 @@
 #include "ofTypes.h"
 #include "Project.h"
 #include "ofMain.h"
+#include "ProcessTaskQueue.h"
+#include "MakeTask.h"
 
 
 namespace of {
 namespace Sketch {
-    
-    
+
+
 class Compiler
 {
 public:
-    
-    Compiler(){};
-    Compiler(std::string pathToTemplates);
-    void run(const Project& project);
+    Compiler(ProcessTaskQueue& taskQueue, std::string pathToTemplates);
+
+    Poco::UUID compile(const Project& project);
+    Poco::UUID run(const Project& project);
+
     void generateSourceFiles(const Project& project);
     
 private:
-    
+    ProcessTaskQueue& _taskQueue;
+
     std::string _pathToTemplates;
     std::string _pathToSrc;
     std::string _projectFileTemplate;

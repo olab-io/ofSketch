@@ -34,11 +34,13 @@ ProcessTaskQueue::ProcessTaskQueue(int maximumTasks,
                                    Poco::ThreadPool& threadPool):
     ofx::TaskQueue_<std::string>(maximumTasks, threadPool)
 {
+    registerTaskEvents(this);
 }
 
 
 ProcessTaskQueue::~ProcessTaskQueue()
 {
+    unregisterTaskEvents(this);
 }
 
 
