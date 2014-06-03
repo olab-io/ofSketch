@@ -20,6 +20,7 @@ ofSketch is being developed by [Brannon Dorsey](http://brannondorsey.com) and [C
 ofSketch comes packaged with the following contents:
 
 - ofSketch.app
+- README.md
 - Projects/
 
 For ofSketch to work properly, the "Projects" folder __must__ be located in the same folder as the ofSketch app.

@@ -237,7 +237,8 @@ $(document).ready( function()
             
             if (!sketchEditor.getProject().isTemplate()) {
                 sketchEditor.saveProject(function() {
-                    sketchEditor.run(runAlert, runError);
+                    runAlert();
+                    sketchEditor.run(function(){}, runError);
                 }, saveError);
             } else {
                 $('#name-project-modal').modal();
