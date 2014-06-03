@@ -29,7 +29,6 @@
 
 #include <string>
 #include "Poco/URI.h"
-#include "ProjectFile.h"
 #include "ofxJSONElement.h"
 #include "ofMain.h"
 
@@ -78,7 +77,6 @@ private:
     
     std::string _path;
     std::string _classFileTemplate;
-    std::vector<Source> _sources;
     ofDirectory _sketchDir;
     
     bool _isLoaded;
