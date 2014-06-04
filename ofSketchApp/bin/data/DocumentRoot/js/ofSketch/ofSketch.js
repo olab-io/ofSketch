@@ -222,13 +222,13 @@ $(document).ready( function()
 
     var logger = new Logger();
 
+    console.log(logger.getLogLevel());
     $('#set-log-level').addClass(logger.getLogLevelLabelClass(logger.getLogLevel()));
     $('#current-log-level').text(logger.getLogLevelName(logger.getLogLevel()));
 
     $('#log-levels li a').on('click', function() {
         
         var logLevel = parseInt($(this).data('log-level'));
-        console.log('log-level is ' + logLevel);
         logger.setLogLevel(logLevel);
 
         var button = $('#set-log-level');

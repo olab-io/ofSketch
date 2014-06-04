@@ -42,6 +42,7 @@ function Logger()
 
 	var _self = this;
 	var _logLevel = OF_LOG_VERBOSE;
+
 	var _logContainerObj = $('#logger-container');
 
 	var _registerEvents = function()
@@ -65,6 +66,7 @@ function Logger()
 
 	this.setLogLevel = function(logLevel)
 	{
+		console.log("changed log level to " + logLevel);
 		_logLevel = logLevel;
 	}
 
@@ -104,7 +106,5 @@ function Logger()
 	{
 		_logContainerObj.empty()
 	}
-
-	_self.setLogLevel(OF_LOG_VERBOSE);
 
 }
