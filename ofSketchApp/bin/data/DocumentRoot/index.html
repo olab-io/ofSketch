@@ -305,16 +305,16 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h4 class="modal-title" style="display: inline-block">Logger</h4>
                 <div class="btn-group pull-right" style="margin-right: 20px;">
-                    <button type="button" class="btn btn-xs btn-success dropdown-toggle" data-toggle="dropdown">
-                      <span>Notice</span> <span class="caret"></span>
+                    <button id="set-log-level" type="button" class="btn btn-xs btn-success dropdown-toggle" data-toggle="dropdown">
+                      <span id="current-log-level">Notice</span> <span class="caret"></span>
                     </button>
-                    <ul class="dropdown-menu" role="menu">
-                      <li><a href="#">Verbose</a></li>
-                      <li><a href="#">Notice</a></li>
-                      <li><a href="#">Warning</a></li>
-                      <li><a href="#">Error</a></li>
-                      <li><a href="#">Fatal Error</a></li>
-                      <li><a href="#">Silent</a></li>
+                    <ul id="log-levels" class="dropdown-menu" role="menu">
+                      <li><a href="#" data-log-level="0">Verbose</a></li>
+                      <li><a href="#" data-log-level="1">Notice</a></li>
+                      <li><a href="#" data-log-level="2">Warning</a></li>
+                      <li><a href="#" data-log-level="3">Error</a></li>
+                      <li><a href="#" data-log-level="4">Fatal Error</a></li>
+                      <li><a href="#" data-log-level="5">Silent</a></li>
                     </ul>
                   </div>
               </div>

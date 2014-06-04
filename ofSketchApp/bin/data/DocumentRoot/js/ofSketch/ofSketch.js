@@ -206,7 +206,14 @@ $(document).ready( function()
         }
     }
     
+    $('#toolbar li a, #log-levels li a, .file-tab a, #new-class a, .action-menu li a').on('click', function(e) {
+        e.preventDefault(); 
+    });
+
     var alertTimeout;
+    var alertBox;
+    alertBox = $('#editor-messages.alert');
+    alertBox.hide();
 
     JSONRPCClient = new $.JsonRpcClient({ 
             ajaxUrl: getDefaultPostURL(),
@@ -217,18 +224,26 @@ $(document).ready( function()
             onerror: onWebSocketError
         });
 
-    var alertBox;
-    alertBox = $('#editor-messages.alert');
-    alertBox.hide();
+    var logger = new Logger();
 
-    var logger = new Logger($('#logger-container'));
+    $('#set-log-level').addClass(logger.getLogLevelLabelClass(logger.getLogLevel()));
+    $('#current-log-level').text(logger.getLogLevelName(logger.getLogLevel()));
+
+    $('#log-levels li a').on('click', function() {
+        
+        var logLevel = parseInt($(this).data('log-level'));
+        console.log('log-level is ' + logLevel);
+        logger.setLogLevel(logLevel);
+
+        var button = $('#set-log-level');
+        button.removeClass();
+        button.addClass('btn btn-xs dropdown-toggle ' + logger.getLogLevelLabelClass(logLevel));
+        $('#current-log-level').text($(this).text());
+    });
+
     var consoleEmulator = new ConsoleEmulator();
 
     var sketchEditor = new SketchEditor(function() {
-
-        $('#toolbar li a, .file-tab a, #new-class a, .action-menu li a').on('click', function(e) {
-            e.preventDefault(); 
-        });
 
         $('.nav-tabs .dropdown').on('click', function(){
             

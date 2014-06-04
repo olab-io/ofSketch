@@ -30,7 +30,7 @@ Assumes that the following are globally pre-defined:
 - underscore.js
  */
 
-function Logger(logContainerObj) 
+function Logger() 
 {
 
 	var OF_LOG_VERBOSE     = 0;
@@ -42,12 +42,16 @@ function Logger(logContainerObj)
 
 	var _self = this;
 	var _logLevel = OF_LOG_VERBOSE;
-	console.log("_logLevel: " + _logLevel);
-	var _logContainerObj = logContainerObj;
+	var _logContainerObj = $('#logger-container');
+
+	var _registerEvents = function()
+	{
+		
+	}
 
 	var _addLogElement = function(logLevel, module, message)
 	{
-
+		console.log("logging " + message);
 		var logElement = $('<li class="list-group-item"></li>');
 		var message = $('<span><strong>' + module + '</strong><br>'+ message + "</span>");
 		var label = $('<span class="label" style="float:right">' + _self.getLogLevelName(logLevel) + '</span>');
@@ -89,10 +93,10 @@ function Logger(logContainerObj)
 		else if (logLevel == OF_LOG_SILENT)      return "btn-default";
 	}
 
-	this.logMessage = function(level, module, message)
+	this.logMessage = function(logLevel, module, message)
 	{
 		if (logLevel >= _self.getLogLevel()) {
-			_addLogElement(level, module, message);
+			_addLogElement(logLevel, module, message);
 		}
 	}
 
