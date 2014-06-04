@@ -93,6 +93,7 @@ $(document).ready( function()
                  
                     sketchEditor.setCompiling(false);
                     if (compileSuccess) { // this is a terrible way to do this
+                        consoleEmulator.clear();
                         sketchEditor.run(function(){}, runError);
                         compileSuccess = false;
                     } else {
@@ -290,6 +291,7 @@ $(document).ready( function()
             if (!sketchEditor.getProject().isTemplate()) {
                 sketchEditor.saveProject(function() {
                     // runAlert();
+                    consoleEmulator.clear();
                     sketchEditor.compile(function(){
                         // this callback is now above
                         // sketchEditor.run(function(){}, runError);
