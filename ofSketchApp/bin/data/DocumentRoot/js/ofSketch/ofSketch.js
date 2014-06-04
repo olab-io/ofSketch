@@ -95,6 +95,8 @@ $(document).ready( function()
                     if (compileSuccess) { // this is a terrible way to do this
                         sketchEditor.run(function(){}, runError);
                         compileSuccess = false;
+                    } else {
+                        compileError();
                     }
                 }
             }
@@ -180,6 +182,12 @@ $(document).ready( function()
     function runError(err) {
         console.log('Error running project: ');
         console.log(err);
+    }
+
+    function compileError(message, subMessage) {
+        var m = message || "Error";
+        var s = subMessage || '(see console for more info)';
+        alertMessage(m, s, 'alert-danger');
     }
 
     function createClassError(err) {
@@ -375,10 +383,10 @@ $(document).ready( function()
             var className = $('#new-class-name').val();
             if (!sketchEditor.getProject().isClassName(className)) {
                 sketchEditor.createClass(className, function() {
+                   
                     sketchEditor.selectTab(className);
-                    sketchEditor.saveProject(function(){
-                        saveAlert();
-                    }, saveError)}, createClassError);
+                    sketchEditor.saveProject(function(){}, saveError)
+                }, createClassError);
             } else {
                 // class name already exists.
             }
