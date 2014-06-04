@@ -129,10 +129,15 @@ void App::setup()
                            this,
                            &App::renameClass);
 
-    server->registerMethod("run",
+    server->registerMethod("run-project",
                            "Run the requested project.",
                            this,
-                           &App::run);
+                           &App::runProject);
+    
+    server->registerMethod("compile-project",
+                           "Run the requested project.",
+                           this,
+                           &App::compileProject);
 
     server->registerMethod("stop",
                            "Stop the requested project.",
@@ -263,7 +268,7 @@ void App::renameClass(const void* pSender, JSONRPC::MethodArgs& args)
 }
 
 
-void App::run(const void* pSender, JSONRPC::MethodArgs& args)
+void App::runProject(const void* pSender, JSONRPC::MethodArgs& args)
 {
 
     std::string projectName = args.params["projectName"].asString();
@@ -278,6 +283,20 @@ void App::run(const void* pSender, JSONRPC::MethodArgs& args)
     else args.error["message"] = "The requested project does not exist.";
 }
 
+void App::compileProject(const void* pSender, JSONRPC::MethodArgs& args)
+{
+    
+    std::string projectName = args.params["projectName"].asString();
+    if (_projectManager.projectExists(projectName)) {
+        
+        ofLogNotice("App::compileProject") << "Compiling " << projectName << " project";
+        const Project& project = _projectManager.getProject(projectName);
+        Poco::UUID taskId = _compiler.compile(project);
+        ofLogNotice("APP::compileProject") << "Task ID: " << taskId.toString();
+        args.result = taskId.toString();
+    }
+    else args.error["message"] = "The requested project does not exist.";
+}
 
 void App::stop(const void* pSender, JSONRPC::MethodArgs& args)
 {
@@ -285,14 +304,13 @@ void App::stop(const void* pSender, JSONRPC::MethodArgs& args)
     {
         Poco::UUID taskId(args.params["taskId"].asString());
         _taskQueue.cancel(taskId);
+        ofLogNotice("App::stop") << "Stopped task " << taskId.toString();
     }
     else
     {
         // Invalid.
         args.error = "No task id.";
     }
-
-    ofLogNotice("App::stop") << "Stop:  " << args.params.toStyledString();
 }
 
 

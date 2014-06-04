@@ -38,20 +38,20 @@ Compiler::Compiler(ProcessTaskQueue& taskQueue, std::string pathToTemplates):
 {
 }
 
-
 Poco::UUID Compiler::compile(const Project& project)
 {
-    return Poco::UUID::null();
+    MakeTask::Settings settings;
+    return _taskQueue.start(new MakeTask(settings, project, "Release"));
+//    return Poco::UUID::null();
 }
-
 
 Poco::UUID Compiler::run(const Project& project)
 {
     MakeTask::Settings settings;
 
-    // We don't return this handle yet, but it is available in the callback.
-    // Compile task.
-    _taskQueue.start(new MakeTask(settings, project, "Release"));
+//    // We don't return this handle yet, but it is available in the callback.
+//    // Compile task.
+//    _taskQueue.start(new MakeTask(settings, project, "Release"));
 
     // Run task.
     return _taskQueue.start(new MakeTask(settings, project, "RunRelease"));

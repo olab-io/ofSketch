@@ -39,6 +39,8 @@ function SketchEditor(callback)
 	var _settings;
 	var _tabs = [];
 	var _project = undefined;
+	var _isRunning = false;
+	var _isCompiling = false;
 	var _projectFileTemplate;
 	var _classTemplate;
 
@@ -215,12 +217,13 @@ function SketchEditor(callback)
 		return !_.isUndefined(_project);
 	}
 
-	this.run = function(onSuccess, onError)
+	this.compile = function(onSuccess, onError)
 	{
-		JSONRPCClient.call('run', 
+		JSONRPCClient.call('compile-project', 
         					{ projectName: _project.getName() },
 					        function(result) {
 					        	_currentRunTaskId = result;
+					        	_self.setCompiling(true);
 					            onSuccess(result);
 					        },
 					        function(error) {
@@ -228,6 +231,21 @@ function SketchEditor(callback)
 					        });
 	}
 
+	this.run = function(onSuccess, onError)
+	{
+		JSONRPCClient.call('run-project', 
+        					{ projectName: _project.getName() },
+					        function(result) {
+					        	_currentRunTaskId = result;
+					        	_self.setRunning(true);
+					            onSuccess(result);
+					        },
+					        function(error) {
+					            onError(error);
+					        });
+	}
+
+	// commands a running project to stop
 	this.stop = function(onSuccess, onError)
 	{
 		if (_currentRunTaskId != undefined)
@@ -237,11 +255,20 @@ function SketchEditor(callback)
 			        function(result) {
 			            onSuccess(result);
 			            _currentRunTaskId = undefined;
+			            _self.setCompiling(false);
+			            _self.setRunning(false);
 			        },
 			        function(error) {
 			            onError(error);
 			        });
 		}
+	}
+
+	// notifies that a running project has stopped
+	this.notifyProjectStopped = function()
+	{
+		_currentRunTaskId = undefined;
+		_self.setRunning(false)
 	}
 
 	this.createClass = function(className, onSuccess, onError)
@@ -302,6 +329,31 @@ function SketchEditor(callback)
 					        function(error) {
 					            onError(error);
 					        });
+	}
+
+	this.isRunning = function()
+	{
+		return _isRunning;
+	}
+
+	this.setRunning = function(bool)
+	{
+		_isRunning = bool;
+	}
+
+	this.isCompiling = function()
+	{
+		return _isCompiling;
+	}
+
+	this.setCompiling = function(bool)
+	{
+		_isCompiling = bool;
+	}
+
+	this.getCurrentRunTaskId = function()
+	{
+		return _currentRunTaskId;
 	}
 
 	$.getJSON(_editorSettingsFile, function(data){

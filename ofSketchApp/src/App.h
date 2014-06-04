@@ -69,7 +69,8 @@ public:
     void createClass(const void* pSender, JSONRPC::MethodArgs& args);
     void deleteClass(const void* pSender, JSONRPC::MethodArgs& args);
     void renameClass(const void* pSender, JSONRPC::MethodArgs& args);
-    void run(const void* pSender, JSONRPC::MethodArgs& args);
+    void runProject(const void* pSender, JSONRPC::MethodArgs& args);
+    void compileProject(const void* pSender, JSONRPC::MethodArgs& args);
     void stop(const void* pSender, JSONRPC::MethodArgs& args);
     void getProjectList(const void* pSender, JSONRPC::MethodArgs& args);
 

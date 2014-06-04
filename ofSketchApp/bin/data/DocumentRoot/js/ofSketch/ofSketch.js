@@ -1,7 +1,7 @@
 // =============================================================================
 //
-// Copyright (c) 2009-2013 Christopher Baker <http://christopherbaker.net>
-//                    2014 Brannon Dorsey <http://brannondorsey.com>
+// Copyright (c) 2014 Christopher Baker <http://christopherbaker.net>
+//               2014 Brannon Dorsey <http://brannondorsey.com>
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -42,7 +42,8 @@ $(document).ready( function()
 
     function handleTaskQueueEvent(evt) {
         
-        console.log(evt.params.message);
+        // console.log(evt);
+        // console.log(evt.params.message);
  
         if (evt.method == "taskList") {
             // TODO: this is a mess.
@@ -86,6 +87,17 @@ $(document).ready( function()
 
         } else if (evt.method == "taskFinished") {
             // TODO: remove the task with the uuid
+            if (evt.params.uuid == sketchEditor.getCurrentRunTaskId()) {
+                
+                if (sketchEditor.isCompiling()) {
+                 
+                    sketchEditor.setCompiling(false);
+                    if (compileSuccess) { // this is a terrible way to do this
+                        sketchEditor.run(function(){}, runError);
+                        compileSuccess = false;
+                    }
+                }
+            }
 
         } else if (evt.method == "taskFailed") {
             // TODO: remove the task with the uuid
@@ -96,6 +108,16 @@ $(document).ready( function()
         } else if (evt.method == "taskMessage") {
             // TODO: remove the task with the uuid
             // update the message in the li with the message
+            if (evt.params.uuid == sketchEditor.getCurrentRunTaskId()) {
+                
+                // this is a terrible hack
+                if (evt.params.message.indexOf("make RunRelease") != -1) {
+                    compileSuccess = true;
+                }
+
+                consoleEmulator.log(evt.params.message + '\n');
+            }
+    
         } else {
             console.log("Unknown Task Queue method.");
         }
@@ -209,6 +231,7 @@ $(document).ready( function()
 
     var alertTimeout;
     var alertBox;
+    var compileSuccess = false; // this is a terrible global var. Get it out ASAP.
     alertBox = $('#editor-messages.alert');
     alertBox.hide();
 
@@ -258,8 +281,11 @@ $(document).ready( function()
             
             if (!sketchEditor.getProject().isTemplate()) {
                 sketchEditor.saveProject(function() {
-                    runAlert();
-                    sketchEditor.run(function(){}, runError);
+                    // runAlert();
+                    sketchEditor.compile(function(){
+                        // this callback is now above
+                        // sketchEditor.run(function(){}, runError);
+                    }, runError);
                 }, saveError);
             } else {
                 $('#name-project-modal').modal();
@@ -267,7 +293,10 @@ $(document).ready( function()
         });
 
         $('#toolbar-stop').on('click', function() {
-            sketchEditor.stop(runAlert, runError);
+            if (sketchEditor.isRunning() &&
+                !$(this).hasClass('disabled')) {
+                sketchEditor.stop(function(){}, runError);
+            }
         });
 
         $('#toolbar-save').on('click', function() {
