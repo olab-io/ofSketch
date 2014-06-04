@@ -29,10 +29,18 @@ $(document).ready( function()
         // TODO: move this
     function handleLoggerEvent(evt) {
         console.log(evt);
-
         if (evt.method == "message")
         {
-            // check log level ... ?
+            
+            var level = evt.params.level;
+            var module = evt.params.module;
+            var message = evt.params.message;
+
+            console.log("level: " + level);
+            console.log("module: " + module);
+            console.log("message: " + message);
+
+            logger.logMessage(level, module, message);
         }
     }
 
@@ -213,6 +221,7 @@ $(document).ready( function()
     alertBox = $('#editor-messages.alert');
     alertBox.hide();
 
+    var logger = new Logger($('#logger-container'));
     var consoleEmulator = new ConsoleEmulator();
 
     var sketchEditor = new SketchEditor(function() {

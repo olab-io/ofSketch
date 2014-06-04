@@ -64,7 +64,7 @@
                 <button id="toolbar-task-queue" type="button" class="btn btn-default" style="display: none;" title="Task Queue" data-toggle="modal" data-target="#task-queue-modal">
                   <span class="glyphicon glyphicon-tasks"></span> 
                 </button>
-                <button id="toolbar-logger" type="button" class="btn btn-default" style="display: none;" title="Server Log" data-toggle="modal" data-target="#logger-modal">
+                <button id="toolbar-logger" type="button" class="btn btn-default" title="Server Log" data-toggle="modal" data-target="#logger-modal">
                   <span class="glyphicon glyphicon-th"></span> 
                 </button>
               </div>
@@ -299,14 +299,28 @@
 
       <!-- Logger Modal -->   
       <div class="modal fade" id="logger-modal" tabindex="-1" role="dialog" aria-hidden="true">
-          <div class="modal-dialog modal-sm">
+          <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">Logger</h4>
+                <h4 class="modal-title" style="display: inline-block">Logger</h4>
+                <div class="btn-group pull-right" style="margin-right: 20px;">
+                    <button type="button" class="btn btn-xs btn-success dropdown-toggle" data-toggle="dropdown">
+                      <span>Notice</span> <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                      <li><a href="#">Verbose</a></li>
+                      <li><a href="#">Notice</a></li>
+                      <li><a href="#">Warning</a></li>
+                      <li><a href="#">Error</a></li>
+                      <li><a href="#">Fatal Error</a></li>
+                      <li><a href="#">Silent</a></li>
+                    </ul>
+                  </div>
               </div>
-              <div class="modal-body">
-                No logger messages.
+              <div class="modal-body" style="height: 400px; overflow-y: auto;">
+                <ul id="logger-container" class="list-group" >
+                </ul>
               </div>
               <div class="modal-footer">
                 <button class="btn btn-default" type="button" data-dismiss="modal">Close</button>
@@ -391,6 +405,7 @@
 <script src="./js/ofSketch/classes/Project.js"></script>
 <script src="./js/ofSketch/classes/SketchEditor.js"></script>
 <script src="./js/ofSketch/classes/ConsoleEmulator.js"></script>
+<script src="./js/ofSketch/classes/Logger.js"></script>
 <script src="./js/ofSketch/ofSketch.js"></script>
 
 <script>
