@@ -25,6 +25,7 @@ ofSketch comes packaged with the following contents:
 
 For ofSketch to work properly, the "Projects" folder __must__ be located in the same folder as the ofSketch app.
 
+**Note**: ofSketch v0.0.2 uses an openFrameworks v0.8.1 distribution bundled inside of the App itself. All code written in ofSketch must be oF v0.8.1 compatible. 
 
 ### Running Examples
 
@@ -44,7 +45,11 @@ Writing you're own classes is easy with ofSketch! Simply add a new tab by clicki
 
 ### Using Addons
 
-Currently, there is no elegant way to use ofxAddons with ofSketch. This feature is coming, but in the meantime all addons must be specified in the `addons.make` files. 
+Currently, there is no elegant way to use ofxAddons with ofSketch. This feature is coming, but in the meantime all addons must be specified in the `addons.make` files. ofSketch uses its own openFrameworks distribution bundled with the app, meaning only core addons work out of the box. To add an addon that ofSketch projects can use, you must place the add-on in the following path:
+
+	ofSketch.app/Contents/Resources/data/openFrameworks/addons
+
+This is terribly annoying and we can assure you that there will be a better system for managing addons soon.
 
 ## Issues
 
@@ -54,6 +59,14 @@ ofSketch v0.0.2 is chock-full of disabled features and undoubtedly some pretty n
 
 - Currently, there is absolutely __NO__ input validation on __ANYTHING__. Be careful when naming projects, classes, etc... that you don't include illegal characters (like spaces) or clash names.
 - Don't play with project files. Only modify projects through ofSketch, not your file browser (unless you are adding files to the `data/` folder).
+
+### Known Issues
+
+Here are a few problems that we already know about, and that are intended to be fixed in the next few pre-releases:
+
+- Often the ofSketch.app needs doesn't shut down properly and needs to be force quit
+- Renaming tabs doesn't always work that smoothly
+- Projects that are renamed often leave the build with an old name inside of bin/
 
 ### Feature Requests
 
@@ -65,7 +78,7 @@ Is something just downright wrong? Don't hesitate to submit an [issue](https://g
 
 ## Developers
 
-Building ofSketch from source requires the following add ons:
+Building ofSketch from source requires openFrameworks v0.8.1 and the following add ons:
 
 - [ofxHTTP](https://github.com/bakercp/ofxHTTP)
 - [ofxIO](https://github.com/bakercp/ofxIO)
