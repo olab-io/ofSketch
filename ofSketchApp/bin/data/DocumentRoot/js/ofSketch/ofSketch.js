@@ -41,7 +41,8 @@ $(document).ready( function()
     }
 
     function handleTaskQueueEvent(evt) {
-        console.log(evt);
+        
+        console.log(evt.params.message);
  
         if (evt.method == "taskList") {
             // TODO: this is a mess.

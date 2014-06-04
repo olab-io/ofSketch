@@ -272,6 +272,7 @@ void App::run(const void* pSender, JSONRPC::MethodArgs& args)
         ofLogNotice("App::run") << "Running " << projectName << " project";
         const Project& project = _projectManager.getProject(projectName);
         Poco::UUID taskId = _compiler.run(project);
+        ofLogNotice("APP::run") << "Task ID: " << taskId.toString();
         args.result = taskId.toString();
     }
     else args.error["message"] = "The requested project does not exist.";
