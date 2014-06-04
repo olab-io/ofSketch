@@ -37,7 +37,6 @@ ProjectManager::ProjectManager(const std::string& path):
     _templateProject(ofToDataPath("Resources/Templates/NewProject", true))
 {
     _projectWatcher.addPath(_path);
-    ofLogNotice("ProjectManager::ProjectManager") << _path;
 
     std::vector<std::string> files;
 
@@ -114,6 +113,7 @@ void ProjectManager::getProjectList(const void* pSender, JSONRPC::MethodArgs& ar
         projectList[i]["projectName"] = _projects[i].getName();
     }
     args.result = projectList;
+    ofLogNotice("Project::getProjectList") << "Project list requested";
 }
     
 void ProjectManager::loadProject(const void* pSender, JSONRPC::MethodArgs& args)
@@ -128,10 +128,11 @@ void ProjectManager::loadProject(const void* pSender, JSONRPC::MethodArgs& args)
                         project.load(project.getPath(), projectName);
                     }
                     args.result = project.getData();
+                    ofLogNotice("Project::loadProject") << "Loaded " << projectName << " project";
                     return;
                 }
             }
-            ofLogError("Project::loadProject") << "Project: "<< projectName << " was not found.";
+            ofLogError("Project::loadProject") << "Project: "<< projectName << " was not found";
         }
         else
         {
@@ -151,20 +152,21 @@ void ProjectManager::loadTemplateProject(const void *pSender, JSONRPC::MethodArg
         _templateProject.load(_templateProject.getPath(), _templateProject.getName());
     }
     args.result = _templateProject.getData();
+    ofLogNotice("Project::loadTemplateProject") << "Loaded a template project";
 }
     
 void ProjectManager::saveProject(const void* pSender, ofx::JSONRPC::MethodArgs& args)
 {
     if (args.params.isMember("projectData")) {
-        ofLogNotice("ProjectManager::saveProject") << "Saving project...";
         Json::Value projectData = args.params["projectData"];
         std::string projectName = projectData["projectFile"]["name"].asString();
         if (projectExists(projectName)) {
             Project& project = getProjectRef(projectName);
             project.save(projectData);
         }
+        ofLogNotice("ProjectManager::saveProject") << "Saved " << projectName << " project";
         
-    } else args.error = "A projectData object was not sent.";
+    } else args.error = "A projectData object was not sent";
 }
 
 void ProjectManager::createProject(const void* pSender, ofx::JSONRPC::MethodArgs& args)
@@ -180,6 +182,7 @@ void ProjectManager::createProject(const void* pSender, ofx::JSONRPC::MethodArgs
     project.save(projectData);
     _projects.push_back(project);
     args.result = project.getData();
+    ofLogNotice("Project::createProject") << "Created " << projectName << " project";
 }
     
 void ProjectManager::deleteProject(const void *pSender, ofx::JSONRPC::MethodArgs &args)
@@ -191,12 +194,13 @@ void ProjectManager::deleteProject(const void *pSender, ofx::JSONRPC::MethodArgs
     for (int i = 0; i < _projects.size(); i++) {
         if (_projects[i].getName() == projectName) {
             _projects.erase(_projects.begin() + i);
-            
             args.result["message"] = "Deleted " + projectName + " project.";
+            ofLogNotice("Project::deleteProject") << "Deleted " << projectName << " project";
             return;
         }
     }
     args.error["message"] = "Error deleting " + projectName + " project.";
+    ofLogError("Project::deleteProject") << "Error deleting " << projectName << " project";
 }
     
 void ProjectManager::renameProject(const void *pSender, ofx::JSONRPC::MethodArgs &args)
@@ -206,8 +210,10 @@ void ProjectManager::renameProject(const void *pSender, ofx::JSONRPC::MethodArgs
     Project& project = getProjectRef(projectName);
     if (project.rename(newProjectName)) {
         args.result["message"] = "Renamed " + projectName + " project to " + newProjectName + ".";
+        ofLogNotice("Project::renameProject") << "Renamed " << projectName << " project to " << newProjectName;
     } else {
         args.error["message"] = "Error renaming " + projectName + " project.";
+        ofLogError("Project::renameProject") << "Error renaming " << projectName << " project to " << newProjectName;
     }
 }
 

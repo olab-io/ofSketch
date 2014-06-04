@@ -47,7 +47,7 @@ function ConsoleEmulator()
 	    _editor.renderer.$cursorLayer.element.style.opacity=0
 	}
 
-	this.addText = function(text)
+	this.log = function(text)
 	{
 		_editor.getSession().insert(_self.getEndPosition(), text);
 	}

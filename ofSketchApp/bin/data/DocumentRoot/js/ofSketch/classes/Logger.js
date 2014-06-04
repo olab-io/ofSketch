@@ -93,7 +93,7 @@ function Logger()
 		else if (logLevel == OF_LOG_SILENT)      return "btn-default";
 	}
 
-	this.logMessage = function(logLevel, module, message)
+	this.log = function(logLevel, module, message)
 	{
 		if (logLevel >= _self.getLogLevel()) {
 			_addLogElement(logLevel, module, message);

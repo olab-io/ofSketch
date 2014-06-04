@@ -28,19 +28,15 @@ $(document).ready( function()
 {
         // TODO: move this
     function handleLoggerEvent(evt) {
-        console.log(evt);
+        // console.log(evt);
         if (evt.method == "message")
         {
-            
             var level = evt.params.level;
             var module = evt.params.module;
             var message = evt.params.message;
 
-            console.log("level: " + level);
-            console.log("module: " + module);
-            console.log("message: " + message);
-
-            logger.logMessage(level, module, message);
+            logger.log(level, module, message);
+            // consoleEmulator.log(message + '\n');
         }
     }
 
