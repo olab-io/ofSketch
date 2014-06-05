@@ -25,6 +25,7 @@
 
 
 #include "Project.h"
+#include "ofUtils.h"
 
 
 namespace of {
@@ -45,7 +46,7 @@ Project::Project(const std::string& path):
     load(_path, getName());
 }
 
-void Project::load(const std::string path, const std::string& name)
+void Project::load(const std::string& path, const std::string& name)
 {
     _sketchDir = ofDirectory(ofToDataPath(path + "/sketch"));
     
@@ -90,7 +91,7 @@ bool Project::isLoaded() const
 }
 
 // saves differences only
-void Project::save(ofxJSONElement data)
+void Project::save(const Json::Value& data)
 {
     // this is not working for some reason...
     if (_data != data) {
@@ -115,7 +116,7 @@ void Project::save(ofxJSONElement data)
             
             for (int j = 0; j < data.size(); ++j)
             {
-                Json::Value& newClassFile = data["classes"][j];
+                const Json::Value& newClassFile = data["classes"][j];
                 
                 if (classFile["fileName"] == newClassFile["fileName"]) 
                 {
@@ -289,7 +290,7 @@ std::string Project::getName() const
 }
 
 
-const ofxJSONElement& Project::getData() const
+const Json::Value& Project::getData() const
 {
     return _data;
 }

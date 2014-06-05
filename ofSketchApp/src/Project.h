@@ -28,9 +28,10 @@
 
 
 #include <string>
+#include <json/json.h>
 #include "Poco/URI.h"
-#include "ofxJSONElement.h"
-#include "ofMain.h"
+#include "ofTypes.h"
+#include "ofFileUtils.h"
 
 
 namespace of {
@@ -40,7 +41,6 @@ namespace Sketch {
 class Project
 {
 public:
-    
     typedef std::shared_ptr<Project> SharedPtr;
     typedef std::weak_ptr<Project> WeakPtr;
 
@@ -55,8 +55,8 @@ public:
     bool create(const std::string& path);
     bool remove();
     bool rename(const std::string& newName);
-    void save(ofxJSONElement data);
-    void load(const std::string path,
+    void save(const Json::Value& data);
+    void load(const std::string& path,
               const std::string& name);
     
     bool deleteClass(const std::string& className);
@@ -68,7 +68,7 @@ public:
     int getNumClasses() const;
     
     Json::Value createClass(const std::string& className);
-    const ofxJSONElement& getData() const;
+    const Json::Value& getData() const;
 
 protected:
 
@@ -80,7 +80,7 @@ private:
     ofDirectory _sketchDir;
 
     bool _isLoaded;
-    ofxJSONElement _data;
+    Json::Value _data;
     
     void _saveFile(const Json::Value& fileData);
 
