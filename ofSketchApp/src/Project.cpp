@@ -30,6 +30,7 @@
 namespace of {
 namespace Sketch {
 
+
 Project::~Project()
 {
 }
@@ -47,19 +48,29 @@ Project::Project(const std::string& path):
 void Project::load(const std::string path, const std::string& name)
 {
     _sketchDir = ofDirectory(ofToDataPath(path + "/sketch"));
+    
     _data.clear();
-    if (_sketchDir.exists()) {
+    
+    if (_sketchDir.exists()) 
+    {
         _sketchDir.listDir();
+
         std::vector<ofFile> files = _sketchDir.getFiles();
+
         int classCounter = 0;
-        for (int i = 0; i < files.size(); i++) {
+
+        for (std::size_t i = 0; i < files.size(); ++i) 
+        {
             ofFile file = files[i];
-            if (file.getBaseName() == name) {
+            if (file.getBaseName() == name)
+            {
                 file.open(file.getAbsolutePath());
                 _data["projectFile"]["name"] = file.getBaseName();
                 _data["projectFile"]["fileName"] = file.getFileName();
                 _data["projectFile"]["fileContents"] = file.readToBuffer().getText();
-            } else if (file.getExtension() == "sketch") {
+            } 
+            else if (file.getExtension() == "sketch") 
+            {
                 file.open(file.getAbsolutePath());
                 _data["classes"][classCounter]["name"] = file.getBaseName();
                 _data["classes"][classCounter]["fileName"] = file.getFileName();
@@ -67,18 +78,20 @@ void Project::load(const std::string path, const std::string& name)
                 classCounter++;
             }
         }
+
         _isLoaded = true;
     }
 }
-    
+
+
 bool Project::isLoaded() const
 {
     return _isLoaded;
 }
 
 // saves differences only
-void Project::save(ofxJSONElement data){
-    
+void Project::save(ofxJSONElement data)
+{
     // this is not working for some reason...
     if (_data != data) {
         
@@ -95,22 +108,23 @@ void Project::save(ofxJSONElement data){
         std::vector<Json::Value> deletedClasses;
         
 
-        for (int i = 0; i < _data["classes"].size(); i++) {
-            
+        for (int i = 0; i < _data["classes"].size(); ++i)
+        {
             Json::Value& classFile = _data["classes"][i];
             bool matchFound = false;
             
-            for (int j = 0; j < data.size(); j++) {
-                
+            for (int j = 0; j < data.size(); ++j)
+            {
                 Json::Value& newClassFile = data["classes"][j];
                 
-                if (classFile["fileName"] == newClassFile["fileName"]) {
-                    
-                    if (classFile != newClassFile) {
+                if (classFile["fileName"] == newClassFile["fileName"]) 
+                {
+                    if (classFile != newClassFile)
+                    {
                         classFile = newClassFile;
                         _saveFile(classFile);
                     }
-                   
+
                     matchFound = true;
                     break;
                 }
@@ -118,8 +132,6 @@ void Project::save(ofxJSONElement data){
             
             if (!matchFound) _saveFile(classFile); // class is new
         }
-        
-    
     }
     else
     {
@@ -127,29 +139,33 @@ void Project::save(ofxJSONElement data){
         return true;
     }
 }
-    
+
+
 bool Project::create(const std::string& path)
 {
     ofDirectory project(ofToDataPath(path));
-    if (!project.exists()) {
+    if (!project.exists()) 
+    {
         ofDirectory temp(ofToDataPath("Resources/Templates/SimpleTemplate"));
         temp.copyTo(ofToDataPath(path));
         return true;
     }
     
     return false;
-    
 }
-    
+
+
 bool Project::remove()
 {
     ofDirectory projectDir(getPath());
     return projectDir.remove(true);
 }
 
+
 bool Project::rename(const std::string& newName)
 {
-    if (isLoaded()) {
+    if (isLoaded()) 
+    {
         ofLogVerbose("Project::rename") << "renaming project \"" << getName() << "\" to \"" << newName + "\"";
         ofFile projectDir(getPath());
         std::string oldProjectName = getName();
@@ -170,9 +186,9 @@ bool Project::rename(const std::string& newName)
     return false;
 }
 
+
 Json::Value Project::createClass(const std::string& className)
 {
-
     std::string fileContents = _classFileTemplate;
     ofStringReplace(fileContents, "<classname>", className);
 
@@ -189,7 +205,8 @@ Json::Value Project::createClass(const std::string& className)
     _saveFile(classFile);
     return classFile;
 }
-    
+
+
 bool Project::deleteClass(const std::string& className)
 {
     if (isLoaded()) {
@@ -202,20 +219,22 @@ bool Project::deleteClass(const std::string& className)
             return true;
         }
     }
-    
+
     return false;
 }
-    
+
 bool Project::renameClass(const std::string& currentName, const std::string& newName)
 {
     if (isLoaded()) {
-        ofLogVerbose("Project::createClass") << "Renaming class...";
+        ofLogVerbose("Project::renameClass") << "Renaming class...";
 
-        cout<<"Renaming class..."<<endl;
         ofFile file(_sketchDir.getAbsolutePath() + "/" + currentName + ".sketch");
-        if (file.exists() && hasClasses()) {
-            for (int i = 0; i < getNumClasses(); i++) {
-                if (_data["classes"][i]["name"] == currentName) {
+        if (file.exists() && hasClasses()) 
+        {
+            for (int i = 0; i < getNumClasses(); ++i)
+            {
+                if (_data["classes"][i]["name"] == currentName)
+                {
                     _data["classes"][i]["name"] = newName;
                     _data["classes"][i]["fileName"] = newName + ".sketch";
 
@@ -225,20 +244,25 @@ bool Project::renameClass(const std::string& currentName, const std::string& new
             }
         }
     }
-    
+
     return false;
 }
-    
+
+
 bool Project::hasClasses() const
 {
     return _data["classes"].size() > 0;
 }
-    
+
+
 bool Project::isClassName(const std::string& className) const
 {
-    if (hasClasses()) {
-        for (int i = 0; i < getNumClasses(); i++) {
-            if (_data["classes"][i]["name"] == className) {
+    if (hasClasses()) 
+    {
+        for (int i = 0; i < getNumClasses(); ++i)
+        {
+            if (_data["classes"][i]["name"] == className) 
+            {
                 return true;
             }
         }
@@ -256,13 +280,15 @@ const std::string& Project::getPath() const
 {
     return _path;
 }
-    
+
+
 std::string Project::getName() const
 {
     ofFile project(_path);
     return project.getBaseName();
 }
-    
+
+
 const ofxJSONElement& Project::getData() const
 {
     return _data;
@@ -273,5 +299,6 @@ void Project::_saveFile(const Json::Value& fileData)
     ofBuffer fileBuffer(fileData["fileContents"].asString());
     ofBufferToFile(getPath() + "/sketch/" + fileData["fileName"].asString(), fileBuffer);
 }
+
 
 } } // namespace of::Sketch

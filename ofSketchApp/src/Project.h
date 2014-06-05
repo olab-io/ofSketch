@@ -62,14 +62,14 @@ public:
     bool deleteClass(const std::string& className);
     bool renameClass(const std::string& currentName,
                      const std::string& newName);
-    
+
     bool isClassName(const std::string& className) const;
     
     int getNumClasses() const;
     
     Json::Value createClass(const std::string& className);
     const ofxJSONElement& getData() const;
-    
+
 protected:
 
 
@@ -78,7 +78,7 @@ private:
     std::string _path;
     std::string _classFileTemplate;
     ofDirectory _sketchDir;
-    
+
     bool _isLoaded;
     ofxJSONElement _data;
     

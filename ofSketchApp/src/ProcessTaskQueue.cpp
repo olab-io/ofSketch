@@ -27,8 +27,8 @@
 
 
 namespace of {
-namespace Sketch {        
-        
+namespace Sketch {
+
 
 ProcessTaskQueue::ProcessTaskQueue(int maximumTasks,
                                    Poco::ThreadPool& threadPool):
@@ -166,7 +166,6 @@ Json::Value ProcessTaskQueue::toJson() const
     }
 
     return json;
-
 }
 
 

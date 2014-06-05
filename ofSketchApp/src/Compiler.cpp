@@ -38,12 +38,14 @@ Compiler::Compiler(ProcessTaskQueue& taskQueue, std::string pathToTemplates):
 {
 }
 
+
 Poco::UUID Compiler::compile(const Project& project)
 {
     MakeTask::Settings settings;
     return _taskQueue.start(new MakeTask(settings, project, "Release"));
 //    return Poco::UUID::null();
 }
+
 
 Poco::UUID Compiler::run(const Project& project)
 {
@@ -57,6 +59,7 @@ Poco::UUID Compiler::run(const Project& project)
     return _taskQueue.start(new MakeTask(settings, project, "RunRelease"));
 
 }
+
 
 void Compiler::generateSourceFiles(const Project& project)
 {
@@ -87,7 +90,8 @@ void Compiler::generateSourceFiles(const Project& project)
         }
     }
 }
-    
+
+
 void Compiler::_replaceIncludes(std::string& fileContents) {
     
     Poco::RegularExpression includesExpression("#include .*");
@@ -111,16 +115,16 @@ void Compiler::_replaceIncludes(std::string& fileContents) {
     ofStringReplace(fileContents, "<includes>", ofJoinString(includes, "\n"));
 
 }
-    
+
+
 void Compiler::_parseAddons()
 {
-    
-}
-    
-void Compiler::_getAddons()
-{
-    
 }
 
-    
+
+void Compiler::_getAddons()
+{
+}
+
+
 } } // namespace of::Sketch
