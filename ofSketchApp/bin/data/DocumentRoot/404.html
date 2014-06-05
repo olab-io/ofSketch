@@ -1,39 +1,73 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html lang="en">
-<head>
-<!-- Force latest IE rendering engine or ChromeFrame if installed -->
-<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><![endif]-->
-<meta charset="utf-8">
-<title>404</title>
-<meta name="description" content="">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="shortcut icon" href="img/favicon.ico">
-<!-- Bootstrap styles -->
-<link rel="stylesheet" href="css/bootstrap.min.css">
-<!-- Generic page styles -->
-<link rel="stylesheet" href="css/style.css">
-</head>
-<body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="Christopher Baker <http://christopherbaker.ent>">
+    <link rel="shortcut icon" href="./img/favicon.ico">
+    <!-- Bootstrap core CSS -->
+    <link href="./css/bootstrap.css" rel="stylesheet">
+    <!-- CSS to style the file input field as button and adjust the Bootstrap progress bars -->
+    <link rel="stylesheet" href="css/jquery.fileupload-ui.css">
+
+    <title>ofSketch</title>
+
+    <!-- Custom styles for this template -->
+    <link href="./css/style.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="../../assets/js/html5shiv.js"></script>
+      <script src="../../assets/js/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <!-- Wrap all page content here -->
+    <div id="wrap">
+
+      <!-- Fixed navbar -->
+      <div class="navbar navbar-default navbar-fixed-top" >
         <div class="container">
-            <div class="navbar-header">
-                <a class="navbar-brand" href="#">404 - File Not Found</a>
-            </div>
-        </div>
-    </div>
+          <div class="navbar-header">
+            <a class="navbar-brand" href="http://openframeworks.cc" title="openFrameworks Website" target="_blank" >
+              <img src="./img/openFrameworks_header.png"/>
+            </a>
+          </div>
+            <div class="btn-toolbar" role="toolbar" style="margin-top: 8px;">
+
+              <div class="btn-group" style="float: right;">
+                <button type="button" class="btn btn-default" title="openFrameworks Reference">
+                    <a href="http://openframeworks.cc/documentation" target="_blank">Reference</a>
+                </button>
+                <button type="button" class="btn btn-default" title="openFrameworks Forum">
+                    <a href="http://forum.openframeworks.cc/" target="_blank">Forum</a>
+                </button>
+                <button type="button" class="btn btn-default" title="ofxAddons Website">
+                    <a href="http://ofxaddons.com/" target="_blank">ofxAddons</a>
+                </button>
+                <!-- <button id="toolbar-settings" type="button" class="btn btn-default" title="Settings" data-toggle="modal" data-target="#settings-modal">
+                    <span class="glyphicon glyphicon-cog"></span> 
+                </button> -->
+              </div>
+            </div> <!-- btn-toolbar -->
+        </div> <!-- container -->
+      </div> <!-- navbar -->
+
     <div class="container">
-        <h1>404 - File Not Found</h1>
-        <br>
-        <blockquote>
-        <p>
-            Sorry ... your file was not found.
-        </p>
-        </blockquote>
-
+    404.  Sorry.
     </div>
-<script src="js/jquery-1.10.2.js"></script>
-<!-- Bootstrap JS is not required, but included for the responsive demo navigation -->
-<script src="js/bootstrap.min.js"></script>
+    </div>
 
-</body> 
+    <div id="footer">
+    </div>
+
+
+    <script src="./js/jquery.min.js"></script>
+    <script src="./js/bootstrap.min.js"></script>
+
+  </body>
 </html>
