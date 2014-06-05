@@ -233,9 +233,58 @@ $(document).ready( function()
             }, loadError);
         }
     }
+
+    function run()
+    {
+        if (!sketchEditor.getProject().isTemplate()) {
+            sketchEditor.saveProject(function() {
+                // runAlert();
+                consoleEmulator.clear();
+                sketchEditor.compile(function(){
+                    // this callback is now above
+                    // sketchEditor.run(function(){}, runError);
+                }, runError);
+            }, saveError);
+        } else {
+            $('#name-project-modal').modal();
+        }
+    }
+
+    function save()
+    {
+         if (sketchEditor.projectLoaded()) {
+            if (!sketchEditor.getProject().isTemplate()) {
+                sketchEditor.saveProject(function() {
+                    saveAlert();
+                }, saveError);
+            } else {
+                $('#name-project-modal').modal();
+            }   
+        }
+    }
     
+    // prevent defaults
     $('#toolbar li a, #log-levels li a, .file-tab a, #new-class a, .action-menu li a').on('click', function(e) {
         e.preventDefault(); 
+    });
+    
+    // key bindings
+    $(document).on("keydown", function(e){
+        
+        // cmd-r
+        if ((e.which || e.keyCode) == 116 && e.metaKey || 
+            (e.which || e.keyCode) == 82 && e.metaKey) {
+
+            e.preventDefault(); 
+            run();
+        } 
+
+        // cmd-s
+        if ((e.which || e.keyCode) == 83 && e.metaKey) {
+            
+            e.preventDefault();
+            save();
+        }
     });
 
     var alertTimeout;
@@ -287,19 +336,7 @@ $(document).ready( function()
         });
 
         $('#toolbar-run').on('click', function() {
-            
-            if (!sketchEditor.getProject().isTemplate()) {
-                sketchEditor.saveProject(function() {
-                    // runAlert();
-                    consoleEmulator.clear();
-                    sketchEditor.compile(function(){
-                        // this callback is now above
-                        // sketchEditor.run(function(){}, runError);
-                    }, runError);
-                }, saveError);
-            } else {
-                $('#name-project-modal').modal();
-            }
+            runProject();
         });
 
         $('#toolbar-stop').on('click', function() {
@@ -310,15 +347,7 @@ $(document).ready( function()
         });
 
         $('#toolbar-save').on('click', function() {
-            if (sketchEditor.projectLoaded()) {
-                if (!sketchEditor.getProject().isTemplate()) {
-                    sketchEditor.saveProject(function() {
-                        saveAlert();
-                    }, saveError);
-                } else {
-                    $('#name-project-modal').modal();
-                }   
-            }
+           saveProject();
         });
 
         $('.open-project').on('click', function() {
