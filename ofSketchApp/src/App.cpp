@@ -360,6 +360,8 @@ bool App::onWebSocketOpenEvent(HTTP::WebSocketOpenEventArgs& args)
     json = App::toJSONMethod("Server", "version", params);
     frame = ofx::HTTP::WebSocketFrame(App::toJSONString(json));
 
+    args.getConnectionRef().sendFrame(frame);
+
     return false; // did not handle it
 }
 
