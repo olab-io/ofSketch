@@ -35,7 +35,7 @@ App::App():
     _threadPool("ofSketchThreadPool"),
     _taskQueue(ofx::TaskQueue_<std::string>::UNLIMITED_TASKS, _threadPool),
     _compiler(_taskQueue, ofToDataPath("Resources/Templates/CompilerTemplates")),
-    _projectManager(ofToDataPath("../Projects", true)),
+    _projectManager(ofToDataPath("Projects", true)),
     _addonManager(ofToDataPath("openFrameworks/addons"))
 {
     _taskQueue.registerTaskEvents(this);
