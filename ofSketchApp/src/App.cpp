@@ -349,6 +349,18 @@ bool App::onWebSocketOpenEvent(HTTP::WebSocketOpenEventArgs& args)
 
     // Send the update to the client that just connected.
     args.getConnectionRef().sendFrame(frame);
+
+
+    // Send version info.
+    params["version"] = getVersion();
+    params["version_major"] = getVersionMajor();
+    params["version_minor"] = getVersionMinor();
+    params["version_patch"] = getVersionPatch();
+    json = App::toJSONMethod("Server", "version", params);
+    frame = ofx::HTTP::WebSocketFrame(App::toJSONString(json));
+
+    args.getConnectionRef().sendFrame(frame);
+
     return false; // did not handle it
 }
 
@@ -576,6 +588,32 @@ std::string App::toJSONString(const Json::Value& json)
 {
     Json::FastWriter writer;
     return writer.write(json);
+}
+
+
+std::string App::getVersion()
+{
+    std::stringstream ss;
+    ss << "v" << VERSION_MAJOR << "." << VERSION_MINOR << "." << VERSION_PATCH;
+    return ss.str();
+}
+
+
+int App::getVersionMajor()
+{
+    return VERSION_MAJOR;
+}
+
+
+int App::getVersionMinor()
+{
+    return VERSION_MINOR;
+}
+
+
+int App::getVersionPatch()
+{
+    return VERSION_PATCH;
 }
 
 

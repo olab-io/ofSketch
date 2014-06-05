@@ -336,7 +336,7 @@ $(document).ready( function()
         });
 
         $('#toolbar-run').on('click', function() {
-            runProject();
+            run();
         });
 
         $('#toolbar-stop').on('click', function() {

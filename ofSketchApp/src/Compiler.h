@@ -67,6 +67,6 @@ private:
     
     void _replaceIncludes(std::string& fileContents);
 };
-    
-} } // namespace of::Sketch
 
+
+} } // namespace of::Sketch

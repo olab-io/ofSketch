@@ -78,9 +78,7 @@ public:
         return SharedPtr(new ProjectManager(projectsPath));
     }
 
-
 private:
-    
     std::string _path;
     std::vector<Project> _projects;
     Project _templateProject;

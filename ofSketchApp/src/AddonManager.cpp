@@ -102,7 +102,7 @@ void AddonManager::onDirectoryWatcherItemMovedTo(const Poco::DirectoryWatcher::D
 //    ofLogNotice("ofApp::onDirectoryWatcherItemMovedTo") << "Moved To: " << evt.item.path();
 }
 
-    
+
 void AddonManager::onDirectoryWatcherError(const Poco::Exception& exc)
 {
 //    ofLogError("ofApp::onDirectoryWatcherError") << "Error: " << exc.displayText();

@@ -63,11 +63,10 @@ MakeTask::MakeTask(const Settings& settings,
     }
 
     _args.push_back(_target);
+
 //    _args.push_back("OF_ROOT=" + _settings.ofRoot);
 
-    cout << "--------" << endl;
-    cout << ofToString(_args) << endl;
-    cout << "--------" << endl;
+    ofLogNotice("MakeTask::MakeTask") << "Configuring Make Task with Args: " << ofToString(_args);
 }
 
 

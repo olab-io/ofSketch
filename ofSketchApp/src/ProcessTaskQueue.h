@@ -60,7 +60,6 @@ public:
     float progress;
     std::string message;
 
-
 };
 
 
