@@ -349,6 +349,17 @@ bool App::onWebSocketOpenEvent(HTTP::WebSocketOpenEventArgs& args)
 
     // Send the update to the client that just connected.
     args.getConnectionRef().sendFrame(frame);
+
+
+    // Send version info.
+
+    params["version"] = getVersion();
+    params["version_major"] = getVersionMajor();
+    params["version_minor"] = getVersionMinor();
+    params["version_patch"] = getVersionPatch();
+    json = App::toJSONMethod("Server", "version", params);
+    frame = ofx::HTTP::WebSocketFrame(App::toJSONString(json));
+
     return false; // did not handle it
 }
 
