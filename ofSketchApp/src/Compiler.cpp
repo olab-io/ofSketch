@@ -67,7 +67,7 @@ void Compiler::generateSourceFiles(const Project& project)
     src.remove(true);
     src.create(true);
     
-    ofxJSONElement projectData = project.getData();
+    Json::Value projectData = project.getData();
     std::string projectFile = _projectFileTemplate;
     ofStringReplace(projectFile, "<projectfile>", projectData["projectFile"]["fileContents"].asString());
     _replaceIncludes(projectFile);
@@ -76,9 +76,9 @@ void Compiler::generateSourceFiles(const Project& project)
 
     if (project.hasClasses()) {
         
-        for (int i = 0; i < projectData["classes"].size(); i++) {
-            
-            ofxJSONElement c = projectData["classes"][i];
+        for (int i = 0; i < projectData["classes"].size(); i++)
+        {
+            Json::Value c = projectData["classes"][i];
             
             std::string classFile = _classTemplate;
             ofStringReplace(classFile, "<classname>", c["name"].asString());
@@ -102,7 +102,8 @@ void Compiler::_replaceIncludes(std::string& fileContents) {
     int numMatches = 0;
     std::size_t matchOffset = 0;
     
-    while (matchOffset < fileContents.size()) {
+    while (matchOffset < fileContents.size())
+    {
         if (includesExpression.match(fileContents, matchOffset, match) == 0) break;
         std::string include;
         includesExpression.extract(fileContents, match.offset, include);
