@@ -31,8 +31,8 @@
 
 
 namespace of {
-namespace Sketch {        
-        
+namespace Sketch {
+
 
 BaseProcessTask::BaseProcessTask(const std::string& name,
                                  const std::string& command,
@@ -53,7 +53,6 @@ BaseProcessTask::~BaseProcessTask()
 
 void BaseProcessTask::runTask()
 {
-
     Poco::Pipe outAndErrPipe;
 
     Poco::ProcessHandle ph = Poco::Process::launch(_command,

@@ -137,7 +137,6 @@ void Project::save(const Json::Value& data)
     else
     {
         ofLogNotice("Project::save") << "Project data is the same. Not saving project.";
-        return true;
     }
 }
 
