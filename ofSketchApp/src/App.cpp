@@ -352,7 +352,6 @@ bool App::onWebSocketOpenEvent(HTTP::WebSocketOpenEventArgs& args)
 
 
     // Send version info.
-
     params["version"] = getVersion();
     params["version_major"] = getVersionMajor();
     params["version_minor"] = getVersionMinor();
