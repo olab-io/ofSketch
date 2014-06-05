@@ -579,4 +579,30 @@ std::string App::toJSONString(const Json::Value& json)
 }
 
 
+std::string App::getVersion()
+{
+    std::stringstream ss;
+    ss << "v" << VERSION_MAJOR << "." << VERSION_MINOR << "." << VERSION_PATCH;
+    return ss.str();
+}
+
+
+int App::getVersionMajor()
+{
+    return VERSION_MAJOR;
+}
+
+
+int App::getVersionMinor()
+{
+    return VERSION_MINOR;
+}
+
+
+int App::getVersionPatch()
+{
+    return VERSION_PATCH;
+}
+
+
 } } // namespace of::Sketch
