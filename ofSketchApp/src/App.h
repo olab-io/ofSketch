@@ -60,6 +60,8 @@ public:
     void update();
     void draw();
 
+    void mousePressed(int x, int y, int button);
+
     void loadProject(const void* pSender, JSONRPC::MethodArgs& args);
     void loadTemplateProject(const void* pSender, JSONRPC::MethodArgs& args);
     void saveProject(const void* pSender, JSONRPC::MethodArgs& args);
@@ -115,6 +117,9 @@ private:
     Compiler _compiler;
     ProjectManager _projectManager;
     AddonManager _addonManager;
+
+    ofImage _logo;
+    ofTrueTypeFont _font;
 
 };
 
