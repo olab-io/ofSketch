@@ -54,6 +54,9 @@ App::App():
     _loggerChannel = WebSocketLoggerChannel::makeShared();
     _loggerChannel->setWebSocketRoute(server->getWebSocketRoute());
     ofSetLoggerChannel(_loggerChannel);
+
+    _logo.loadImage("media/openFrameworks.png");
+    _font.loadFont(OF_TTF_SANS, 20);
 }
 
 
@@ -163,8 +166,20 @@ void App::update()
 
 void App::draw()
 {
-    ofBackground(0);
+    ofBackground(255);
+
+    _logo.draw(10, 0);
+
+    ofSetColor(80);
+    _font.drawString("Launch", 70, 30);
 }
+
+
+void App::mousePressed(int x, int y, int button)
+{
+    ofLaunchBrowser(server->getURL());
+}
+
 
 void App::loadProject(const void* pSender, JSONRPC::MethodArgs& args)
 {
