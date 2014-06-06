@@ -27,9 +27,14 @@ var JSONRPCClient;
 $(document).ready( function()
 {
     function checkVersion() {
-        var releaseURL = "https://api.github.com/repos/brannondorsey/ofSketch/releases";
+        var releaseURL = "https://api.github.com/repos/olab-io/ofSketch/releases";
 
         $.getJSON(releaseURL, function(data) {
+
+            if (data.length == 0) {
+                console.log("No current releases.");
+                return; // no releases
+            }
 
             // Record the latest release.
             var latestRelease = data[0];
@@ -169,9 +174,9 @@ $(document).ready( function()
         }
     }
 
-    function onWebSocketOpen(ws) {
+    function onWebSocketOpen(evt) {
         console.log("on open");
-        console.log(ws);
+        console.log(evt);
     }
 
     function onWebSocketMessage(evt) {
@@ -195,12 +200,14 @@ $(document).ready( function()
         }
     }
 
-    function onWebSocketClose() {
+    function onWebSocketClose(evt) {
         console.log("on close");
+        console.log(evt);
     }
 
-    function onWebSocketError() {
+    function onWebSocketError(evt) {
         console.log("on error");
+        console.log(evt);
     }
 
     function saveError(err) {
