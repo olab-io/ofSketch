@@ -49,7 +49,6 @@ $(document).ready( function()
             }
         }).fail(function() {
             console.log("Unable to contact github for a version check.");
-            alert( "error" );
         });
     }
 
