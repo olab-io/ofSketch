@@ -31,7 +31,6 @@ $(document).ready( function()
         {
             // Add version information.
             systemInfo["version"] = evt.params;
-            systemInfo["userAgent"] = navigator.userAgent;
 
             var versionString = "v";
             versionString += systemInfo.version.major + ".";
@@ -307,7 +306,9 @@ $(document).ready( function()
         }
     });
 
-    var systemInfo = new Object();
+    var systemInfo = {
+        userAgent:  navigator.userAgent
+    }
 
     var alertTimeout;
     var alertBox;
