@@ -26,6 +26,14 @@ var JSONRPCClient;
 
 $(document).ready( function()
 {
+    function handleServerEvent(evt) {
+        if (evt.method == "version")
+        {
+            version = evt.params;
+            $( "#version").html(version.version);
+        }
+    }
+
         // TODO: move this
     function handleLoggerEvent(evt) {
         // console.log(evt);
@@ -139,13 +147,15 @@ $(document).ready( function()
                 handleLoggerEvent(json);
             } else if (json.module == "TaskQueue") {
                 handleTaskQueueEvent(json);
+            } else if (json.module == "Server") {
+                handleServerEvent(json);
             } else {
                 console.log("Unknown Module: " + json.module);
                 console.log(json);
             }
         } catch (e) {
-            console.log(e);
             console.log("Unknown Websocket Data Type");
+            console.log(e);
             console.log(evt.data);
         }
     }
@@ -286,6 +296,8 @@ $(document).ready( function()
             save();
         }
     });
+
+    var version;
 
     var alertTimeout;
     var alertBox;
