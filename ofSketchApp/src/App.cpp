@@ -352,10 +352,11 @@ bool App::onWebSocketOpenEvent(HTTP::WebSocketOpenEventArgs& args)
 
 
     // Send version info.
-    params["version"] = getVersion();
-    params["version_major"] = getVersionMajor();
-    params["version_minor"] = getVersionMinor();
-    params["version_patch"] = getVersionPatch();
+    params["major"] = getVersionMajor();
+    params["minor"] = getVersionMinor();
+    params["patch"] = getVersionPatch();
+    params["target"] = toString(ofGetTargetPlatform());
+
     json = App::toJSONMethod("Server", "version", params);
     frame = ofx::HTTP::WebSocketFrame(App::toJSONString(json));
 
@@ -591,14 +592,6 @@ std::string App::toJSONString(const Json::Value& json)
 }
 
 
-std::string App::getVersion()
-{
-    std::stringstream ss;
-    ss << "v" << VERSION_MAJOR << "." << VERSION_MINOR << "." << VERSION_PATCH;
-    return ss.str();
-}
-
-
 int App::getVersionMajor()
 {
     return VERSION_MAJOR;
@@ -614,6 +607,34 @@ int App::getVersionMinor()
 int App::getVersionPatch()
 {
     return VERSION_PATCH;
+}
+
+
+std::string App::toString(ofTargetPlatform targetPlatform)
+{
+    switch (targetPlatform)
+    {
+        case OF_TARGET_OSX:
+            return "OSX";
+        case OF_TARGET_WINGCC:
+            return "WINGCC";
+        case OF_TARGET_WINVS:
+            return "WINVS";
+        case OF_TARGET_IOS:
+            return "IOS";
+        case OF_TARGET_ANDROID:
+            return "ANDROID";
+        case OF_TARGET_LINUX:
+            return "LINUX";
+        case OF_TARGET_LINUX64:
+            return "LINUX64";
+        case OF_TARGET_LINUXARMV6L: // arm v6 little endian
+            return "LINUXARMV6L";
+        case OF_TARGET_LINUXARMV7L: // arm v7 little endian
+            return "LINUXARMV7L";
+        default:
+            return "UNKNOWN";
+    }
 }
 
 

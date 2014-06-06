@@ -107,10 +107,11 @@ public:
     // This is a utility method for quickly converting a json value to a string.
     static std::string toJSONString(const Json::Value& json);
 
-    static std::string getVersion();
     static int getVersionMajor();
     static int getVersionMinor();
     static int getVersionPatch();
+
+    static std::string toString(ofTargetPlatform targetPlatform);
 
     enum Version
     {

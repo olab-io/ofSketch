@@ -29,8 +29,18 @@ $(document).ready( function()
     function handleServerEvent(evt) {
         if (evt.method == "version")
         {
-            version = evt.params;
-            $( "#version").html(version.version);
+            // Add version information.
+            systemInfo["version"] = evt.params;
+            systemInfo["userAgent"] = navigator.userAgent;
+
+            var versionString = "v";
+            versionString += systemInfo.version.major + ".";
+            versionString += systemInfo.version.minor + ".";
+            versionString += systemInfo.version.patch + "-";
+            versionString += systemInfo.version.target + "-";
+            versionString += systemInfo.userAgent;
+
+            $( "#version").html(versionString);
         }
     }
 
@@ -297,7 +307,7 @@ $(document).ready( function()
         }
     });
 
-    var version;
+    var systemInfo = new Object();
 
     var alertTimeout;
     var alertBox;
