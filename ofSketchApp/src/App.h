@@ -108,9 +108,11 @@ public:
     static std::string toJSONString(const Json::Value& json);
 
     // TODO: Move this.
+    static std::string getVersion();
     static int getVersionMajor();
     static int getVersionMinor();
     static int getVersionPatch();
+    static std::string getVersionPreRelease();
 
     // TODO: Move this.
     static std::string toString(ofTargetPlatform targetPlatform);
@@ -122,6 +124,7 @@ public:
         VERSION_PATCH = 0
     };
 
+    static const std::string VERSION_PRE_RELEASE;
 
 private:
     HTTP::BasicJSONRPCServer::SharedPtr server;

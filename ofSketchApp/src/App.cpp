@@ -31,6 +31,9 @@ namespace of {
 namespace Sketch {
 
 
+const std::string App::VERSION_PRE_RELEASE = "";
+
+
 App::App():
     _threadPool("ofSketchThreadPool"),
     _taskQueue(ofx::TaskQueue_<std::string>::UNLIMITED_TASKS, _threadPool),
@@ -352,9 +355,11 @@ bool App::onWebSocketOpenEvent(HTTP::WebSocketOpenEventArgs& args)
 
 
     // Send version info.
+    params["version"] = getVersion();
     params["major"] = getVersionMajor();
     params["minor"] = getVersionMinor();
     params["patch"] = getVersionPatch();
+    params["prerelease"] = getVersionPreRelease();
     params["target"] = toString(ofGetTargetPlatform());
 
     json = App::toJSONMethod("Server", "version", params);
@@ -592,6 +597,22 @@ std::string App::toJSONString(const Json::Value& json)
 }
 
 
+std::string App::getVersion()
+{
+    std::stringstream ss;
+
+    ss << VERSION_MAJOR << ".";
+    ss << VERSION_MINOR << ".";
+    ss << VERSION_PATCH;
+
+    if (!VERSION_PRE_RELEASE.empty())
+    {
+        ss << "-" << VERSION_PRE_RELEASE;
+    }
+
+    return ss.str();
+}
+
 int App::getVersionMajor()
 {
     return VERSION_MAJOR;
@@ -607,6 +628,12 @@ int App::getVersionMinor()
 int App::getVersionPatch()
 {
     return VERSION_PATCH;
+}
+
+
+std::string App::getVersionPreRelease()
+{
+    return VERSION_PRE_RELEASE;
 }
 
 
