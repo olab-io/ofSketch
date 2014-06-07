@@ -82,6 +82,9 @@
                     <span class="glyphicon glyphicon-cog"></span> 
                 </button> -->
               </div>
+              <button type="button" class="btn btn-default push-right" style="float: right;" title="Issues" data-toggle="modal" data-target="#issues-modal">
+                    Report a Bug
+              </button>
             </div> <!-- btn-toolbar -->
         </div> <!-- container -->
       </div> <!-- navbar -->
@@ -138,6 +141,29 @@
         </div><!-- /.modal-dialog -->
       </div><!-- /.modal -->
 
+      <!-- Issues Modal -->
+      <div class="modal fade" id="issues-modal" tabindex="-1" role="dialog" aria-labelledby="settingsModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+              <h4 class="modal-title">Bugs + Issues</h4>
+            </div>
+            <div class="modal-body">
+              <p>Is something broken or not working as expected?</p> 
+              <p>ofSketch is still in early development and we are relying on 
+              community feedback as we work. Check out our <a href="https://github.com/olab-io/ofSketch/issues?state=open">issues list</a>
+              for documented problems as well as upcoming improvements and feature requests.</p>
+              <p>Before you submit a bug, please check the issue list to make sure the problem you are having isn't already documented. If you aren't satisfied with what you find there click below to submit a new issue.</p>
+              <p>For more info on participating in ofSketch development, please consult the <a href="#">CONTRIBUTING.md</a> file packaged with your ofSketch download.</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary">Submit an Issue</button>
+            </div>
+          </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+      </div><!-- /.modal -->
 
       <!-- New Class Modal -->   
       <div class="modal fade" id="new-class-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
