@@ -44,6 +44,8 @@ function SketchEditor(callback)
 	var _projectFileTemplate;
 	var _classTemplate;
 
+	ace.require("ace/ext/language_tools");
+
 	var _editor = ace.edit('editor');
 
 	var _currentRunTaskId = undefined;
@@ -58,6 +60,12 @@ function SketchEditor(callback)
 	    _editor.setShowPrintMargin(_settings.editorShowPrintMargin);
 	    _editor.setShowInvisibles(_settings.editorShowInvisibles);
 	    _editor.setBehavioursEnabled(_settings.editorAutopairCharacters);
+		
+		_editor.setOptions({
+        	enableBasicAutocompletion: true,
+        	enableSnippets: true
+    	});
+
 	}
 
 	var _registerEvents = function()
