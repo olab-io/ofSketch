@@ -26,6 +26,54 @@ var JSONRPCClient;
 
 $(document).ready( function()
 {
+    function checkVersion() {
+        var releaseURL = "https://api.github.com/repos/olab-io/ofSketch/releases";
+
+        $.getJSON(releaseURL, function(data) {
+
+            if (data.length == 0) {
+                console.log("No current releases.");
+                return; // no releases
+            }
+
+            // Record the latest release.
+            var latestRelease = data[0];
+
+            // Get the cleaned semver string.
+            var remoteVersion = semver.clean(latestRelease.tag_name);
+            var localVersion = semver.clean(systemInfo.version.version);
+
+            // Compare the semver number provided by the server to the remote.
+            if (semver.gt(remoteVersion, localVersion))
+            {
+                var downloadURL = latestRelease.zipball_url;
+                var htmlURL = latestRelease.html_url;
+
+                // TODO: This needs an upgrade with more useful information and clickable links.
+                alert("Your ofSketch Version is out of Date.  Please upgrade here: " + downloadURL);
+            }
+        }).fail(function() {
+            console.log("Unable to contact github for a version check.");
+        });
+    }
+
+    function handleServerEvent(evt) {
+        if (evt.method == "version")
+        {
+            // Add version information.
+            systemInfo["version"] = evt.params;
+
+            var versionString = "";
+            versionString += systemInfo.version.version
+            versionString += " Target: " + systemInfo.version.target;
+            versionString += " User-Agent: " + systemInfo.userAgent;
+
+            $( "#version").html(versionString);
+
+            checkVersion();
+        }
+    }
+
         // TODO: move this
     function handleLoggerEvent(evt) {
         // console.log(evt);
@@ -126,9 +174,9 @@ $(document).ready( function()
         }
     }
 
-    function onWebSocketOpen(ws) {
+    function onWebSocketOpen(evt) {
         console.log("on open");
-        console.log(ws);
+        console.log(evt);
     }
 
     function onWebSocketMessage(evt) {
@@ -139,23 +187,27 @@ $(document).ready( function()
                 handleLoggerEvent(json);
             } else if (json.module == "TaskQueue") {
                 handleTaskQueueEvent(json);
+            } else if (json.module == "Server") {
+                handleServerEvent(json);
             } else {
                 console.log("Unknown Module: " + json.module);
                 console.log(json);
             }
         } catch (e) {
-            console.log(e);
             console.log("Unknown Websocket Data Type");
+            console.log(e);
             console.log(evt.data);
         }
     }
 
-    function onWebSocketClose() {
+    function onWebSocketClose(evt) {
         console.log("on close");
+        console.log(evt);
     }
 
-    function onWebSocketError() {
+    function onWebSocketError(evt) {
         console.log("on error");
+        console.log(evt);
     }
 
     function saveError(err) {
@@ -286,6 +338,10 @@ $(document).ready( function()
             save();
         }
     });
+
+    var systemInfo = {
+        userAgent:  navigator.userAgent
+    }
 
     var alertTimeout;
     var alertBox;
