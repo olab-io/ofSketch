@@ -50,7 +50,13 @@ $(document).ready( function()
                 var htmlURL = latestRelease.html_url;
 
                 // TODO: This needs an upgrade with more useful information and clickable links.
-                alert("Your ofSketch Version is out of Date.  Please upgrade here: " + downloadURL);
+                // alert("Your ofSketch Version is out of Date.  Please upgrade <a href=\"" + downloadURL +"\">here</a>");
+                $('#remote-version-download-link').attr('href', downloadURL);
+                $('.remote-version').text(remoteVersion);
+                $('.local-version').text(localVersion);
+
+                $('#version-alert').removeClass('hidden');
+
             }
         }).fail(function() {
             console.log("Unable to contact github for a version check.");
@@ -64,11 +70,18 @@ $(document).ready( function()
             systemInfo["version"] = evt.params;
 
             var versionString = "";
-            versionString += systemInfo.version.version
+            versionString += systemInfo.version.version;
             versionString += " Target: " + systemInfo.version.target;
             versionString += " User-Agent: " + systemInfo.userAgent;
 
-            $( "#version").html(versionString);
+            $("#version").html(versionString);
+
+            var issuePrefill = '\n\n#### User Info\n\n';
+            issuePrefill += '- ofSketch ' + systemInfo.version.version + '\n';
+            issuePrefill += '- Target: ' + systemInfo.version.target + '\n';
+            issuePrefill += '- User-Agent: ' + systemInfo.userAgent + '\n';
+            var link = $('#issue-link').attr('href');
+            $('#issue-link').attr('href', link + '?body=' + encodeURIComponent(issuePrefill));
 
             checkVersion();
         }
@@ -348,6 +361,7 @@ $(document).ready( function()
     var compileSuccess = false; // this is a terrible global var. Get it out ASAP.
     alertBox = $('#editor-messages.alert');
     alertBox.hide();
+
 
     JSONRPCClient = new $.JsonRpcClient({ 
             ajaxUrl: getDefaultPostURL(),

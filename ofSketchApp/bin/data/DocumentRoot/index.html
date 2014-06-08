@@ -82,9 +82,16 @@
                     <span class="glyphicon glyphicon-cog"></span> 
                 </button> -->
               </div>
-              <button type="button" class="btn btn-default push-right" style="float: right;" title="Issues" data-toggle="modal" data-target="#issues-modal">
-                    Report a Bug
-              </button>
+              <div class="btn-group" style="float:right;">
+                <button id="version-alert" type="button" class="btn alert-danger hidden" title="Version warning">
+                      <a id="remote-version-download-link" href="#" target="_blank" style="color: #a94442;">
+                        <strong>ofSketch v<span class="local-version"></span> is outdated.</strong> <span style="text-decoration: underline">Click here</span> to download v<span class="remote-version"></span>
+                      </a>
+                </button>
+                <button type="button" class="btn btn-default" title="Issues" data-toggle="modal" data-target="#issues-modal">
+                      Report a Bug
+                </button>
+              </div>
             </div> <!-- btn-toolbar -->
         </div> <!-- container -->
       </div> <!-- navbar -->
@@ -155,11 +162,15 @@
               community feedback as we work. Check out our <a href="https://github.com/olab-io/ofSketch/issues?state=open">issues list</a>
               for documented problems as well as upcoming improvements and feature requests.</p>
               <p>Before you submit a bug, please check the issue list to make sure the problem you are having isn't already documented. If you aren't satisfied with what you find there click below to submit a new issue.</p>
-              <p>For more info on participating in ofSketch development, please consult the <a href="#">CONTRIBUTING.md</a> file packaged with your ofSketch download.</p>
+              <p>For more info on participating in ofSketch development, please consult the <a href="https://github.com/olab-io/ofSketch/blob/master/CONTRIBUTING.md" target="_blank">CONTRIBUTING.md</a> file packaged with your ofSketch download.</p>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary">Submit an Issue</button>
+              <button type="button" class="btn btn-link">
+                <a id="issue-link" href="https://github.com/olab-io/ofSketch/issues/new" target="_blank">
+                  Submit an Issue
+                </a>
+              </button>
             </div>
           </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
@@ -381,7 +392,7 @@
             <a href="#new-class-modal" class="glyphicon glyphicon-plus"> </a>
           </li>
         </ul>
-    
+
       <pre id="editor">loading...</pre>
       <div id="editor-messages" class="alert"></div>
       <pre id="console"></pre>
@@ -390,7 +401,7 @@
     </div>
 
     <div id="footer">
-      ofSketch <span id="version"></span>
+      <!-- ofSketch <span id="version"></span> -->
     </div>
 
 
