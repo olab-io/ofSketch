@@ -11,7 +11,7 @@ public:
 
 
 int numBalls;
-vector<Ball> alls; 
+vector<Ball> balls; 
 
 void setup() {
     
