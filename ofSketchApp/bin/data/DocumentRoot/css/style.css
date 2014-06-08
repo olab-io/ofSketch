@@ -50,7 +50,7 @@ body {
 
 #console {
   height: 200px;
-  padding-top: 10px;
+  /*padding-top: 10px;*/
 }
 
 #editor-messages {

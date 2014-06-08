@@ -461,7 +461,7 @@ $(document).ready( function()
         // Modals
         $('.new-class').on('click', function() {
             if (!sketchEditor.getProject().isTemplate()) {
-                $('#new-class-modal').modal();
+                $('#new-class-modal').modal();               
             } else {
                 $('#name-project-modal').modal();
             }
@@ -486,13 +486,12 @@ $(document).ready( function()
 
         $('.rename-project').on('click', function() {
             if (!sketchEditor.getProject().isTemplate()) {
-                $('#rename-project-modal').modal();
+                $('#rename-project-modal').modal();  
             } else {
                 $('#name-project-modal').modal();
             }
         });
 
-        
         $('#create-class').on('click', function() {
             
             var className = $('#new-class-name').val();
@@ -599,6 +598,23 @@ $(document).ready( function()
             }
 
             $('#renamed-project-name').val('');
+        });
+
+        // Modal Events
+        $('#name-project-modal').on('shown.bs.modal', function () {
+            $('#new-project-name').focus();
+        });
+
+        $('#rename-project-modal').on('shown.bs.modal', function () {
+            $('#renamed-project-name').focus();
+        });
+
+        $('#new-class-modal').on('shown.bs.modal', function () {
+            $('#new-class-name').focus();
+        });
+
+        $('#rename-class-modal').on('shown.bs.modal', function () {
+            $('#renamed-class-name').focus();
         });
 
         parseURLParameters();
