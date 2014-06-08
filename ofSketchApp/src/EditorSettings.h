@@ -27,10 +27,6 @@
 
 
 #include <string>
-#include <json/json.h>
-#include "Poco/URI.h"
-#include "ofTypes.h"
-#include "ofFileUtils.h"
 #include "ofxJSONElement.h"
 
 
@@ -42,7 +38,6 @@ class EditorSettings
 {
 public:
     
-//            EditorSettings(){};
     EditorSettings(const std::string& path);
     
     bool load();
