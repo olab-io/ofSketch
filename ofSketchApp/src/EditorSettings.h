@@ -27,39 +27,37 @@
 
 
 #include <string>
-#include <json/json.h>
-#include "Poco/URI.h"
-#include "ofTypes.h"
-#include "ofFileUtils.h"
 
 
 namespace of {
-    namespace Sketch {
-        
-        
-        class EditorSettings
-        {
-        public:
-            
-            EditorSettings(){};
-            EditorSettings(const std::string& path);
-            
-            bool load();
-            bool save();
-            
-            const Json::Value& getData() const;
-            
-            int getPort() const;
-            const std::string& getProjectDir() const;
-            const std::string& getSketchDir() const;
-            const std::string& getAddonsDir() const;
-            const std::string& getProjectExtension() const;
-            const std::string& getClassExtension() const;
-            
-        private:
-            
-            std::string _path;
-            Json::Value _data;
-        };
-        
-    } } // namespace of::Sketch
+namespace Sketch {
+
+
+class EditorSettings
+{
+public:
+    EditorSettings();
+    
+    const std::string& getProjectPath() const;
+    const std::string& getSketchPath() const;
+    const std::string& getAddonsPath() const;
+    const std::string& getProjectExtension() const;
+    const std::string& getClassExtension() const;
+
+    static const std::string DEFAULT_PROJECT_PATH;
+    static const std::string DEFAULT_SKETCH_PATH;
+    static const std::string DEFAULT_ADDONS_PATH;
+    static const std::string DEFAULT_PROJECT_EXTENSION;
+    static const std::string DEFAULT_CLASS_EXTENSION;
+
+private:
+    std::string _projectPath;
+    std::string _sketchPath;
+    std::string _addonsPath;
+    std::string _projectExtension;
+    std::string _classExtension;
+
+};
+
+
+} } // namespace of::Sketch

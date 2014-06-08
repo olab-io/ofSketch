@@ -25,57 +25,56 @@
 
 #include "EditorSettings.h"
 
+
 namespace of {
 namespace Sketch {
-        
-EditorSettings::EditorSettings(const std::string& path)
+
+
+const std::string EditorSettings::DEFAULT_PROJECT_PATH = "Projects";
+const std::string EditorSettings::DEFAULT_SKETCH_PATH = "sketch";
+const std::string EditorSettings::DEFAULT_ADDONS_PATH = "openFrameworks/addons";
+const std::string EditorSettings::DEFAULT_PROJECT_EXTENSION = "";
+const std::string EditorSettings::DEFAULT_CLASS_EXTENSION = "sketch";
+
+
+EditorSettings::EditorSettings():
+    _projectPath(DEFAULT_PROJECT_PATH),
+    _sketchPath(DEFAULT_SKETCH_PATH),
+    _addonsPath(DEFAULT_ADDONS_PATH),
+    _projectExtension(DEFAULT_PROJECT_EXTENSION),
+    _classExtension(DEFAULT_CLASS_EXTENSION)
 {
-    
 }
 
-bool EditorSettings::load()
+
+const std::string& EditorSettings::getProjectPath() const
 {
-    
+    return _projectPath;
 }
 
-bool EditorSettings::save()
+
+const std::string& EditorSettings::getSketchPath() const
 {
-    
+    return _sketchPath;
 }
 
-const Json::Value& EditorSettings::getData() const
+
+const std::string& EditorSettings::getAddonsPath() const
 {
-    
+    return _addonsPath;
 }
 
-int EditorSettings::getPort() const
-{
-    
-}
-    
-const std::string& EditorSettings::getProjectDir() const
-{
-    
-}
-
-const std::string& EditorSettings::getSketchDir() const
-{
-    
-}
-
-const std::string& EditorSettings::getAddonsDir() const
-{
-    
-}
 
 const std::string& EditorSettings::getProjectExtension() const
 {
-    
+    return _projectExtension;
 }
+
 
 const std::string& EditorSettings::getClassExtension() const
 {
-    
+    return _classExtension;
 }
+
 
 } } // namespace of::Sketch
