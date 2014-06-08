@@ -1,4 +1,4 @@
-# ofSketch v0.0.2
+# ofSketch v0.1.0
 
 #### The barebones code editor (IDE) for [openFrameworks](http://openframeworks.cc).
 
@@ -45,9 +45,7 @@ Writing you're own classes is easy with ofSketch! Simply add a new tab by clicki
 
 ### Using Addons
 
-Currently, there is no elegant way to use ofxAddons with ofSketch. This feature is coming, but in the meantime all addons must be specified in the `addons.make` files. ofSketch uses its own openFrameworks distribution bundled with the app, meaning only core addons work out of the box. To add an addon that ofSketch projects can use, you must place the add-on in the following path:
-
-	ofSketch.app/Contents/Resources/data/openFrameworks/addons
+Currently, there is no elegant way to use ofxAddons with ofSketch. This feature is coming, but in the meantime all addons must be specified in the `addons.make` files. ofSketch uses its own openFrameworks distribution in the `bin/data/` folder, meaning only core addons work out of the box. To add an addon that ofSketch projects can use, you must place the add-on inside of ofSketch's `openFrameworks/addons` folder.
 
 This is terribly annoying and we can assure you that there will be a better system for managing addons soon.
 
@@ -87,6 +85,8 @@ Building ofSketch from source requires openFrameworks v0.8.1 and the following a
 - [ofxMediaType](https://github.com/bakercp/ofxMediaType)
 - [ofxSSLManager](https://github.com/bakercp/ofxSSLManager)
 - [ofxTaskQueue](https://github.com/bakercp/ofxTaskQueue)
+
+__You must__ also replace the empty openFrameworks directory inside of `bin/data` with the openFrameworks distribution that you would like your ofSketch projects to use.
 
 Hypothetically, ofSketch should work on all platforms when compiled from source, however this is untested.
 
