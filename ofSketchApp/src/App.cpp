@@ -39,8 +39,8 @@ App::App():
     _taskQueue(ofx::TaskQueue_<std::string>::UNLIMITED_TASKS, _threadPool),
     _editorSettings(ofToDataPath("Resources/Settings/EditorSettings.json")),
     _compiler(_taskQueue, ofToDataPath("Resources/Templates/CompilerTemplates")),
-    _projectManager(ofToDataPath("Projects", true)),
-    _addonManager(ofToDataPath("openFrameworks/addons"))
+    _projectManager(ofToDataPath(_editorSettings.getProjectDir(), true)),
+    _addonManager(ofToDataPath(_editorSettings.getAddonsDir()))
 {
     ofLogNotice("App::App") << "Editor setting's projectDir: " << _editorSettings.getProjectDir();
     _taskQueue.registerTaskEvents(this);

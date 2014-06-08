@@ -135,10 +135,10 @@ private:
 
     Poco::ThreadPool _threadPool;
     ProcessTaskQueue _taskQueue;
+    EditorSettings _editorSettings;
     Compiler _compiler;
     ProjectManager _projectManager;
     AddonManager _addonManager;
-    EditorSettings _editorSettings;
 
     ofImage _logo;
     ofTrueTypeFont _font;

@@ -32,7 +32,7 @@ EditorSettings::EditorSettings(const std::string& path):
 _path(path)
 {
     load();
-    ofLogVerbose("EditorSettings::EditorSettings") << "loaded editor settings";
+    cout<<getProjectDir()<<endl;
 }
 
 bool EditorSettings::load()
