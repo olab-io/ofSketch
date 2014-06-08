@@ -31,6 +31,7 @@
 #include "Poco/URI.h"
 #include "ofTypes.h"
 #include "ofFileUtils.h"
+#include "ofxJSONElement.h"
 
 
 namespace of {
@@ -50,16 +51,18 @@ namespace of {
             const Json::Value& getData() const;
             
             int getPort() const;
-            const std::string& getProjectDir() const;
-            const std::string& getSketchDir() const;
-            const std::string& getAddonsDir() const;
-            const std::string& getProjectExtension() const;
-            const std::string& getClassExtension() const;
+            const std::string getProjectDir() const;
+            const std::string getSketchDir() const;
+            const std::string getOpenFrameworksDir() const;
+            const std::string getOpenFrameworksVersion() const;
+            const std::string getAddonsDir() const;
+            const std::string getProjectExtension() const;
+            const std::string getClassExtension() const;
             
         private:
             
             std::string _path;
-            Json::Value _data;
+            ofxJSONElement _data; //ofxJSONElement for load functionality
         };
         
     } } // namespace of::Sketch

@@ -5,6 +5,8 @@
 	"projectDir": "Projects",
 	"sketchDir": "sketch",
 	"addonsDir": "openFrameworks/addons",
+	"openFrameworksDir": "openFrameworks",
+	"openFrameworksVersion": "v0.8.1",
 	"projectExtension": ".sketch",
 	"classExtension": ".sketch",
 	"fontSize": 12,

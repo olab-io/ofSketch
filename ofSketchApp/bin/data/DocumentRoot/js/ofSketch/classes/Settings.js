@@ -22,71 +22,39 @@
 //
 // =============================================================================
 
-
-#include "EditorSettings.h"
-
-namespace of {
-namespace Sketch {
-        
-EditorSettings::EditorSettings(const std::string& path):
-_path(path)
+function Settings() 
 {
-    load();
-}
+	var _editorSettings;
+	var _projectSettings;
 
-bool EditorSettings::load()
-{
-    return _data.open(_path);
-}
+	this.saveEditorSettings = function()
+	{
 
-bool EditorSettings::save()
-{
-    return _data.save(_path);
-}
+	}
 
-const Json::Value& EditorSettings::getData() const
-{
-    return _data;
-}
+	this.saveProjectSettings = function()
+	{
+		
+	}
 
-int EditorSettings::getPort() const
-{
-    return _data["port"].asInt();
-}
-    
-const std::string EditorSettings::getProjectDir() const
-{
-    return _data["projectDir"].asString();
-}
+	this.updateEditorSettings = function(editorSettings)
+	{
+		_editorSettings = editorSettings;
 
-const std::string EditorSettings::getSketchDir() const
-{
-    return _data["sketchDir"].asString();
-}
+	}
 
-const std::string EditorSettings::getAddonsDir() const
-{
-    return _data["addonsDir"].asString();
-}
+	this.updateProjectSettings = function(projectSettings)
+	{
+		_projectSettings = projectSettings;
+	}
 
-const std::string EditorSettings::getOpenFrameworksDir() const
-{
-    return _data["openFrameworksDir"].asString();
-}
+	this.getEditorSettings = function()
+	{
+		return _editorSettings;
+	}
 
-const std::string EditorSettings::getOpenFrameworksVersion() const
-{
-    return _data["openFrameworksVersion"].asString();
+	this.getProjectSettings = function()
+	{
+		return _projectSettings;
+	}
 }
-    
-const std::string EditorSettings::getProjectExtension() const
-{
-    return _data["projectExtension"].asString();
-}
-
-const std::string EditorSettings::getClassExtension() const
-{
-    return _data["classExtension"].asString();
-}
-
-} } // namespace of::Sketch
