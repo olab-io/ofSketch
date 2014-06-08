@@ -23,43 +23,59 @@
 // =============================================================================
 
 
-#pragma once
-
-
-#include <string>
-#include <json/json.h>
-#include "Poco/URI.h"
-#include "ofTypes.h"
-#include "ofFileUtils.h"
-
+#include "EditorSettings.h"
 
 namespace of {
-    namespace Sketch {
+namespace Sketch {
         
-        
-        class EditorSettings
-        {
-        public:
-            
-            EditorSettings(){};
-            EditorSettings(const std::string& path);
-            
-            bool load();
-            bool save();
-            
-            const Json::Value& getData() const;
-            
-            int getPort() const;
-            const std::string& getProjectDir() const;
-            const std::string& getSketchDir() const;
-            const std::string& getAddonsDir() const;
-            const std::string& getProjectExtension() const;
-            const std::string& getClassExtension() const;
-            
-        private:
-            
-            std::string _path;
-            Json::Value _data;
-        };
-        
-    } } // namespace of::Sketch
+EditorSettings::EditorSettings(const std::string& path)
+{
+    
+}
+
+bool EditorSettings::load()
+{
+    
+}
+
+bool EditorSettings::save()
+{
+    
+}
+
+const Json::Value& EditorSettings::getData() const
+{
+    
+}
+
+int EditorSettings::getPort() const
+{
+    
+}
+    
+const std::string& EditorSettings::getProjectDir() const
+{
+    
+}
+
+const std::string& EditorSettings::getSketchDir() const
+{
+    
+}
+
+const std::string& EditorSettings::getAddonsDir() const
+{
+    
+}
+
+const std::string& EditorSettings::getProjectExtension() const
+{
+    
+}
+
+const std::string& EditorSettings::getClassExtension() const
+{
+    
+}
+
+} } // namespace of::Sketch

@@ -84,6 +84,7 @@
 		E7E077E515D3B63C0020DFD4 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7E077E415D3B63C0020DFD4 /* CoreVideo.framework */; };
 		E7E077E815D3B6510020DFD4 /* QTKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7E077E715D3B6510020DFD4 /* QTKit.framework */; };
 		E7F985F815E0DEA3003869B5 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7F985F515E0DE99003869B5 /* Accelerate.framework */; };
+		F8755915194498D100B11277 /* EditorSettings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F8755914194498D100B11277 /* EditorSettings.cpp */; };
 		FD410BD8193BED2400630207 /* WebSocketLoggerChannel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FD410BD6193BED2400630207 /* WebSocketLoggerChannel.cpp */; };
 		FD410BED193CDA7700630207 /* BaseProcessTask.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FD410BEB193CDA7700630207 /* BaseProcessTask.cpp */; };
 		FD410BF0193CDCF400630207 /* ProcessTaskQueue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FD410BEE193CDCF400630207 /* ProcessTaskQueue.cpp */; };
@@ -346,6 +347,7 @@
 		E7E077E715D3B6510020DFD4 /* QTKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QTKit.framework; path = /System/Library/Frameworks/QTKit.framework; sourceTree = "<absolute>"; };
 		E7F985F515E0DE99003869B5 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = /System/Library/Frameworks/Accelerate.framework; sourceTree = "<absolute>"; };
 		F8755913194440ED00B11277 /* EditorSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditorSettings.h; sourceTree = "<group>"; };
+		F8755914194498D100B11277 /* EditorSettings.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EditorSettings.cpp; sourceTree = "<group>"; };
 		FD410BD6193BED2400630207 /* WebSocketLoggerChannel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WebSocketLoggerChannel.cpp; sourceTree = "<group>"; };
 		FD410BD7193BED2400630207 /* WebSocketLoggerChannel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebSocketLoggerChannel.h; sourceTree = "<group>"; };
 		FD410BEB193CDA7700630207 /* BaseProcessTask.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BaseProcessTask.cpp; sourceTree = "<group>"; };
@@ -924,6 +926,7 @@
 				ffe96aa616bc97aeb4fced47f06f75d7 /* Project.cpp */,
 				78bc8088d555f49447175ced18d8155f /* Project.h */,
 				F8755913194440ED00B11277 /* EditorSettings.h */,
+				F8755914194498D100B11277 /* EditorSettings.cpp */,
 				8e9bf742600bdd67a2c1c7075c637e32 /* ProjectManager.cpp */,
 				3621818ea5ff99900091c481f29b7a82 /* ProjectManager.h */,
 				FD410BD6193BED2400630207 /* WebSocketLoggerChannel.cpp */,
@@ -1425,6 +1428,7 @@
 				a8af031f8417316aff0d746e31105ff3 /* WebSocketFrame.cpp in Sources */,
 				759634f9fc415ed965714767428433d5 /* WebSocketRoute.cpp in Sources */,
 				6ff73354f39a5b24acbcd449ae9436cc /* WebSocketRouteSettings.cpp in Sources */,
+				F8755915194498D100B11277 /* EditorSettings.cpp in Sources */,
 				d932a5a24fcf08ae510a265d01807a32 /* ByteBuffer.cpp in Sources */,
 				66a80fd312926deb8c9fe7f6f2faa063 /* ByteBufferUtils.cpp in Sources */,
 				93640c223a2f5bead6da2e35071b167e /* Compression.cpp in Sources */,
