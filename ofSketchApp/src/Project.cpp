@@ -251,7 +251,7 @@ bool Project::renameClass(const std::string& currentName, const std::string& new
 
 bool Project::hasClasses() const
 {
-    return _data["classes"].size() > 0;
+    return !_data["classes"].empty();
 }
 
 
