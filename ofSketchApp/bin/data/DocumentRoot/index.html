@@ -79,9 +79,9 @@
                 <button type="button" class="btn btn-default" title="ofxAddons Website">
                     <a href="http://ofxaddons.com/" target="_blank">ofxAddons</a>
                 </button>
-                <!-- <button id="toolbar-settings" type="button" class="btn btn-default" title="Settings" data-toggle="modal" data-target="#settings-modal">
+                <button id="toolbar-settings" type="button" class="btn btn-default" title="Settings" data-toggle="modal" data-target="#settings-modal">
                     <span class="glyphicon glyphicon-cog"></span> 
-                </button> -->
+                </button>
               </div>
               <div class="btn-group" style="float:right;">
                 <button id="version-alert" type="button" class="btn alert-danger hidden" title="Version warning">
@@ -136,10 +136,19 @@
           <div class="modal-content">
             <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-              <h4 class="modal-title">Settings</h4>
+              <h4 class="modal-title">Editor Settings</h4>
             </div>
             <div class="modal-body">
-              To be implemented.
+              <div class="form-group">
+                <div class="input-group">
+                  <span class="input-group-addon">Port</span>
+                  <input type="text" class="form-control" placeholder="8998">
+                </div><!-- /input-group -->
+                <div class="input-group">
+                  <span class="input-group-addon">Hostname</span>
+                  <input type="text" class="form-control">
+                </div><!-- /input-group -->
+              </div>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

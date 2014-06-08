@@ -37,10 +37,12 @@ const std::string App::VERSION_PRE_RELEASE = "";
 App::App():
     _threadPool("ofSketchThreadPool"),
     _taskQueue(ofx::TaskQueue_<std::string>::UNLIMITED_TASKS, _threadPool),
+    _editorSettings(ofToDataPath("Resources/Settings/EditorSettings.json")),
     _compiler(_taskQueue, ofToDataPath("Resources/Templates/CompilerTemplates")),
     _projectManager(ofToDataPath("Projects", true)),
     _addonManager(ofToDataPath("openFrameworks/addons"))
 {
+    ofLogNotice("App::App") << "Editor setting's projectDir: " << _editorSettings.getProjectDir();
     _taskQueue.registerTaskEvents(this);
 
     HTTP::BasicJSONRPCServerSettings settings; // TODO: load from file.
@@ -154,6 +156,12 @@ void App::setup()
                            "Get list of all projects in the Project directory.",
                            this,
                            &App::getProjectList);
+    
+    server->registerMethod("load-editor-settings",
+                           "Get the editor settings.",
+                           this,
+                           &App::loadEditorSettings);
+
 
     server->start();
 
@@ -335,8 +343,14 @@ void App::stop(const void* pSender, JSONRPC::MethodArgs& args)
 void App::getProjectList(const void* pSender, JSONRPC::MethodArgs& args)
 {
     _projectManager.getProjectList(pSender, args);
-};
+}
+    
 
+void App::loadEditorSettings(const void *pSender, JSONRPC::MethodArgs &args)
+{
+    args.result = _editorSettings.getData();
+}
+    
 
 bool App::onWebSocketOpenEvent(HTTP::WebSocketOpenEventArgs& args)
 {
@@ -366,7 +380,16 @@ bool App::onWebSocketOpenEvent(HTTP::WebSocketOpenEventArgs& args)
     frame = ofx::HTTP::WebSocketFrame(App::toJSONString(json));
 
     args.getConnectionRef().sendFrame(frame);
-
+    
+    // Send editor ettings
+//    params.clear();
+//    
+//    params["editorSettings"] = _editorSettings.getData();
+//    json = App::toJSONMethod("Server", "editorSettings", params);
+//    frame = ofx::HTTP::WebSocketFrame(App::toJSONString(json));
+//    
+//    args.getConnectionRef().sendFrame(frame);
+    
     return false; // did not handle it
 }
 
@@ -382,7 +405,7 @@ bool App::onWebSocketCloseEvent(HTTP::WebSocketCloseEventArgs& args)
 
     return false; // did not handle it
 }
-
+    
 
 bool App::onWebSocketFrameReceivedEvent(HTTP::WebSocketFrameEventArgs& args)
 {

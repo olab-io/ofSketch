@@ -32,6 +32,7 @@ EditorSettings::EditorSettings(const std::string& path):
 _path(path)
 {
     load();
+    ofLogVerbose("EditorSettings::EditorSettings") << "loaded editor settings";
 }
 
 bool EditorSettings::load()
@@ -54,37 +55,42 @@ int EditorSettings::getPort() const
     return _data["port"].asInt();
 }
     
-const std::string EditorSettings::getProjectDir() const
+std::string EditorSettings::getProjectDir() const
 {
     return _data["projectDir"].asString();
 }
 
-const std::string EditorSettings::getSketchDir() const
+std::string EditorSettings::getSketchDir() const
 {
     return _data["sketchDir"].asString();
 }
 
-const std::string EditorSettings::getAddonsDir() const
+std::string EditorSettings::getAddonsDir() const
 {
     return _data["addonsDir"].asString();
 }
 
-const std::string EditorSettings::getOpenFrameworksDir() const
+std::string EditorSettings::getOpenFrameworksDir() const
 {
     return _data["openFrameworksDir"].asString();
 }
 
-const std::string EditorSettings::getOpenFrameworksVersion() const
+std::string EditorSettings::getOpenFrameworksVersion() const
 {
     return _data["openFrameworksVersion"].asString();
 }
+   
+std::string EditorSettings::getProjectSettingsFilename() const
+{
+    return _data["projectSettingsFilename"].asString();
+}
     
-const std::string EditorSettings::getProjectExtension() const
+std::string EditorSettings::getProjectExtension() const
 {
     return _data["projectExtension"].asString();
 }
 
-const std::string EditorSettings::getClassExtension() const
+std::string EditorSettings::getClassExtension() const
 {
     return _data["classExtension"].asString();
 }

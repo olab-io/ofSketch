@@ -85,6 +85,14 @@ $(document).ready( function()
 
             checkVersion();
         }
+        else if (evt.method == "updateEditorSettings")
+        {  
+
+        }
+        else if (evt.method == "updateProjectSettings")
+        {
+
+        }
     }
 
         // TODO: move this
@@ -376,6 +384,7 @@ $(document).ready( function()
     alertBox = $('#editor-messages');
     alertBox.hide();
 
+    var logger = new Logger();
 
     JSONRPCClient = new $.JsonRpcClient({ 
             ajaxUrl: getDefaultPostURL(),
@@ -385,8 +394,6 @@ $(document).ready( function()
             onclose: onWebSocketClose,
             onerror: onWebSocketError
         });
-
-    var logger = new Logger();
 
     console.log(logger.getLogLevel());
     $('#set-log-level').addClass(logger.getLogLevelLabelClass(logger.getLogLevel()));

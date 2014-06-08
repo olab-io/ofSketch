@@ -42,6 +42,7 @@
 #include "Compiler.h"
 #include "WebSocketLoggerChannel.h"
 #include "ProcessTaskQueue.h"
+#include "EditorSettings.h"
 
 
 using namespace ofx;
@@ -75,6 +76,7 @@ public:
     void compileProject(const void* pSender, JSONRPC::MethodArgs& args);
     void stop(const void* pSender, JSONRPC::MethodArgs& args);
     void getProjectList(const void* pSender, JSONRPC::MethodArgs& args);
+    void loadEditorSettings(const void* pSender, JSONRPC::MethodArgs& args);
 
     bool onWebSocketOpenEvent(HTTP::WebSocketOpenEventArgs& args);
     bool onWebSocketCloseEvent(HTTP::WebSocketCloseEventArgs& args);
@@ -136,6 +138,7 @@ private:
     Compiler _compiler;
     ProjectManager _projectManager;
     AddonManager _addonManager;
+    EditorSettings _editorSettings;
 
     ofImage _logo;
     ofTrueTypeFont _font;

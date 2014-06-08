@@ -51,13 +51,14 @@ namespace of {
             const Json::Value& getData() const;
             
             int getPort() const;
-            const std::string getProjectDir() const;
-            const std::string getSketchDir() const;
-            const std::string getOpenFrameworksDir() const;
-            const std::string getOpenFrameworksVersion() const;
-            const std::string getAddonsDir() const;
-            const std::string getProjectExtension() const;
-            const std::string getClassExtension() const;
+            std::string getProjectDir() const;
+            std::string getSketchDir() const;
+            std::string getOpenFrameworksDir() const;
+            std::string getOpenFrameworksVersion() const;
+            std::string getAddonsDir() const;
+            std::string getProjectSettingsFilename() const;
+            std::string getProjectExtension() const;
+            std::string getClassExtension() const;
             
         private:
             

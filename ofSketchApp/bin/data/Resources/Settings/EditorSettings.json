@@ -5,8 +5,27 @@
 	"projectDir": "Projects",
 	"sketchDir": "sketch",
 	"addonsDir": "openFrameworks/addons",
+	"openFrameworksDir": "openFrameworks",
+	"openFrameworksVersion": "v0.8.1",
 	"projectExtension": ".sketch",
 	"classExtension": ".sketch",
+	"projectSettingsFilename": ".sketchconfig",
 	"fontSize": 12,
-	"theme": "some/theme"
+	"tabSize": 4,
+	"editorTheme": "ace/theme/twilight",
+	"editorMode": "ace/mode/c_cpp",
+	"editorHighlightActiveLine": false,
+	"editorShowPrintMargin": false,
+	"editorShowInvisibles": false,
+	"editorAutopairCharacters": true,
+	"keys": {
+		"save": {
+			"win": "Ctrl-s",
+			"mac": "Command-s"
+		},
+		"run": {
+			"win": "Ctrl-r",
+			"mac": "Command-r"
+		}
+	}
 }

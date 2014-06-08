@@ -34,9 +34,7 @@ function SketchEditor(callback)
 {
 	var _self = this;
 	
-	var _editorSettingsFile = "editorsettings.json";
-
-	var _settings;
+	var _settings = new EditorSettings(); 
 	var _tabs = [];
 	var _project = undefined;
 	var _isRunning = false;
@@ -50,16 +48,16 @@ function SketchEditor(callback)
 
 	var _currentRunTaskId = undefined;
 
-	var _applySettings = function()
+	var _applySettings = function(editorSettings)
 	{
-		_editor.setTheme(_settings.editorTheme);
-	    _editor.getSession().setMode(_settings.editorMode);
-	    _editor.getSession().setTabSize(_settings.tabSize);
-	    document.getElementById('editor').style.fontSize = _settings.fontSize + 'px';
-	    _editor.setHighlightActiveLine(_settings.editorHighlightActiveLine);
-	    _editor.setShowPrintMargin(_settings.editorShowPrintMargin);
-	    _editor.setShowInvisibles(_settings.editorShowInvisibles);
-	    _editor.setBehavioursEnabled(_settings.editorAutopairCharacters);
+		_editor.setTheme(_settings.getData().editorTheme);
+	    _editor.getSession().setMode(_settings.getData().editorMode);
+	    _editor.getSession().setTabSize(_settings.getData().tabSize);
+	    document.getElementById('editor').style.fontSize = _settings.getData().fontSize + 'px';
+	    _editor.setHighlightActiveLine(_settings.getData().editorHighlightActiveLine);
+	    _editor.setShowPrintMargin(_settings.getData().editorShowPrintMargin);
+	    _editor.setShowInvisibles(_settings.getData().editorShowInvisibles);
+	    _editor.setBehavioursEnabled(_settings.getData().editorAutopairCharacters);
 		
 		_editor.setOptions({
         	enableBasicAutocompletion: true,
@@ -89,14 +87,14 @@ function SketchEditor(callback)
 				projectFile.fileName,
 				true,
 				new ace.EditSession(_project.getProjectFile().fileContents,
-											 _settings.editorMode));
+											 _settings.getData().editorMode));
 
 		var classes = _project.getClasses();
 		_.each(classes, function(c){
 			_addTab(getPrettyFileName(c.fileName),
 					c.fileName,
 					false,
-				new ace.EditSession(c.fileContents, _settings.editorMode));
+				new ace.EditSession(c.fileContents, _settings.getData().editorMode));
 		});
 
 		_self.selectTab(_project.getName());
@@ -287,7 +285,7 @@ function SketchEditor(callback)
 					classFile.fileName, 
 					false, 
 					new ace.EditSession(classFile.fileContents, 
-										_settings.editorMode));
+										_settings.getData().editorMode));
 			onSuccess(); // should I pass result object?
 		}, onError);
 	}
@@ -369,10 +367,13 @@ function SketchEditor(callback)
 		_editor.resize();
 	}
 
-	$.getJSON(_editorSettingsFile, function(data){
-		_settings = data;			
+	_settings.load(function(data){
+		
 		_applySettings();
 		_registerEvents();
 		callback();
+
+	}, function(){
+		console.log('error loading editor settings');
 	});
 }
