@@ -417,7 +417,7 @@ $(document).ready( function()
         });
 
         $('#toolbar-save').on('click', function() {
-           saveProject();
+           save();
         });
 
         $('.open-project').on('click', function() {
@@ -573,9 +573,7 @@ $(document).ready( function()
             if (!sketchEditor.getProject().isTemplate()) {
                 
                 sketchEditor.renameProject(newProjectName, function(){
-                    console.log("RENAME: renamed...");
                     sketchEditor.saveProject(function(){
-                        console.log("RENAME: saved...");
                         window.location.href = window.location.protocol 
                                                + "//" + window.location.host 
                                                + "/?project=" + encodeURIComponent(newProjectName);

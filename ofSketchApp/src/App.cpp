@@ -44,7 +44,7 @@ App::App():
     _taskQueue.registerTaskEvents(this);
 
     HTTP::BasicJSONRPCServerSettings settings; // TODO: load from file.
-    settings.setBufferSize(1024 * 512); // 512 KB
+    settings.setBufferSize(1024 * 1024 * 3); // 3 MB
     server = ofx::HTTP::BasicJSONRPCServer::makeShared(settings);
     
     // Must register for all events before initializing server.

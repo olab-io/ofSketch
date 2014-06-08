@@ -54,7 +54,7 @@ function Logger()
 	{
 		console.log("logging " + message);
 		var logElement = $('<li class="list-group-item"></li>');
-		var message = $('<span><strong>' + module + '</strong><br>'+ message + "</span>");
+		var message = $('<span><strong>' + module + '</strong><br><p style="overflow:auto">'+ message + "</p></span>");
 		var label = $('<span class="label" style="float:right">' + _self.getLogLevelName(logLevel) + '</span>');
 		
 		label.addClass(_self.getLogLevelLabelClass(logLevel));
