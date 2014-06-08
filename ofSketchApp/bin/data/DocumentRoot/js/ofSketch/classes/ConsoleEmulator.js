@@ -69,6 +69,11 @@ function ConsoleEmulator()
 		_editor.setValue('');
 	}
 
+	this.resize = function()
+	{
+		_editor.resize();
+	}
+
 	_applySettings();
 	_editor.on('blur', function() {
 		_self.placeCursorAtEnd();

@@ -364,6 +364,11 @@ function SketchEditor(callback)
 		return _currentRunTaskId;
 	}
 
+	this.resize = function()
+	{
+		_editor.resize();
+	}
+
 	$.getJSON(_editorSettingsFile, function(data){
 		_settings = data;			
 		_applySettings();

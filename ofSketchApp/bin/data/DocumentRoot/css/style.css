@@ -28,10 +28,24 @@ body {
 -------------------------------------------------- */
 /* Not required for template or sticky footer method. */
 
-#editor { 
+#ace-wrapper {
   position: relative;
+  /* 
+  NOTE: 
+  #editor-container's height + #console's height must
+  equal #ace-wrapper's height
+  */
+  height: 700px; 
+}
+
+#editor-container {
   height: 500px;
+}
+
+#editor { 
   
+  height: 100%;
+  width: 100%;
 }
 
 #console {
@@ -39,6 +53,10 @@ body {
   padding-top: 10px;
 }
 
+#editor-messages {
+  position: absolute;
+  z-index: 100;
+}
 
 #wrap > .container {
   padding: 70px 15px 0;

@@ -279,10 +279,15 @@ $(document).ready( function()
         alertBox.removeClass();
         alertBox.addClass('alert ' + c);
         alertBox.html('<strong>' + message + '</strong> ' + subMessage);
+        alertBox.css({
+            left:$(window).width()/2 - alertBox.width()/2,
+            top: $(window).height()/2 - alertBox.height()/2
+        });
+        
         alertBox.show();
         alertTimeout = setTimeout(function(){
             alertBox.hide();
-        }, 2000);
+        }, 2500);
     }
 
     function parseURLParameters()
@@ -303,7 +308,7 @@ $(document).ready( function()
     {
         if (!sketchEditor.getProject().isTemplate()) {
             sketchEditor.saveProject(function() {
-                // runAlert();
+                runAlert();
                 consoleEmulator.clear();
                 sketchEditor.compile(function(){
                     // this callback is now above
@@ -352,6 +357,15 @@ $(document).ready( function()
         }
     });
 
+    $('#editor-container').resizable({
+        handles: 's',
+        resize: function(event, ui){
+            sketchEditor.resize();
+            $('#console').height($('#ace-wrapper').height() -(ui.size.height));
+            consoleEmulator.resize();
+        }
+    });
+
     var systemInfo = {
         userAgent:  navigator.userAgent
     }
@@ -359,7 +373,7 @@ $(document).ready( function()
     var alertTimeout;
     var alertBox;
     var compileSuccess = false; // this is a terrible global var. Get it out ASAP.
-    alertBox = $('#editor-messages.alert');
+    alertBox = $('#editor-messages');
     alertBox.hide();
 
 

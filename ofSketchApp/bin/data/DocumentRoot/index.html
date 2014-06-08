@@ -11,6 +11,7 @@
     <link href="./css/bootstrap.css" rel="stylesheet">
     <!-- CSS to style the file input field as button and adjust the Bootstrap progress bars -->
     <link rel="stylesheet" href="css/jquery.fileupload-ui.css">
+    <link rel="stylesheet" href="css/jquery-ui-1.10.4.custom.min.css">
 
     <title>ofSketch</title>
 
@@ -392,13 +393,17 @@
             <a href="#new-class-modal" class="glyphicon glyphicon-plus"> </a>
           </li>
         </ul>
-
-      <pre id="editor">loading...</pre>
-      <div id="editor-messages" class="alert"></div>
-      <pre id="console"></pre>
-
+        <div id="editor-messages" class="alert"></div>
+      <div id="ace-wrapper">
+        
+        <div id="editor-container">
+          <pre id="editor">loading...</pre>
+        </div>
+        <pre id="console"></pre>
       </div>
+
     </div>
+  </div>
 
     <div id="footer">
       <!-- ofSketch <span id="version"></span> -->
@@ -409,6 +414,7 @@
 <script src="./js/bootstrap.min.js"></script>
 <script src="./js/jquery.jsonrpcclient.js"></script>
 <script src="./js/jquery.json.js"></script>
+<script src="./js/jquery-ui-1.10.4.custom.min.js"></script>
 <script src="./js/prism.js"></script>
 <script src="./js/underscore-min.js"></script>
 <script src="./js/semver.js"></script>
