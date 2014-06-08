@@ -79,9 +79,9 @@
                 <button type="button" class="btn btn-default" title="ofxAddons Website">
                     <a href="http://ofxaddons.com/" target="_blank">ofxAddons</a>
                 </button>
-                <button id="toolbar-settings" type="button" class="btn btn-default" title="Settings" data-toggle="modal" data-target="#settings-modal">
+                <!-- <button id="toolbar-settings" type="button" class="btn btn-default" title="Settings" data-toggle="modal" data-target="#settings-modal">
                     <span class="glyphicon glyphicon-cog"></span> 
-                </button>
+                </button> -->
               </div>
               <div class="btn-group" style="float:right;">
                 <button id="version-alert" type="button" class="btn alert-danger hidden" title="Version warning">
@@ -139,16 +139,15 @@
               <h4 class="modal-title">Editor Settings</h4>
             </div>
             <div class="modal-body">
-              <div class="form-group">
-                <div class="input-group">
-                  <span class="input-group-addon">Port</span>
-                  <input type="text" class="form-control" placeholder="8998">
-                </div><!-- /input-group -->
-                <div class="input-group">
-                  <span class="input-group-addon">Hostname</span>
-                  <input type="text" class="form-control">
-                </div><!-- /input-group -->
-              </div>
+              <!-- see http://tutsme-webdesign.info/bootstrap-3-contact-modal/ -->
+              <form class="form-horizontal">
+                <div class="form-group">
+                    <label class="control-label col-md-4" for="editor-settings-port">Port</label>
+                    <div class="col-md-6">
+                        <input type="number" class="form-control" id="editor-settings-port" name="ofSketch Port" placeholder="8998"/>
+                    </div>
+                </div>
+            </form>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
