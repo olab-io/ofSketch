@@ -47,7 +47,7 @@ namespace Sketch {
 class Compiler
 {
 public:
-    Compiler(ProcessTaskQueue& taskQueue, std::string pathToTemplates);
+    Compiler(ProcessTaskQueue& taskQueue, const std::string& pathToTemplates);
 
     Poco::UUID compile(const Project& project);
     Poco::UUID run(const Project& project);

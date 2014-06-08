@@ -30,7 +30,7 @@ namespace of {
 namespace Sketch {
 
 
-Compiler::Compiler(ProcessTaskQueue& taskQueue, std::string pathToTemplates):
+Compiler::Compiler(ProcessTaskQueue& taskQueue, const std::string& pathToTemplates):
     _taskQueue(taskQueue),
     _pathToTemplates(pathToTemplates),
     _projectFileTemplate(ofBufferFromFile(ofToDataPath(_pathToTemplates + "/main.txt")).getText()),
