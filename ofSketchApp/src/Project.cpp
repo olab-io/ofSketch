@@ -36,9 +36,8 @@ Project::~Project()
 {
 }
 
-Project::Project(const std::string& path):
-    _path(path),
-    _isLoaded(false)
+
+Project::Project(const std::string& path): _path(path), _isLoaded(false)
 {
     // this is not efficient at all! I am just keeping these FileTemplate loads in the project
     // constructor because it makes the most sense architecure wise.
@@ -167,23 +166,39 @@ bool Project::rename(const std::string& newName)
     if (isLoaded()) 
     {
         ofLogVerbose("Project::rename") << "renaming project \"" << getName() << "\" to \"" << newName + "\"";
+
         ofFile projectDir(getPath());
+
         std::string oldProjectName = getName();
-        ofLogVerbose("Project::rename") << "project path: " << getPath();
-        ofLogVerbose("Project::rename") << "renamed to: " << projectDir.getEnclosingDirectory() + newName;
+
+        ofLogVerbose("Project::rename") << "project path: " << getPath() << " Renamed to: " << projectDir.getEnclosingDirectory() + newName;
+
         if (!projectDir.renameTo(projectDir.getEnclosingDirectory() + newName)) return false;
+
         _path = projectDir.getAbsolutePath();
+
         ofFile projectFile(projectDir.getAbsolutePath() + "/sketch/" + oldProjectName + ".sketch");
+
         ofLogVerbose("Project::rename") << "projectDir path after rename: " << projectDir.getAbsolutePath();
+
         ofLogVerbose("Project::rename") << "projectFile path: " << projectFile.getAbsolutePath();
+
         if (!projectFile.renameTo(projectDir.getAbsolutePath() + "/sketch/" + newName + ".sketch")) return false;
+
         ofLogVerbose("Project::rename") << "projectFile path after rename: " << projectFile.getAbsolutePath();
+
         _data["projectFile"]["name"] = newName;
+
         _data["projectFile"]["fileName"] = newName + ".sketch";
+
         return true;
     }
+    else
+    {
+        ofLogVerbose("Project::rename") << "Cannot rename project, it is not loaded.";
+        return false;
+    }
     
-    return false;
 }
 
 
@@ -209,9 +224,12 @@ Json::Value Project::createClass(const std::string& className)
 
 bool Project::deleteClass(const std::string& className)
 {
-    if (isLoaded()) {
+    if (isLoaded())
+    {
         ofFile file(_sketchDir.getAbsolutePath() + "/" + className + ".sketch");
-        if (file.exists()) {
+
+        if (file.exists())
+        {
             file.remove();
             // TODO: re-loading is a terribly slow way to delete. Come back and optimize.
             // Simply need to remove the Json::Value class in _data["classes"]
@@ -225,7 +243,8 @@ bool Project::deleteClass(const std::string& className)
 
 bool Project::renameClass(const std::string& currentName, const std::string& newName)
 {
-    if (isLoaded()) {
+    if (isLoaded())
+    {
         ofLogVerbose("Project::renameClass") << "Renaming class...";
 
         ofFile file(_sketchDir.getAbsolutePath() + "/" + currentName + ".sketch");
@@ -270,11 +289,13 @@ bool Project::isClassName(const std::string& className) const
     
     return false;
 }
+
     
 int Project::getNumClasses() const
 {
     return _data["classes"].size();
 }
+
 
 const std::string& Project::getPath() const
 {
@@ -293,6 +314,7 @@ const Json::Value& Project::getData() const
 {
     return _data;
 }
+
 
 void Project::_saveFile(const Json::Value& fileData)
 {
