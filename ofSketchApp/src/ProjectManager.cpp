@@ -131,6 +131,7 @@ void ProjectManager::loadProject(const void* pSender, ofx::JSONRPC::MethodArgs& 
     if (args.params.isMember("projectName"))
     {
         std::string projectName = args.params["projectName"].asString();
+
         if (projectExists(projectName)) 
         {
             for (std::size_t i = 0; i < _projects.size(); ++i) 
@@ -145,7 +146,9 @@ void ProjectManager::loadProject(const void* pSender, ofx::JSONRPC::MethodArgs& 
                     }
 
                     args.result = project.getData();
+
                     ofLogNotice("Project::loadProject") << "Loaded " << projectName << " project";
+
                     return;
                 }
             }
@@ -171,7 +174,8 @@ void ProjectManager::loadTemplateProject(const void *pSender, ofx::JSONRPC::Meth
     }
     
     args.result = _templateProject.getData();
-    ofLogNotice("Project::loadTemplateProject") << "Loaded a template project";
+
+    ofLogNotice("Project::loadTemplateProject") << "Loaded a template project.";
 }
 
 
@@ -180,7 +184,9 @@ void ProjectManager::saveProject(const void* pSender, ofx::JSONRPC::MethodArgs& 
     if (args.params.isMember("projectData")) 
     {
         Json::Value projectData = args.params["projectData"];
+
         std::string projectName = projectData["projectFile"]["name"].asString();
+
         if (projectExists(projectName)) 
         {
             Project& project = getProjectRef(projectName);
@@ -254,7 +260,9 @@ bool ProjectManager::projectExists(const std::string& projectName) const
     for (std::size_t i = 0; i < _projects.size(); ++i) 
     {
         if (projectName == _projects[i].getName())
+        {
             return true;
+        }
     }
 
     return false;
@@ -263,11 +271,13 @@ bool ProjectManager::projectExists(const std::string& projectName) const
 
 void ProjectManager::reloadProjects()
 {
+    // TODO:
 }
 
 
 void ProjectManager::updateProject(const std::string& projectName)
 {
+    // TODO:
 }
 
 
