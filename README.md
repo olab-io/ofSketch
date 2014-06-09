@@ -1,4 +1,4 @@
-# ofSketch v0.1.0
+# ofSketch v0.1.1
 
 #### The barebones code editor (IDE) for [openFrameworks](http://openframeworks.cc).
 
