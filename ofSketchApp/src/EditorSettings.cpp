@@ -27,9 +27,10 @@
 
 namespace of {
 namespace Sketch {
-        
+
+
 EditorSettings::EditorSettings(const std::string& path):
-_path(path)
+    _path(path)
 {
     load();
     cout<<getProjectDir()<<endl;
