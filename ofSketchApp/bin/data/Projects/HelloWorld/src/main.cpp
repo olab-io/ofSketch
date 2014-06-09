@@ -10,29 +10,41 @@ public:
 
 
 
-int numBalls;
-vector<Ball> balls; 
+int numBalls = 75; // The total number of balls we'll use.
+
+vector<Ball> balls; // A collection of all balls.
 
 void setup() {
+    // Enable vertical sync.
+    ofSetVerticalSync(true);
     
+    // Set the window size.
     ofSetWindowShape(500, 500);
-    ofBackground(255);
-    numBalls = 75;
     
+    // Set the background color.
+    ofBackground(255);
+
+    // Create the balls
     for (int i = 0; i < numBalls; i++) {
         balls.push_back(Ball());
     }
 }
 
+void update() {
+    // Update all balls.
+    for (int i = 0; i < balls.size(); i++) {
+        balls[i].update();
+    }
+}
+
 void draw() {
-    
-    ofDrawBitmapStringHighlight("Hello World!", 200, 200);
-    cout<<ofGetTimestampString()<<endl;
-    for (int i = 0; i < numBalls; i++){
-        balls[i].update(mouseX, mouseY);
+    // Draw all balls.
+    for (int i = 0; i < balls.size(); i++) {
         balls[i].draw();
     }
-
+    
+    // Log a message.
+    ofLogNotice("draw()") << ofGetTimestampString();
 }
 
 

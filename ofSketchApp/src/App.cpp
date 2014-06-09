@@ -166,7 +166,7 @@ void App::setup()
     server->start();
 
     // Launch a browser with the address of the server.
-    ofLaunchBrowser(server->getURL());
+    ofLaunchBrowser(server->getURL() + "/?project=HelloWorld");
 }
 
 
