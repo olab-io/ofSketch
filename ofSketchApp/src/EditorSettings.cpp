@@ -33,7 +33,7 @@ EditorSettings::EditorSettings(const std::string& path):
     _path(path)
 {
     load();
-    cout<<getProjectDir()<<endl;
+    ofLogVerbose("EditorSettings::EditorSettings") << "Project Directory: " << getProjectDir();
 }
 
 bool EditorSettings::load()
