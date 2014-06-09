@@ -27,8 +27,10 @@ echo "       OF_VERSION: ${OF_VERSION}"
 cd ../build/
 
 # download the required release if needed.
-if [[ ! -f $OF_RELEASE.zip ]]; then
+if [[ ! -d $OF_RELEASE ]]; then
+	echo "NO ${OF_RELEASE}"
 	curl -O "http://www.openframeworks.cc/versions/v${OF_VERSION}/${OF_RELEASE}.zip"
+	unzip "http://www.openframeworks.cc/versions/v${OF_VERSION}/${OF_RELEASE}.zip"
 fi
 
 # make the distro directory name
