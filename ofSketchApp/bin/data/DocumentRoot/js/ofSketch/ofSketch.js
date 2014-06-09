@@ -340,6 +340,27 @@ $(document).ready( function()
             }   
         }
     }
+
+    function openProject()
+    {
+        sketchEditor.getProjectList(function(result) {
+
+            var projectList = $('#project-list');
+            projectList.empty();
+            _.each(result, function(project) {
+                var linkElement = $('<a href="' + location.protocol + '//' + location.host + '/?project=' 
+                                     + encodeURIComponent(project.projectName)
+                                     + '" class="list-group-item" target="_blank">' + project.projectName + '</a>');
+                projectList.append(linkElement);
+            });
+
+            $('#open-project-modal').modal();
+
+        }, function(err) {
+            console.log("Error requesting project list: ");
+            console.log(err);
+        });
+    }
     
     // prevent defaults
     $('#toolbar li a, #log-levels li a, .file-tab a, #new-class a, .action-menu li a').on('click', function(e) {
@@ -363,6 +384,14 @@ $(document).ready( function()
             e.preventDefault();
             save();
         }
+
+        // cmd-o
+        if ((e.which || e.keyCode) == 79 && e.metaKey) {
+            
+            e.preventDefault();
+            openProject();
+        }
+
     });
 
     $('#editor-container').resizable({
@@ -442,23 +471,7 @@ $(document).ready( function()
         });
 
         $('.open-project').on('click', function() {
-            sketchEditor.getProjectList(function(result) {
-
-                var projectList = $('#project-list');
-                projectList.empty();
-                _.each(result, function(project) {
-                    var linkElement = $('<a href="' + location.protocol + '//' + location.host + '/?project=' 
-                                         + encodeURIComponent(project.projectName)
-                                         + '" class="list-group-item" target="_blank">' + project.projectName + '</a>');
-                    projectList.append(linkElement);
-                });
-
-                $('#open-project-modal').modal();
-
-            }, function(err) {
-                console.log("Error requesting project list: ");
-                console.log(err);
-            });
+            openProject();
         });
 
         $('.new-project').on('click', function() {
