@@ -2,7 +2,7 @@
 
 #### The barebones code editor (IDE) for [openFrameworks](http://openframeworks.cc).
 
-![ofSketch Screenshot](http://brannondorsey.com/images/ofsketch.png)
+[![ScreenShot](http://brannondorsey.com/images/ofsketch_release_video_screenshot.png)](https://vimeo.com/97796242)
 
 ofSketch is being developed by [Brannon Dorsey](http://brannondorsey.com) and [Christopher Baker](http://christopherbaker.net) at the [openLab](http://olab.io) through the [Google Summer of Code](https://developers.google.com/open-source/soc/?csw=1) 2014 program.
 
