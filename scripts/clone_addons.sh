@@ -1,20 +1,32 @@
 #!/bin/bash
 
-# inspired by ObviousJim and ofxTimeline script
+if [ -z $1 ]; then
+    PREFIX="https://github.com/"
+else
+    PREFIX="git@github.com:"
+fi
 
+PWD=`pwd`
 
-cd ../../addons
+ADDONS_MAKE=${PWD}/../ofSketchApp/addons.make
 
-git clone https://github.com/bakercp/ofxHTTP.git
+OF_ROOT=../../..
 
-git clone https://github.com/bakercp/ofxIO.git
+ADDONS_PATH=${OF_ROOT}/addons
 
-git clone https://github.com/jefftimesten/ofxJSON.git
+cd $ADDONS_PATH
 
-git clone https://github.com/bakercp/ofxJSONRPC.git
+while read ADDON; do
 
-git clone https://github.com/bakercp/ofxMediaType.git
+	# clone the repo and consume any errors
+	git clone ${PREFIX}bakercp/${ADDON}.git &> /dev/null
 
-git clone https://github.com/bakercp/ofxSSLManager.git
+	cd ${ADDON}
 
-git clone https://github.com/bakercp/ofxTaskQueue.git
+	# update to the latest
+	git pull 
+
+	# back to addons path
+	cd -
+
+done < $ADDONS_MAKE
