@@ -26,6 +26,13 @@ echo "       OF_VERSION: ${OF_VERSION}"
 # change from the scripts to the build directory
 cd ../build/
 
+# download the required release if needed.
+if [[ ! -d $OF_RELEASE ]]; then
+	echo "NO ${OF_RELEASE}"
+	curl -O "http://www.openframeworks.cc/versions/v${OF_VERSION}/${OF_RELEASE}.zip"
+	unzip "http://www.openframeworks.cc/versions/v${OF_VERSION}/${OF_RELEASE}.zip"
+fi
+
 # make the distro directory name
 DIST="ofSketch_v${OF_SKETCH_VERSION}_${SYSTEM}_release"
 

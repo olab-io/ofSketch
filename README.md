@@ -1,31 +1,31 @@
-# ofSketch v0.1.1
+# ofSketch Prereleases
 
 #### The barebones code editor (IDE) for [openFrameworks](http://openframeworks.cc).
 
+[![ScreenShot](http://brannondorsey.com/images/ofsketch_release_video_screenshot.png)](https://vimeo.com/97796242)
 
-![ofSketch Screenshot](http://brannondorsey.com/images/ofsketch.png)
+ofSketch is being developed by [Brannon Dorsey](http://brannondorsey.com) and [Christopher Baker](http://christopherbaker.net) at the [openLab](http://olab.io) through the [Google Summer of Code](https://developers.google.com/open-source/soc/?csw=1) 2014 program.
 
-ofSketch is being developed by [Brannon Dorsey](http://brannondorsey.com) and [Chris Baker](http://christopherbaker.net) at [openLab](http://olab.io) through the [Google Summer of Code](https://developers.google.com/open-source/soc/?csw=1) 2014 program.
-
-**Warning:** ofSketch is currently in development. This is the first pre-release and it __IS NOT__ stable. In fact, lots of things don't work.
-
-**Note:** It is likely that ofSketch development will somewhat halt during the month of June 2014. After that, we will be in high-gear to release a stable and feature packed version in August of 2014.
+**Warning:** ofSketch is currently in development. This is the first pre-release and it is not completely stable.
 
 ## Getting Started
 
 ### Download
 
-[Download](http://brannondorsey.com/hidden/ofsketch_v0.0.2_osx_release.zip) the ofSketch app for OSX. All platforms will be supported soon.
+[Download](https://github.com/olab-io/ofSketch/releases/) the ofSketch app for your platform (all oF-compatible platforms will eventually be supported).
 
 ofSketch comes packaged with the following contents:
 
+- CHANGELOG.md
+- CONTRIBUTING.md
+- data
+- LICENSE.md
 - ofSketch.app
-- README.md
-- Projects/
 
+README.md
 For ofSketch to work properly, the "Projects" folder __must__ be located in the same folder as the ofSketch app.
 
-**Note**: ofSketch v0.0.2 uses an openFrameworks v0.8.1 distribution bundled inside of the App itself. All code written in ofSketch must be oF v0.8.1 compatible. 
+**Note**: ofSketch prereleases uses an openFrameworks v0.8.1 distribution bundled inside of the App's data folder itself. All code written in ofSketch must be oF v0.8.1 compatible. 
 
 ### Running Examples
 
@@ -51,7 +51,7 @@ This is terribly annoying and we can assure you that there will be a better syst
 
 ## Issues
 
-ofSketch v0.0.2 is chock-full of disabled features and undoubtedly some pretty nasty bugs. Sticking to the philosophy "Release early, release often", we have decided to unveil this early prototype to the masses. There are tons of documented (and undocumented) problems. Check out the [issues page](https://github.com/brannondorsey/ofSketch/issues?state=open) for more info.
+ofSketch prereleases are chock-full of disabled features and undoubtedly some pretty nasty bugs. Sticking to the philosophy "Release early, release often", we have decided to unveil this early prototype to the masses. There are tons of documented (and undocumented) problems. Check out the [issues page](https://github.com/brannondorsey/ofSketch/issues?state=open) for more info.
 
 ### Play Nice
 
@@ -62,7 +62,7 @@ ofSketch v0.0.2 is chock-full of disabled features and undoubtedly some pretty n
 
 Here are a few problems that we already know about, and that are intended to be fixed in the next few pre-releases:
 
-- Often the ofSketch.app needs doesn't shut down properly and needs to be force quit
+- Often the ofSketch.app needs doesn't shut down properly and needs a force quit
 - Renaming tabs doesn't always work that smoothly
 - Projects that are renamed often leave the build with an old name inside of bin/
 
@@ -88,7 +88,7 @@ Building ofSketch from source requires openFrameworks v0.8.1 and the following a
 
 __You must__ also replace the empty openFrameworks directory inside of `bin/data` with the openFrameworks distribution that you would like your ofSketch projects to use.
 
-Hypothetically, ofSketch should work on all platforms when compiled from source, however this is untested.
+Hypothetically, ofSketch should work on all platforms when compiled from source (with the exception of a few obvious tings, however this is untested.
 
 ## Links
 
