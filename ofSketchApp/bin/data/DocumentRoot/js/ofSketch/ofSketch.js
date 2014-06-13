@@ -48,10 +48,33 @@ $(document).ready( function()
             {
                 var downloadURL = latestRelease.zipball_url;
                 var htmlURL = latestRelease.html_url;
+                var assets = latestRelease.assets;
 
-                // TODO: This needs an upgrade with more useful information and clickable links.
-                // alert("Your ofSketch Version is out of Date.  Please upgrade <a href=\"" + downloadURL +"\">here</a>");
-                $('#remote-version-download-link').attr('href', downloadURL);
+                var target = systemInfo.version.target.toLowerCase();
+
+                var binaryURL = "";
+
+                for (var i = 0; i < assets.length; ++i) {
+                    var asset = assets[i]
+
+                    if (asset.name.indexOf(target) >= 0) {
+                        // Minor hack because direct access requires header use.
+                        // https://developer.github.com/v3/repos/releases/
+                        binaryURL = (htmlURL + "/" + asset.name).replace("tag", "download");
+                        break;
+                    }
+                }
+
+                // Attempt to feed a binary url directly if one is available.
+                if (binaryURL.length > 0)
+                {
+                    $('#remote-version-download-link').attr('href', binaryURL);
+                }
+                else
+                {
+                    $('#remote-version-download-link').attr('href', htmlURL);
+                }
+
                 $('.remote-version').text(remoteVersion);
                 $('.local-version').text(localVersion);
 

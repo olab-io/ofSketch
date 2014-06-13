@@ -6,6 +6,12 @@
 #
 # ./build_distro.sh osx 0.1.1 
 
+if [ $# -ne 2 ]
+  then
+    echo "SYSTEM and VERSION Arguments required."
+    exit 1
+fi
+
 # the current build system
 SYSTEM=$1
 

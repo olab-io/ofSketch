@@ -125,7 +125,7 @@ public:
     {
         VERSION_MAJOR = 0,
         VERSION_MINOR = 1,
-        VERSION_PATCH = 2
+        VERSION_PATCH = 3
     };
 
     static const std::string VERSION_PRE_RELEASE;
@@ -133,7 +133,7 @@ public:
 private:
     HTTP::BasicJSONRPCServer::SharedPtr server;
 
-    WebSocketLoggerChannel::SharedPtr _loggerChannel;
+//    WebSocketLoggerChannel::SharedPtr _loggerChannel;
 
     Poco::ThreadPool _threadPool;
     ProcessTaskQueue _taskQueue;
