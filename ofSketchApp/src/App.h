@@ -133,7 +133,7 @@ public:
 private:
     HTTP::BasicJSONRPCServer::SharedPtr server;
 
-    WebSocketLoggerChannel::SharedPtr _loggerChannel;
+//    WebSocketLoggerChannel::SharedPtr _loggerChannel;
 
     Poco::ThreadPool _threadPool;
     ProcessTaskQueue _taskQueue;

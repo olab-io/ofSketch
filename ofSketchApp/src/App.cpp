@@ -57,9 +57,9 @@ App::App():
     server->getWebSocketRoute()->registerWebSocketEvents(this);
 
     // Set up websocket logger.
-    _loggerChannel = WebSocketLoggerChannel::makeShared();
-    _loggerChannel->setWebSocketRoute(server->getWebSocketRoute());
-    ofSetLoggerChannel(_loggerChannel);
+//    _loggerChannel = WebSocketLoggerChannel::makeShared();
+//    _loggerChannel->setWebSocketRoute(server->getWebSocketRoute());
+//    ofSetLoggerChannel(_loggerChannel);
 
     _logo.loadImage("media/openFrameworks.png");
     _font.loadFont(OF_TTF_SANS, 20);
