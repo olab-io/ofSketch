@@ -61,6 +61,8 @@ public:
     void update();
     void draw();
 
+    void exit();
+
     void mousePressed(int x, int y, int button);
 
     void loadProject(const void* pSender, JSONRPC::MethodArgs& args);

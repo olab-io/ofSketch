@@ -70,9 +70,6 @@ App::~App()
 {
     _taskQueue.unregisterTaskEvents(this);
 
-    // Reset default logger.
-    ofLogToConsole();
-
     server->getWebSocketRoute()->unregisterWebSocketEvents(this);
     server->getPostRoute()->unregisterPostEvents(this);
 
@@ -184,6 +181,13 @@ void App::draw()
 
     ofSetColor(80);
     _font.drawString("Launch", 70, 30);
+}
+
+
+void App::exit()
+{
+    // Reset default logger.
+    ofLogToConsole();
 }
 
 
