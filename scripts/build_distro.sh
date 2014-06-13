@@ -30,13 +30,33 @@ echo "OF_SKETCH_VERSION: ${OF_SKETCH_VERSION}"
 echo "       OF_VERSION: ${OF_VERSION}"
 
 # change from the scripts to the build directory
+mkdir ../build/ &> /dev/null
 cd ../build/
+
+SUFFIX=""
+
+if [[ $SYSTEM -eq "linux64" ]]
+then
+ SUFFIX="tar.gz"
+else
+ SUFFIX="zip"
+fi
+
+echo $SUFFIX
+
 
 # download the required release if needed.
 if [[ ! -d $OF_RELEASE ]]; then
 	echo "NO ${OF_RELEASE}"
-	curl -O "http://www.openframeworks.cc/versions/v${OF_VERSION}/${OF_RELEASE}.zip"
-	unzip "http://www.openframeworks.cc/versions/v${OF_VERSION}/${OF_RELEASE}.zip"
+	curl -O "http://www.openframeworks.cc/versions/v${OF_VERSION}/${OF_RELEASE}.${SUFFIX}"
+	
+if [[ $SYSTEM == "linux64" ]]
+then
+  tar xvf  ${OF_RELEASE}.${SUFFIX}
+else
+  unzip ${OF_RELEASE}.${SUFFIX}
+fi
+
 fi
 
 # make the distro directory name
@@ -75,8 +95,16 @@ make -s -j10 Release
 # back to $DIST folder
 cd ../../../../..
 
-echo "Copy app bundle..."
+echo "Copy app..."
+
+if [[ $SYSTEM -eq "linux64" ]]
+then
+cp ../../ofSketchApp/bin/ofSketchApp ofSketchApp
+else
 cp -r ../../ofSketchApp/bin/ofSketchAppDebug.app ofSketch.app
+fi
+
+
 
 echo "Copy text docs..."
 cp ../../CONTRIBUTING.md .
