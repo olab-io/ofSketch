@@ -1,3 +1,7 @@
+- 0.1.3 (06-13-2014)
+    + Regression requires reengineering of WebSocketLoggerChannel.  Removed for now.
+    + Fixed auto release download link.  Now links to binary release if available.
+
 - 0.1.2 (06-13-2014)
     + Fix hang on quit https://github.com/olab-io/ofSketch/issues/52.
     
