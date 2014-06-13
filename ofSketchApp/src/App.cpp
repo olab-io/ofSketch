@@ -47,6 +47,7 @@ App::App():
 
     HTTP::BasicJSONRPCServerSettings settings; // TODO: load from file.
     settings.setBufferSize(1024 * 1024 * 3); // 3 MB
+    settings.setPort(7890);
     server = ofx::HTTP::BasicJSONRPCServer::makeShared(settings);
     
     // Must register for all events before initializing server.
