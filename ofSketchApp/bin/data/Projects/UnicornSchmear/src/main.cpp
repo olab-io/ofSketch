@@ -19,7 +19,6 @@ bool useAlphaImage;
 ofImage image;
 ofImage alphaImage;
 
-
 void setup() 
 {
     ofSetWindowShape(1024, 768);
