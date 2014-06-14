@@ -1,3 +1,8 @@
+- 0.1.4 (06-13-2014)
+    + Added linux64 build.
+    + Updated build script for linux64.
+    + Sketches no longer initialize variables in header.  Init in setup() or ctor.
+
 - 0.1.3 (06-13-2014)
     + Regression requires reengineering of WebSocketLoggerChannel.  Removed for now.
     + Fixed auto release download link.  Now links to binary release if available.
