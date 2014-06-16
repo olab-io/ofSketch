@@ -25,6 +25,7 @@
 
 #include "MakeTask.h"
 #include "Poco/TaskNotification.h"
+#include "Poco/Environment.h"
 
 
 namespace of {
@@ -33,8 +34,8 @@ namespace Sketch {
 
 MakeTask::Settings::Settings():
     ofRoot(ofToDataPath("openFrameworks")),
-    numProcessors(1),
-    isSilent(false),
+    numProcessors(Poco::Environment::processorCount()),
+    isSilent(true),
     useDistccServer(false),
     cxx(""),
     cc("")

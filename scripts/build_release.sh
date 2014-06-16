@@ -82,13 +82,16 @@ cd data/Projects
 
 echo `pwd`
 
+# remove any built project apps
 rm -rf $(find . -name *.app)
-rm -rf $(find . -name obj)
+rm -rf $(find . -name *App)
+rm -rf $(find . -name libs)
 
 cd ../..
 
 echo `pwd`
 
+rm -rf $(find . -name obj)
 rm -rf $(find . -name .git*)
 rm -rf $(find . -name .DS_Store)
 

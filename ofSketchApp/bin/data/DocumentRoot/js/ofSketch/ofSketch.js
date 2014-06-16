@@ -108,6 +108,10 @@ $(document).ready( function()
 
             checkVersion();
         }
+        else if (evt.method == "addons")
+        {
+            console.log(evt.params);
+        }
         else if (evt.method == "updateEditorSettings")
         {  
 

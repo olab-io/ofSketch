@@ -30,4 +30,28 @@ namespace of {
 namespace Sketch {
 
 
+Addon::Addon(const std::string& name, const std::string& path):
+    _name(name),
+    _path(path)
+{
+}
+
+
+Addon::~Addon()
+{
+}
+
+
+const std::string& Addon::getName() const
+{
+    return _name;
+}
+
+
+const std::string& Addon::getPath() const
+{
+    return _path;
+}
+
+
 } } // namespace of::Sketch
