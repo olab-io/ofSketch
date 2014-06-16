@@ -1,3 +1,7 @@
+- 0.1.5 (06-16-2014)
+    + Server now sends available addons to client.
+    + Rewrote build scripts.  Now works on all osx / linux.
+
 - 0.1.4 (06-13-2014)
     + Added linux64 build.
     + Updated build script for linux64.
