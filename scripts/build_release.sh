@@ -14,7 +14,7 @@ OS=`./helpers/ostype.sh`
 # the current semantic version number, strip the "v"
 OF_SKETCH_VERSION=`git describe --abbrev=0 --tags | sed 's/v//g'`
 
-cd ../ofSketchApp/bin/data/
+cd ../ofSketchApp/bin/data
 
 if [ -e "openFrameworks/CHANGELOG.md" ]
 then
@@ -63,7 +63,7 @@ cd $OF_SKETCH_RELEASE/data
 echo `pwd`
 
 echo "Copy app data ..."
-cp -r ../../../ofSketchApp/bin/data/ .
+cp -r ../../../ofSketchApp/bin/data/* .
 
 cd ..
 
@@ -79,12 +79,14 @@ echo `pwd`
 echo "Cleaning distro..."
 
 cd data/Projects
+
 echo `pwd`
 
 rm -rf $(find . -name *.app)
 rm -rf $(find . -name obj)
 
 cd ../..
+
 echo `pwd`
 
 rm -rf $(find . -name .git*)
@@ -95,6 +97,8 @@ echo `pwd`
 echo "Copy app ..."
 
 echo `pwd`
+
+ls -la ../../ofSketchApp/bin
 
 if [[ $OS == linux* ]]
 then
