@@ -85,6 +85,7 @@ echo `pwd`
 # remove any built project apps
 rm -rf $(find . -name *.app)
 rm -rf $(find . -name *App)
+rm -rf $(find . -name libs)
 
 cd ../..
 
