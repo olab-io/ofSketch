@@ -1,5 +1,6 @@
 - 0.1.5 (06-16-2014)
     + Server now sends available addons to client.
+    + Updated default number of processors to match target machine cores on a make build.
     + Rewrote build scripts.  Now works on all osx / linux.
 
 - 0.1.4 (06-13-2014)
