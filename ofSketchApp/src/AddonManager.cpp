@@ -138,7 +138,7 @@ std::vector<Addon::SharedPtr> AddonManager::getAddons() const
 
     std::map<std::string, Addon::SharedPtr>::const_iterator iter = _addons.begin();
 
-    if (iter != _addons.end())
+    while (iter != _addons.end())
     {
         addons.push_back(iter->second);
         ++iter;
