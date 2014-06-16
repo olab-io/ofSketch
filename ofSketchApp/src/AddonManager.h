@@ -44,14 +44,8 @@ namespace Sketch {
 class AddonManager
 {
 public:
-    typedef std::shared_ptr<AddonManager> SharedPtr;
-
     AddonManager(const std::string& addonsPath);
     virtual ~AddonManager();
-
-    void setup();
-
-    void updateAddon(const Poco::URI& uri);
 
     void onDirectoryWatcherItemAdded(const Poco::DirectoryWatcher::DirectoryEvent& evt);
     void onDirectoryWatcherItemRemoved(const Poco::DirectoryWatcher::DirectoryEvent& evt);
@@ -60,17 +54,16 @@ public:
     void onDirectoryWatcherItemMovedTo(const Poco::DirectoryWatcher::DirectoryEvent& evt);
     void onDirectoryWatcherError(const Poco::Exception& exc);
 
-    static SharedPtr makeShared(const std::string& addonsPath)
-    {
-        return SharedPtr(new AddonManager(addonsPath));
-    }
+    std::vector<Addon::SharedPtr> getAddons() const;
 
     static const std::string DEFAULT_ADDON_PATH;
 
 private:
     std::string _path;
-    std::set<Addon::SharedPtr> _addons;
+    std::map<std::string, Addon::SharedPtr> _addons;
     ofx::IO::DirectoryWatcherManager _addonWatcher;
+
+    ofx::IO::DirectoryFilter _directoryFilter;
 
 };
 

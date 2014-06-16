@@ -38,13 +38,16 @@ class Addon
 public:
     typedef std::shared_ptr<Addon> SharedPtr;
 
-    Addon()
-    {
-    }
+    Addon(const std::string& name, const std::string& path);
 
-    virtual ~Addon()
-    {
-    }
+    virtual ~Addon();
+
+    const std::string& getName() const;
+    const std::string& getPath() const;
+
+private:
+    std::string _name;
+    std::string _path;
 
 };
 

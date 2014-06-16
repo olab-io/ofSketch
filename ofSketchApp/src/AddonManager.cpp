@@ -36,76 +36,115 @@ const std::string AddonManager::DEFAULT_ADDON_PATH = "addons/";
 AddonManager::AddonManager(const std::string& path):
     _path(path)
 {
-    _addonWatcher.addPath(ofToDataPath(_path));
+    Poco::Path fullPath(ofToDataPath(_path, true));
 
-    std::vector<std::string> files;
+    Poco::File file(fullPath);
 
-    ofx::IO::DirectoryFilter filter;
+    if(!file.exists())
+    {
+        Poco::FileNotFoundException exc(fullPath.toString());
+        throw exc;
+    }
 
-    ofx::IO::DirectoryUtils::list(ofToDataPath(_path),
-                                  files,
-                                  true,
-                                  &filter);
+    std::vector<Poco::File> files;
 
-    std::vector<std::string>::iterator iter = files.begin();
+    ofx::IO::DirectoryUtils::list(file, files, true, &_directoryFilter);
 
-//    while(iter != files.end())
-//    {
-//        cout << *iter << endl;
-//        ++iter;
-//    }
+    std::vector<Poco::File>::iterator iter = files.begin();
 
+    while(iter != files.end())
+    {
+        std::string addonPath = (*iter).path();
+        std::string addonName = Poco::Path(addonPath).getBaseName();
+
+        _addons[addonName] = Addon::SharedPtr(new Addon(addonName, addonPath));
+
+        ++iter;
+    }
+
+    _addonWatcher.registerAllEvents(this);
+    _addonWatcher.addPath(fullPath.toString(),
+                          false,
+                          true,
+                          &_directoryFilter);
 }
 
 
 AddonManager::~AddonManager()
 {
-}
-
-
-void AddonManager::setup()
-{
-}
-
-
-void AddonManager::updateAddon(const Poco::URI& uri)
-{
+    _addonWatcher.unregisterAllEvents(this);
 }
 
 
 void AddonManager::onDirectoryWatcherItemAdded(const Poco::DirectoryWatcher::DirectoryEvent& evt)
 {
-//    ofSendMessage("Added:    " + evt.item.path());
+    ofLogNotice("AddonManager::onDirectoryWatcherItemAdded") << evt.event << " " << evt.item.path();
+
+    std::string path = evt.item.path();
+    std::string name = Poco::Path(path).getBaseName();
+
+    _addons[name] = Addon::SharedPtr(new Addon(name, path));
+
 }
 
 
 void AddonManager::onDirectoryWatcherItemRemoved(const Poco::DirectoryWatcher::DirectoryEvent& evt)
 {
-//    ofSendMessage("Removed:  " + evt.item.path());
+    ofLogNotice("AddonManager::onDirectoryWatcherItemRemoved") << evt.event << " " << evt.item.path();
+
+    std::string path = evt.item.path();
+    std::string name = Poco::Path(path).getBaseName();
+
+    std::map<std::string, Addon::SharedPtr>::iterator iter = _addons.find(name);
+
+    if (iter != _addons.end())
+    {
+        _addons.erase(iter);
+    }
+    else
+    {
+        ofLogError("AddonManager::onDirectoryWatcherItemRemoved") << "Unable to find " << path;
+    }
 }
 
 
 void AddonManager::onDirectoryWatcherItemModified(const Poco::DirectoryWatcher::DirectoryEvent& evt)
 {
-//    ofSendMessage("Modified: " + evt.item.path());
+     ofLogNotice("AddonManager::onDirectoryWatcherItemModified") << evt.event << " " << evt.item.path();
 }
 
 
 void AddonManager::onDirectoryWatcherItemMovedFrom(const Poco::DirectoryWatcher::DirectoryEvent& evt)
 {
-//    ofLogNotice("ofApp::onDirectoryWatcherItemMovedFrom") << "Moved From: " << evt.item.path();
+    ofLogNotice("AddonManager::onDirectoryWatcherItemMovedFrom") << evt.event << " " << evt.item.path();
 }
 
 
 void AddonManager::onDirectoryWatcherItemMovedTo(const Poco::DirectoryWatcher::DirectoryEvent& evt)
 {
-//    ofLogNotice("ofApp::onDirectoryWatcherItemMovedTo") << "Moved To: " << evt.item.path();
+     ofLogNotice("AddonManager::onDirectoryWatcherItemMovedTo") << evt.event << " " << evt.item.path();
 }
 
 
 void AddonManager::onDirectoryWatcherError(const Poco::Exception& exc)
 {
-//    ofLogError("ofApp::onDirectoryWatcherError") << "Error: " << exc.displayText();
+    ofLogError("AddonManager::onDirectoryWatcherError") << exc.displayText();
+}
+
+
+std::vector<Addon::SharedPtr> AddonManager::getAddons() const
+{
+    std::vector<Addon::SharedPtr> addons;
+
+    std::map<std::string, Addon::SharedPtr>::const_iterator iter = _addons.begin();
+
+    if (iter != _addons.end())
+    {
+        addons.push_back(iter->second);
+        ++iter;
+    }
+
+    return addons;
 }
 
 

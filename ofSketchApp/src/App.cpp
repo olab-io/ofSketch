@@ -372,8 +372,8 @@ bool App::onWebSocketOpenEvent(HTTP::WebSocketOpenEventArgs& args)
     // Send the update to the client that just connected.
     args.getConnectionRef().sendFrame(frame);
 
-
     // Send version info.
+    params.clear();
     params["version"] = getVersion();
     params["major"] = getVersionMajor();
     params["minor"] = getVersionMinor();
@@ -385,7 +385,32 @@ bool App::onWebSocketOpenEvent(HTTP::WebSocketOpenEventArgs& args)
     frame = ofx::HTTP::WebSocketFrame(App::toJSONString(json));
 
     args.getConnectionRef().sendFrame(frame);
-    
+
+    params.clear();
+
+    Json::Value addonsJSON;
+
+    std::vector<Addon::SharedPtr> addons = _addonManager.getAddons();
+
+    std::vector<Addon::SharedPtr>::const_iterator iter = addons.begin();
+
+    while (iter != addons.end())
+    {
+        Json::Value addon;
+        addon["name"] = (*iter)->getName();
+        addon["path"] = (*iter)->getPath();
+        addonsJSON.append(addon);
+        ++iter;
+    }
+
+    params["addons"] = addonsJSON;
+
+    json = App::toJSONMethod("Server", "addons", params);
+    frame = ofx::HTTP::WebSocketFrame(App::toJSONString(json));
+
+    args.getConnectionRef().sendFrame(frame);
+
+
     // Send editor ettings
 //    params.clear();
 //    
