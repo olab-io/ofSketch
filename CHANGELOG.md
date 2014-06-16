@@ -1,3 +1,7 @@
+- 0.1.6 (Pending)
+    + Add ARCHITECTURE.md document.
+    + Updated README.md.
+
 - 0.1.5 (06-16-2014)
     + Server now sends available addons to client.
     + Updated default number of processors to match target machine cores on a make build.
