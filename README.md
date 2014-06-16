@@ -90,6 +90,8 @@ Building ofSketch from source requires openFrameworks v0.8.1 and the following a
 - [ofxSSLManager](https://github.com/bakercp/ofxSSLManager)
 - [ofxTaskQueue](https://github.com/bakercp/ofxTaskQueue)
 
+For more information, see the ARCHITECTURE.md document in this repository.
+
 __You must__ also replace the empty openFrameworks directory inside of `bin/data` with the openFrameworks distribution that you would like your ofSketch projects to use.
 
 Hypothetically, ofSketch should work on all platforms when compiled from source (with the exception of a few obvious tings, however this is untested.
