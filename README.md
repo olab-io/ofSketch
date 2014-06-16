@@ -29,7 +29,11 @@ For ofSketch to work properly, the "Projects" folder __must__ be located in the 
 
 ### Running Examples
 
-Double-click ofSketch to open the editor. From there you can create, load, save, and run ofSketch projects. The projects folder comes with a few example projects to get a feel for the editor. Click the open folder icon to select a project. Press the play button to run a project.
+Double-click ofSketch to open the editor. 
+
+_Note: If OSX does not allow you to open the program due to security restrictions, right click on the ofSketch.app bundle and click "open".  See [this link](http://support.apple.com/kb/ht5290) for more information about Apple's security system._
+
+From there you can create, load, save, and run ofSketch projects. The projects folder comes with a few example projects to get a feel for the editor. Click the open folder icon to select a project. Press the play button to run a project.
 
 ### Coding
 
