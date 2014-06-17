@@ -45,9 +45,6 @@
 #include "EditorSettings.h"
 
 
-using namespace ofx;
-
-
 namespace of {
 namespace Sketch {
 
@@ -65,30 +62,30 @@ public:
 
     void mousePressed(int x, int y, int button);
 
-    void loadProject(const void* pSender, JSONRPC::MethodArgs& args);
-    void loadTemplateProject(const void* pSender, JSONRPC::MethodArgs& args);
-    void saveProject(const void* pSender, JSONRPC::MethodArgs& args);
-    void createProject(const void* pSender, JSONRPC::MethodArgs& args);
-    void deleteProject(const void* pSender, JSONRPC::MethodArgs& args);
-    void renameProject(const void* pSender, JSONRPC::MethodArgs& args);
-    void createClass(const void* pSender, JSONRPC::MethodArgs& args);
-    void deleteClass(const void* pSender, JSONRPC::MethodArgs& args);
-    void renameClass(const void* pSender, JSONRPC::MethodArgs& args);
-    void runProject(const void* pSender, JSONRPC::MethodArgs& args);
-    void compileProject(const void* pSender, JSONRPC::MethodArgs& args);
-    void stop(const void* pSender, JSONRPC::MethodArgs& args);
-    void getProjectList(const void* pSender, JSONRPC::MethodArgs& args);
-    void loadEditorSettings(const void* pSender, JSONRPC::MethodArgs& args);
+    void loadProject(const void* pSender, ofx::JSONRPC::MethodArgs& args);
+    void loadTemplateProject(const void* pSender, ofx::JSONRPC::MethodArgs& args);
+    void saveProject(const void* pSender, ofx::JSONRPC::MethodArgs& args);
+    void createProject(const void* pSender, ofx::JSONRPC::MethodArgs& args);
+    void deleteProject(const void* pSender, ofx::JSONRPC::MethodArgs& args);
+    void renameProject(const void* pSender, ofx::JSONRPC::MethodArgs& args);
+    void createClass(const void* pSender, ofx::JSONRPC::MethodArgs& args);
+    void deleteClass(const void* pSender, ofx::JSONRPC::MethodArgs& args);
+    void renameClass(const void* pSender, ofx::JSONRPC::MethodArgs& args);
+    void runProject(const void* pSender, ofx::JSONRPC::MethodArgs& args);
+    void compileProject(const void* pSender, ofx::JSONRPC::MethodArgs& args);
+    void stop(const void* pSender, ofx::JSONRPC::MethodArgs& args);
+    void getProjectList(const void* pSender, ofx::JSONRPC::MethodArgs& args);
+    void loadEditorSettings(const void* pSender, ofx::JSONRPC::MethodArgs& args);
 
-    bool onWebSocketOpenEvent(HTTP::WebSocketOpenEventArgs& args);
-    bool onWebSocketCloseEvent(HTTP::WebSocketCloseEventArgs& args);
-    bool onWebSocketFrameReceivedEvent(HTTP::WebSocketFrameEventArgs& args);
-    bool onWebSocketFrameSentEvent(HTTP::WebSocketFrameEventArgs& args);
-    bool onWebSocketErrorEvent(HTTP::WebSocketErrorEventArgs& args);
+    bool onWebSocketOpenEvent(ofx::HTTP::WebSocketOpenEventArgs& args);
+    bool onWebSocketCloseEvent(ofx::HTTP::WebSocketCloseEventArgs& args);
+    bool onWebSocketFrameReceivedEvent(ofx::HTTP::WebSocketFrameEventArgs& args);
+    bool onWebSocketFrameSentEvent(ofx::HTTP::WebSocketFrameEventArgs& args);
+    bool onWebSocketErrorEvent(ofx::HTTP::WebSocketErrorEventArgs& args);
 
-    bool onHTTPPostEvent(HTTP::PostEventArgs& args);
-    bool onHTTPFormEvent(HTTP::PostFormEventArgs& args);
-    bool onHTTPUploadEvent(HTTP::PostUploadEventArgs& args);
+    bool onHTTPPostEvent(ofx::HTTP::PostEventArgs& args);
+    bool onHTTPFormEvent(ofx::HTTP::PostFormEventArgs& args);
+    bool onHTTPUploadEvent(ofx::HTTP::PostUploadEventArgs& args);
 
     void onSSLServerVerificationError(Poco::Net::VerificationErrorArgs& args);
     void onSSLClientVerificationError(Poco::Net::VerificationErrorArgs& args);
@@ -131,7 +128,7 @@ public:
     static const std::string VERSION_PRE_RELEASE;
 
 private:
-    HTTP::BasicJSONRPCServer::SharedPtr server;
+    ofx::HTTP::BasicJSONRPCServer::SharedPtr server;
 
 //    WebSocketLoggerChannel::SharedPtr _loggerChannel;
 
