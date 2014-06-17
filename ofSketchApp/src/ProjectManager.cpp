@@ -113,7 +113,9 @@ const std::vector<Project>& ProjectManager::getProjects() const
 //
 //    cout << "Connection opened from: " << evt.getConnectionRef().getClientAddress().toString() << endl;
 
-void ProjectManager::getProjectList(const void* pSender, ofx::JSONRPC::MethodArgs& args)
+
+void ProjectManager::getProjectList(const void* pSender,
+                                    ofx::JSONRPC::MethodArgs& args)
 {
     Json::Value projectList;
 
@@ -126,7 +128,8 @@ void ProjectManager::getProjectList(const void* pSender, ofx::JSONRPC::MethodArg
 }
 
 
-void ProjectManager::loadProject(const void* pSender, ofx::JSONRPC::MethodArgs& args)
+void ProjectManager::loadProject(const void* pSender,
+                                 ofx::JSONRPC::MethodArgs& args)
 {
     if (args.params.isMember("projectName"))
     {
@@ -166,7 +169,8 @@ void ProjectManager::loadProject(const void* pSender, ofx::JSONRPC::MethodArgs& 
 }
 
 
-void ProjectManager::loadTemplateProject(const void *pSender, ofx::JSONRPC::MethodArgs &args)
+void ProjectManager::loadTemplateProject(const void *pSender,
+                                         ofx::JSONRPC::MethodArgs &args)
 {
     if (!_templateProject.isLoaded()) 
     {
@@ -179,7 +183,8 @@ void ProjectManager::loadTemplateProject(const void *pSender, ofx::JSONRPC::Meth
 }
 
 
-void ProjectManager::saveProject(const void* pSender, ofx::JSONRPC::MethodArgs& args)
+void ProjectManager::saveProject(const void* pSender,
+                                 ofx::JSONRPC::MethodArgs& args)
 {
     if (args.params.isMember("projectData")) 
     {
@@ -199,7 +204,8 @@ void ProjectManager::saveProject(const void* pSender, ofx::JSONRPC::MethodArgs& 
     else args.error = "A projectData object was not sent";
 }
 
-void ProjectManager::createProject(const void* pSender, ofx::JSONRPC::MethodArgs& args)
+void ProjectManager::createProject(const void* pSender,
+                                   ofx::JSONRPC::MethodArgs& args)
 {
     Json::Value projectData = args.params["projectData"];
     std::string projectName = args.params["projectData"]["projectFile"]["name"].asString();
@@ -215,7 +221,8 @@ void ProjectManager::createProject(const void* pSender, ofx::JSONRPC::MethodArgs
     ofLogNotice("Project::createProject") << "Created " << projectName << " project";
 }
     
-void ProjectManager::deleteProject(const void *pSender, ofx::JSONRPC::MethodArgs &args)
+void ProjectManager::deleteProject(const void *pSender,
+                                   ofx::JSONRPC::MethodArgs &args)
 {
     std::string projectName = args.params["projectName"].asString();
     Project& project = getProjectRef(projectName);
