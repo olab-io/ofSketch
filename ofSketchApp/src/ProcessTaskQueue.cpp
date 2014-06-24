@@ -62,6 +62,8 @@ bool ProcessTaskQueue::onTaskStarted(const ofx::TaskStartedEventArgs& args)
 
     // Add the task.
     tasks[task.uuid] = task;
+
+    return false;
 }
 
 
