@@ -31,7 +31,7 @@ namespace of {
 namespace Sketch {
 
 
-const std::string App::VERSION_PRE_RELEASE = "";
+const std::string App::VERSION_SPECIAL = "";
 
 
 App::App():
@@ -378,7 +378,7 @@ bool App::onWebSocketOpenEvent(ofx::HTTP::WebSocketOpenEventArgs& args)
     params["major"] = getVersionMajor();
     params["minor"] = getVersionMinor();
     params["patch"] = getVersionPatch();
-    params["prerelease"] = getVersionPreRelease();
+    params["special"] = getVersionSpecial();
     params["target"] = toString(ofGetTargetPlatform());
 
     json = App::toJSONMethod("Server", "version", params);
@@ -658,9 +658,9 @@ std::string App::getVersion()
     ss << VERSION_MINOR << ".";
     ss << VERSION_PATCH;
 
-    if (!VERSION_PRE_RELEASE.empty())
+    if (!VERSION_SPECIAL.empty())
     {
-        ss << "-" << VERSION_PRE_RELEASE;
+        ss << "-" << VERSION_SPECIAL;
     }
 
     return ss.str();
@@ -684,9 +684,9 @@ int App::getVersionPatch()
 }
 
 
-std::string App::getVersionPreRelease()
+std::string App::getVersionSpecial()
 {
-    return VERSION_PRE_RELEASE;
+    return VERSION_SPECIAL;
 }
 
 

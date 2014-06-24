@@ -113,7 +113,7 @@ public:
     static int getVersionMajor();
     static int getVersionMinor();
     static int getVersionPatch();
-    static std::string getVersionPreRelease();
+    static std::string getVersionSpecial();
 
     // TODO: Move this.
     static std::string toString(ofTargetPlatform targetPlatform);
@@ -125,7 +125,7 @@ public:
         VERSION_PATCH = 5
     };
 
-    static const std::string VERSION_PRE_RELEASE;
+    static const std::string VERSION_SPECIAL;
 
 private:
     ofx::HTTP::BasicJSONRPCServer::SharedPtr server;
