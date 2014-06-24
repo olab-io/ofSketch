@@ -323,7 +323,7 @@ void App::compileProject(const void* pSender, ofx::JSONRPC::MethodArgs& args)
         ofLogNotice("App::compileProject") << "Compiling " << projectName << " project";
         const Project& project = _projectManager.getProject(projectName);
         Poco::UUID taskId = _compiler.compile(project);
-        ofLogNotice("APP::compileProject") << "Task ID: " << taskId.toString();
+        ofLogNotice("App::compileProject") << "Task ID: " << taskId.toString();
         args.result = taskId.toString();
     }
     else args.error["message"] = "The requested project does not exist.";
