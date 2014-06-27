@@ -11,7 +11,7 @@ SCRIPTS_DIR=`pwd`
 OS=`./helpers/ostype.sh`
 
 # current of version
-OF_VERSION="0.8.2-RC2"
+OF_VERSION="0.8.2"
 
 # make the release file name.
 OF_RELEASE="of_v${OF_VERSION}_${OS}_release"
