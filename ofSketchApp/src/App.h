@@ -122,7 +122,7 @@ public:
     {
         VERSION_MAJOR = 0,
         VERSION_MINOR = 1,
-        VERSION_PATCH = 5
+        VERSION_PATCH = 6
     };
 
     static const std::string VERSION_SPECIAL;
