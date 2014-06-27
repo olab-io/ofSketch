@@ -1,6 +1,12 @@
-- 0.1.6 (Pending)
+- 0.1.7 (Pending)
+
+- 0.1.6
+    + Now uses openFrameworks 0.8.2.
     + Add ARCHITECTURE.md document.
     + Updated README.md.
+    + Updates version naming scheme.
+    + Update ofSketch OSX App plist.
+    + Various bugfixes and source cleanup. 
 
 - 0.1.5 (06-16-2014)
     + Server now sends available addons to client.
