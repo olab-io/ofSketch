@@ -1,6 +1,8 @@
 raw/
 releases/
 
+scripts/access_token.txt
+
 *.mode1v3
 
 # xcode

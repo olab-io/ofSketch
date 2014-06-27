@@ -28,6 +28,7 @@
 #include "Poco/PipeStream.h"
 #include "Poco/Process.h"
 #include <iostream>
+#include "ofLog.h"
 
 
 namespace of {
@@ -88,6 +89,8 @@ void BaseProcessTask::runTask()
     }
 
     int exitCode = ph.wait();
+
+    ofLogVerbose("BaseProcessTask::runTask") << "Exit with: " << exitCode;
 
 }
 

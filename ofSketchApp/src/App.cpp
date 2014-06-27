@@ -31,7 +31,7 @@ namespace of {
 namespace Sketch {
 
 
-const std::string App::VERSION_PRE_RELEASE = "";
+const std::string App::VERSION_SPECIAL = "";
 
 
 App::App():
@@ -45,7 +45,7 @@ App::App():
     ofLogNotice("App::App") << "Editor setting's projectDir: " << _editorSettings.getProjectDir();
     _taskQueue.registerTaskEvents(this);
 
-    HTTP::BasicJSONRPCServerSettings settings; // TODO: load from file.
+    ofx::HTTP::BasicJSONRPCServerSettings settings; // TODO: load from file.
     settings.setBufferSize(1024 * 1024 * 3); // 3 MB
     settings.setPort(7890);
     server = ofx::HTTP::BasicJSONRPCServer::makeShared(settings);
@@ -197,7 +197,7 @@ void App::mousePressed(int x, int y, int button)
 }
 
 
-void App::loadProject(const void* pSender, JSONRPC::MethodArgs& args)
+void App::loadProject(const void* pSender, ofx::JSONRPC::MethodArgs& args)
 {
     if (args.params.isMember("projectName")) {
         std::string projectName = args.params["projectName"].asString();
@@ -208,13 +208,13 @@ void App::loadProject(const void* pSender, JSONRPC::MethodArgs& args)
 }
 
 
-void App::loadTemplateProject(const void* pSender, JSONRPC::MethodArgs& args)
+void App::loadTemplateProject(const void* pSender, ofx::JSONRPC::MethodArgs& args)
 {
     _projectManager.loadTemplateProject(pSender, args);
 }
 
 
-void App::saveProject(const void* pSender, JSONRPC::MethodArgs& args)
+void App::saveProject(const void* pSender, ofx::JSONRPC::MethodArgs& args)
 {
     std::string projectName = args.params["projectData"]["projectFile"]["name"].asString();
     
@@ -227,7 +227,7 @@ void App::saveProject(const void* pSender, JSONRPC::MethodArgs& args)
 }
 
 
-void App::createProject(const void* pSender, JSONRPC::MethodArgs& args)
+void App::createProject(const void* pSender, ofx::JSONRPC::MethodArgs& args)
 {
     std::string projectName = args.params["projectName"].asString();
     if (!_projectManager.projectExists(projectName)) {
@@ -236,7 +236,7 @@ void App::createProject(const void* pSender, JSONRPC::MethodArgs& args)
 }
 
 
-void App::deleteProject(const void* pSender, JSONRPC::MethodArgs& args)
+void App::deleteProject(const void* pSender, ofx::JSONRPC::MethodArgs& args)
 {
     
     std::string projectName = args.params["projectName"].asString();
@@ -246,7 +246,7 @@ void App::deleteProject(const void* pSender, JSONRPC::MethodArgs& args)
 }
 
 
-void App::renameProject(const void* pSender, JSONRPC::MethodArgs& args)
+void App::renameProject(const void* pSender, ofx::JSONRPC::MethodArgs& args)
 {
     std::string projectName = args.params["projectName"].asString();
     if (_projectManager.projectExists(projectName)) {
@@ -256,7 +256,7 @@ void App::renameProject(const void* pSender, JSONRPC::MethodArgs& args)
 }
 
 
-void App::createClass(const void* pSender, JSONRPC::MethodArgs& args)
+void App::createClass(const void* pSender, ofx::JSONRPC::MethodArgs& args)
 {
     std::string projectName = args.params["projectName"].asString();
     if (_projectManager.projectExists(projectName)) {
@@ -269,7 +269,7 @@ void App::createClass(const void* pSender, JSONRPC::MethodArgs& args)
 }
 
 
-void App::deleteClass(const void* pSender, JSONRPC::MethodArgs& args)
+void App::deleteClass(const void* pSender, ofx::JSONRPC::MethodArgs& args)
 {
     std::string projectName = args.params["projectName"].asString();
     if (_projectManager.projectExists(projectName)) {
@@ -283,7 +283,7 @@ void App::deleteClass(const void* pSender, JSONRPC::MethodArgs& args)
 }
 
 
-void App::renameClass(const void* pSender, JSONRPC::MethodArgs& args)
+void App::renameClass(const void* pSender, ofx::JSONRPC::MethodArgs& args)
 {
     std::string projectName = args.params["projectName"].asString();
     if (_projectManager.projectExists(projectName)) {
@@ -299,7 +299,7 @@ void App::renameClass(const void* pSender, JSONRPC::MethodArgs& args)
 }
 
 
-void App::runProject(const void* pSender, JSONRPC::MethodArgs& args)
+void App::runProject(const void* pSender, ofx::JSONRPC::MethodArgs& args)
 {
 
     std::string projectName = args.params["projectName"].asString();
@@ -314,7 +314,7 @@ void App::runProject(const void* pSender, JSONRPC::MethodArgs& args)
     else args.error["message"] = "The requested project does not exist.";
 }
 
-void App::compileProject(const void* pSender, JSONRPC::MethodArgs& args)
+void App::compileProject(const void* pSender, ofx::JSONRPC::MethodArgs& args)
 {
     
     std::string projectName = args.params["projectName"].asString();
@@ -323,13 +323,13 @@ void App::compileProject(const void* pSender, JSONRPC::MethodArgs& args)
         ofLogNotice("App::compileProject") << "Compiling " << projectName << " project";
         const Project& project = _projectManager.getProject(projectName);
         Poco::UUID taskId = _compiler.compile(project);
-        ofLogNotice("APP::compileProject") << "Task ID: " << taskId.toString();
+        ofLogNotice("App::compileProject") << "Task ID: " << taskId.toString();
         args.result = taskId.toString();
     }
     else args.error["message"] = "The requested project does not exist.";
 }
 
-void App::stop(const void* pSender, JSONRPC::MethodArgs& args)
+void App::stop(const void* pSender, ofx::JSONRPC::MethodArgs& args)
 {
     if (args.params.isMember("taskId"))
     {
@@ -345,19 +345,19 @@ void App::stop(const void* pSender, JSONRPC::MethodArgs& args)
 }
 
 
-void App::getProjectList(const void* pSender, JSONRPC::MethodArgs& args)
+void App::getProjectList(const void* pSender, ofx::JSONRPC::MethodArgs& args)
 {
     _projectManager.getProjectList(pSender, args);
 }
     
 
-void App::loadEditorSettings(const void *pSender, JSONRPC::MethodArgs &args)
+void App::loadEditorSettings(const void *pSender, ofx::JSONRPC::MethodArgs &args)
 {
     args.result = _editorSettings.getData();
 }
     
 
-bool App::onWebSocketOpenEvent(HTTP::WebSocketOpenEventArgs& args)
+bool App::onWebSocketOpenEvent(ofx::HTTP::WebSocketOpenEventArgs& args)
 {
     ofLogVerbose("App::onWebSocketOpenEvent") << "Connection opened from: " << args.getConnectionRef().getClientAddress().toString();
 
@@ -378,7 +378,7 @@ bool App::onWebSocketOpenEvent(HTTP::WebSocketOpenEventArgs& args)
     params["major"] = getVersionMajor();
     params["minor"] = getVersionMinor();
     params["patch"] = getVersionPatch();
-    params["prerelease"] = getVersionPreRelease();
+    params["special"] = getVersionSpecial();
     params["target"] = toString(ofGetTargetPlatform());
 
     json = App::toJSONMethod("Server", "version", params);
@@ -424,7 +424,7 @@ bool App::onWebSocketOpenEvent(HTTP::WebSocketOpenEventArgs& args)
 }
 
 
-bool App::onWebSocketCloseEvent(HTTP::WebSocketCloseEventArgs& args)
+bool App::onWebSocketCloseEvent(ofx::HTTP::WebSocketCloseEventArgs& args)
 {
     std::stringstream ss;
 
@@ -437,21 +437,21 @@ bool App::onWebSocketCloseEvent(HTTP::WebSocketCloseEventArgs& args)
 }
     
 
-bool App::onWebSocketFrameReceivedEvent(HTTP::WebSocketFrameEventArgs& args)
+bool App::onWebSocketFrameReceivedEvent(ofx::HTTP::WebSocketFrameEventArgs& args)
 {
 //    ofLogVerbose("App::onWebSocketFrameReceivedEvent") << "Frame received from: " << args.getConnectionRef().getClientAddress().toString();
     return false; // did not handle it
 }
 
 
-bool App::onWebSocketFrameSentEvent(HTTP::WebSocketFrameEventArgs& args)
+bool App::onWebSocketFrameSentEvent(ofx::HTTP::WebSocketFrameEventArgs& args)
 {
 //    ofLogVerbose("App::onWebSocketFrameSentEvent") << "Frame sent to: " << args.getConnectionRef().getClientAddress().toString();
     return false; // did not handle it
 }
 
 
-bool App::onWebSocketErrorEvent(HTTP::WebSocketErrorEventArgs& args)
+bool App::onWebSocketErrorEvent(ofx::HTTP::WebSocketErrorEventArgs& args)
 {
     ofLogError("App::onWebSocketErrorEvent") << "Stop: " << args.getError();
 
@@ -460,14 +460,14 @@ bool App::onWebSocketErrorEvent(HTTP::WebSocketErrorEventArgs& args)
 }
 
 
-bool App::onHTTPPostEvent(HTTP::PostEventArgs& args)
+bool App::onHTTPPostEvent(ofx::HTTP::PostEventArgs& args)
 {
 //    ofLogNotice("ofApp::onHTTPPostEvent") << "Data: " << args.getBuffer().getText();
     return false;
 }
 
 
-bool App::onHTTPFormEvent(HTTP::PostFormEventArgs& args)
+bool App::onHTTPFormEvent(ofx::HTTP::PostFormEventArgs& args)
 {
 //    ofLogNotice("ofApp::onHTTPFormEvent") << "";
 //    HTTP::Utils::dumpNameValueCollection(args.getForm(), ofGetLogLevel());
@@ -475,7 +475,7 @@ bool App::onHTTPFormEvent(HTTP::PostFormEventArgs& args)
 }
 
 
-bool App::onHTTPUploadEvent(HTTP::PostUploadEventArgs& args)
+bool App::onHTTPUploadEvent(ofx::HTTP::PostUploadEventArgs& args)
 {
 //    std::string stateString = "";
 //
@@ -658,9 +658,9 @@ std::string App::getVersion()
     ss << VERSION_MINOR << ".";
     ss << VERSION_PATCH;
 
-    if (!VERSION_PRE_RELEASE.empty())
+    if (!VERSION_SPECIAL.empty())
     {
-        ss << "-" << VERSION_PRE_RELEASE;
+        ss << "-" << VERSION_SPECIAL;
     }
 
     return ss.str();
@@ -684,9 +684,9 @@ int App::getVersionPatch()
 }
 
 
-std::string App::getVersionPreRelease()
+std::string App::getVersionSpecial()
 {
-    return VERSION_PRE_RELEASE;
+    return VERSION_SPECIAL;
 }
 
 
