@@ -32,6 +32,7 @@
 #include "ofx/IO/DirectoryFilter.h"
 #include "ofx/IO/DirectoryUtils.h"
 #include "ofx/IO/DirectoryWatcherManager.h"
+#include "ofx/JSONRPC/MethodArgs.h"
 #include "ofx/JSONRPC/Utils.h"
 #include "Project.h"
 
@@ -59,7 +60,6 @@ public:
     void renameProject(const void* pSender, ofx::JSONRPC::MethodArgs& args);
     void reloadProjects();
     void updateProject(const std::string& projectName);
-    
     
     bool projectExists(const std::string& projectName) const;
     const Project& getProject(const std::string& projectName) const;
