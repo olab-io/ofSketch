@@ -101,8 +101,6 @@ echo "Copy app ..."
 
 echo `pwd`
 
-ls -la ../../ofSketchApp/bin
-
 if [[ $OS == linux* ]]
 then
     cp ../../ofSketchApp/bin/ofSketchApp ofSketch
