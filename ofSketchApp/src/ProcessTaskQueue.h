@@ -70,6 +70,7 @@ public:
 
     virtual ~ProcessTaskQueue();
 
+    bool onTaskQueued(const ofx::TaskQueuedEventArgs& args);
     bool onTaskStarted(const ofx::TaskStartedEventArgs& args);
     bool onTaskCancelled(const ofx::TaskCancelledEventArgs& args);
     bool onTaskFinished(const ofx::TaskFinishedEventArgs& args);

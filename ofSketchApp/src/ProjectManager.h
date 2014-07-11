@@ -28,11 +28,11 @@
 
 #include <vector>
 #include <string>
+#include <json/json.h>
 #include "ofx/IO/DirectoryFilter.h"
 #include "ofx/IO/DirectoryUtils.h"
 #include "ofx/IO/DirectoryWatcherManager.h"
-#include "ofxJSONRPC.h"
-#include "ofxJSONElement.h"
+#include "ofx/JSONRPC/MethodArgs.h"
 #include "ofx/JSONRPC/Utils.h"
 #include "Project.h"
 
@@ -61,16 +61,15 @@ public:
     void reloadProjects();
     void updateProject(const std::string& projectName);
     
-    
     bool projectExists(const std::string& projectName) const;
     const Project& getProject(const std::string& projectName) const;
     Project& getProjectRef(const std::string& projectName);
     
-    void onDirectoryWatcherItemAdded(const Poco::DirectoryWatcher::DirectoryEvent& evt);
-    void onDirectoryWatcherItemRemoved(const Poco::DirectoryWatcher::DirectoryEvent& evt);
-    void onDirectoryWatcherItemModified(const Poco::DirectoryWatcher::DirectoryEvent& evt);
-    void onDirectoryWatcherItemMovedFrom(const Poco::DirectoryWatcher::DirectoryEvent& evt);
-    void onDirectoryWatcherItemMovedTo(const Poco::DirectoryWatcher::DirectoryEvent& evt);
+    void onDirectoryWatcherItemAdded(const ofx::DirectoryWatcher::DirectoryEvent& evt);
+    void onDirectoryWatcherItemRemoved(const ofx::DirectoryWatcher::DirectoryEvent& evt);
+    void onDirectoryWatcherItemModified(const ofx::DirectoryWatcher::DirectoryEvent& evt);
+    void onDirectoryWatcherItemMovedFrom(const ofx::DirectoryWatcher::DirectoryEvent& evt);
+    void onDirectoryWatcherItemMovedTo(const ofx::DirectoryWatcher::DirectoryEvent& evt);
     void onDirectoryWatcherError(const Poco::Exception& exc);
 
     static SharedPtr makeShared(const std::string& projectsPath)

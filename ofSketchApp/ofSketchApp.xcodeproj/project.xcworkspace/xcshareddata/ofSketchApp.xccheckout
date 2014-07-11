@@ -5,17 +5,17 @@
 	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
 	<false/>
 	<key>IDESourceControlProjectIdentifier</key>
-	<string>37324497-5997-439E-AEFC-348429D2B0B6</string>
+	<string>1BB63378-FA7F-4FAC-B0A9-B5B0315ADB5F</string>
 	<key>IDESourceControlProjectName</key>
 	<string>ofSketchApp</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>1F78F711-71FE-4A0D-AE40-470F4203962A</key>
+		<key>37E4C0B8-2899-445A-B91B-BC11222CAF60</key>
 		<string>ssh://github.com/bakercp/ofxJSON.git</string>
-		<key>41BBD174-4C66-4C15-BF67-E07936B094A5</key>
-		<string>ssh://github.com/bakercp/ofxJSONRPC.git</string>
 		<key>4D44FB12-0FAB-4160-A8FA-60A8C10EBE98</key>
 		<string>ssh://github.com/bakercp/ofSketch.git</string>
+		<key>7567D58C-6AF5-479B-A6E9-BD429FD6DC7D</key>
+		<string>ssh://github.com/bakercp/ofxJSONRPC.git</string>
 		<key>7E938D65-4CFB-4C0C-80CF-79C61CF9F358</key>
 		<string>ssh://github.com/bakercp/ofxIO.git</string>
 		<key>7FFE1D1D-0E7F-4311-BD51-8BDDE4077C4B</key>
@@ -33,12 +33,12 @@
 	<string>apps/ofSketch/ofSketchApp/ofSketchApp.xcodeproj/project.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>1F78F711-71FE-4A0D-AE40-470F4203962A</key>
+		<key>37E4C0B8-2899-445A-B91B-BC11222CAF60</key>
 		<string>../../../../../addons/ofxJSON</string>
-		<key>41BBD174-4C66-4C15-BF67-E07936B094A5</key>
-		<string>../../../../../addons/ofxJSONRPC</string>
 		<key>4D44FB12-0FAB-4160-A8FA-60A8C10EBE98</key>
 		<string>../../..</string>
+		<key>7567D58C-6AF5-479B-A6E9-BD429FD6DC7D</key>
+		<string>../../../../../addons/ofxJSONRPC</string>
 		<key>7E938D65-4CFB-4C0C-80CF-79C61CF9F358</key>
 		<string>../../../../../addons/ofxIO</string>
 		<key>7FFE1D1D-0E7F-4311-BD51-8BDDE4077C4B</key>
@@ -88,7 +88,7 @@
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>1F78F711-71FE-4A0D-AE40-470F4203962A</string>
+			<string>37E4C0B8-2899-445A-B91B-BC11222CAF60</string>
 			<key>IDESourceControlWCCName</key>
 			<string>ofxJSON</string>
 		</dict>
@@ -96,7 +96,7 @@
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>41BBD174-4C66-4C15-BF67-E07936B094A5</string>
+			<string>7567D58C-6AF5-479B-A6E9-BD429FD6DC7D</string>
 			<key>IDESourceControlWCCName</key>
 			<string>ofxJSONRPC</string>
 		</dict>

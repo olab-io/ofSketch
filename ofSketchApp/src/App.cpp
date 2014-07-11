@@ -553,6 +553,18 @@ void App::onSSLPrivateKeyPassphraseRequired(std::string& args)
 }
 
 
+bool App::onTaskQueued(const ofx::TaskQueuedEventArgs& args)
+{
+    Json::Value params;
+    params["name"] = args.getTaskName();
+    params["uuid"] = args.getTaskId().toString();
+    Json::Value json = App::toJSONMethod("TaskQueue", "taskQueued", params);
+    ofx::HTTP::WebSocketFrame frame(App::toJSONString(json));
+    server->getWebSocketRoute()->broadcast(frame);
+    return false;
+}
+
+
 bool App::onTaskStarted(const ofx::TaskStartedEventArgs& args)
 {
     Json::Value params;

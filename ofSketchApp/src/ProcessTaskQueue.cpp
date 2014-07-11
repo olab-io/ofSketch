@@ -53,7 +53,7 @@ void ProcessTaskQueue::handleUserNotification(Poco::AutoPtr<Poco::TaskNotificati
 }
 
 
-bool ProcessTaskQueue::onTaskStarted(const ofx::TaskStartedEventArgs& args)
+bool ProcessTaskQueue::onTaskQueued(const ofx::TaskQueuedEventArgs& args)
 {
     // Define a task handle.
     TaskProgress task;
@@ -62,6 +62,14 @@ bool ProcessTaskQueue::onTaskStarted(const ofx::TaskStartedEventArgs& args)
 
     // Add the task.
     tasks[task.uuid] = task;
+    
+    return false;
+}
+
+
+bool ProcessTaskQueue::onTaskStarted(const ofx::TaskStartedEventArgs& args)
+{
+    tasks[args.getTaskId()].progress = args.getProgress();
 
     return false;
 }

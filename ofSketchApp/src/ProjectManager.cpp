@@ -288,31 +288,31 @@ void ProjectManager::updateProject(const std::string& projectName)
 }
 
 
-void ProjectManager::onDirectoryWatcherItemAdded(const Poco::DirectoryWatcher::DirectoryEvent& evt)
+void ProjectManager::onDirectoryWatcherItemAdded(const ofx::DirectoryWatcher::DirectoryEvent& evt)
 {
     ofSendMessage("Added:    " + evt.item.path());
 }
 
 
-void ProjectManager::onDirectoryWatcherItemRemoved(const Poco::DirectoryWatcher::DirectoryEvent& evt)
+void ProjectManager::onDirectoryWatcherItemRemoved(const ofx::DirectoryWatcher::DirectoryEvent& evt)
 {
     ofSendMessage("Removed:  " + evt.item.path());
 }
 
 
-void ProjectManager::onDirectoryWatcherItemModified(const Poco::DirectoryWatcher::DirectoryEvent& evt)
+void ProjectManager::onDirectoryWatcherItemModified(const ofx::DirectoryWatcher::DirectoryEvent& evt)
 {
     ofSendMessage("Modified: " + evt.item.path());
 }
 
 
-void ProjectManager::onDirectoryWatcherItemMovedFrom(const Poco::DirectoryWatcher::DirectoryEvent& evt)
+void ProjectManager::onDirectoryWatcherItemMovedFrom(const ofx::DirectoryWatcher::DirectoryEvent& evt)
 {
     ofLogNotice("ofApp::onDirectoryWatcherItemMovedFrom") << "Moved From: " << evt.item.path();
 }
 
 
-void ProjectManager::onDirectoryWatcherItemMovedTo(const Poco::DirectoryWatcher::DirectoryEvent& evt)
+void ProjectManager::onDirectoryWatcherItemMovedTo(const ofx::DirectoryWatcher::DirectoryEvent& evt)
 {
     ofLogNotice("ofApp::onDirectoryWatcherItemMovedTo") << "Moved To: " << evt.item.path();
 }
