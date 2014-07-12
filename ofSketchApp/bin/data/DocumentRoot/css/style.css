@@ -43,7 +43,7 @@ body {
 }
 
 #editor { 
-  
+
   height: 100%;
   width: 100%;
 }
@@ -83,4 +83,10 @@ code {
 
 .new-class a:hover {
   color: #000;
+}
+
+/* bootstrap overrides some ace styiling :/ */
+.ace_search {
+  color: #000;
+  font-size: .8em;
 }

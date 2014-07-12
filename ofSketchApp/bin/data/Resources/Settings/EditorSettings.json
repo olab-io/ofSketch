@@ -15,7 +15,7 @@
 	"editorTheme": "ace/theme/twilight",
 	"editorMode": "ace/mode/c_cpp",
 	"editorHighlightActiveLine": false,
-	"editorShowPrintMargin": false,
+	"editorShowPrintMargin": true,
 	"editorShowInvisibles": false,
 	"editorAutopairCharacters": true,
 	"keys": {

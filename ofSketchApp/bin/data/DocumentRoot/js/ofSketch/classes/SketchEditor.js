@@ -68,7 +68,14 @@ function SketchEditor(callback)
 
 	var _registerEvents = function()
 	{
-		
+		_editor.commands.addCommand({
+		    name: "undo",
+		    bindKey: {win: 'Ctrl-Z',  mac: 'Command-Z'},
+		    exec: function(editor) {
+		    	// console.log(_editor.getSession().$undoManager);
+		    	// console.log("should have undone!");
+		    }
+		});
 	}
 
 	var _registerTabEvent = function(tabElement)
