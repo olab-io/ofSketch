@@ -68,14 +68,7 @@ function SketchEditor(callback)
 
 	var _registerEvents = function()
 	{
-		_editor.commands.addCommand({
-		    name: "undo",
-		    bindKey: {win: 'Ctrl-Z',  mac: 'Command-Z'},
-		    exec: function(editor) {
-		    	// console.log(_editor.getSession().$undoManager);
-		    	// console.log("should have undone!");
-		    }
-		});
+		
 	}
 
 	var _registerTabEvent = function(tabElement)
@@ -93,7 +86,7 @@ function SketchEditor(callback)
 		_addTab(getPrettyFileName(projectFile.fileName),
 				projectFile.fileName,
 				true,
-				new ace.EditSession(_project.getProjectFile().fileContents,
+				new ace.createEditSession(_project.getProjectFile().fileContents,
 											 _settings.getData().editorMode));
 
 		var classes = _project.getClasses();
@@ -101,7 +94,7 @@ function SketchEditor(callback)
 			_addTab(getPrettyFileName(c.fileName),
 					c.fileName,
 					false,
-				new ace.EditSession(c.fileContents, _settings.getData().editorMode));
+				new ace.createEditSession(c.fileContents, _settings.getData().editorMode));
 		});
 
 		_self.selectTab(_project.getName());
@@ -291,7 +284,7 @@ function SketchEditor(callback)
 			_addTab(classFile.name, 
 					classFile.fileName, 
 					false, 
-					new ace.EditSession(classFile.fileContents, 
+					new ace.createEditSession(classFile.fileContents, 
 										_settings.getData().editorMode));
 			onSuccess(); // should I pass result object?
 		}, onError);

@@ -90,3 +90,42 @@ code {
   color: #000;
   font-size: .8em;
 }
+
+#toolbar {
+
+  position: absolute; 
+  top: 10px; 
+  left: 60px; 
+  z-index: 5;
+}
+
+@media (max-width: 768px) {
+
+  #collapsable-navbar {
+    margin-top: 50px;
+  }
+
+  #collapse-toolbar-button {
+    float: right; 
+    margin-top: 10px;
+  }
+
+  #toolbar {
+    left: 70px; 
+  }
+
+}
+
+/* Extra Small Devices, Phones */ 
+@media (max-width : 480px) {
+
+  /*oF logo*/
+  .navbar-brand {
+    display: none;
+  }
+
+  #toolbar {
+    position: relative;
+    left: 0px;
+  }
+}
