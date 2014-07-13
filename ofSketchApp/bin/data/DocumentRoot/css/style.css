@@ -128,4 +128,8 @@ code {
     position: relative;
     left: 0px;
   }
+
+  #toolbar .hideable {
+    display: none;
+  }
 }
