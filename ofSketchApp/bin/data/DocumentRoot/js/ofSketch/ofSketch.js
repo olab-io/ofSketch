@@ -44,7 +44,7 @@ $(document).ready( function()
             var localVersion = semver.clean(systemInfo.version.version);
 
             // Compare the semver number provided by the server to the remote.
-            if (semver.gt(remoteVersion, "0.0.0"))
+            if (semver.gt(remoteVersion, localVersion))
             {
                 var downloadURL = latestRelease.zipball_url;
                 var htmlURL = latestRelease.html_url;
