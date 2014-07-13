@@ -84,11 +84,9 @@
                     <span class="glyphicon glyphicon-cog"></span> 
                 </button> -->
               
-              <div class="btn-group" style="float:right;">
-                <button id="version-alert" type="button" class="btn alert-danger hidden" title="Version warning">
-                      <a id="remote-version-download-link" href="#" target="_blank" style="color: #a94442;">
-                        <strong>ofSketch v<span class="local-version"></span> is outdated.</strong> <span style="text-decoration: underline">Click here</span> to download v<span class="remote-version"></span>
-                      </a>
+              <div class="btn-group">
+                <button id="version-alert" type="button" class="btn btn-danger hidden hideable" title="Version warning" data-toggle="modal" data-target="#version-modal">
+                    <span class="glyphicon glyphicon-exclamation-sign"></span>
                 </button>
               </div>
 
@@ -105,6 +103,7 @@
                   </ul>
                 </div>
             </nav>
+
         </div> <!-- container -->
       </div> <!-- navbar -->
 
@@ -190,6 +189,25 @@
                 </a>
               </button>
             </div>
+          </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+      </div><!-- /.modal -->
+
+      <!-- ofSketch Version Modal -->   
+      <div class="modal fade" id="version-modal" tabindex="-1" role="dialog" aria-hidden="true">
+          <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Version Update</h4>
+              </div>
+              <div class="modal-body">
+                  <p>
+                    ofSketch v<span class="local-version"></span> is outdated.
+                    <a id="remote-version-download-link" href="#" target="_blank">Click here</a> 
+                    to download v<span class="remote-version"></span>.
+                  </p>
+              </div>
           </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
       </div><!-- /.modal -->
@@ -422,9 +440,9 @@
     </div>
   </div>
 
-    <div id="footer">
-      <!-- ofSketch <span id="version"></span> -->
-    </div>
+  <div id="footer">
+    <!-- ofSketch <span id="version"></span> -->
+  </div>
 
 
 <script src="./js/jquery.min.js"></script>
