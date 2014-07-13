@@ -93,7 +93,8 @@ code {
 
 #toolbar {
 
-  position: absolute; 
+  position: absolute;
+  display: inline-block;
   top: 10px; 
   left: 60px; 
   z-index: 5;
