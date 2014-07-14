@@ -103,6 +103,10 @@ function SketchEditor(callback)
 	var _addTab = function(name, fileName, isProjectFile, editSession)
 	{
 		var tabElement = $('<li class="file-tab"><a href="#" onclick="return false;">' + name + '</a></li>');
+		editSession.on('change', function(){
+			tabElement.addClass('unsaved');
+		});
+
 		var tab = {
 			name: name,
 			fileName: fileName,
@@ -182,7 +186,12 @@ function SketchEditor(callback)
 	this.saveProject = function(onSuccess, onError)
 	{
 		_updateProject();
-		_project.save(onSuccess, onError);
+		_project.save(function(){
+			_.each(_tabs, function(tab){
+				tab.tabElement.removeClass('unsaved');
+			});
+			onSuccess();
+		}, onError);
 	}
 
 	this.createProject = function(projectName, onSuccess, onError)

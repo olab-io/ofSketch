@@ -85,6 +85,14 @@ code {
   color: #000;
 }
 
+.file-tab a {
+  color: #555;
+}
+
+.file-tab.unsaved a {
+  color: #d9534f !important;
+}
+
 /* bootstrap overrides some ace styiling :/ */
 .ace_search {
   color: #000;
@@ -111,6 +119,8 @@ code {
   margin-top: 20px;
   margin-bottom: 30px;
 }
+
+
 
 @media (max-width: 768px) {
 

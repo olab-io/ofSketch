@@ -298,9 +298,9 @@ $(document).ready( function()
     }
 
     function saveAlert(message, subMessage) {
-        var m = message || "Project saved!";
-        var s = subMessage || '';
-        alertMessage(m, s, "alert-success");
+        // var m = message || "Project saved!";
+        // var s = subMessage || '';
+        // alertMessage(m, s, "alert-success");
     }
 
     function runAlert(message, subMessage) {
