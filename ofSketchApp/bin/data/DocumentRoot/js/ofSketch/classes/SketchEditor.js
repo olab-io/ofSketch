@@ -53,7 +53,7 @@ function SketchEditor(callback)
 		_editor.setTheme(_settings.getData().editorTheme);
 	    _editor.getSession().setMode(_settings.getData().editorMode);
 	    _editor.getSession().setTabSize(_settings.getData().tabSize);
-	    document.getElementById('editor').style.fontSize = _settings.getData().fontSize + 'px';
+	    _editor.setFontSize(_settings.getData().fontSize);
 	    _editor.setHighlightActiveLine(_settings.getData().editorHighlightActiveLine);
 	    _editor.setShowPrintMargin(_settings.getData().editorShowPrintMargin);
 	    _editor.setShowInvisibles(_settings.getData().editorShowInvisibles);
