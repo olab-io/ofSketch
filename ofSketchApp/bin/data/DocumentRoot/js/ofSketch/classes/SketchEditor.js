@@ -68,6 +68,14 @@ function SketchEditor(callback)
 
 	var _registerEvents = function()
 	{
+
+		// autocomplete trigger
+		_editor.commands.on("afterExec", function(e){
+		     if (e.command.name == "insertstring"&&/^[\w.]$/.test(e.args)) {
+		         _editor.execCommand("startAutocomplete");
+		     }
+		});
+
 		//keyboard overrides
 		_editor.commands.addCommand({
 		    name: 'Ctrl-sOverride',

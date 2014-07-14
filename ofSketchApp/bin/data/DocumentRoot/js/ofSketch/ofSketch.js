@@ -397,8 +397,6 @@ $(document).ready( function()
     
     // key bindings
     $(document).on("keydown", function(e){
-        
-        console.log(e.ctrlKey);
 
         // cmd-r, ctrl-r
         if ((e.which || e.keyCode) == 116 && (e.metaKey || e.ctrlKey) || 
