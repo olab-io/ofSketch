@@ -68,7 +68,22 @@ function SketchEditor(callback)
 
 	var _registerEvents = function()
 	{
-		
+		//keyboard overrides
+		_editor.commands.addCommand({
+		    name: 'Ctrl-sOverride',
+		    bindKey: {win: 'Ctrl-R'},
+		    exec: function(editor) {
+		    	run(); //WARNING: this is a global variable
+		    }
+		});
+
+		_editor.commands.addCommand({
+		    name: 'Ctrl-oOverride',
+		    bindKey: {mac: 'Ctrl-O'},
+		    exec: function(editor) {
+		    	openProject(); //WARNING: this is a global variable
+		    }
+		});
 	}
 
 	var _registerTabEvent = function(tabElement)

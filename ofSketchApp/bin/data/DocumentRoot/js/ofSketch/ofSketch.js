@@ -398,23 +398,25 @@ $(document).ready( function()
     // key bindings
     $(document).on("keydown", function(e){
         
-        // cmd-r
-        if ((e.which || e.keyCode) == 116 && e.metaKey || 
-            (e.which || e.keyCode) == 82 && e.metaKey) {
+        console.log(e.ctrlKey);
+
+        // cmd-r, ctrl-r
+        if ((e.which || e.keyCode) == 116 && (e.metaKey || e.ctrlKey) || 
+            (e.which || e.keyCode) == 82 && (e.metaKey || e.ctrlKey)) {
 
             e.preventDefault(); 
             run();
         } 
 
-        // cmd-s
-        if ((e.which || e.keyCode) == 83 && e.metaKey) {
+        // cmd-s, ctrl-s
+        if ((e.which || e.keyCode) == 83 && (e.metaKey || e.ctrlKey)) {
             
             e.preventDefault();
             save();
         }
 
-        // cmd-o
-        if ((e.which || e.keyCode) == 79 && e.metaKey) {
+        // cmd-o, ctrl-o
+        if ((e.which || e.keyCode) == 79 && (e.metaKey || e.ctrlKey)) {
             
             e.preventDefault();
             openProject();
