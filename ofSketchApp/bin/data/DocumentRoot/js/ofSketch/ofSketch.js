@@ -505,6 +505,10 @@ $(document).ready( function()
             window.open(window.location.protocol + '//' + window.location.host, '_blank');
         });
 
+        $('#editor-settings').on('click', function(e){
+            sketchEditor.showSettingsMenu();
+        });
+
         // Modals
         $('.new-class').on('click', function() {
             if (!sketchEditor.getProject().isTemplate()) {

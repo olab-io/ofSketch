@@ -367,6 +367,11 @@ function SketchEditor(callback)
 		_editor.resize();
 	}
 
+	this.showSettingsMenu = function()
+	{
+		_editor.execCommand("showSettingsMenu");
+	}
+
 	_settings.load(function(data){
 		
 		_applySettings();

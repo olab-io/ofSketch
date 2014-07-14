@@ -38,6 +38,19 @@
               <img src="./img/openFrameworks_header.png"/>
             </a>
 
+            <div class="dropdown">
+              <button class="btn btn-default dropdown-toggle" type="button" id="toolbar-settings" data-toggle="dropdown">
+                <span class="glyphicon glyphicon-cog"></span> 
+              </button>
+              <ul class="dropdown-menu pull-right" style="margin-top: 42px;" role="menu" aria-labelledby="dropdownMenu1">
+                <li role="presentation" class="disabled"><a role="menuitem" tabindex="-1" href="#">ofSketch Settings</a></li>
+                <li id="editor-settings" role="presentation"><a role="menuitem" tabindex="-1" href="#">Editor Settings</a></li>
+                <li role="presentation" data-toggle="modal" data-target="#keyboard-shortcuts-modal">
+                  <a role="menuitem" tabindex="-1" href="#">Keyboard Shortcuts</a>
+                </li>
+              </ul>
+            </div>
+
              <button id="collapse-toolbar-button" type="button" class="navbar-toggle" data-toggle="collapse" data-target="#collapsable-navbar">
                 <span class="sr-only">Toggle navigation</span>
                 <span class="icon-bar"></span>
@@ -80,10 +93,6 @@
                 </button>
               </div>
                 
-                <!-- <button id="toolbar-settings" type="button" class="btn btn-default" title="Settings" data-toggle="modal" data-target="#settings-modal">
-                    <span class="glyphicon glyphicon-cog"></span> 
-                </button> -->
-              
               <div class="btn-group">
                 <button id="version-alert" type="button" class="btn btn-danger hidden hideable" title="Version warning" data-toggle="modal" data-target="#version-modal">
                     <span class="glyphicon glyphicon-exclamation-sign"></span>
@@ -92,7 +101,6 @@
 
             </div> <!-- btn-toolbar -->
 
-
             <nav class="nav navbar-default">
                 <div id="collapsable-navbar" class="collapse navbar-collapse">
                   <ul class="nav navbar-nav navbar-right text-center">
@@ -100,7 +108,6 @@
                     <li><a href="http://forum.openframeworks.cc/" title="openFrameworks Forum" target="_blank">Forum</a></li>
                     <li><a href="http://ofxaddons.com/" title="ofxAddons Website" target="_blank">ofxAddons</a></li>
                     <li><a href="#" title="Issues" data-toggle="modal" data-target="#issues-modal" style="color:#a94442">Report a Bug</a></li>
-                    <!-- <li><a href="#" class="glyphicon glyphicon-question-sign" title="Help" data-toggle="modal" data-target="#help-modal"></a></li> -->
                   </ul>
                 </div>
             </nav>
@@ -163,6 +170,291 @@
             <div class="modal-footer">
               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
               <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+          </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+      </div><!-- /.modal -->
+
+      <!-- Keyboard Shortcuts Modal -->
+      <div class="modal fade" id="keyboard-shortcuts-modal" tabindex="-1" role="dialog" aria-labelledby="helpModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+              <h4 class="modal-title">Keyboard Shortcuts</h4>
+            </div>
+            <div class="modal-body">
+
+              <h4 class="text-center">Basic</h4>
+
+              <table class="table table-bordered">
+                <thead><tr>
+                <th align="left">PC (Windows/Linux)</th>
+                <th align="left">Mac</th>
+                <th align="left">action</th>
+                </tr></thead>
+                <tbody>
+                <tr>
+                <td align="left">Ctrl-R</td>
+                <td align="left">Command-R</td>
+                <td align="left">run project</td>
+                </tr>
+                <tr>
+                <td align="left">Ctrl-S</td>
+                <td align="left">Command-S</td>
+                <td align="left">save project</td>
+                </tr>
+                <tr>
+                <td align="left">Ctrl-O</td>
+                <td align="left">Command-O</td>
+                <td align="left">open project</td>
+                </tr>
+                <tr>
+                <td align="left">Ctrl-Z</td>
+                <td align="left">Command-Z</td>
+                <td align="left">undo</td>
+                </tr>
+                <tr>
+                <td align="left">Ctrl-Shift-Z, Ctrl-Y</td>
+                <td align="left">Command-Shift-Z, Command-Y</td>
+                <td align="left">redo</td>
+                </tr>
+                <tr>
+                <td align="left">Ctrl-F</td>
+                <td align="left">Command-F</td>
+                <td align="left">find</td>
+                </tr>
+                <tr>
+                <td align="left">Ctrl-/</td>
+                <td align="left">Command-/</td>
+                <td align="left">toggle comment</td>
+                </tr>
+                </tbody>
+              </table>
+
+              <h4 class="text-center">Advanced</h4>
+
+              <table class="table table-bordered">
+              <thead><tr>
+              <th align="left">PC (Windows/Linux)</th>
+              <th align="left">Mac</th>
+              <th align="left">action</th>
+              </tr></thead>
+              <tbody>
+              <tr>
+              <td align="left">Ctrl-,</td>
+              <td align="left">Command-,</td>
+              <td align="left">show the editor settings</td>
+              </tr>
+              <tr>
+              <td align="left"></td>
+              <td align="left">Ctrl-L</td>
+              <td align="left">center selection</td>
+              </tr>
+              <tr>
+              <td align="left">Ctrl-Shift-U</td>
+              <td align="left">Ctrl-Shift-U</td>
+              <td align="left">change to lower case</td>
+              </tr>
+              <tr>
+              <td align="left">Ctrl-U</td>
+              <td align="left">Ctrl-U</td>
+              <td align="left">change to upper case</td>
+              </tr>
+              <tr>
+              <td align="left">Alt-Shift-Down</td>
+              <td align="left">Command-Option-Down</td>
+              <td align="left">copy lines down</td>
+              </tr>
+              <tr>
+              <td align="left">Alt-Shift-Up</td>
+              <td align="left">Command-Option-Up</td>
+              <td align="left">copy lines up</td>
+              </tr>
+              <tr>
+              <td align="left">Delete</td>
+              <td align="left"></td>
+              <td align="left">delete</td>
+              </tr>
+              <tr>
+              <td align="left">Ctrl-Shift-D</td>
+              <td align="left">Command-Shift-D</td>
+              <td align="left">duplicate selection</td>
+              </tr>
+              <tr>
+              <td align="left">Ctrl-K</td>
+              <td align="left">Command-G</td>
+              <td align="left">find next</td>
+              </tr>
+              <tr>
+              <td align="left">Ctrl-Shift-K</td>
+              <td align="left">Command-Shift-G</td>
+              <td align="left">find previous</td>
+              </tr>
+              <tr>
+              <td align="left">Ctrl-End</td>
+              <td align="left">Command-End, Command-Down</td>
+              <td align="left">go to end</td>
+              </tr>
+              <tr>
+              <td align="left">Ctrl-L</td>
+              <td align="left">Command-L</td>
+              <td align="left">go to line</td>
+              </tr>
+              <tr>
+              <td align="left">Alt-Right, End</td>
+              <td align="left">Command-Right, End, Ctrl-E</td>
+              <td align="left">go to line end</td>
+              </tr>
+              <tr>
+              <td align="left">Alt-Left, Home</td>
+              <td align="left">Command-Left, Home, Ctrl-A</td>
+              <td align="left">go to line start</td>
+              </tr>
+              <tr>
+              <td align="left">Ctrl-P</td>
+              <td align="left"></td>
+              <td align="left">go to matching bracket</td>
+              </tr>
+              <tr>
+              <td align="left">Ctrl-Home</td>
+              <td align="left">Command-Home, Command-Up</td>
+              <td align="left">go to start</td>
+              </tr>
+              <tr>
+              <td align="left">Ctrl-Left</td>
+              <td align="left">Option-Left</td>
+              <td align="left">go to word left</td>
+              </tr>
+              <tr>
+              <td align="left">Ctrl-Right</td>
+              <td align="left">Option-Right</td>
+              <td align="left">go to word right</td>
+              </tr>
+              <tr>
+              <td align="left">Tab</td>
+              <td align="left">Tab</td>
+              <td align="left">indent</td>
+              </tr>
+              <tr>
+              <td align="left">Alt-Down</td>
+              <td align="left">Option-Down</td>
+              <td align="left">move lines down</td>
+              </tr>
+              <tr>
+              <td align="left">Alt-Up</td>
+              <td align="left">Option-Up</td>
+              <td align="left">move lines up</td>
+              </tr>
+              <tr>
+              <td align="left">Shift-Tab</td>
+              <td align="left">Shift-Tab</td>
+              <td align="left">outdent</td>
+              </tr>
+              <tr>
+              <td align="left">Insert</td>
+              <td align="left">Insert</td>
+              <td align="left">overwrite</td>
+              </tr>
+              <tr>
+              <td align="left">Ctrl-Backspace</td>
+              <td align="left">Option-Backspace, Ctrl-Option-Backspace</td>
+              <td align="left">remove word left</td>
+              </tr>
+              <tr>
+              <td align="left">Ctrl-Delete</td>
+              <td align="left">Option-Delete</td>
+              <td align="left">remove word right</td>
+              </tr>
+              <tr>
+              <td align="left">Ctrl-R</td>
+              <td align="left">Command-Option-F</td>
+              <td align="left">replace</td>
+              </tr>
+              <tr>
+              <td align="left">Ctrl-A</td>
+              <td align="left">Command-A</td>
+              <td align="left">select all</td>
+              </tr>
+              <tr>
+              <td align="left">Ctrl-Shift-L</td>
+              <td align="left">Ctrl-Shift-L</td>
+              <td align="left">select all from multi-selection</td>
+              </tr>
+              <tr>
+              <td align="left">Shift-Down</td>
+              <td align="left">Shift-Down</td>
+              <td align="left">select down</td>
+              </tr>
+              <tr>
+              <td align="left">Shift-Left</td>
+              <td align="left">Shift-Left</td>
+              <td align="left">select left</td>
+              </tr>
+              <tr>
+              <td align="left">Shift-End</td>
+              <td align="left">Shift-End</td>
+              <td align="left">select line end</td>
+              </tr>
+              <tr>
+              <td align="left">Ctrl-Shift-End</td>
+              <td align="left">Command-Shift-Down</td>
+              <td align="left">select to end</td>
+              </tr>
+              <tr>
+              <td align="left">Alt-Shift-Right</td>
+              <td align="left">Command-Shift-Right</td>
+              <td align="left">select to line end</td>
+              </tr>
+              <tr>
+              <td align="left">Alt-Shift-Left</td>
+              <td align="left">Command-Shift-Left</td>
+              <td align="left">select to line start</td>
+              </tr>
+              <tr>
+              <td align="left">Ctrl-Shift-P</td>
+              <td align="left"></td>
+              <td align="left">select to matching bracket</td>
+              </tr>
+              <tr>
+              <td align="left">Ctrl-Shift-Home</td>
+              <td align="left">Command-Shift-Up</td>
+              <td align="left">select to start</td>
+              </tr>
+              <tr>
+              <td align="left">Shift-Up</td>
+              <td align="left">Shift-Up</td>
+              <td align="left">select up</td>
+              </tr>
+              <tr>
+              <td align="left">Ctrl-Shift-Left</td>
+              <td align="left">Option-Shift-Left</td>
+              <td align="left">select word left</td>
+              </tr>
+              <tr>
+              <td align="left">Ctrl-Shift-Right</td>
+              <td align="left">Option-Shift-Right</td>
+              <td align="left">select word right</td>
+              </tr>
+              <tr>
+              <td align="left"></td>
+              <td align="left">Ctrl-O</td>
+              <td align="left">split line</td>
+              </tr>
+              <tr>
+              <td align="left">Ctrl-T</td>
+              <td align="left">Ctrl-T</td>
+              <td align="left">transpose letters</td>
+              </tr>
+              </tbody>
+              </table>
+
+              For a complete list of keyboard shortcuts, 
+              <a href="https://github.com/ajaxorg/ace/wiki/Default-Keyboard-Shortcuts">click here</a>.
+
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
           </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->

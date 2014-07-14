@@ -100,6 +100,18 @@ code {
   z-index: 5;
 }
 
+#toolbar-settings {
+
+  float: right;
+  margin-left: 25px;
+  margin-top: 10px;
+}
+
+#keyboard-shortcuts-modal table {
+  margin-top: 20px;
+  margin-bottom: 30px;
+}
+
 @media (max-width: 768px) {
 
   #collapsable-navbar {
@@ -113,6 +125,11 @@ code {
 
   #toolbar {
     left: 70px; 
+  }
+
+  #toolbar-settings {
+
+    margin-left: -10px;
   }
 
 }
