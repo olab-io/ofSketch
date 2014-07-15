@@ -122,8 +122,8 @@ public:
     enum Version
     {
         VERSION_MAJOR = 0,
-        VERSION_MINOR = 1,
-        VERSION_PATCH = 6
+        VERSION_MINOR = 2,
+        VERSION_PATCH = 0
     };
 
     static const std::string VERSION_SPECIAL;
