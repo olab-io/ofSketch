@@ -422,6 +422,31 @@ $(document).ready( function()
 
     });
 
+    // input validation
+    $('.needs-validation').tooltip({
+        title: 'A-Z, 0-9, _ and - allowed',
+        trigger: 'manual',
+        placement: 'top'
+    });
+
+    $('.needs-validation').on('mouseout', function(e){
+        console.log('fired!')
+        $(this).tooltip('hide');
+    });
+    
+    $('.needs-validation').keypress(function(e){
+        var code = e.which || e.keyCode;
+
+        // 65 - 90 for A-Z and 97 - 122 for a-z 48 - 57 for 0-9 95 for _ 45 for - 46 for .
+        if (!((code >= 65 && code <= 90) ||
+              (code >= 97 && code <= 122) || 
+              (code >= 48 && code <= 57) || 
+               code == 95 || code == 45)) {
+            e.preventDefault();
+            $(e.currentTarget).tooltip('show');
+        } else $(e.currentTarget).tooltip('hide');
+    });
+
     $('#editor-container').resizable({
         handles: 's',
         resize: function(event, ui){
