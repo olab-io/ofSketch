@@ -1,4 +1,20 @@
-- 0.1.7 (Pending)
+### 0.2
+
+- 0.2.0 (pending)
+	
+	+ Now uses openFrameworks 0.8.3.
+	+ Fully responsive toolbar.
+	+ Client is notified when server connection is lost.
+	+ Undo/Redo keyboard functionality.
+	+ Front-end input validation.
+	+ Cross-platform keyboard shortcuts.
+	+ Add Keyboard Shortcuts Table.
+	+ Add default ACE Settings Menu.
+	+ Autocomplete now triggers when typing.
+	+ Unsaved document names appear red.
+	+ Fixed default ctrl-F, cmd-F find styling.
+
+### 0.1
 
 - 0.1.6
     + Now uses openFrameworks 0.8.2.
