@@ -11,8 +11,9 @@
 	+ Add Keyboard Shortcuts Table.
 	+ Add default ACE Settings Menu.
 	+ Autocomplete now triggers when typing.
+	+ Basic syntax highlighting for oF global functions.
 	+ Unsaved document names appear red.
-	+ Fixed default ctrl-F, cmd-F find styling.
+	+ Fixed ctrl-F, cmd-F (find) bar styling.
 
 ### 0.1
 
