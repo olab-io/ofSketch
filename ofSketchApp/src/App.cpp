@@ -57,9 +57,9 @@ App::App():
     server->getWebSocketRoute()->registerWebSocketEvents(this);
 
     // Set up websocket logger.
-//    _loggerChannel = WebSocketLoggerChannel::makeShared();
-//    _loggerChannel->setWebSocketRoute(server->getWebSocketRoute());
-//    ofSetLoggerChannel(_loggerChannel);
+    // _loggerChannel = WebSocketLoggerChannel::makeShared();
+    // _loggerChannel->setWebSocketRoute(server->getWebSocketRoute());
+    // ofSetLoggerChannel(_loggerChannel);
 
     _logo.loadImage("media/openFrameworks.png");
     _font.loadFont(OF_TTF_SANS, 20);
@@ -91,9 +91,9 @@ void App::setup()
     // TODO: configure these via settings files
 
     server->registerMethod("load-project",
-                          "Load the requested project.",
-                          this,
-                          &App::loadProject);
+                           "Load the requested project.",
+                           this,
+                           &App::loadProject);
     
     server->registerMethod("load-template-project",
                            "Load an anonymous project.",
@@ -154,7 +154,7 @@ void App::setup()
                            "Get list of all projects in the Project directory.",
                            this,
                            &App::getProjectList);
-    
+
     server->registerMethod("load-editor-settings",
                            "Get the editor settings.",
                            this,
