@@ -1,7 +1,4 @@
-### 0.2
-
-- 0.2.0 (pending)
-	
+- 0.2.0
 	+ Now uses openFrameworks 0.8.3.
 	+ Fully responsive toolbar.
 	+ Client is notified when server connection is lost.
@@ -14,8 +11,6 @@
 	+ Basic syntax highlighting for oF global functions.
 	+ Unsaved document names appear red.
 	+ Fixed ctrl-F, cmd-F (find) bar styling.
-
-### 0.1
 
 - 0.1.6
     + Now uses openFrameworks 0.8.2.
