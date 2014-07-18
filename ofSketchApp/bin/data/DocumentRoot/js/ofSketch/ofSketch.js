@@ -358,6 +358,7 @@ $(document).ready( function()
         var project = getURLParameter('project');
         if (project) {
             sketchEditor.loadProject(project, function() {
+                $('title').text(project);
                 console.log("Project loaded!");
             }, loadError);
         } else {
