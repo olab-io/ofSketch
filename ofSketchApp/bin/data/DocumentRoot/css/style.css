@@ -69,6 +69,9 @@ code {
 
 /* Custom editor CSS
 -------------------------------------------------- */
+#tab-dropdown .active > a {
+  background-color: #E0E0E0;
+}
 
 .new-class a {
   color: #777
@@ -78,7 +81,7 @@ code {
   color: #000;
 }
 
-.file-tab a {
+#tab-bar li a, .file-tab a {
   color: #555;
 }
 

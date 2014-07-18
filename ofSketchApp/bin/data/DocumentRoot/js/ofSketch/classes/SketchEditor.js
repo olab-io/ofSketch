@@ -120,7 +120,9 @@ function SketchEditor(callback)
 				new ace.createEditSession(c.fileContents, _settings.getData().editorMode));
 		});
 
+		_resizeTabs(true);
 		_self.selectTab(_project.getName());
+
 	}
 
 	var _addTab = function(name, fileName, isProjectFile, editSession)
@@ -142,7 +144,7 @@ function SketchEditor(callback)
 		_tabs.push(tab);
 		_registerTabEvent(tabElement);
 		if (tab.isProjectFile) tabElement.addClass('active');
-		$('#tab-bar li:last').prev().after(tabElement);
+		$('#tab-bar li:last').prev().prev().after(tabElement);
 	}
 
 	var _renderTab = function(name)
@@ -183,6 +185,41 @@ function SketchEditor(callback)
 				classFiles[i].fileContents = tab.editSession.getValue();
 			}
 		});
+	}
+
+	var _resizeTabs = function(noResizeEvent)
+	{
+
+		var tab; // the tab to move
+		var debounce = 5;
+        var containerWidth = $('#tab-bar').width();
+        var combinedTabWidth = 0;
+        var lastTabWidth = 0;
+
+        $('#tab-bar').children()
+                     .each(function(){
+                        combinedTabWidth += $(this).width();
+                        lastTabWidth = $(this).width();
+                     });
+        
+        if (combinedTabWidth + debounce >= containerWidth) {
+        	tab = $('.file-tab:not(#tab-dropdown .file-tab):last');
+            tab.prependTo('#tab-dropdown');      
+            if (noResizeEvent && combinedTabWidth - lastTabWidth + debounce >= containerWidth) {
+            	_resizeTabs(noResizeEvent);
+            }
+        } else {
+            tab = $('#tab-dropdown .file-tab:first');
+            $('#tab-bar li:last').prev().prev().after(tab);
+            combinedTabWidth += tab.width();
+            if (combinedTabWidth >= containerWidth) {
+                _resizeTabs();
+            }
+        }
+
+        if ($('#tab-dropdown').is(':empty')) $('#tab-dropdown-button').hide();
+        else $('#tab-dropdown-button').show();
+
 	}
 
 	this.loadProject = function(projectName, onSuccess, onError)
@@ -318,6 +355,7 @@ function SketchEditor(callback)
 					false, 
 					new ace.createEditSession(classFile.fileContents, 
 										_settings.getData().editorMode));
+			_resizeTabs(true);
 			onSuccess(); // should I pass result object?
 		}, onError);
 	}
@@ -328,6 +366,7 @@ function SketchEditor(callback)
 			var tab = _.findWhere(_tabs, { name: className });
 			tab.tabElement.remove();
 			_tabs = _.without(_tabs, tab);
+			_resizeTabs(true);
 			onSuccess(result);
 		}, onError);
 	}
@@ -397,6 +436,7 @@ function SketchEditor(callback)
 	this.resize = function()
 	{
 		_editor.resize();
+		_resizeTabs();
 	}
 
 	this.showSettingsMenu = function()

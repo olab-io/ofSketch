@@ -497,7 +497,6 @@ $(document).ready( function()
             onerror: onWebSocketError
         });
 
-    console.log(logger.getLogLevel());
     $('#set-log-level').addClass(logger.getLogLevelLabelClass(logger.getLogLevel()));
     $('#current-log-level').text(logger.getLogLevelName(logger.getLogLevel()));
 
@@ -524,8 +523,10 @@ $(document).ready( function()
         resizeEditor();
 
         // events
-        
-        $(window).resize(resizeEditor);
+        $(window).resize(function(){
+            sketchEditor.resize();
+            resizeEditor();
+        });
         
         $('#tab-bar .dropdown').on('click', function(){
             
