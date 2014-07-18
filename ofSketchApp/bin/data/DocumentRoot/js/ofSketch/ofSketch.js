@@ -26,6 +26,33 @@ var JSONRPCClient;
 
 $(document).ready( function()
 {
+
+    function resizeEditor() {
+
+        // get the new ratio
+        var editorRatio = $('#editor-container').height()/aceWrapperHeight;
+
+        aceWrapperHeight = window.innerHeight - $('#wrap').height() - 2;
+        $('#ace-wrapper').css({height: aceWrapperHeight});
+
+        $('#editor-container').height(aceWrapperHeight * editorRatio);
+
+        $('#editor-container').resizable({
+            handles: 'n, s',   
+            resize: resize
+        });
+
+        resize();
+
+        function resize() {
+            
+            $('#console').height($('#ace-wrapper').height() -($('#editor-container').height()));
+            sketchEditor.resize();
+            consoleEmulator.resize();
+
+        }
+    }
+
     function checkVersion() {
         var releaseURL = "https://api.github.com/repos/olab-io/ofSketch/releases";
 
@@ -447,21 +474,13 @@ $(document).ready( function()
         } else $(e.currentTarget).tooltip('hide');
     });
 
-    $('#editor-container').resizable({
-        handles: 's',
-        resize: function(event, ui){
-            sketchEditor.resize();
-            $('#console').height($('#ace-wrapper').height() -(ui.size.height));
-            consoleEmulator.resize();
-        }
-    });
-
     var systemInfo = {
         userAgent:  navigator.userAgent
     }
 
     var alertTimeout;
     var alertBox;
+    var aceWrapperHeight;
     var compileSuccess = false; // this is a terrible global var. Get it out ASAP.
     alertBox = $('#editor-messages');
     alertBox.hide();
@@ -495,8 +514,19 @@ $(document).ready( function()
     var consoleEmulator = new ConsoleEmulator();
 
     var sketchEditor = new SketchEditor(function() {
+        
+        // editor resize stuff
+        aceWrapperHeight = window.innerHeight - $('#wrap').height() - 2;
+        $('#editor-container').height(aceWrapperHeight * 3/4);
+        $('#console').height(aceWrapperHeight * 1/4);
 
-        $('.nav-tabs .dropdown').on('click', function(){
+        resizeEditor();
+
+        // events
+        
+        $(window).resize(resizeEditor);
+        
+        $('#tab-bar .dropdown').on('click', function(){
             
             var tabName = sketchEditor.getSelectedTabName();
             if (tabName == sketchEditor.getProject().getName()) {

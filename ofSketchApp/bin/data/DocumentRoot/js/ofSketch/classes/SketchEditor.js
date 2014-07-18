@@ -142,7 +142,7 @@ function SketchEditor(callback)
 		_tabs.push(tab);
 		_registerTabEvent(tabElement);
 		if (tab.isProjectFile) tabElement.addClass('active');
-		$('ul.nav-tabs li:last').prev().after(tabElement);
+		$('#tab-bar li:last').prev().after(tabElement);
 	}
 
 	var _renderTab = function(name)

@@ -31,7 +31,7 @@
     <div id="wrap">
 
       <!-- Fixed navbar -->
-      <div class="navbar navbar-default navbar-fixed-top">
+      <div class="navbar navbar-default">
         <div class="container" style="position: relative;">
 
             <a class="navbar-brand" href="http://openframeworks.cc" title="openFrameworks Website" target="_blank" >
@@ -717,7 +717,7 @@
     <div class="container">
 
       <!-- Begin page content -->
-      <ul class="nav nav-tabs">
+      <ul id="tab-bar" class="nav nav-tabs">
           <li class="dropdown">
               <a class="dropdown-toggle glyphicon glyphicon-book" data-toggle="dropdown" href="#">
                 <span class="caret"></span>
@@ -741,20 +741,22 @@
           </li>
         </ul>
         <div id="editor-messages" class="alert"></div>
-      <div id="ace-wrapper">
-        
-        <div id="editor-container">
-          <pre id="editor">loading...</pre>
-        </div>
-        <pre id="console"></pre>
-      </div>
+      
 
     </div>
   </div>
 
-  <div id="footer">
-    <!-- ofSketch <span id="version"></span> -->
+  <div id="ace-wrapper">
+        
+    <div id="editor-container">
+      <pre id="editor">loading...</pre>
+    </div>
+    <pre id="console"></pre>
   </div>
+
+  <!-- <div id="footer">
+    ofSketch <span id="version"></span>
+  </div> -->
 
 
 <script src="./js/jquery.min.js"></script>

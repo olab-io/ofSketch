@@ -9,18 +9,17 @@ body {
 
 /* Wrapper for page content to push down footer */
 #wrap {
-  min-height: 100%;
   height: auto !important;
   height: 100%;
-  /* Negative indent footer by its height */
-  margin: 0 auto -60px;
-  /* Pad bottom by footer height */
-  padding: 0 0 60px;
 }
 
 /* Set the fixed height of the footer here */
 #footer {
-  
+
+}
+
+.container {
+  width: 100%;
 }
 
 
@@ -30,26 +29,20 @@ body {
 
 #ace-wrapper {
   position: relative;
-  /* 
-  NOTE: 
-  #editor-container's height + #console's height must
-  equal #ace-wrapper's height
-  */
-  height: 700px; 
-}
-
-#editor-container {
-  height: 500px;
 }
 
 #editor { 
 
   height: 100%;
   width: 100%;
+  margin: 0px;
+  padding: 0px;
 }
 
 #console {
-  height: 200px;
+
+  margin: 0px;
+  padding: 0px;
   /*padding-top: 10px;*/
 }
 
@@ -59,7 +52,7 @@ body {
 }
 
 #wrap > .container {
-  padding: 70px 15px 0;
+  
 }
 .container .credit {
   margin: 20px 0;
