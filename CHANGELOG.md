@@ -1,3 +1,8 @@
+- 0.2.1
+	+ Editor fills browser window.
+	+ File tabs are responsive.
+	+ Title of each webpage is now the name of the open project.
+
 - 0.2.0
 	+ Now uses openFrameworks 0.8.3.
 	+ Fully responsive toolbar.
