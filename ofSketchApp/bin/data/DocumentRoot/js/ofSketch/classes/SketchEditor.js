@@ -349,7 +349,7 @@ function SketchEditor(callback)
 	this.createClass = function(className, onSuccess, onError)
 	{	
 		_project.createClass(className, function(classFile) {
-			
+			console.log('creating class');
 			_addTab(classFile.name, 
 					classFile.fileName, 
 					false, 

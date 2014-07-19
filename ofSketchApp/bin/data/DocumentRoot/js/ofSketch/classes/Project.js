@@ -202,7 +202,7 @@ function Project(projectName, onSuccess, onError, isTemplate)
 
 	this.hasClasses = function()
 	{
-		return !_.isUndefined(_data.classes);
+		return !_.isUndefined(_data.classes) && !_.isNull(_data.classes);
 	}
 
 	this.getClasses = function()
