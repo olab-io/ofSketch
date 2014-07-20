@@ -1,9 +1,13 @@
-- 0.2.1
+- 0.2.2 (pending)
+	+ Fix bug that prevented new class tabs from displaying when a project was first created.
+	+ Updated NewProject template.
+
+- 0.2.1 (07-19-14)
 	+ Editor fills browser window.
 	+ File tabs are responsive.
 	+ Title of each webpage is now the name of the open project.
 
-- 0.2.0
+- 0.2.0 (07-15-14)
 	+ Now uses openFrameworks 0.8.3.
 	+ Fully responsive toolbar.
 	+ Client is notified when server connection is lost.
