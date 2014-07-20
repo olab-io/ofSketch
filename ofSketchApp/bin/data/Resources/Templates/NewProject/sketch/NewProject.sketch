@@ -1,11 +1,9 @@
 void setup() {
-	
-}
-
-void update() {
+	// put your setup code here, to run once:
 	
 }
 
 void draw() {
+	// put your main code here, to run once each frame:
 	
 }
