@@ -43,11 +43,15 @@
                 <span class="glyphicon glyphicon-cog"></span> 
               </button>
               <ul class="dropdown-menu pull-right" style="margin-top: 42px;" role="menu" aria-labelledby="dropdownMenu1">
-                <li role="presentation" class="disabled"><a role="menuitem" tabindex="-1" href="#">Project Settings</a></li>
-                <li role="presentation" class="disabled"><a role="menuitem" tabindex="-1" href="#">ofSketch Settings</a></li>
-                <li id="editor-settings" role="presentation"><a role="menuitem" tabindex="-1" href="#">Editor Settings</a></li>
+                <li role="presentation" class="disabled">
+                  <a role="menuitem" tabindex="-1" href="#" data-localize="project-settings">Project Settings</a>
+                </li>
+                <li role="presentation" class="disabled">
+                  <a role="menuitem" tabindex="-1" href="#" data-localize="ofsketch-settings">ofSketch Settings</a>
+                </li>
+                <li id="editor-settings" role="presentation"><a role="menuitem" tabindex="-1" href="#" data-localize="editor-settings">Editor Settings</a></li>
                 <li role="presentation" data-toggle="modal" data-target="#keyboard-shortcuts-modal">
-                  <a role="menuitem" tabindex="-1" href="#">Keyboard Shortcuts</a>
+                  <a role="menuitem" tabindex="-1" href="#" data-localize="keyboard-shortcuts">Keyboard Shortcuts</a>
                 </li>
               </ul>
             </div>
@@ -105,10 +109,10 @@
             <nav class="nav navbar-default">
                 <div id="collapsable-navbar" class="collapse navbar-collapse">
                   <ul class="nav navbar-nav navbar-right text-center">
-                    <li><a href="http://openframeworks.cc/documentation" title="openFrameworks Reference" target="_blank">Reference</a></li>
-                    <li><a href="http://forum.openframeworks.cc/" title="openFrameworks Forum" target="_blank">Forum</a></li>
-                    <li><a href="http://ofxaddons.com/" title="ofxAddons Website" target="_blank">ofxAddons</a></li>
-                    <li><a href="#" title="Issues" data-toggle="modal" data-target="#issues-modal" style="color:#a94442">Report a Bug</a></li>
+                    <li><a href="http://openframeworks.cc/documentation" title="openFrameworks Reference" target="_blank" data-localize="reference-link">Reference</a></li>
+                    <li><a href="http://forum.openframeworks.cc/" title="openFrameworks Forum" target="_blank" data-localize="forum-link">Forum</a></li>
+                    <li><a href="http://ofxaddons.com/" title="ofxAddons Website" target="_blank" data-localize="ofxaddons-link">ofxAddons</a></li>
+                    <li><a href="#" title="Issues" data-toggle="modal" data-target="#issues-modal" style="color:#a94442" data-localize="bug-report-link">Report a Bug</a></li>
                   </ul>
                 </div>
             </nav>
@@ -122,7 +126,7 @@
           <div class="modal-content">
             <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-              <h4 class="modal-title">Upload Media</h4>
+              <h4 class="modal-title" data-localize="upload-media">Upload Media</h4>
             </div>
             <div class="modal-body">
               <!-- The fileinput-button span is used to style the file input field as button -->
@@ -142,8 +146,8 @@
               <div id="files" class="files"></div>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary">Save changes</button>
+              <button type="button" class="btn btn-default" data-dismiss="modal" data-localize="close">Close</button>
+              <button type="button" class="btn btn-primary" data-localize="save-changes">Save changes</button>
             </div>
           </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
@@ -155,7 +159,7 @@
           <div class="modal-content">
             <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-              <h4 class="modal-title">Editor Settings</h4>
+              <h4 class="modal-title" data-localize="editor-settings">Editor Settings</h4>
             </div>
             <div class="modal-body">
               <!-- see http://tutsme-webdesign.info/bootstrap-3-contact-modal/ -->
@@ -170,7 +174,7 @@
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary">Save changes</button>
+              <button type="button" class="btn btn-primary" data-localize="save-changes">Save changes</button>
             </div>
           </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
@@ -182,11 +186,11 @@
           <div class="modal-content">
             <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-              <h4 class="modal-title">Keyboard Shortcuts</h4>
+              <h4 class="modal-title" data-localize="keyboard-shortcuts">Keyboard Shortcuts</h4>
             </div>
             <div class="modal-body">
             
-              <h4 class="text-center">Basic</h4>
+              <h4 class="text-center" data-localize="basic">Basic</h4>
 
               <table class="table table-bordered">
                 <thead><tr>
@@ -233,7 +237,7 @@
                 </tbody>
               </table>
 
-              <h4 class="text-center">Advanced</h4>
+              <h4 class="text-center" data-localize="advanced">Advanced</h4>
 
               <table class="table table-bordered">
               <thead><tr>
@@ -450,13 +454,16 @@
               </tbody>
               </table>
 
-              <p><strong>Note</strong>: The editor must be selected for keyboard shortcuts to behave properly.</p>
+              <p data-localize="keyboard-shortcuts-note">
+                <strong>Note</strong>: The editor must be selected for keyboard shortcuts to behave properly.
+              </p>
+
               For a complete list of keyboard shortcuts, 
               <a href="https://github.com/ajaxorg/ace/wiki/Default-Keyboard-Shortcuts" target="_blank">click here</a>.
 
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-default" data-dismiss="modal" data-localize="close">Close</button>
             </div>
           </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
@@ -468,7 +475,7 @@
           <div class="modal-content">
             <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-              <h4 class="modal-title">Bugs + Issues</h4>
+              <h4 class="modal-title" data-localize="bugs">Bugs + Issues</h4>
             </div>
             <div class="modal-body">
               <p>Is something broken or not working as expected?</p> 
@@ -479,7 +486,7 @@
             <div class="modal-footer">
               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
               <button type="button" class="btn btn-link">
-                <a id="issue-link" href="https://github.com/olab-io/ofSketch/issues/new" target="_blank">
+                <a id="issue-link" href="https://github.com/olab-io/ofSketch/issues/new" target="_blank" data-localize="submit-issue">
                   Submit an Issue
                 </a>
               </button>
@@ -494,7 +501,7 @@
             <div class="modal-content">
               <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">Version Update</h4>
+                <h4 class="modal-title" data-localize="version-update">Version Update</h4>
               </div>
               <div class="modal-body">
                   <p>
@@ -513,13 +520,13 @@
             <div class="modal-content">
               <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">New Class</h4>
+                <h4 class="modal-title" data-localize="new-class">New Class</h4>
               </div>
               <div class="modal-body">
                 <div class="input-group">
                   <input id="new-class-name" type="text" class="needs-validation form-control" placeholder="MyClass">
                   <span class="input-group-btn">
-                    <button id="create-class" class="btn btn-default" type="button" data-dismiss="modal">Create</button>
+                    <button id="create-class" class="btn btn-default" type="button" data-dismiss="modal" data-localize="create">Create</button>
                   </span>
                 </div>
             </div>
@@ -533,13 +540,13 @@
             <div class="modal-content">
               <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">Rename <span class="selected-tab-name"></span> Class</h4>
+                <h4 class="modal-title" data-localize="rename-class">Rename <span class="selected-tab-name"></span> Class</h4>
               </div>
               <div class="modal-body">
                 <div class="input-group">
                   <input id="renamed-class-name" type="text" class="needs-validation form-control" placeholder="MyNewClassName">
                   <span class="input-group-btn">
-                    <button id="rename-class" class="btn btn-default" type="button" data-dismiss="modal">Rename</button>
+                    <button id="rename-class" class="btn btn-default" type="button" data-dismiss="modal" data-localize="rename">Rename</button>
                   </span>
                 </div>
             </div>
@@ -553,14 +560,14 @@
             <div class="modal-content">
               <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">Delete Class</h4>
+                <h4 class="modal-title" data-localize="delete-class">Delete Class</h4>
               </div>
               <div class="modal-body">
                 Are you sure that you want to delete the <strong><span class="selected-tab-name"></span></strong> class?
               </div>
               <div class="modal-footer">
-                <button class="btn btn-default" type="button" data-dismiss="modal">Nevermind</button>
-                <button id="delete-class" class="btn btn-danger" type="button" data-dismiss="modal">Delete</button>
+                <button class="btn btn-default" type="button" data-dismiss="modal" data-localize="nevermind">Nevermind</button>
+                <button id="delete-class" class="btn btn-danger" type="button" data-dismiss="modal" data-localize="delete">Delete</button>
               </div>
           </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
@@ -572,14 +579,14 @@
             <div class="modal-content">
               <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">Name Project</h4>
+                <h4 class="modal-title" data-localize="name-project">Name Project</h4>
               </div>
               <div class="modal-body">
-                <p>What would you like to name this project?</p>
+                <p data-localize="name-project-prompt">What would you like to name this project?</p>
                 <div class="input-group">
                   <input id="new-project-name" type="text" class="needs-validation form-control" placeholder="MyProject">
                   <span class="input-group-btn">
-                    <button id="name-project" class="btn btn-default" type="button" data-dismiss="modal">Save</button>
+                    <button id="name-project" class="btn btn-default" type="button" data-dismiss="modal" data-localize="save">Save</button>
                   </span>
                 </div>
             </div>
@@ -593,13 +600,13 @@
           <div class="modal-content">
             <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-              <h4 class="modal-title">Open Project</h4>
+              <h4 class="modal-title" data-localize="open-project">Open Project</h4>
             </div>
             <div class="modal-body">
               <div id="project-list" class="list-group"></div>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-default" data-dismiss="modal" data-localize="close">Close</button>
             </div>
           </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
@@ -611,14 +618,14 @@
             <div class="modal-content">
               <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">Delete Project</h4>
+                <h4 class="modal-title" data-localize="delete-project">Delete Project</h4>
               </div>
-              <div class="modal-body">
+              <div class="modal-body" data-localize="delete-project-prompt">
                 Are you sure that you want to delete this project?
               </div>
               <div class="modal-footer">
-                <button class="btn btn-default" type="button" data-dismiss="modal">Nevermind</button>
-                <button id="delete-project" class="btn btn-danger" type="button" data-dismiss="modal">Delete</button>
+                <button class="btn btn-default" type="button" data-dismiss="modal" data-localize="nevermind">Nevermind</button>
+                <button id="delete-project" class="btn btn-danger" type="button" data-dismiss="modal" data-localize="delete">Delete</button>
               </div>
           </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
@@ -630,13 +637,13 @@
             <div class="modal-content">
               <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">Rename Project</h4>
+                <h4 class="modal-title" data-localize="rename-project">Rename Project</h4>
               </div>
               <div class="modal-body">
                 <div class="input-group">
                   <input id="renamed-project-name" type="text" class="needs-validation form-control" placeholder="MyProject">
                   <span class="input-group-btn">
-                    <button id="rename-project" class="btn btn-default" type="button" data-dismiss="modal">Rename</button>
+                    <button id="rename-project" class="btn btn-default" type="button" data-dismiss="modal" data-localize="rename">Rename</button>
                   </span>
                 </div>
             </div>
@@ -651,15 +658,15 @@
             <div class="modal-content">
               <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">Task Queue</h4>
+                <h4 class="modal-title" data-localize="task-queue">Task Queue</h4>
               </div>
               <div class="modal-body">
                 <ul class="list-group" id="task-queue-list">
                 </ul>
               </div>
               <div class="modal-footer">
-                <button id="cancel-all-tasks" class="btn btn-danger" type="button" data-dismiss="modal">Cancel All</button>
-                <button class="btn btn-default" type="button" data-dismiss="modal">Close</button>
+                <button id="cancel-all-tasks" class="btn btn-danger" type="button" data-dismiss="modal" data-localize="cancel-all">Cancel All</button>
+                <button class="btn btn-default" type="button" data-dismiss="modal" data-localize="close">Close</button>
               </div>
           </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
@@ -671,7 +678,7 @@
             <div class="modal-content">
               <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" style="display: inline-block">Logger</h4>
+                <h4 class="modal-title" style="display: inline-block" data-localize="logger">Logger</h4>
                 <div class="btn-group pull-right" style="margin-right: 20px;">
                     <button id="set-log-level" type="button" class="btn btn-xs dropdown-toggle" data-toggle="dropdown">
                       <span id="current-log-level"></span> <span class="caret"></span>
@@ -691,7 +698,7 @@
                 </ul>
               </div>
               <div class="modal-footer">
-                <button class="btn btn-default" type="button" data-dismiss="modal">Close</button>
+                <button class="btn btn-default" type="button" data-dismiss="modal" data-localize="close">Close</button>
               </div>
           </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
@@ -702,7 +709,7 @@
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">
-                <h4>Connection Error</h4>
+                <h4 data-localize="connection-error">Connection Error</h4>
               </div>
               <div class="modal-body">
                 <p>
@@ -724,15 +731,15 @@
               </a>
               <ul class="dropdown-menu action-menu" role="menu">
 
-                <li class="new-class"><a href="#" >New Class</a></li>
-                <li class="rename-class"><a href="#">Rename <strong><span class="selected-tab-name"></span></strong> Class</a></li>
+                <li class="new-class"><a href="#" data-localize="new-class">New Class</a></li>
+                <li class="rename-class"><a href="#" data-localize="rename-class">Rename <strong><span class="selected-tab-name"></span></strong> Class</a></li>
                 <li class="delete-class"><a href="#">Delete <strong><span class="selected-tab-name"></span></strong> Class</a></li>
                 <li class="divider"></li>
-                <li class="rename-project"><a href="#">Rename Project</a></li>
-                <li class="delete-project"><a href="#">Delete Project</a></li>
+                <li class="rename-project"><a href="#" data-localize="rename-project">Rename Project</a></li>
+                <li class="delete-project"><a href="#" data-localize="delete-project">Delete Project</a></li>
                 <li class="divider"></li>
-                <li class="new-project"><a href="#">New Project</a></li>
-                <li class="open-project"><a href="#">Open Project</a></li>
+                <li class="new-project"><a href="#" data-localize="new-project">New Project</a></li>
+                <li class="open-project"><a href="#" data-localize="open-project">Open Project</a></li>
               </ul>
           </li>
           <li class="dropdown">
@@ -754,7 +761,7 @@
   <div id="ace-wrapper">
         
     <div id="editor-container">
-      <pre id="editor">loading...</pre>
+      <pre id="editor" data-localize="loading">loading...</pre>
     </div>
     <pre id="console"></pre>
   </div>
@@ -797,6 +804,9 @@
 <script src="js/jquery.fileupload-video.js"></script>
 <!-- The File Upload validation plugin -->
 <script src="js/jquery.fileupload-validate.js"></script>
+
+<!-- Localization -->
+<script src="js/jquery.localize.min.js"></script>
 
 <script src="./js/ofxHTTP.js"></script>
 <script src="./js/ofxUtils.js"></script>

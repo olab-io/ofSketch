@@ -417,6 +417,9 @@ $(document).ready( function()
             console.log(err);
         });
     }
+
+    // localization
+    $('[data-localize]').localize('lang', { pathPrefix: "../../localization", skipLanguage: /^en/ });
     
     // prevent defaults
     $('#toolbar li a, #log-levels li a, .file-tab a, #new-class a, .action-menu li a').on('click', function(e) {
