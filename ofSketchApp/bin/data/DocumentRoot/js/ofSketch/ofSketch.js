@@ -69,6 +69,8 @@ $(document).ready( function()
             // Get the cleaned semver string.
             var remoteVersion = semver.clean(latestRelease.tag_name);
             var localVersion = semver.clean(systemInfo.version.version);
+            
+            $('.local-version').text(localVersion);
 
             // Compare the semver number provided by the server to the remote.
             if (semver.gt(remoteVersion, localVersion))
@@ -103,11 +105,11 @@ $(document).ready( function()
                 }
 
                 $('.remote-version').text(remoteVersion);
-                $('.local-version').text(localVersion);
 
                 $('#version-alert').removeClass('hidden');
 
             }
+        
         }).fail(function() {
             console.log("Unable to contact github for a version check.");
         });

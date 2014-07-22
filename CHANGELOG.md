@@ -1,6 +1,8 @@
-- 0.2.2 (pending)
-	+ Fix bug that prevented new class tabs from displaying when a project was first created.
-	+ Updated NewProject template.
+- 0.2.2 (07-22-14)
+	+ Add "About ofSketch" to settings ([#64](https://github.com/olab-io/ofSketch/issues/64))
+	+ Basic localization support for Spanish, German, and Japanese ([#68](https://github.com/olab-io/ofSketch/issues/68))
+	+ Fix bug that prevented new class tabs from displaying when a project was first created ([#76](https://github.com/olab-io/ofSketch/issues/76)).
+	+ Updated NewProject template ([#67](https://github.com/olab-io/ofSketch/issues/67)).
 
 - 0.2.1 (07-19-14)
 	+ Editor fills browser window.

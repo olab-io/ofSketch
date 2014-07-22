@@ -43,6 +43,13 @@
                 <span class="glyphicon glyphicon-cog"></span> 
               </button>
               <ul class="dropdown-menu pull-right" style="margin-top: 42px;" role="menu" aria-labelledby="dropdownMenu1">
+                <li role="presentation" data-toggle="modal" data-target="#about-ofsketch-modal">
+                  <a role="menuitem" tabindex="-1" href="#" data-localize="about-ofsketch">About ofSketch</a>
+                </li>
+                <li role="presentation" data-toggle="modal" data-target="#keyboard-shortcuts-modal">
+                  <a role="menuitem" tabindex="-1" href="#" data-localize="keyboard-shortcuts">Keyboard Shortcuts</a>
+                </li>
+                <li class="divider"></li>
                 <li role="presentation" class="disabled">
                   <a role="menuitem" tabindex="-1" href="#" data-localize="project-settings">Project Settings</a>
                 </li>
@@ -50,9 +57,6 @@
                   <a role="menuitem" tabindex="-1" href="#" data-localize="ofsketch-settings">ofSketch Settings</a>
                 </li>
                 <li id="editor-settings" role="presentation"><a role="menuitem" tabindex="-1" href="#" data-localize="editor-settings">Editor Settings</a></li>
-                <li role="presentation" data-toggle="modal" data-target="#keyboard-shortcuts-modal">
-                  <a role="menuitem" tabindex="-1" href="#" data-localize="keyboard-shortcuts">Keyboard Shortcuts</a>
-                </li>
               </ul>
             </div>
 
@@ -176,6 +180,30 @@
               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
               <button type="button" class="btn btn-primary" data-localize="save-changes">Save changes</button>
             </div>
+          </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+      </div><!-- /.modal -->
+
+       <!-- About ofSketch Modal -->   
+      <div class="modal fade" id="about-ofsketch-modal" tabindex="-1" role="dialog" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" data-localize="about-ofsketch">About ofSketch</h4>
+              </div>
+              <div class="modal-body">
+                  <p class="text-center">
+                    ofSketch version: <strong>v<span class="local-version"></span></strong><br>
+                    openFrameworks version: <strong>v0.8.3</strong>
+                  </p>
+                  <p class="text-center">
+                    ofSketch repository: <a href="https://github.com/olab-io/ofSketch">github.com/olab-io/ofSketch</a>
+                  </p>
+                  <p>
+                    ofSketch is developed by <a href="http://christopherbaker.net">Christopher Baker</a> and <a href="http://brannondorsey.com">Brannon Dorsey</a> at the <a href="http://olab.io">SAIC openLab</a> through the <a href="https://developers.google.com/open-source/soc/?csw=1">Google Summer of Code</a> 2014 program.
+                  </p>
+              </div>
           </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
       </div><!-- /.modal -->
