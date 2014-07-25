@@ -92,6 +92,7 @@ function SketchEditor(callback)
 		    	openProject(); //WARNING: this is a global variable
 		    }
 		});
+		
 	}
 
 	var _registerTabEvent = function(tabElement)
@@ -441,7 +442,21 @@ function SketchEditor(callback)
 
 	this.showSettingsMenu = function()
 	{
-		_editor.execCommand("showSettingsMenu");
+		_editor.execCommand('showSettingsMenu');
+		
+		onSettingsMenuShow(function(){
+			$('#setFontSize').on('change', function(){
+				_editor.setFontSize(parseInt($(this).val()));
+			});
+		});
+
+		// recursively check if the menu has loaded
+		function onSettingsMenuShow(callback) {
+			setTimeout(function(){
+				if ($('#ace_settingsmenu').size() > 0) callback();
+				else onSettingsMenuShow(callback);
+			}, 50);
+		}
 	}
 
 	_settings.load(function(data){
