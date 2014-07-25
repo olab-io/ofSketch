@@ -34,6 +34,11 @@ EditorSettings::EditorSettings(const std::string& path):
 {
     load();
 }
+    
+void EditorSettings::update(const ofxJSONElement& data)
+{
+    _data = data;
+}
 
 bool EditorSettings::load()
 {

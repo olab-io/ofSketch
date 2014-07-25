@@ -50,20 +50,34 @@ function SketchEditor(callback)
 
 	var _applySettings = function(editorSettings)
 	{
-		_editor.setTheme(_settings.getData().editorTheme);
-	    _editor.getSession().setMode(_settings.getData().editorMode);
-	    _editor.getSession().setTabSize(_settings.getData().tabSize);
-	    _editor.setFontSize(_settings.getData().fontSize);
-	    _editor.setHighlightActiveLine(_settings.getData().editorHighlightActiveLine);
-	    _editor.setShowPrintMargin(_settings.getData().editorShowPrintMargin);
-	    _editor.setShowInvisibles(_settings.getData().editorShowInvisibles);
-	    _editor.setBehavioursEnabled(_settings.getData().editorAutopairCharacters);
-		
+
+		_editor.getSession().setMode(_settings.getData().setMode);
+		_editor.setTheme(_settings.getData().setTheme);
+		_editor.setBehavioursEnabled(_settings.getData().setBehavioursEnabled);
+		_editor.setDisplayIndentGuides(_settings.getData().setDisplayIndentGuides);
+		_editor.setDragDelay(_settings.getData().setDragDelay);
+		_editor.setFadeFoldWidgets(_settings.getData().setFadeFoldWidgets);
+		_editor.setFontSize(_settings.getData().setFontSize);
+		_editor.setHighlightActiveLine(_settings.getData().setHighlightActiveLine);
+		_editor.setHighlightGutterLine(_settings.getData().setHighlightGutterLine);
+		_editor.setHighlightSelectedWord(_settings.getData().setHighlightSelectedWord);
+		_editor.getSession().setNewLineMode(_settings.getData().setNewLineMode);
+		_editor.setOverwrite(_settings.getData().setOverwrite);
+		_editor.setPrintMarginColumn(_settings.getData().setPrintMarginColumn);
+		_editor.setReadOnly(_settings.getData().setReadOnly);
+		_editor.setScrollSpeed(_settings.getData().setScrollSpeed);
+		_editor.setShowFoldWidgets(_settings.getData().setShowFoldWidgets);
+		_editor.setShowInvisibles(_settings.getData().setShowInvisibles);
+		_editor.setShowPrintMargin(_settings.getData().setShowPrintMargin);
+		_editor.getSession().setTabSize(_settings.getData().setTabSize);
+		_editor.getSession().setUseSoftTabs(_settings.getData().setUseSoftTabs);
+		_editor.setWrapBehavioursEnabled(_settings.getData().setWrapBehavioursEnabled);
+		_editor.getSession().setWrapLimit(_settings.getData().setWrapLimit);
+
 		_editor.setOptions({
         	enableBasicAutocompletion: true,
         	enableSnippets: true
     	});
-
 	}
 
 	var _registerEvents = function()
@@ -92,6 +106,14 @@ function SketchEditor(callback)
 		    	openProject(); //WARNING: this is a global variable
 		    }
 		});
+
+		_editor.commands.addCommand({
+		    name: 'Show Editor Settings',
+		    bindKey: {mac: 'Command-,', win: 'Ctrl-,'},
+		    exec: function(editor) {
+		    	_self.showSettingsMenu();
+		    }
+		});
 		
 	}
 
@@ -111,14 +133,14 @@ function SketchEditor(callback)
 				projectFile.fileName,
 				true,
 				new ace.createEditSession(_project.getProjectFile().fileContents,
-											 _settings.getData().editorMode));
+											 _settings.getData().setMode));
 
 		var classes = _project.getClasses();
 		_.each(classes, function(c){
 			_addTab(getPrettyFileName(c.fileName),
 					c.fileName,
 					false,
-				new ace.createEditSession(c.fileContents, _settings.getData().editorMode));
+				new ace.createEditSession(c.fileContents, _settings.getData().setMode));
 		});
 
 		_resizeTabs(true);
@@ -221,6 +243,41 @@ function SketchEditor(callback)
         if ($('#tab-dropdown').is(':empty')) $('#tab-dropdown-button').hide();
         else $('#tab-dropdown-button').show();
 
+	}
+
+	var _serializeEditorSettings = function()
+	{
+		// "setVScrollBarAlwaysVisible": "",
+		// "setHScrollBarAlwaysVisible": "",
+		// "setOptions": "",
+		// "setUseWorker": ""
+		// "setShowGutter": _editor.getShowGutter(),
+		// "setKeyboardHandler": _editor.getKeyboardHandler(),
+		
+		return JSON.stringify({
+			setBehavioursEnabled: _editor.getBehavioursEnabled(),
+			setDisplayIndentGuides: _editor.getDisplayIndentGuides(),
+			setDragDelay: _editor.getDragDelay(),
+			setFadeFoldWidgets: _editor.getFadeFoldWidgets(),
+			setFontSize: _editor.getFontSize(),
+			setHighlightActiveLine: _editor.getHighlightActiveLine(),
+			setHighlightGutterLine: _editor.getHighlightGutterLine(),
+			setHighlightSelectedWord: _editor.getHighlightSelectedWord(),
+			setMode: _editor.getSession().getMode().$id,
+			setTheme: _editor.getTheme(),
+			setNewLineMode: _editor.getSession().getNewLineMode(),
+			setOverwrite: _editor.getOverwrite(),
+			setPrintMarginColumn: _editor.getPrintMarginColumn(),
+			setReadOnly: _editor.getReadOnly(),
+			setScrollSpeed: _editor.getScrollSpeed(),
+			setShowFoldWidgets: _editor.getShowFoldWidgets(),
+			setShowInvisibles: _editor.getShowInvisibles(),
+			setShowPrintMargin: _editor.getShowPrintMargin(),
+			setTabSize: _editor.getSession().getTabSize(),
+			setUseSoftTabs: _editor.getSession().getUseSoftTabs(),
+			setWrapBehavioursEnabled: _editor.getWrapBehavioursEnabled(),
+			setWrapLimit: _editor.getSession().getWrapLimit()	
+		});
 	}
 
 	this.loadProject = function(projectName, onSuccess, onError)
@@ -355,7 +412,7 @@ function SketchEditor(callback)
 					classFile.fileName, 
 					false, 
 					new ace.createEditSession(classFile.fileContents, 
-										_settings.getData().editorMode));
+										_settings.getData().setMode));
 			_resizeTabs(true);
 			onSuccess(); // should I pass result object?
 		}, onError);
@@ -445,9 +502,25 @@ function SketchEditor(callback)
 		_editor.execCommand('showSettingsMenu');
 		
 		onSettingsMenuShow(function(){
+
+			// hide select inputs
+			$('[contains="setMode"').hide();
+			$('[contains="setNewLineMode"').hide();
+			$('[contains="setTabSize"]').hide();
+			$('[contains="setUseSoftTabs"]').hide();
+			$('[contains="setWrapLimit"]').hide();
+			$('[contains="setOptions"]').hide();
+			$('[contains="setBehavioursEnabled"]').hide();
+			$('[contains="setKeyboardHandler"]').hide();
+			$('[contains="setVScrollBarAlwaysVisible"]').hide();
+			$('[contains="setHScrollBarAlwaysVisible"]').hide();
+			$('[contains="setUseWorker"]').hide();
+			$('[contains="setWrapBehavioursEnabled"]').hide();
+
 			$('#setFontSize').on('change', function(){
 				_editor.setFontSize(parseInt($(this).val()));
 			});
+
 		});
 
 		// recursively check if the menu has loaded
@@ -463,6 +536,7 @@ function SketchEditor(callback)
 		
 		_applySettings();
 		_registerEvents();
+		// console.log(_serializeEditorSettings());
 		callback();
 
 	}, function(){

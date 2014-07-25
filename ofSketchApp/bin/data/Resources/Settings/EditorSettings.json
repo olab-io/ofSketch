@@ -1,20 +1,29 @@
 {
-	"fontSize": 12,
-	"tabSize": 4,
-	"editorTheme": "ace/theme/twilight",
-	"editorMode": "ace/mode/c_cpp",
-	"editorHighlightActiveLine": false,
-	"editorShowPrintMargin": true,
-	"editorShowInvisibles": false,
-	"editorAutopairCharacters": true,
-	"keys": {
-		"save": {
-			"win": "Ctrl-s",
-			"mac": "Command-s"
-		},
-		"run": {
-			"win": "Ctrl-r",
-			"mac": "Command-r"
-		}
-	}
+	"setAutopairCharacters": true,
+	"setBehaviorsEnabled": true,
+	"setDisplayIndentGuides": true,
+	"setDragDelay": true,
+	"setFadeFoldWidgets": false,
+	"setFontSize": 12,
+	"setHighlightActiveLine": false,
+	"setHighlightGutterLine": true,
+	"setHighlightSelectedWord": false,
+	"setHScrollBarAlwaysVisible": false,
+	"setTheme": "ace/theme/twilight",
+	"setMode": "ace/mode/c_cpp",
+	"setNewLineMode": "auto",
+	"setOverwrite": false,
+	"setPrintMarginColumn": 80,
+	"setReadOnly": false,
+	"setScrollSpeed": 2,
+	"setShowFoldWidgets": true,
+	"setShowGutter": true,
+	"setShowInvisibles": false,
+	"setShowPrintMargin": true,
+	"setTabSize": 4,
+	"setUseSoftTabs": true,
+	"setUseWorker": true,
+	"setVScrollBarAlwaysVisible": false,
+	"setWrapBehaviorsEnabled": true,
+	"setWrapLimit": 80
 }

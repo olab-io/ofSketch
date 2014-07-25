@@ -39,14 +39,14 @@ function EditorSettings(data)
 	this.save = function(onSuccess, onError)
 	{
 		JSONRPCClient.call('save-editor-settings', 
-    					{},
+    					{"data": _data},
 				        onSuccess,
 				        onError);
 	}
 
 	this.update = function(editorSettings)
 	{
-		_editorSettings = editorSettings;
+		_data = editorSettings;
 	}
 
 	this.getData = function()
