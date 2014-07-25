@@ -43,6 +43,7 @@
 #include "WebSocketLoggerChannel.h"
 #include "ProcessTaskQueue.h"
 #include "EditorSettings.h"
+#include "OfSketchSettings.h"
 
 
 namespace of {
@@ -136,6 +137,7 @@ private:
     Poco::ThreadPool _threadPool;
     ProcessTaskQueue _taskQueue;
     EditorSettings _editorSettings;
+    OfSketchSettings _ofSketchSettings;
     Compiler _compiler;
     ProjectManager _projectManager;
     AddonManager _addonManager;

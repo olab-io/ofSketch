@@ -23,31 +23,43 @@
 // =============================================================================
 
 
-#include "EditorSettings.h"
+#pragma once
+
+
+#include <string>
+#include <json/json.h>
+#include "ofxJSONElement.h"
+
 
 namespace of {
 namespace Sketch {
-
-
-EditorSettings::EditorSettings(const std::string& path):
-    _path(path)
+    
+    
+class OfSketchSettings
 {
-    load();
-}
-
-bool EditorSettings::load()
-{
-    return _data.open(_path);
-}
-
-bool EditorSettings::save()
-{
-    return _data.save(_path);
-}
-
-const Json::Value& EditorSettings::getData() const
-{
-    return _data;
-}
+public:
+    
+    OfSketchSettings(const std::string& path);
+    
+    bool load();
+    bool save();
+    
+    const Json::Value& getData() const;
+    
+    int getPort() const;
+    std::string getProjectDir() const;
+    std::string getSketchDir() const;
+    std::string getOpenFrameworksDir() const;
+    std::string getOpenFrameworksVersion() const;
+    std::string getAddonsDir() const;
+    std::string getProjectSettingsFilename() const;
+    std::string getProjectExtension() const;
+    std::string getClassExtension() const;
+    
+private:
+    
+    std::string _path;
+    ofxJSONElement _data; //ofxJSONElement for load functionality
+};
     
 } } // namespace of::Sketch

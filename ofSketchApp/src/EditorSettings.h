@@ -46,16 +46,6 @@ public:
     
     const Json::Value& getData() const;
     
-    int getPort() const;
-    std::string getProjectDir() const;
-    std::string getSketchDir() const;
-    std::string getOpenFrameworksDir() const;
-    std::string getOpenFrameworksVersion() const;
-    std::string getAddonsDir() const;
-    std::string getProjectSettingsFilename() const;
-    std::string getProjectExtension() const;
-    std::string getClassExtension() const;
-    
 private:
     
     std::string _path;

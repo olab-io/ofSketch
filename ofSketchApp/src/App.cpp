@@ -38,11 +38,12 @@ App::App():
     _threadPool("ofSketchThreadPool"),
     _taskQueue(ofx::TaskQueue_<std::string>::UNLIMITED_TASKS, _threadPool),
     _editorSettings(ofToDataPath("Resources/Settings/EditorSettings.json")),
+    _ofSketchSettings(ofToDataPath("Resources/Settings/OfSketchSettings.json")),
     _compiler(_taskQueue, ofToDataPath("Resources/Templates/CompilerTemplates")),
-    _projectManager(ofToDataPath(_editorSettings.getProjectDir(), true)),
-    _addonManager(ofToDataPath(_editorSettings.getAddonsDir()))
+    _projectManager(ofToDataPath(_ofSketchSettings.getProjectDir(), true)),
+    _addonManager(ofToDataPath(_ofSketchSettings.getAddonsDir()))
 {
-    ofLogNotice("App::App") << "Editor setting's projectDir: " << _editorSettings.getProjectDir();
+    ofLogNotice("App::App") << "Editor setting's projectDir: " << _ofSketchSettings.getProjectDir();
     _taskQueue.registerTaskEvents(this);
 
     ofx::HTTP::BasicJSONRPCServerSettings settings; // TODO: load from file.

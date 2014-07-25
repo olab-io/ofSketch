@@ -1,0 +1,13 @@
+{
+	"port": 9889,
+	"hostname": "http://127.0.0.1",
+	"icon": "some/path",
+	"projectDir": "Projects",
+	"sketchDir": "sketch",
+	"addonsDir": "openFrameworks/addons",
+	"openFrameworksDir": "openFrameworks",
+	"openFrameworksVersion": "v0.8.1",
+	"projectExtension": ".sketch",
+	"classExtension": ".sketch",
+	"projectSettingsFilename": ".sketchconfig",
+}
