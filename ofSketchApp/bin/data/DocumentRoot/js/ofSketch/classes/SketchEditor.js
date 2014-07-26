@@ -245,7 +245,7 @@ function SketchEditor(callback)
 
 	}
 
-	var _serializeEditorSettings = function()
+	var _getEditorSettings = function()
 	{
 		// "setVScrollBarAlwaysVisible": "",
 		// "setHScrollBarAlwaysVisible": "",
@@ -254,7 +254,7 @@ function SketchEditor(callback)
 		// "setShowGutter": _editor.getShowGutter(),
 		// "setKeyboardHandler": _editor.getKeyboardHandler(),
 		
-		return JSON.stringify({
+		return {
 			setBehavioursEnabled: _editor.getBehavioursEnabled(),
 			setDisplayIndentGuides: _editor.getDisplayIndentGuides(),
 			setDragDelay: _editor.getDragDelay(),
@@ -277,7 +277,7 @@ function SketchEditor(callback)
 			setUseSoftTabs: _editor.getSession().getUseSoftTabs(),
 			setWrapBehavioursEnabled: _editor.getWrapBehavioursEnabled(),
 			setWrapLimit: _editor.getSession().getWrapLimit()	
-		});
+		};
 	}
 
 	this.loadProject = function(projectName, onSuccess, onError)
@@ -521,6 +521,16 @@ function SketchEditor(callback)
 				_editor.setFontSize(parseInt($(this).val()));
 			});
 
+			$('#ace_settingsmenu input, #ace_settingsmenu select').on('change', function(){
+		
+				_settings.update(_getEditorSettings());
+				_settings.save(function(){
+					console.log('success!');
+				}, function(err){
+					// console.log(err);
+				});
+				
+			});
 		});
 
 		// recursively check if the menu has loaded
@@ -532,11 +542,17 @@ function SketchEditor(callback)
 		}
 	}
 
+	this.updateSettings = function(data)
+	{
+		_settings.update(data);
+		_applySettings();
+	}
+
 	_settings.load(function(data){
 		
 		_applySettings();
 		_registerEvents();
-		// console.log(_serializeEditorSettings());
+		// console.log(_getEditorSettings());
 		callback();
 
 	}, function(){

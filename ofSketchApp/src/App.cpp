@@ -155,13 +155,17 @@ void App::setup()
                            "Get list of all projects in the Project directory.",
                            this,
                            &App::getProjectList);
-
+    
     server->registerMethod("load-editor-settings",
                            "Get the editor settings.",
                            this,
                            &App::loadEditorSettings);
-
-
+    
+    server->registerMethod("save-editor-settings",
+                           "Save the editor settings.",
+                           this,
+                           &App::saveEditorSettings);
+    
     server->start();
 
     // Launch a browser with the address of the server.
@@ -357,6 +361,22 @@ void App::loadEditorSettings(const void *pSender, ofx::JSONRPC::MethodArgs &args
     args.result = _editorSettings.getData();
 }
     
+void App::saveEditorSettings(const void *pSender, ofx::JSONRPC::MethodArgs &args)
+{
+    ofLogVerbose("App::saveEditorSettings") << "Saving editor settings" << endl;
+    Json::Value settings = args.params["data"]; // must make a copy
+    _editorSettings.update(settings);
+    _editorSettings.save();
+    
+    // broadcast new editor settings to all connected clients
+    Json::Value params;
+    params["data"] = settings;
+    params["clientUUID"] = args.params["clientUUID"];
+    ofLogNotice("App::saveEditorSettings") << "clientUUID: " << params["clientUUID"] << endl;
+    Json::Value json = App::toJSONMethod("Server", "updateEditorSettings", params);
+    ofx::HTTP::WebSocketFrame frame(App::toJSONString(json));
+    server->getWebSocketRoute()->broadcast(frame);
+}
 
 bool App::onWebSocketOpenEvent(ofx::HTTP::WebSocketOpenEventArgs& args)
 {

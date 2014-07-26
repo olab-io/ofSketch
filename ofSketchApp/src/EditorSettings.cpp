@@ -47,7 +47,7 @@ bool EditorSettings::load()
 
 bool EditorSettings::save()
 {
-    return _data.save(_path);
+    return _data.save(_path, true);
 }
 
 const Json::Value& EditorSettings::getData() const
