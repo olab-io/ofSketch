@@ -73,6 +73,7 @@ function SketchEditor(callback)
 		_editor.getSession().setUseSoftTabs(_settings.getData().setUseSoftTabs);
 		_editor.setWrapBehavioursEnabled(_settings.getData().setWrapBehavioursEnabled);
 		_editor.getSession().setWrapLimit(_settings.getData().setWrapLimit);
+		_editor.getSession().setUseWrapMode(_settings.getData().setUseWrapMode);
 
 		_editor.setOptions({
         	enableBasicAutocompletion: true,
@@ -247,6 +248,7 @@ function SketchEditor(callback)
 
 	var _getEditorSettings = function()
 	{
+		// Omitted as of now:
 		// "setVScrollBarAlwaysVisible": "",
 		// "setHScrollBarAlwaysVisible": "",
 		// "setOptions": "",
@@ -255,6 +257,8 @@ function SketchEditor(callback)
 		// "setKeyboardHandler": _editor.getKeyboardHandler(),
 		
 		return {
+			setMode: _editor.getSession().getMode().$id,
+			setTheme: _editor.getTheme(),
 			setBehavioursEnabled: _editor.getBehavioursEnabled(),
 			setDisplayIndentGuides: _editor.getDisplayIndentGuides(),
 			setDragDelay: _editor.getDragDelay(),
@@ -263,8 +267,6 @@ function SketchEditor(callback)
 			setHighlightActiveLine: _editor.getHighlightActiveLine(),
 			setHighlightGutterLine: _editor.getHighlightGutterLine(),
 			setHighlightSelectedWord: _editor.getHighlightSelectedWord(),
-			setMode: _editor.getSession().getMode().$id,
-			setTheme: _editor.getTheme(),
 			setNewLineMode: _editor.getSession().getNewLineMode(),
 			setOverwrite: _editor.getOverwrite(),
 			setPrintMarginColumn: _editor.getPrintMarginColumn(),
@@ -276,7 +278,8 @@ function SketchEditor(callback)
 			setTabSize: _editor.getSession().getTabSize(),
 			setUseSoftTabs: _editor.getSession().getUseSoftTabs(),
 			setWrapBehavioursEnabled: _editor.getWrapBehavioursEnabled(),
-			setWrapLimit: _editor.getSession().getWrapLimit()	
+			setWrapLimit: _editor.getSession().getWrapLimit(),
+			setUseWrapMode: _editor.getSession().getUseWrapMode()
 		};
 	}
 
@@ -516,6 +519,8 @@ function SketchEditor(callback)
 			$('[contains="setHScrollBarAlwaysVisible"]').hide();
 			$('[contains="setUseWorker"]').hide();
 			$('[contains="setWrapBehavioursEnabled"]').hide();
+			$('[contains="setUseWrapMode"]').hide();
+			$('[contains="setReadOnly"]').hide();
 
 			$('#setFontSize').on('change', function(){
 				_editor.setFontSize(parseInt($(this).val()));
