@@ -18,6 +18,7 @@
    "setTabSize" : 4,
    "setTheme" : "ace/theme/twilight",
    "setUseSoftTabs" : true,
-   "setWrapLimit" : 131
+   "setUseWrapMode" : false,
+   "setWrapLimit" : 80
 }
 

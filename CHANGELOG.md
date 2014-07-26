@@ -1,3 +1,6 @@
+- 0.3.0 (pending)
+	+ Adapt default ACE Settings Menu to support global ofSketch editor settings ([#42](https://github.com/olab-io/ofSketch/issues/42))
+
 - 0.2.2 (07-22-14)
 	+ Add "About ofSketch" to settings ([#64](https://github.com/olab-io/ofSketch/issues/64))
 	+ Basic localization support for Spanish, German, and Japanese ([#68](https://github.com/olab-io/ofSketch/issues/68))
