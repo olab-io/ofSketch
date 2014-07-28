@@ -400,7 +400,7 @@ bool App::onWebSocketOpenEvent(ofx::HTTP::WebSocketOpenEventArgs& args)
     params["minor"] = getVersionMinor();
     params["patch"] = getVersionPatch();
     params["special"] = getVersionSpecial();
-    params["target"] = toString(ofGetTargetPlatform());
+    params["target"] = toString(getTargetPlatform());
 
     json = App::toJSONMethod("Server", "version", params);
     frame = ofx::HTTP::WebSocketFrame(App::toJSONString(json));
