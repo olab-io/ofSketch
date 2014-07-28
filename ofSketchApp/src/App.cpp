@@ -82,6 +82,7 @@ void App::setup()
 {
     ofSetFrameRate(30);
 
+    ofSetLogLevel("ofThread", OF_LOG_ERROR);
     ofSetLogLevel(OF_LOG_VERBOSE);
 
     ofSSLManager::initializeServer(new Poco::Net::Context(Poco::Net::Context::SERVER_USE,
@@ -730,7 +731,7 @@ std::string App::getVersionSpecial()
 #include "Poco/PipeStream.h"
 #include "Poco/StreamCopier.h"
 
-ofTargetPlatform getTargetPlatform()
+ofTargetPlatform App::getTargetPlatform()
 {
 #ifdef TARGET_LINUX
     std::string cmd("uname");
