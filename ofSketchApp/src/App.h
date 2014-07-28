@@ -116,6 +116,11 @@ public:
     static int getVersionPatch();
     static std::string getVersionSpecial();
 
+    // TODO: HACK while openFrameworks core is updated.
+    // - https://github.com/openframeworks/openFrameworks/issues/2162
+    // - https://github.com/openframeworks/openFrameworks/pull/3109
+    static ofTargetPlatform getTargetPlatform();
+    
     // TODO: Move this.
     static std::string toString(ofTargetPlatform targetPlatform);
 

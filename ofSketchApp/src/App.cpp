@@ -702,6 +702,60 @@ std::string App::getVersionSpecial()
 }
 
 
+////////////////////////////////////////////////////////////////////////////////
+
+
+#include "Poco/Process.h"
+#include "Poco/PipeStream.h"
+#include "Poco/StreamCopier.h"
+
+ofTargetPlatform getTargetPlatform()
+{
+#ifdef TARGET_LINUX
+    std::string cmd("uname");
+    std::vector<std::string> args;
+    args.push_back("-m");
+    Poco::Pipe outPipe;
+    Poco::ProcessHandle ph = Poco::Process::launch(cmd, args, 0, &outPipe, 0);
+    Poco::PipeInputStream istr(outPipe);
+
+    std::stringstream ostr;
+
+    Poco::StreamCopier::copyStream(istr, ostr);
+
+    std::string arch = ostr.str();
+
+    if(ofIsStringInString(arch,"x86_64")) {
+        return OF_TARGET_LINUX64;
+    } else if(ofIsStringInString(arch,"armv6l")) {
+        return OF_TARGET_LINUXARMV6L;
+    } else if(ofIsStringInString(arch,"armv7l")) {
+        return OF_TARGET_LINUXARMV7L;
+    } else {
+        return OF_TARGET_LINUX;
+    }
+
+#elif defined(TARGET_OSX)
+        return OF_TARGET_OSX;
+#elif defined(TARGET_WIN32)
+#if (_MSC_VER)
+        return OF_TARGET_WINVS;
+#else
+        return OF_TARGET_WINGCC;
+#endif
+#elif defined(TARGET_ANDROID)
+        return OF_TARGET_ANDROID;
+#elif defined(TARGET_OF_IOS)
+        return OF_TARGET_IOS;
+#elif defined(TARGET_EMSCRIPTEN)
+        return OF_TARGET_EMSCRIPTEN;
+#endif
+    }
+
+
+////////////////////////////////////////////////////////////////////////////////
+    
+
 std::string App::toString(ofTargetPlatform targetPlatform)
 {
     switch (targetPlatform)
