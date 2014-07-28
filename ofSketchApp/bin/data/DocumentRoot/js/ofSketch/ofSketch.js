@@ -747,6 +747,16 @@ $(document).ready( function()
             $('#renamed-class-name').focus();
         });
 
+        // autosave
+        // setInterval(function(){
+        //     if (!sketchEditor.getProject().isTemplate() &&
+        //         sketchEditor.getProject().needsSave()) {
+        //         console.log("autosave");
+        //         save(); //WARNING: this is a global variable
+        //     }
+        // }, 1000 * 60);
+
+
         parseURLParameters();
 
     });

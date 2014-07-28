@@ -467,7 +467,7 @@ bool App::onWebSocketCloseEvent(ofx::HTTP::WebSocketCloseEventArgs& args)
 
 bool App::onWebSocketFrameReceivedEvent(ofx::HTTP::WebSocketFrameEventArgs& args)
 {
-//    ofLogVerbose("App::onWebSocketFrameReceivedEvent") << "Frame received from: " << args.getConnectionRef().getClientAddress().toString();
+    ofLogVerbose("App::onWebSocketFrameReceivedEvent") << "Frame received from: " << args.getConnectionRef().getClientAddress().toString();
     return false; // did not handle it
 }
 

@@ -42,6 +42,7 @@ _data = {
 function Project(projectName, onSuccess, onError, isTemplate) 
 {
 	var _self = this;
+	var _needsSave = false;
 	var _settings;
 	var _data;
 	var _isTemplate;
@@ -91,6 +92,7 @@ function Project(projectName, onSuccess, onError, isTemplate)
 		JSONRPCClient.call('save-project', 
         					{ projectData: _self.getData() },
 					        function(result) {
+					        	_needsSave = false;
 					            onSuccess(result);
 					        },
 					        function(error) {
@@ -218,6 +220,16 @@ function Project(projectName, onSuccess, onError, isTemplate)
 	this.getData = function()
 	{
 		return _data;
+	}
+
+	this.needsSave = function()
+	{
+		return _needsSave;
+	}
+
+	this.setNeedsSave = function(bool)
+	{
+		_needsSave = bool
 	}
 
 	if (isTemplate) {

@@ -34,7 +34,7 @@ function SketchEditor(callback)
 {
 	var _self = this;
 	
-	var _settings = new EditorSettings(); 
+	var _settings = new EditorSettings();
 	var _tabs = [];
 	var _project = undefined;
 	var _isRunning = false;
@@ -154,6 +154,7 @@ function SketchEditor(callback)
 		var tabElement = $('<li class="file-tab"><a href="#" onclick="return false;">' + name + '</a></li>');
 		editSession.on('change', function(){
 			tabElement.addClass('unsaved');
+			_project.setNeedsSave(true);
 		});
 
 		var tab = {
@@ -557,7 +558,7 @@ function SketchEditor(callback)
 		
 		_applySettings();
 		_registerEvents();
-		// console.log(_getEditorSettings());
+		
 		callback();
 
 	}, function(){
