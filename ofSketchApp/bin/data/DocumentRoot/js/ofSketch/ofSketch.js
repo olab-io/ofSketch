@@ -23,6 +23,7 @@
 //
 // =============================================================================
 var JSONRPCClient;
+var CLIENT_UUID = generateUUID();
 
 $(document).ready( function()
 {
@@ -143,7 +144,10 @@ $(document).ready( function()
         }
         else if (evt.method == "updateEditorSettings")
         {  
-
+            // check that the update didn't come from this client 
+            if (evt.params.clientUUID != CLIENT_UUID) {
+                sketchEditor.updateSettings(evt.params.data);
+            }
         }
         else if (evt.method == "updateProjectSettings")
         {
@@ -358,7 +362,7 @@ $(document).ready( function()
     function parseURLParameters()
     {
         var project = getURLParameter('project');
-        if (project) {
+        if (project) { 
             sketchEditor.loadProject(project, function() {
                 $('title').text(project);
                 console.log("Project loaded!");

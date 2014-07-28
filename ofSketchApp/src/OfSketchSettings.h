@@ -22,35 +22,44 @@
 //
 // =============================================================================
 
-function EditorSettings(data) 
+
+#pragma once
+
+
+#include <string>
+#include <json/json.h>
+#include "ofxJSONElement.h"
+
+
+namespace of {
+namespace Sketch {
+    
+    
+class OfSketchSettings
 {
-	var _data;
-
-	this.load = function(onSuccess, onError)
-	{
-		JSONRPCClient.call('load-editor-settings', 
-    					{},
-    					function(data){
-    						_data = data;
-				        	onSuccess(data)
-				    	}, onError);
-	}
-
-	this.save = function(onSuccess, onError)
-	{
-		JSONRPCClient.call('save-editor-settings', 
-    					{},
-				        onSuccess,
-				        onError);
-	}
-
-	this.update = function(editorSettings)
-	{
-		_editorSettings = editorSettings;
-	}
-
-	this.getData = function()
-	{
-		return _data;
-	}
-}
+public:
+    
+    OfSketchSettings(const std::string& path);
+    
+    bool load();
+    bool save();
+    
+    const Json::Value& getData() const;
+    
+    int getPort() const;
+    std::string getProjectDir() const;
+    std::string getSketchDir() const;
+    std::string getOpenFrameworksDir() const;
+    std::string getOpenFrameworksVersion() const;
+    std::string getAddonsDir() const;
+    std::string getProjectSettingsFilename() const;
+    std::string getProjectExtension() const;
+    std::string getClassExtension() const;
+    
+private:
+    
+    std::string _path;
+    ofxJSONElement _data; //ofxJSONElement for load functionality
+};
+    
+} } // namespace of::Sketch

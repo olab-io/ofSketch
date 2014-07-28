@@ -43,6 +43,7 @@
 #include "WebSocketLoggerChannel.h"
 #include "ProcessTaskQueue.h"
 #include "EditorSettings.h"
+#include "OfSketchSettings.h"
 
 
 namespace of {
@@ -76,6 +77,7 @@ public:
     void stop(const void* pSender, ofx::JSONRPC::MethodArgs& args);
     void getProjectList(const void* pSender, ofx::JSONRPC::MethodArgs& args);
     void loadEditorSettings(const void* pSender, ofx::JSONRPC::MethodArgs& args);
+    void saveEditorSettings(const void* pSender, ofx::JSONRPC::MethodArgs& args);
 
     bool onWebSocketOpenEvent(ofx::HTTP::WebSocketOpenEventArgs& args);
     bool onWebSocketCloseEvent(ofx::HTTP::WebSocketCloseEventArgs& args);
@@ -141,6 +143,7 @@ private:
     Poco::ThreadPool _threadPool;
     ProcessTaskQueue _taskQueue;
     EditorSettings _editorSettings;
+    OfSketchSettings _ofSketchSettings;
     Compiler _compiler;
     ProjectManager _projectManager;
     AddonManager _addonManager;

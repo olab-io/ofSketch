@@ -41,20 +41,12 @@ public:
     
     EditorSettings(const std::string& path);
     
+    void update(const ofxJSONElement& data);
+    
     bool load();
     bool save();
     
     const Json::Value& getData() const;
-    
-    int getPort() const;
-    std::string getProjectDir() const;
-    std::string getSketchDir() const;
-    std::string getOpenFrameworksDir() const;
-    std::string getOpenFrameworksVersion() const;
-    std::string getAddonsDir() const;
-    std::string getProjectSettingsFilename() const;
-    std::string getProjectExtension() const;
-    std::string getClassExtension() const;
     
 private:
     

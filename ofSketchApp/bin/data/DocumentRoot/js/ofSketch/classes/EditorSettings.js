@@ -38,15 +38,19 @@ function EditorSettings(data)
 
 	this.save = function(onSuccess, onError)
 	{
-		JSONRPCClient.call('save-editor-settings', 
-    					{},
+		console.log("Saving editor settings");
+		JSONRPCClient.call('save-editor-settings',
+    					{
+    						data: _data,
+    					 	clientUUID: CLIENT_UUID
+    					},
 				        onSuccess,
 				        onError);
 	}
 
 	this.update = function(editorSettings)
 	{
-		_editorSettings = editorSettings;
+		_data = editorSettings;
 	}
 
 	this.getData = function()

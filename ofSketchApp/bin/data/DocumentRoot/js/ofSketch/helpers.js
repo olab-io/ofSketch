@@ -23,3 +23,15 @@ function getURLParameter(name) {
         results = regex.exec(location.search);
     return results == null ? undefined : decodeURIComponent(results[1].replace(/\+/g, " "));
 }
+
+function generateUUID(){
+
+  return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+           s4() + '-' + s4() + s4() + s4();
+
+  function s4() {
+    return Math.floor((1 + Math.random()) * 0x10000)
+               .toString(16)
+               .substring(1);
+  }
+};

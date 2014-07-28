@@ -1,31 +1,24 @@
 {
-	"port": 9889,
-	"hostname": "http://127.0.0.1",
-	"icon": "some/path",
-	"projectDir": "Projects",
-	"sketchDir": "sketch",
-	"addonsDir": "openFrameworks/addons",
-	"openFrameworksDir": "openFrameworks",
-	"openFrameworksVersion": "v0.8.1",
-	"projectExtension": ".sketch",
-	"classExtension": ".sketch",
-	"projectSettingsFilename": ".sketchconfig",
-	"fontSize": 12,
-	"tabSize": 4,
-	"editorTheme": "ace/theme/twilight",
-	"editorMode": "ace/mode/c_cpp",
-	"editorHighlightActiveLine": false,
-	"editorShowPrintMargin": true,
-	"editorShowInvisibles": false,
-	"editorAutopairCharacters": true,
-	"keys": {
-		"save": {
-			"win": "Ctrl-s",
-			"mac": "Command-s"
-		},
-		"run": {
-			"win": "Ctrl-r",
-			"mac": "Command-r"
-		}
-	}
+   "setDisplayIndentGuides" : true,
+   "setDragDelay" : true,
+   "setFadeFoldWidgets" : false,
+   "setFontSize" : 12,
+   "setHighlightActiveLine" : false,
+   "setHighlightGutterLine" : true,
+   "setHighlightSelectedWord" : false,
+   "setMode" : "ace/mode/c_cpp",
+   "setNewLineMode" : "auto",
+   "setOverwrite" : false,
+   "setPrintMarginColumn" : "80",
+   "setReadOnly" : false,
+   "setScrollSpeed" : 2,
+   "setShowFoldWidgets" : true,
+   "setShowInvisibles" : false,
+   "setShowPrintMargin" : true,
+   "setTabSize" : 4,
+   "setTheme" : "ace/theme/twilight",
+   "setUseSoftTabs" : true,
+   "setUseWrapMode" : false,
+   "setWrapLimit" : 80
 }
+
