@@ -363,14 +363,24 @@ $(document).ready( function()
     {
         var project = getURLParameter('project');
         if (project) { 
-            sketchEditor.loadProject(project, function() {
-                $('title').text(project);
-                console.log("Project loaded!");
-            }, loadError);
+
+            sketchEditor.getProjectList(function(result){
+                var match = _.findWhere(result, { projectName: project });
+                if (match) {
+                    sketchEditor.loadProject(project, function() {
+                        $('title').text(project);
+                    }, loadError);
+                } else {
+                    sketchEditor.loadTemplateProject(function(){}, loadError);
+                }
+            }, function(err) {
+                console.log("Error requesting project list: ");
+                console.log(err);
+            });
+
         } else {
-            sketchEditor.loadTemplateProject(function() {
-                console.log("Template project loaded!");
-            }, loadError);
+
+            sketchEditor.loadTemplateProject(function(){}, loadError);
         }
     }
 
