@@ -556,7 +556,9 @@ $(document).ready( function()
         $('#toolbar-stop').on('click', function() {
             if (sketchEditor.isRunning() &&
                 !$(this).hasClass('disabled')) {
-                sketchEditor.stop(function(){}, runError);
+                sketchEditor.stop(function(){
+                    // callback
+                }, runError);
             }
         });
 
