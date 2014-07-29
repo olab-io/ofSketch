@@ -383,13 +383,14 @@ $(document).ready( function()
                 if (match) {
                     sketchEditor.loadProject(project, function(result) {
                         $('title').text(project);
-                        console.log(result);
                         if (result.alreadyOpen == true){
                             $('#project-already-open-modal').modal('show');
                         }
                     }, loadError);
                 } else {
-                    sketchEditor.loadTemplateProject(function(){}, loadError);
+                    sketchEditor.loadTemplateProject(function(){
+                        $('#project-not-found-modal').modal('show');
+                    }, loadError);
                 }
             }, function(err) {
                 console.log("Error requesting project list: ");
