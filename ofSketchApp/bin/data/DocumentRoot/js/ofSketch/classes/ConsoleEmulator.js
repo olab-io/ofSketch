@@ -47,6 +47,17 @@ function ConsoleEmulator()
 	    _editor.renderer.$cursorLayer.element.style.opacity=0
 	}
 
+	var _registerEvents = function()
+	{
+		// disable settings menu
+		_editor.commands.addCommand({
+		    name: 'Show Editor Settings',
+		    bindKey: {mac: 'Command-,', win: 'Ctrl-,'},
+		    exec: function(editor) {
+		    }
+		});
+	}
+
 	this.log = function(text)
 	{
 		_editor.getSession().insert(_self.getEndPosition(), text);
@@ -75,6 +86,8 @@ function ConsoleEmulator()
 	}
 
 	_applySettings();
+	_registerEvents();
+	
 	_editor.on('blur', function() {
 		_self.placeCursorAtEnd();
 	});
