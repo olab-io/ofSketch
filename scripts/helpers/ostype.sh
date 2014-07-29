@@ -13,7 +13,6 @@ elif [ "$OS" == "windowsnt" -o "${OS:0:5}" == "mingw" ] ; then
 	OS="windows"
 elif [ "$OS" == "linux" ]; then
         ARCH=`uname -m`
-	echo $ARCH
 	if [ "$ARCH" == "i386" -o "$ARCH" == "i686" ] ; then
 		OS="linux"	
 	elif [ "$ARCH" == "x86_64" ] ; then
