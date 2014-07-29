@@ -41,6 +41,7 @@ function SketchEditor(callback)
 	var _isCompiling = false;
 	var _projectFileTemplate;
 	var _classTemplate;
+	var _autosaveTimeout;
 
 	ace.require("ace/ext/language_tools");
 
@@ -115,6 +116,20 @@ function SketchEditor(callback)
 		    	_self.showSettingsMenu();
 		    }
 		});
+
+		// autosave
+        _editor.on('change', function(){
+        	clearTimeout(_autosaveTimeout);
+        	_autosaveTimeout = setTimeout(function(){
+	            if (_self.projectLoaded() &&
+	            	!_project.isTemplate() &&
+	                _project.needsSave()) {
+	                _self.saveProject(function(){
+	                	console.log('Project Autosaved');
+	                }, function(){}); 
+	            }
+	        }, 1000 * 20); // Autosave every 20 seconds
+    	});
 		
 	}
 
@@ -328,7 +343,8 @@ function SketchEditor(callback)
 	this.deleteProject = function(onSuccess, onError)
 	{
 		JSONRPCClient.call('delete-project', 
-        					{ projectName: _project.getName() },
+        					{ projectName: _project.getName(),
+        					  clientUUID: CLIENT_UUID },
 					        onSuccess,
 					        onError);
 	}

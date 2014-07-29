@@ -442,6 +442,11 @@ $(document).ready( function()
                 var linkElement = $('<a href="' + location.protocol + '//' + location.host + '/?project=' 
                                      + encodeURIComponent(project.projectName)
                                      + '" class="list-group-item" target="_blank">' + project.projectName + '</a>');
+                
+                linkElement.on('click', function(){
+                    $('#open-project-modal').modal('hide');
+                });
+
                 projectList.append(linkElement);
             });
 
@@ -775,16 +780,6 @@ $(document).ready( function()
         $('#rename-class-modal').on('shown.bs.modal', function () {
             $('#renamed-class-name').focus();
         });
-
-        // autosave
-        // setInterval(function(){
-        //     if (!sketchEditor.getProject().isTemplate() &&
-        //         sketchEditor.getProject().needsSave()) {
-        //         console.log("autosave");
-        //         save(); //WARNING: this is a global variable
-        //     }
-        // }, 1000 * 60);
-
 
         parseURLParameters();
 

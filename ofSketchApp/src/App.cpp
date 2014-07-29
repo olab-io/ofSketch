@@ -264,6 +264,7 @@ void App::deleteProject(const void* pSender, ofx::JSONRPC::MethodArgs& args)
     std::string projectName = args.params["projectName"].asString();
     if (_projectManager.projectExists(projectName)) {
         _projectManager.deleteProject(pSender, args);
+        requestProjectClosed(pSender, args);
     } else args.error["message"] = "The project that you are trying to delete does not exist.";
 }
 
@@ -273,6 +274,7 @@ void App::renameProject(const void* pSender, ofx::JSONRPC::MethodArgs& args)
     std::string projectName = args.params["projectName"].asString();
     if (_projectManager.projectExists(projectName)) {
         _projectManager.renameProject(pSender, args);
+        requestProjectClosed(pSender, args);
     } else args.error["message"] = "The project that you are trying to delete does not exist.";
 //    args.error["foo"] = "bar";
 }
