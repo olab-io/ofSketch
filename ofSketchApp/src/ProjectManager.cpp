@@ -49,7 +49,7 @@ ProjectManager::ProjectManager(const std::string& path):
 
     std::vector<std::string>::iterator iter = files.begin();
 
-    while(iter != files.end())
+    while (iter != files.end())
     {
         ofLogVerbose("ProjectManager::ProjectManager") << *iter;
         _projects.push_back(Project(*iter));
@@ -334,8 +334,10 @@ void ProjectManager::onDirectoryWatcherError(const Poco::Exception& exc)
 
 bool ProjectManager::_removeFromOpenProjectNames(const std::string& projectName)
 {
-    for (int i = 0; i < _openProjectNames.size(); i++) {
-        if (_openProjectNames[i] == projectName) {
+    for (int i = 0; i < _openProjectNames.size(); i++)
+    {
+        if (_openProjectNames[i] == projectName)
+        {
             _openProjectNames.erase(_openProjectNames.begin() + i);
             return true;
         }

@@ -38,7 +38,6 @@ namespace Sketch {
 class EditorSettings
 {
 public:
-    
     EditorSettings(const std::string& path);
     
     void update(const ofxJSONElement& data);

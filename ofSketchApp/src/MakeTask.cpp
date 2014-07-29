@@ -53,12 +53,12 @@ MakeTask::MakeTask(const Settings& settings,
 {
     _args.push_back("--directory=" + ofToDataPath(_project.getPath()));
 
-    if(_settings.numProcessors > 1)
+    if (_settings.numProcessors > 1)
     {
         _args.push_back("-j" + ofToString(_settings.numProcessors));
     }
 
-    if(_settings.isSilent)
+    if (_settings.isSilent)
     {
         _args.push_back("-s");
     }

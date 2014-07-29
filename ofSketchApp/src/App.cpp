@@ -221,12 +221,17 @@ void App::mousePressed(int x, int y, int button)
 
 void App::loadProject(const void* pSender, ofx::JSONRPC::MethodArgs& args)
 {
-    if (args.params.isMember("projectName")) {
+    if (args.params.isMember("projectName"))
+    {
         std::string projectName = args.params["projectName"].asString();
-        if (_projectManager.projectExists(projectName)) {
+
+        if (_projectManager.projectExists(projectName))
+        {
             _projectManager.loadProject(pSender, args);
-        } else args.error["message"] = "The requested project does not exist.";
-    } else args.error["message"] = "Incorrect parameters sent to load-project method.";
+        }
+        else args.error["message"] = "The requested project does not exist.";
+    }
+    else args.error["message"] = "Incorrect parameters sent to load-project method.";
 }
 
 
@@ -240,21 +245,24 @@ void App::saveProject(const void* pSender, ofx::JSONRPC::MethodArgs& args)
 {
     std::string projectName = args.params["projectData"]["projectFile"]["name"].asString();
     
-    if (_projectManager.projectExists(projectName)) {
-    
+    if (_projectManager.projectExists(projectName))
+    {
         _projectManager.saveProject(pSender, args);
         const Project& project = _projectManager.getProject(projectName);
         _compiler.generateSourceFiles(project);
-    } else args.error["message"] = "The requested project does not exist.";
+    }
+    else args.error["message"] = "The requested project does not exist.";
 }
 
 
 void App::createProject(const void* pSender, ofx::JSONRPC::MethodArgs& args)
 {
     std::string projectName = args.params["projectName"].asString();
-    if (!_projectManager.projectExists(projectName)) {
+    if (!_projectManager.projectExists(projectName))
+    {
         _projectManager.createProject(pSender, args);
-    } else args.error["message"] = "That project name already exists.";
+    }
+    else args.error["message"] = "That project name already exists.";
 }
 
 
@@ -262,20 +270,24 @@ void App::deleteProject(const void* pSender, ofx::JSONRPC::MethodArgs& args)
 {
     
     std::string projectName = args.params["projectName"].asString();
-    if (_projectManager.projectExists(projectName)) {
+    if (_projectManager.projectExists(projectName))
+    {
         _projectManager.deleteProject(pSender, args);
         requestProjectClosed(pSender, args);
-    } else args.error["message"] = "The project that you are trying to delete does not exist.";
+    }
+    else args.error["message"] = "The project that you are trying to delete does not exist.";
 }
 
 
 void App::renameProject(const void* pSender, ofx::JSONRPC::MethodArgs& args)
 {
     std::string projectName = args.params["projectName"].asString();
-    if (_projectManager.projectExists(projectName)) {
+    if (_projectManager.projectExists(projectName))
+    {
         _projectManager.renameProject(pSender, args);
         requestProjectClosed(pSender, args);
-    } else args.error["message"] = "The project that you are trying to delete does not exist.";
+    }
+    else args.error["message"] = "The project that you are trying to delete does not exist.";
 }
     
 void App::notifyProjectClosed(const void* pSender, ofx::JSONRPC::MethodArgs& args) {
@@ -303,42 +315,49 @@ void App::requestProjectClosed(const void* pSender, ofx::JSONRPC::MethodArgs& ar
 void App::createClass(const void* pSender, ofx::JSONRPC::MethodArgs& args)
 {
     std::string projectName = args.params["projectName"].asString();
-    if (_projectManager.projectExists(projectName)) {
-        
+    if (_projectManager.projectExists(projectName))
+    {
         std::string className = args.params["className"].asString();
         Project& project = _projectManager.getProjectRef(projectName);
         args.result["classFile"] = project.createClass(className);
         
-    } else args.error["message"] = "The requested project does not exist.";
+    }
+    else args.error["message"] = "The requested project does not exist.";
 }
 
 
 void App::deleteClass(const void* pSender, ofx::JSONRPC::MethodArgs& args)
 {
     std::string projectName = args.params["projectName"].asString();
-    if (_projectManager.projectExists(projectName)) {
-        
+    if (_projectManager.projectExists(projectName))
+    {
         std::string className = args.params["className"].asString();
         Project& project = _projectManager.getProjectRef(projectName);
-        if (project.deleteClass(className)) {
+        if (project.deleteClass(className))
+        {
             args.result["message"] = className + "class deleted.";
-        } else args.error["message"] = "Error deleting the class.";
-    } else args.error["message"] = "The requested project does not exist.";
+        }
+        else args.error["message"] = "Error deleting the class.";
+    }
+    else args.error["message"] = "The requested project does not exist.";
 }
 
 
 void App::renameClass(const void* pSender, ofx::JSONRPC::MethodArgs& args)
 {
     std::string projectName = args.params["projectName"].asString();
-    if (_projectManager.projectExists(projectName)) {
-        
+    if (_projectManager.projectExists(projectName))
+    {
         std::string className = args.params["className"].asString();
         std::string newClassName = args.params["newClassName"].asString();
         Project& project = _projectManager.getProjectRef(projectName);
-        if (project.renameClass(className, newClassName)) {
+        if (project.renameClass(className, newClassName))
+        {
             args.result["message"] = className + " class renamed to " + newClassName;
-        } else args.error["message"] = "Error renaming " + className + " class.";
-    } else args.error["message"] = "The requested project does not exist.";
+        }
+        else args.error["message"] = "Error renaming " + className + " class.";
+    }
+    else args.error["message"] = "The requested project does not exist.";
 
 }
 
@@ -347,8 +366,8 @@ void App::runProject(const void* pSender, ofx::JSONRPC::MethodArgs& args)
 {
 
     std::string projectName = args.params["projectName"].asString();
-    if (_projectManager.projectExists(projectName)) {
-        
+    if (_projectManager.projectExists(projectName))
+    {
         ofLogNotice("App::run") << "Running " << projectName << " project";
         const Project& project = _projectManager.getProject(projectName);
         Poco::UUID taskId = _compiler.run(project);
@@ -362,8 +381,8 @@ void App::compileProject(const void* pSender, ofx::JSONRPC::MethodArgs& args)
 {
     
     std::string projectName = args.params["projectName"].asString();
-    if (_projectManager.projectExists(projectName)) {
-        
+    if (_projectManager.projectExists(projectName))
+    {
         ofLogNotice("App::compileProject") << "Compiling " << projectName << " project";
         const Project& project = _projectManager.getProject(projectName);
         Poco::UUID taskId = _compiler.compile(project);
@@ -785,13 +804,20 @@ ofTargetPlatform App::getTargetPlatform()
 
     std::string arch = ostr.str();
 
-    if(ofIsStringInString(arch,"x86_64")) {
+    if(ofIsStringInString(arch,"x86_64"))
+    {
         return OF_TARGET_LINUX64;
-    } else if(ofIsStringInString(arch,"armv6l")) {
+    }
+    else if(ofIsStringInString(arch,"armv6l"))
+    {
         return OF_TARGET_LINUXARMV6L;
-    } else if(ofIsStringInString(arch,"armv7l")) {
+    }
+    else if(ofIsStringInString(arch,"armv7l"))
+    {
         return OF_TARGET_LINUXARMV7L;
-    } else {
+    }
+    else
+    {
         return OF_TARGET_LINUX;
     }
 

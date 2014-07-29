@@ -40,7 +40,7 @@ AddonManager::AddonManager(const std::string& path):
 
     Poco::File file(fullPath);
 
-    if(!file.exists())
+    if (!file.exists())
     {
         Poco::FileNotFoundException exc(fullPath.toString());
         throw exc;
@@ -52,7 +52,7 @@ AddonManager::AddonManager(const std::string& path):
 
     std::vector<Poco::File>::iterator iter = files.begin();
 
-    while(iter != files.end())
+    while (iter != files.end())
     {
         std::string addonPath = (*iter).path();
         std::string addonName = Poco::Path(addonPath).getBaseName();

@@ -38,7 +38,6 @@ namespace Sketch {
 class OfSketchSettings
 {
 public:
-    
     OfSketchSettings(const std::string& path);
     
     bool load();
