@@ -49,7 +49,9 @@ public:
     ProjectManager(const std::string& path);
     virtual ~ProjectManager();
 
+    // const std::vector<std::string>& getOpenProjectNames() const;
     const std::vector<Project>& getProjects() const;
+    
     
     void getProjectList(const void* pSender, ofx::JSONRPC::MethodArgs& args);
     void loadProject(const void* pSender, ofx::JSONRPC::MethodArgs& args);
@@ -58,6 +60,7 @@ public:
     void createProject(const void* pSender, ofx::JSONRPC::MethodArgs& args);
     void deleteProject(const void* pSender, ofx::JSONRPC::MethodArgs& args);
     void renameProject(const void* pSender, ofx::JSONRPC::MethodArgs& args);
+    void notifyProjectClosed(const std::string& projectName);
     void reloadProjects();
     void updateProject(const std::string& projectName);
     
@@ -79,10 +82,12 @@ public:
 
 private:
     std::string _path;
+    std::vector<std::string> _openProjectNames;
     std::vector<Project> _projects;
     Project _templateProject;
     ofx::IO::DirectoryWatcherManager _projectWatcher;
 
+    bool _removeFromOpenProjectNames(const std::string& projectName);
 };
 
 

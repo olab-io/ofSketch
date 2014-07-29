@@ -137,6 +137,7 @@ void ProjectManager::loadProject(const void* pSender,
 
         if (projectExists(projectName)) 
         {
+
             for (std::size_t i = 0; i < _projects.size(); ++i) 
             {
                 if (_projects[i].getName() == projectName) 
@@ -148,8 +149,9 @@ void ProjectManager::loadProject(const void* pSender,
                         project.load(project.getPath(), projectName);
                     }
 
-                    args.result = project.getData();
-
+                    args.result["data"] = project.getData();
+                    args.result["alreadyOpen"] = ofContains(_openProjectNames, projectName);
+                    _openProjectNames.push_back(projectName);
                     ofLogNotice("Project::loadProject") << "Loaded " << projectName << " project";
 
                     return;
@@ -251,6 +253,9 @@ void ProjectManager::renameProject(const void *pSender, ofx::JSONRPC::MethodArgs
 
     if (project.rename(newProjectName)) 
     {
+        _removeFromOpenProjectNames(projectName);
+        _openProjectNames.push_back(newProjectName);
+
         args.result["message"] = "Renamed " + projectName + " project to " + newProjectName + ".";
         ofLogNotice("Project::renameProject") << "Renamed " << projectName << " project to " << newProjectName;
     } 
@@ -286,7 +291,11 @@ void ProjectManager::updateProject(const std::string& projectName)
 {
     // TODO:
 }
-
+    
+void ProjectManager::notifyProjectClosed(const std::string& projectName)
+{
+    _removeFromOpenProjectNames(projectName);
+}
 
 void ProjectManager::onDirectoryWatcherItemAdded(const ofx::DirectoryWatcher::DirectoryEvent& evt)
 {
@@ -323,5 +332,16 @@ void ProjectManager::onDirectoryWatcherError(const Poco::Exception& exc)
     ofLogError("ofApp::onDirectoryWatcherError") << "Error: " << exc.displayText();
 }
 
+bool ProjectManager::_removeFromOpenProjectNames(const std::string& projectName)
+{
+    for (int i = 0; i < _openProjectNames.size(); i++) {
+        if (_openProjectNames[i] == projectName) {
+            _openProjectNames.erase(_openProjectNames.begin() + i);
+            return true;
+        }
+    }
+    
+    return false;
+}
 
 } } // namespace of::Sketch

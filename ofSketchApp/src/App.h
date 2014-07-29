@@ -78,7 +78,10 @@ public:
     void getProjectList(const void* pSender, ofx::JSONRPC::MethodArgs& args);
     void loadEditorSettings(const void* pSender, ofx::JSONRPC::MethodArgs& args);
     void saveEditorSettings(const void* pSender, ofx::JSONRPC::MethodArgs& args);
+    void requestProjectClosed(const void* pSender, ofx::JSONRPC::MethodArgs& args);
+    void notifyProjectClosed(const void* pSender, ofx::JSONRPC::MethodArgs& args);
 
+    
     bool onWebSocketOpenEvent(ofx::HTTP::WebSocketOpenEventArgs& args);
     bool onWebSocketCloseEvent(ofx::HTTP::WebSocketCloseEventArgs& args);
     bool onWebSocketFrameReceivedEvent(ofx::HTTP::WebSocketFrameEventArgs& args);

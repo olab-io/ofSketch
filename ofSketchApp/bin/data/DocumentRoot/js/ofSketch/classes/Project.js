@@ -52,7 +52,7 @@ function Project(projectName, onSuccess, onError, isTemplate)
 		JSONRPCClient.call('load-project', 
         					{ projectName: projectName },
 					        function(result) {
-					            _data = result;
+					            _data = result.data;
 					            onSuccess(result);
 					        },
 					        function(error) {

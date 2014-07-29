@@ -554,6 +554,28 @@ function SketchEditor(callback)
 		_applySettings();
 	}
 
+	this.notifyProjectClosed = function(onSuccess, onError)
+	{
+		if (!_project.isTemplate())
+		{
+			JSONRPCClient.call('notify-project-closed', 
+        					{ projectName: _project.getName() },
+					        onSuccess,
+					        onError);
+		}
+	}
+
+	this.requestProjectClosed = function(onSuccess, onError)
+	{
+		JSONRPCClient.call('request-project-closed',
+							{
+								projectName: _project.getName(),
+								clientUUID: CLIENT_UUID
+							},
+							onSuccess,
+							onError);
+	}
+
 	_settings.load(function(data){
 		
 		_applySettings();

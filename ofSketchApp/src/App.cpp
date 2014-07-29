@@ -122,6 +122,16 @@ void App::setup()
                            this,
                            &App::renameProject);
     
+    server->registerMethod("notify-project-closed",
+                           "Notify the server that project was closed.",
+                           this,
+                           &App::notifyProjectClosed);
+    
+    server->registerMethod("request-project-closed",
+                           "Broadcast a project close request to connected clients.",
+                           this,
+                           &App::requestProjectClosed);
+    
     server->registerMethod("create-class",
                            "Create a new class for the current project.",
                            this,
@@ -266,7 +276,28 @@ void App::renameProject(const void* pSender, ofx::JSONRPC::MethodArgs& args)
     } else args.error["message"] = "The project that you are trying to delete does not exist.";
 //    args.error["foo"] = "bar";
 }
-
+    
+void App::notifyProjectClosed(const void* pSender, ofx::JSONRPC::MethodArgs& args) {
+    
+    std::string projectName = args.params["projectName"].asString();
+    _projectManager.notifyProjectClosed(projectName);
+    ofLogNotice("App::notifyProjectClosed") << projectName << " closed.";
+}
+    
+void App::requestProjectClosed(const void* pSender, ofx::JSONRPC::MethodArgs& args)
+{
+    
+    std::string projectName = args.params["projectName"].asString();
+    std::string clientUUID = args.params["clientUUID"].asString();
+    
+    // broadcast requestProjectClosed settings to all connected clients
+    Json::Value params;
+    params["projectName"] = projectName;
+    params["clientUUID"] = clientUUID;
+    Json::Value json = App::toJSONMethod("Server", "requestProjectClosed", params);
+    ofx::HTTP::WebSocketFrame frame(App::toJSONString(json));
+    server->getWebSocketRoute()->broadcast(frame);
+}
 
 void App::createClass(const void* pSender, ofx::JSONRPC::MethodArgs& args)
 {

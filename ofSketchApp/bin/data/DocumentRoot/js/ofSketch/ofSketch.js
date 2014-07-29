@@ -152,6 +152,20 @@ $(document).ready( function()
         else if (evt.method == "updateProjectSettings")
         {
 
+        } 
+        else if (evt.method == "requestProjectClosed")
+        {
+            if (evt.params.clientUUID != CLIENT_UUID &&
+                evt.params.projectName == sketchEditor.getProject().getName()) {
+                window.close();
+            }
+        }
+        else if (evt.method == "ProjectClosed")
+        {
+            if (evt.params.clientUUID != CLIENT_UUID &&
+                evt.params.projectName == sketchEditor.getProject().getName()) {
+                window.close();
+            }
         }
     }
 
@@ -367,8 +381,12 @@ $(document).ready( function()
             sketchEditor.getProjectList(function(result){
                 var match = _.findWhere(result, { projectName: project });
                 if (match) {
-                    sketchEditor.loadProject(project, function() {
+                    sketchEditor.loadProject(project, function(result) {
                         $('title').text(project);
+                        console.log(result);
+                        if (result.alreadyOpen == true){
+                            $('#project-already-open-modal').modal('show');
+                        }
                     }, loadError);
                 } else {
                     sketchEditor.loadTemplateProject(function(){}, loadError);
@@ -440,6 +458,10 @@ $(document).ready( function()
     // prevent defaults
     $('#toolbar li a, #log-levels li a, .file-tab a, #new-class a, .action-menu li a').on('click', function(e) {
         e.preventDefault(); 
+    });
+
+    $(window).on('beforeunload', function(){
+        sketchEditor.notifyProjectClosed();
     });
     
     // key bindings
@@ -728,6 +750,12 @@ $(document).ready( function()
             }
 
             $('#renamed-project-name').val('');
+        });
+
+        $('#request-project-closed').on('click', function(){
+            sketchEditor.requestProjectClosed(function(){
+                $('#project-already-open-modal').modal('hide');
+            });
         });
 
         // Modal Events
