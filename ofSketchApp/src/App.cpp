@@ -276,7 +276,6 @@ void App::renameProject(const void* pSender, ofx::JSONRPC::MethodArgs& args)
         _projectManager.renameProject(pSender, args);
         requestProjectClosed(pSender, args);
     } else args.error["message"] = "The project that you are trying to delete does not exist.";
-//    args.error["foo"] = "bar";
 }
     
 void App::notifyProjectClosed(const void* pSender, ofx::JSONRPC::MethodArgs& args) {
