@@ -39,7 +39,8 @@ $(document).ready( function()
         $('#editor-container').height(aceWrapperHeight * editorRatio);
 
         $('#editor-container').resizable({
-            handles: 'n, s',   
+            containment: '#ace-wrapper',
+            handles: 's',   
             resize: resize
         });
 
