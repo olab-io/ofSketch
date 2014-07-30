@@ -161,13 +161,6 @@ $(document).ready( function()
                 window.close();
             }
         }
-        else if (evt.method == "ProjectClosed")
-        {
-            if (evt.params.clientUUID != CLIENT_UUID &&
-                evt.params.projectName == sketchEditor.getProject().getName()) {
-                window.close();
-            }
-        }
     }
 
         // TODO: move this
@@ -499,29 +492,31 @@ $(document).ready( function()
     });
 
     // input validation
-    $('.needs-validation').tooltip({
-        title: 'A-Z, 0-9, _ and - allowed',
-        trigger: 'manual',
-        placement: 'top'
-    });
+    // $('.needs-validation').tooltip({
+    //     title: 'A-Z, 0-9, _ and - allowed',
+    //     trigger: 'manual',
+    //     placement: 'top'
+    // });
 
-    $('.needs-validation').on('mouseout', function(e){
-        console.log('fired!')
-        $(this).tooltip('hide');
-    });
+    // $('.needs-validation').on('mouseout', function(e){
+        
+    //     $(this).tooltip('hide');
+    // });
     
-    $('.needs-validation').keypress(function(e){
-        var code = e.which || e.keyCode;
+    // $('.needs-validation').keypress(function(e){
+    //     var code = e.which || e.keyCode;
 
-        // 65 - 90 for A-Z and 97 - 122 for a-z 48 - 57 for 0-9 95 for _ 45 for - 46 for .
-        if (!((code >= 65 && code <= 90) ||
-              (code >= 97 && code <= 122) || 
-              (code >= 48 && code <= 57) || 
-               code == 95 || code == 45)) {
-            e.preventDefault();
-            $(e.currentTarget).tooltip('show');
-        } else $(e.currentTarget).tooltip('hide');
-    });
+    //     // 65 - 90 for A-Z and 97 - 122 for a-z 48 - 57 for 0-9 95 for _ 45 for - 46 for .
+    //     if (!((code >= 65 && code <= 90) ||
+    //           (code >= 97 && code <= 122) || 
+    //           (code >= 48 && code <= 57) || 
+    //            code == 95 || code == 45)) {
+    //         e.preventDefault();
+    //         $(e.currentTarget).tooltip('show');
+    //     } else $(e.currentTarget).tooltip('hide');
+    // });
+    
+    $('.needs-validation').on('');
 
     var systemInfo = {
         userAgent:  navigator.userAgent
@@ -531,6 +526,7 @@ $(document).ready( function()
     var alertBox;
     var aceWrapperHeight;
     var compileSuccess = false; // this is a terrible global var. Get it out ASAP.
+    var inputRegex = /^[A-Za-z0-9_-]+$/;
     alertBox = $('#editor-messages');
     alertBox.hide();
 
@@ -652,19 +648,26 @@ $(document).ready( function()
         });
 
         $('#create-class').on('click', function() {
-            
+
+            $('#new-class-modal .alert').hide();
             var className = $('#new-class-name').val();
-            if (!sketchEditor.getProject().isClassName(className)) {
+            if (!inputRegex.test(className)) {
+                $('#new-class-modal .validation-error').show();
+            } 
+            else if (sketchEditor.getProject().isClassName(className)) {
+                $('#new-class-modal .name-taken-error').show();
+            }
+            else {
                 sketchEditor.createClass(className, function() {
-                   
+                    
+                    $('#new-class-modal').modal('hide');
+                    $('#new-class-name').val('');
+
                     sketchEditor.selectTab(className);
                     sketchEditor.saveProject(function(){}, saveError)
-                }, createClassError);
-            } else {
-                // class name already exists.
-            }
 
-            $('#new-class-name').val('');
+                }, createClassError);
+            }
         });
 
         $('#delete-class').on('click', function() {
@@ -683,43 +686,66 @@ $(document).ready( function()
 
         $('#rename-class').on('click', function() {
             
+            $('#rename-class-modal .alert').hide();
+
             var projectName = sketchEditor.getProject().getName();
             var tabName = sketchEditor.getSelectedTabName();
             var newClassName = $('#renamed-class-name').val();
             
             if (tabName != projectName) {
-                if (!sketchEditor.getProject().isClassName(newClassName)) {
+
+                if (!inputRegex.test(newClassName)) {
+                    $('#rename-class-modal .validation-error').show();
+                }
+                else if(sketchEditor.getProject().isClassName(newClassName)) {
+                    $('#rename-class-modal .name-taken-error').show();
+                }
+                else {
+
                     sketchEditor.renameClass(tabName, newClassName, function() {
-                       console.log('class renamed!');
+                       
+                       $('#rename-class-modal').modal('hide');
+                       $('#renamed-class-name').val('');
+
                     }, function(err) {
                         console.log('Error renaming class: ');
                         console.log(err);
                     });
-                } else {
-                    // renamed class is already taken.
                 }
             }
-
-            $('#renamed-class-name').val('');
         });
 
         $('#name-project').on('click', function() {
             
+            $('#name-project-modal .alert').hide();
             var projectName = $('#new-project-name').val();
-            // TODO: validate name doesn't already exist below
-            if (true) {
-                sketchEditor.createProject(projectName, function() {
-                   sketchEditor.saveProject(function(){
-                        window.location.href = window.location.protocol 
-                                               + "//" + window.location.host 
-                                               + "/?project=" + encodeURIComponent(projectName);
-                   }, saveError);
-                }, createProjectError);
-            } else {
-                // Project name is already taken.
+            
+            if (!inputRegex.test(projectName)) {
+                $('#name-project-modal .validation-error').show();
             }
+            else {
 
-            $('#new-project-name').val('');
+                sketchEditor.getProjectList(function(result){
+        
+                    var match = _.findWhere(result, { projectName: projectName });
+                    if (match) {
+                        $('#name-project-modal .name-taken-error').show();
+                    } else {
+
+                        sketchEditor.createProject(projectName, function() {
+                           sketchEditor.saveProject(function(){
+                                window.location.href = window.location.protocol 
+                                                       + "//" + window.location.host 
+                                                       + "/?project=" + encodeURIComponent(projectName);
+                           }, saveError);
+                        }, createProjectError);
+                    }
+                
+                }, function(err){
+                    console.log("Error getting project list:");
+                    console.log(err);
+                });
+            } 
         });
 
         $('#delete-project').on('click', function() {
@@ -741,22 +767,38 @@ $(document).ready( function()
 
         $('#rename-project').on('click', function() {
 
+            $('#rename-project-modal .alert').hide();
             var newProjectName = $('#renamed-project-name').val();
             if (!sketchEditor.getProject().isTemplate()) {
                 
-                sketchEditor.renameProject(newProjectName, function(){
-                    sketchEditor.saveProject(function(){
-                        window.location.href = window.location.protocol 
-                                               + "//" + window.location.host 
-                                               + "/?project=" + encodeURIComponent(newProjectName);
-                   }, saveError);
-                }, renameProjectError);
+                if (!inputRegex.test(newProjectName)) {
+                    $('#rename-project-modal .validation-error').show();
+                } else {
+
+                    sketchEditor.getProjectList(function(result){
+
+                        var match = _.findWhere(result, { projectName: newProjectName });
+                        if (match) {
+                            $('#rename-project-modal .name-taken-error').show();
+                        } else {
+                            sketchEditor.renameProject(newProjectName, function(){
+                                sketchEditor.saveProject(function(){
+                                    window.location.href = window.location.protocol 
+                                                           + "//" + window.location.host 
+                                                           + "/?project=" + encodeURIComponent(newProjectName);
+                               }, saveError);
+                            }, renameProjectError);
+                        }
+                    }, function(err){
+                        console.log('Error getting project list: ');
+                        console.log(err);
+                    });
+                }
 
             } else {
                 // project is template
             }
 
-            $('#renamed-project-name').val('');
         });
 
         $('#request-project-closed').on('click', function(){

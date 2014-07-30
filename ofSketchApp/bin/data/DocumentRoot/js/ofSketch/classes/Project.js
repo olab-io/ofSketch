@@ -105,7 +105,8 @@ function Project(projectName, onSuccess, onError, isTemplate)
 		JSONRPCClient.call('rename-project', 
         					{
         						projectName: _self.getName(),
-        						newProjectName: newProjectName
+        						newProjectName: newProjectName,
+        						clientUUID: CLIENT_UUID
         					},
 					        function(result) {
 					        	_data.projectFile.name = newProjectName;

@@ -551,10 +551,16 @@
                 <h4 class="modal-title" data-localize="new-class">New Class</h4>
               </div>
               <div class="modal-body">
+                <div class="alert alert-danger validation-error" role="alert" style="display: none;">
+                  Only letters, numbers, "_" and "-" characters are allowed.
+                </div>
+                <div class="alert alert-danger name-taken-error" role="alert" style="display: none;">
+                  That class name already exists.
+                </div>
                 <div class="input-group">
                   <input id="new-class-name" type="text" class="needs-validation form-control" placeholder="MyClass">
                   <span class="input-group-btn">
-                    <button id="create-class" class="btn btn-default" type="button" data-dismiss="modal" data-localize="create">Create</button>
+                    <button id="create-class" class="btn btn-default" type="button" data-localize="create">Create</button>
                   </span>
                 </div>
             </div>
@@ -571,10 +577,16 @@
                 <h4 class="modal-title" data-localize="rename-class">Rename <span class="selected-tab-name"></span> Class</h4>
               </div>
               <div class="modal-body">
+                <div class="alert alert-danger validation-error" role="alert" style="display: none;">
+                  Only letters, numbers, "_" and "-" characters are allowed.
+                </div>
+                <div class="alert alert-danger name-taken-error" role="alert" style="display: none;">
+                  That class name already exists.
+                </div>
                 <div class="input-group">
                   <input id="renamed-class-name" type="text" class="needs-validation form-control" placeholder="MyNewClassName">
                   <span class="input-group-btn">
-                    <button id="rename-class" class="btn btn-default" type="button" data-dismiss="modal" data-localize="rename">Rename</button>
+                    <button id="rename-class" class="btn btn-default" type="button" data-localize="rename">Rename</button>
                   </span>
                 </div>
             </div>
@@ -610,11 +622,16 @@
                 <h4 class="modal-title" data-localize="name-project">Name Project</h4>
               </div>
               <div class="modal-body">
-                <p data-localize="name-project-prompt">What would you like to name this project?</p>
+                <div class="alert alert-danger validation-error" role="alert" style="display: none;">
+                  Only letters, numbers, "_" and "-" characters are allowed.
+                </div>
+                <div class="alert alert-danger name-taken-error" role="alert" style="display: none;">
+                  That project name already exists.
+                </div>
                 <div class="input-group">
                   <input id="new-project-name" type="text" class="needs-validation form-control" placeholder="MyProject">
                   <span class="input-group-btn">
-                    <button id="name-project" class="btn btn-default" type="button" data-dismiss="modal" data-localize="save">Save</button>
+                    <button id="name-project" class="btn btn-default" type="button" data-localize="save">Save</button>
                   </span>
                 </div>
             </div>
@@ -668,10 +685,16 @@
                 <h4 class="modal-title" data-localize="rename-project">Rename Project</h4>
               </div>
               <div class="modal-body">
+                <div class="alert alert-danger validation-error" role="alert" style="display: none;">
+                    Only letters, numbers, "_" and "-" characters are allowed.
+                </div>
+                <div class="alert alert-danger name-taken-error" role="alert" style="display: none;">
+                    That project name already exists.
+                </div>
                 <div class="input-group">
                   <input id="renamed-project-name" type="text" class="needs-validation form-control" placeholder="MyProject">
                   <span class="input-group-btn">
-                    <button id="rename-project" class="btn btn-default" type="button" data-dismiss="modal" data-localize="rename">Rename</button>
+                    <button id="rename-project" class="btn btn-default" type="button" data-localize="rename">Rename</button>
                   </span>
                 </div>
             </div>
