@@ -6,6 +6,7 @@
 	+ Fix bug involving renaming and deleting projects that were open in multiple tabs ([#81](https://github.com/olab-io/ofSketch/issues/81)).
 	+ Fix bug that allowed ACE Editor to be resized vertically.
 	+ Improved front-end validation. Better alerts and checks if Project or Class name already exists ([#11](https://github.com/olab-io/ofSketch/issues/11)).
+	+ Add "Close Project" button ([#83](https://github.com/olab-io/ofSketch/issues/83))
 	
 - 0.2.2 (07-22-14)
 	+ Add "About ofSketch" to settings ([#64](https://github.com/olab-io/ofSketch/issues/64)).
