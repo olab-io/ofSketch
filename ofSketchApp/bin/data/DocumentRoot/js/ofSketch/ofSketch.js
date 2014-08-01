@@ -658,6 +658,12 @@ $(document).ready( function()
             }
         });
 
+        $('.quit-app').on('click', function(){
+            sketchEditor.requestAppQuit(function(){
+                window.close();
+            });
+        });
+
         $('#create-class').on('click', function() {
 
             $('#new-class-modal .alert').hide();

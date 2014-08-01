@@ -592,6 +592,16 @@ function SketchEditor(callback)
 							onError);
 	}
 
+	this.requestAppQuit = function(onSuccess, onError)
+	{
+		JSONRPCClient.call('request-app-quit',
+							{
+								clientUUID: CLIENT_UUID
+							},
+							onSuccess,
+							onError);
+	}
+
 	_settings.load(function(data){
 		
 		_applySettings();
