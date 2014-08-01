@@ -161,6 +161,11 @@ $(document).ready( function()
                 window.close();
             }
         }
+        else if (evt.method == "appExit") {
+            window.close();
+        }
+
+        console.log(evt);
     }
 
         // TODO: move this
@@ -644,6 +649,12 @@ $(document).ready( function()
                 $('#rename-project-modal').modal();  
             } else {
                 $('#name-project-modal').modal();
+            }
+        });
+
+        $('.close-project').on('click', function(){
+            if (!$(this).hasClass('disabled')) {
+                window.close();
             }
         });
 
