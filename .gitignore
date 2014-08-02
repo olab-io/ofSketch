@@ -1,6 +1,9 @@
 raw/
 releases/
 
+ofSketchApp/bin/data/Projects/*/src
+ofSketchApp/bin/data/Projects/*/obj
+
 scripts/access_token.txt
 
 *.mode1v3
