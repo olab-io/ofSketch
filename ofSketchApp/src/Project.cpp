@@ -32,6 +32,9 @@ namespace of {
 namespace Sketch {
 
 
+const std::string Project::SKETCH_FILE_SUFFIX = ".sketch";
+
+
 Project::~Project()
 {
 }
@@ -177,19 +180,19 @@ bool Project::rename(const std::string& newName)
 
         _path = projectDir.getAbsolutePath();
 
-        ofFile projectFile(projectDir.getAbsolutePath() + "/sketch/" + oldProjectName + ".sketch");
+        ofFile projectFile(projectDir.getAbsolutePath() + "/sketch/" + oldProjectName + SKETCH_FILE_SUFFIX);
 
         ofLogVerbose("Project::rename") << "projectDir path after rename: " << projectDir.getAbsolutePath();
 
         ofLogVerbose("Project::rename") << "projectFile path: " << projectFile.getAbsolutePath();
 
-        if (!projectFile.renameTo(projectDir.getAbsolutePath() + "/sketch/" + newName + ".sketch")) return false;
+        if (!projectFile.renameTo(projectDir.getAbsolutePath() + "/sketch/" + newName + SKETCH_FILE_SUFFIX)) return false;
 
         ofLogVerbose("Project::rename") << "projectFile path after rename: " << projectFile.getAbsolutePath();
 
         _data["projectFile"]["name"] = newName;
 
-        _data["projectFile"]["fileName"] = newName + ".sketch";
+        _data["projectFile"]["fileName"] = newName + SKETCH_FILE_SUFFIX;
 
         return true;
     }
@@ -211,7 +214,7 @@ Json::Value Project::createClass(const std::string& className)
 
     Json::Value classFile;
     // TODO: Load extension from settings
-    classFile["fileName"] = className + ".sketch";
+    classFile["fileName"] = className + SKETCH_FILE_SUFFIX;
     classFile["name"] = className;
     classFile["fileContents"] = fileContents;
     _data["classes"][getNumClasses()] = classFile;
@@ -226,7 +229,7 @@ bool Project::deleteClass(const std::string& className)
 {
     if (isLoaded())
     {
-        ofFile file(_sketchDir.getAbsolutePath() + "/" + className + ".sketch");
+        ofFile file(_sketchDir.getAbsolutePath() + "/" + className + SKETCH_FILE_SUFFIX);
 
         if (file.exists())
         {
@@ -247,7 +250,7 @@ bool Project::renameClass(const std::string& currentName, const std::string& new
     {
         ofLogVerbose("Project::renameClass") << "Renaming class...";
 
-        ofFile file(_sketchDir.getAbsolutePath() + "/" + currentName + ".sketch");
+        ofFile file(_sketchDir.getAbsolutePath() + "/" + currentName + SKETCH_FILE_SUFFIX);
         if (file.exists() && hasClasses()) 
         {
             for (int i = 0; i < getNumClasses(); ++i)
@@ -255,9 +258,9 @@ bool Project::renameClass(const std::string& currentName, const std::string& new
                 if (_data["classes"][i]["name"] == currentName)
                 {
                     _data["classes"][i]["name"] = newName;
-                    _data["classes"][i]["fileName"] = newName + ".sketch";
+                    _data["classes"][i]["fileName"] = newName + SKETCH_FILE_SUFFIX;
 
-                    file.renameTo(_sketchDir.getAbsolutePath() + "/" + newName + ".sketch");
+                    file.renameTo(_sketchDir.getAbsolutePath() + "/" + newName + SKETCH_FILE_SUFFIX);
                     return true;
                 }
             }

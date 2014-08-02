@@ -213,7 +213,7 @@ void ProjectManager::createProject(const void* pSender,
     std::string projectName = args.params["projectData"]["projectFile"]["name"].asString();
     ofDirectory projectDir(_templateProject.getPath());
     projectDir.copyTo(_path + "/" + projectName);
-    ofFile templateProjectFile(_path + "/" + projectName + "/sketch/NewProject.sketch");
+    ofFile templateProjectFile(_path + "/" + projectName + "/sketch/NewProject" + Project::SKETCH_FILE_SUFFIX);
     templateProjectFile.remove();
 
     Project project(_path + "/" + projectName);
