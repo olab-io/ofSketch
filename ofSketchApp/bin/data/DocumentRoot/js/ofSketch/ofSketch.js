@@ -161,6 +161,11 @@ $(document).ready( function()
                 window.close();
             }
         }
+        else if (evt.method == "appExit") {
+            window.close();
+        }
+
+        console.log(evt);
     }
 
         // TODO: move this
@@ -645,6 +650,18 @@ $(document).ready( function()
             } else {
                 $('#name-project-modal').modal();
             }
+        });
+
+        $('.close-project').on('click', function(){
+            if (!$(this).hasClass('disabled')) {
+                window.close();
+            }
+        });
+
+        $('.quit-app').on('click', function(){
+            sketchEditor.requestAppQuit(function(){
+                window.close();
+            });
         });
 
         $('#create-class').on('click', function() {

@@ -132,6 +132,11 @@ void App::setup()
                            this,
                            &App::requestProjectClosed);
     
+    server->registerMethod("request-app-quit",
+                           "Quit the app.",
+                           this,
+                           &App::requestAppQuit);
+    
     server->registerMethod("create-class",
                            "Create a new class for the current project.",
                            this,
@@ -205,9 +210,16 @@ void App::draw()
     _font.drawString("Launch", 70, 30);
 }
 
-
 void App::exit()
 {
+    // broadcast requestProjectClosed settings to all connected clients
+    Json::Value params;
+    params["foo"] = "bar";
+    Json::Value json = App::toJSONMethod("Server", "appExit", params);
+    ofx::HTTP::WebSocketFrame frame(App::toJSONString(json));
+    server->getWebSocketRoute()->broadcast(frame);
+    ofLogNotice("App::exit") << "appExit frame broadcasted" << endl;
+    
     // Reset default logger.
     ofLogToConsole();
 }
@@ -310,6 +322,12 @@ void App::requestProjectClosed(const void* pSender, ofx::JSONRPC::MethodArgs& ar
     Json::Value json = App::toJSONMethod("Server", "requestProjectClosed", params);
     ofx::HTTP::WebSocketFrame frame(App::toJSONString(json));
     server->getWebSocketRoute()->broadcast(frame);
+}
+    
+void App::requestAppQuit(const void *pSender, ofx::JSONRPC::MethodArgs &args)
+{
+//    args.result = "App quit";
+//    ofExit();
 }
 
 void App::createClass(const void* pSender, ofx::JSONRPC::MethodArgs& args)
