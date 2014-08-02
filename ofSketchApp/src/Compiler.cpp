@@ -70,6 +70,7 @@ void Compiler::generateSourceFiles(const Project& project)
     Json::Value projectData = project.getData();
     std::string projectFile = _projectFileTemplate;
     ofStringReplace(projectFile, "<projectfile>", projectData["projectFile"]["fileContents"].asString());
+    ofStringReplace(projectFile, "<projectname>", projectData["projectFile"]["name"].asString());
     _replaceIncludes(projectFile);
     ofBuffer sourceBuffer(projectFile);
     ofBufferToFile(src.getAbsolutePath() + "/main.cpp", sourceBuffer);
@@ -94,7 +95,7 @@ void Compiler::generateSourceFiles(const Project& project)
 
 void Compiler::_replaceIncludes(std::string& fileContents)
 {
-    Poco::RegularExpression includesExpression("#include .*");
+    Poco::RegularExpression includesExpression("#include .*\n");
     Poco::RegularExpression::Match match;
     
     std::vector<std::string> includes;
@@ -113,7 +114,9 @@ void Compiler::_replaceIncludes(std::string& fileContents)
     }
     
     includesExpression.subst(fileContents, "", Poco::RegularExpression::RE_GLOBAL);
-    ofStringReplace(fileContents, "<includes>", ofJoinString(includes, "\n"));
+    ofStringReplace(fileContents, "<includes>", ofJoinString(includes, ""));
+    ofStringReplace(fileContents, "<line>", ofToString(includes.size()));
+
 
 }
 
