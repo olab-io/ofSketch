@@ -285,7 +285,9 @@ bool Project::isClassName(const std::string& className) const
 {
     if (hasClasses()) 
     {
-        for (int i = 0; i < getNumClasses(); ++i)
+        Json::ArrayIndex numClasses = getNumClasses();
+
+        for (Json::ArrayIndex i = 0; i < numClasses; ++i)
         {
             if (_data["classes"][i]["name"] == className) 
             {
