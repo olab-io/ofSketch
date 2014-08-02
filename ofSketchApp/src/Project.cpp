@@ -97,11 +97,12 @@ bool Project::isLoaded() const
 void Project::save(const Json::Value& data)
 {
     // this is not working for some reason...
-    if (_data != data) {
-        
+    if (_data != data)
+    {
         ofLogVerbose("Project::save") << data.toStyledString();
         
-        if (_data["projectFile"] != data["projectFile"]) {
+        if (_data["projectFile"] != data["projectFile"])
+        {
             _data["projectFile"] = data["projectFile"];
             _saveFile(_data["projectFile"]);
         }
