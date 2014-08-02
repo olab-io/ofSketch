@@ -255,6 +255,7 @@ bool Project::renameClass(const std::string& currentName, const std::string& new
         ofLogVerbose("Project::renameClass") << "Renaming class...";
 
         ofFile file(_sketchDir.getAbsolutePath() + "/" + currentName + "." + SKETCH_FILE_EXTENSION);
+
         if (file.exists() && hasClasses()) 
         {
             for (int i = 0; i < getNumClasses(); ++i)
