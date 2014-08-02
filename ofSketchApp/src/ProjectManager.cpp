@@ -137,7 +137,6 @@ void ProjectManager::loadProject(const void* pSender,
 
         if (projectExists(projectName)) 
         {
-
             for (std::size_t i = 0; i < _projects.size(); ++i) 
             {
                 if (_projects[i].getName() == projectName) 
@@ -210,10 +209,15 @@ void ProjectManager::createProject(const void* pSender,
                                    ofx::JSONRPC::MethodArgs& args)
 {
     Json::Value projectData = args.params["projectData"];
+
     std::string projectName = args.params["projectData"]["projectFile"]["name"].asString();
+
     ofDirectory projectDir(_templateProject.getPath());
+
     projectDir.copyTo(_path + "/" + projectName);
-    ofFile templateProjectFile(_path + "/" + projectName + "/sketch/NewProject" + Project::SKETCH_FILE_SUFFIX);
+
+    ofFile templateProjectFile(_path + "/" + projectName + "/sketch/NewProject" + Project::SKETCH_FILE_EXTENSION);
+
     templateProjectFile.remove();
 
     Project project(_path + "/" + projectName);

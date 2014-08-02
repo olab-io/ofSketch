@@ -70,7 +70,7 @@ public:
     Json::Value createClass(const std::string& className);
     const Json::Value& getData() const;
 
-    static const std::string SKETCH_FILE_SUFFIX;
+    static const std::string SKETCH_FILE_EXTENSION;
 
 protected:
 
