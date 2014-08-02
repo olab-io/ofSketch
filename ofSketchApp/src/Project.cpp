@@ -41,7 +41,7 @@ Project::Project(const std::string& path): _path(path), _isLoaded(false)
 {
     // this is not efficient at all! I am just keeping these FileTemplate loads in the project
     // constructor because it makes the most sense architecure wise.
-    _classFileTemplate = ofBufferFromFile(ofToDataPath("Resources/Templates/SketchTemplates/class.txt")).getText();
+    _classFileTemplate = ofBufferFromFile(ofToDataPath("Resources/Templates/SketchTemplates/class.tmpl")).getText();
     load(_path, getName());
 }
 

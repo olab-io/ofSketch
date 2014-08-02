@@ -33,8 +33,8 @@ namespace Sketch {
 Compiler::Compiler(ProcessTaskQueue& taskQueue, const std::string& pathToTemplates):
     _taskQueue(taskQueue),
     _pathToTemplates(pathToTemplates),
-    _projectFileTemplate(ofBufferFromFile(ofToDataPath(_pathToTemplates + "/main.txt")).getText()),
-    _classTemplate(ofBufferFromFile(ofToDataPath(_pathToTemplates + "/class.txt")).getText())
+    _projectFileTemplate(ofBufferFromFile(ofToDataPath(_pathToTemplates + "/main.tmpl")).getText()),
+    _classTemplate(ofBufferFromFile(ofToDataPath(_pathToTemplates + "/class.tmpl")).getText())
 {
 }
 
