@@ -74,8 +74,8 @@ void Compiler::generateSourceFiles(const Project& project)
     ofBuffer sourceBuffer(projectFile);
     ofBufferToFile(src.getAbsolutePath() + "/main.cpp", sourceBuffer);
 
-    if (project.hasClasses()) {
-        
+    if (project.hasClasses())
+    {
         for (int i = 0; i < projectData["classes"].size(); i++)
         {
             Json::Value c = projectData["classes"][i];
@@ -92,8 +92,8 @@ void Compiler::generateSourceFiles(const Project& project)
 }
 
 
-void Compiler::_replaceIncludes(std::string& fileContents) {
-    
+void Compiler::_replaceIncludes(std::string& fileContents)
+{
     Poco::RegularExpression includesExpression("#include .*");
     Poco::RegularExpression::Match match;
     
