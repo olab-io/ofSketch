@@ -27,6 +27,7 @@
 
 
 #include <string>
+#include <json/json.h>
 #include "Poco/Pipe.h"
 #include "Poco/UUID.h"
 #include "Poco/Process.h"
@@ -51,8 +52,9 @@ public:
 
     Poco::UUID compile(const Project& project);
     Poco::UUID run(const Project& project);
-
+    
     void generateSourceFiles(const Project& project);
+    Json::Value parseError(std::string message) const;
     
 private:
     ProcessTaskQueue& _taskQueue;

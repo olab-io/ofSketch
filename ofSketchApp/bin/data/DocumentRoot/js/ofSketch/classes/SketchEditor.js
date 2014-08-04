@@ -208,6 +208,11 @@ function SketchEditor(callback)
 		});
 	}
 
+	var _getTab = function(tabName)
+	{
+		return _.find(_tabs, function(tab){ return tab.name == tabName; });
+	}
+
 	var _updateProject = function()
 	{
 		var projectData = _project.getData();
@@ -600,6 +605,40 @@ function SketchEditor(callback)
 							},
 							onSuccess,
 							onError);
+	}
+
+	this.annotate = function(compileError)
+	{
+		var tab = _getTab(compileError.tabName);
+
+		if (tab) {
+
+			// for some reason ACE sets annotations
+			// at the wrong row
+			compileError.annotation.row--;
+
+			var annotations = tab.editSession.getAnnotations();
+			var newAnnotations = [];
+
+			if (annotations.length > 0) {
+				for (var i = 0; i < annotations.length; i++) {
+					newAnnotations.push(annotations[i]);
+				}	
+			}
+
+			newAnnotations.push(compileError.annotation);
+			
+			tab.editSession.setAnnotations(newAnnotations);
+
+			_self.selectTab(compileError.tabName);
+		}
+	}
+
+	this.clearAnnotations = function()
+	{
+		_.each(_tabs, function(tab){
+			tab.editSession.clearAnnotations();
+		});
 	}
 
 	_settings.load(function(data){

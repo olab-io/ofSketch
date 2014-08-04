@@ -221,6 +221,9 @@ $(document).ready( function()
             //     }
             // }).appendTo(li);
 
+        } else if (evt.method == "taskQueued") {
+            // TODO: add a task for the uuid
+
         } else if (evt.method == "taskStarted") {
             // TODO: add a task for the uuid
 
@@ -260,11 +263,18 @@ $(document).ready( function()
                     compileSuccess = true;
                 }
 
+                // if message is compilation error
+                if (!_.isUndefined(evt.params.compileError)) {
+                    sketchEditor.annotate(evt.params.compileError);
+                }
+
                 consoleEmulator.log(evt.params.message + '\n');
             }
     
         } else {
+
             console.log("Unknown Task Queue method.");
+            console.log(evt);
         }
     }
 
@@ -408,6 +418,7 @@ $(document).ready( function()
             sketchEditor.saveProject(function() {
                 runAlert();
                 consoleEmulator.clear();
+                sketchEditor.clearAnnotations();
                 sketchEditor.compile(function(){
                     // this callback is now above
                     // sketchEditor.run(function(){}, runError);

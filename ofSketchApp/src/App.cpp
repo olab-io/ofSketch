@@ -732,6 +732,12 @@ bool App::onTaskData(const ofx::TaskDataEventArgs<std::string>& args)
     params["name"] = args.getTaskName();
     params["uuid"] = args.getTaskId().toString();
     params["message"] = args.getData();
+    
+    Json::Value error = _compiler.parseError(args.getData());
+    if (!error.empty()) {
+        params["compileError"] = error;
+    }
+    
     Json::Value json = App::toJSONMethod("TaskQueue", "taskMessage", params);
     ofx::HTTP::WebSocketFrame frame(App::toJSONString(json));
     server->getWebSocketRoute()->broadcast(frame);
