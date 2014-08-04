@@ -136,7 +136,7 @@ function SketchEditor(callback)
 	var _registerTabEvent = function(tabElement)
 	{
 		$(tabElement).on('click', function(){
-			_self.selectTab($(this).text());
+			_self.selectTab($(this).find('.tab-name').text());
 		});
 	}
 
@@ -166,7 +166,9 @@ function SketchEditor(callback)
 
 	var _addTab = function(name, fileName, isProjectFile, editSession)
 	{
-		var tabElement = $('<li class="file-tab"><a href="#" onclick="return false;">' + name + '</a></li>');
+		var tabElement = $('<li class="file-tab"><a href="#" onclick="return false;"><span class="tab-name">' 
+							+ name + '</span> <span class="badge alert-danger"></span></a></li>');
+
 		editSession.on('change', function(){
 			tabElement.addClass('unsaved');
 			_project.setNeedsSave(true);
@@ -189,7 +191,7 @@ function SketchEditor(callback)
 
 	var _renderTab = function(name)
 	{
-		var tab = _.find(_tabs, function(tab){ return tab.name == name; });
+		var tab = _getTab(name);
 		if (tab) {
 			_editor.setSession(tab.editSession);
 		}
@@ -203,7 +205,7 @@ function SketchEditor(callback)
 			if (tab.name == name) {
 				_tabs[i].name = newName;
 				_tabs[i].fileName = newName + ".sketch";
-				_tabs[i].tabElement.find('a').text(newName);
+				_tabs[i].tabElement.find('.tab-name').text(newName);
 			}
 		});
 	}
@@ -469,15 +471,15 @@ function SketchEditor(callback)
 		$('.file-tab').each(function(){
 			
 			$(this).removeClass('active');
-			if ($(this).text() == name) {
+			if ($(this).find('.tab-name').text() == name) {
 				$(this).addClass('active');
-				_renderTab($(this).text());
+				_renderTab($(this).find('.tab-name').text());
 			}
 		});
 	}
 
 	this.getSelectedTabName = function() {
-		return $('.file-tab.active a').text();
+		return $('.file-tab.active .tab-name').text();
 	}
 
 	this.getProjectList = function(onSuccess, onError) {
@@ -619,18 +621,48 @@ function SketchEditor(callback)
 
 			var annotations = tab.editSession.getAnnotations();
 			var newAnnotations = [];
+			var numAnnotationBadges = 0;
 
+			// loop through all current annotations for this EditSession
 			if (annotations.length > 0) {
 				for (var i = 0; i < annotations.length; i++) {
-					newAnnotations.push(annotations[i]);
+					
+					var annotation = annotations[i];
+					if (annotation.row <= tab.editSession.getLength()) { 
+						
+						newAnnotations.push(annotation);
+
+						if (annotation.type == 'error') {
+							numAnnotationBadges++;
+						}
+					}
 				}	
 			}
 
-			newAnnotations.push(compileError.annotation);
+			// now add this compileError
+			if (compileError.annotation.row <= tab.editSession.getLength()) {
+				
+				// hack for #includes
+				if (compileError.annotation.text.indexOf('file not found') != -1) {
+					compileError.annotation.row = 0;
+					compileError.annotation.column = 1;
+				}
+
+				newAnnotations.push(compileError.annotation);
+				
+				if (compileError.annotation.type == 'error') {
+					numAnnotationBadges++;
+				}
+
+				_self.selectTab(compileError.tabName);
+			}
 			
 			tab.editSession.setAnnotations(newAnnotations);
+			
+			if (numAnnotationBadges > 0) {
+				tab.tabElement.find('.badge').text(numAnnotationBadges)
+			}
 
-			_self.selectTab(compileError.tabName);
 		}
 	}
 
@@ -638,6 +670,7 @@ function SketchEditor(callback)
 	{
 		_.each(_tabs, function(tab){
 			tab.editSession.clearAnnotations();
+			tab.tabElement.find('.badge').text('');
 		});
 	}
 

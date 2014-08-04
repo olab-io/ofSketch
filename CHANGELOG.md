@@ -7,6 +7,7 @@
 	+ Fix bug that allowed ACE Editor to be resized vertically.
 	+ Improved front-end validation. Better alerts and checks if Project or Class name already exists ([#11](https://github.com/olab-io/ofSketch/issues/11)).
 	+ Error lines now reported correctly ([#77](https://github.com/olab-io/ofSketch/issues/77)).
+	+ Compilation errors and warnings now appear in-line in the editor ([#21](https://github.com/olab-io/ofSketch/issues/21)).
 	
 - 0.2.2 (07-22-14)
 	+ Add "About ofSketch" to settings ([#64](https://github.com/olab-io/ofSketch/issues/64)).
