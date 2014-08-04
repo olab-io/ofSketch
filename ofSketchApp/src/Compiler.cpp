@@ -98,7 +98,7 @@ Json::Value Compiler::parseError(std::string message) const
     
     Json::Value compileError;
     
-    Poco::RegularExpression errorExpression(".+:[0-9]+:[0-9]+: (error|warning|note): .+$", Poco::RegularExpression::RE_ANCHORED);
+    Poco::RegularExpression errorExpression(".+:[0-9]+:[0-9]+: (fatal error|error|warning|note): .+$", Poco::RegularExpression::RE_ANCHORED);
     
     if (errorExpression.match(message))
     {
@@ -109,7 +109,8 @@ Json::Value Compiler::parseError(std::string message) const
             ofStringReplace(vals[3], " ", "");
             
             // ACE Editor refers to "note" as "info"
-            if (vals[3] == "note") vals[3] == "info";
+            if (vals[3] == "note") vals[3] = "info";
+            else if (vals[3] == "fatalerror") vals[3] = "error";
             
             compileError["tabName"] = vals[0];
             compileError["annotation"]["row"] = ofToInt(vals[1]);
