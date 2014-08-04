@@ -184,14 +184,6 @@ void App::setup()
     
     server->start();
 
-
-    ofTargetPlatform arch = getTargetPlatform();
-
-    if (arch != OF_TARGET_LINUXARMV6L && arch != OF_TARGET_LINUXARMV7L)
-    {
-        // Launch a browser with the address of the server.
-        ofLaunchBrowser(server->getURL() + "/?project=HelloWorld");
-    }
 }
 
 
