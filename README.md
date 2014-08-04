@@ -73,23 +73,26 @@ Is something just downright wrong? Don't hesitate to submit an [issue](https://g
 
 To build using openFrameworks v0.8.3 on OSX and Linux follow the steps below.
 
-1. Clone the ofSketch repo:
+1. Clone the ofSketch repo into your `OF_ROOT/apps` folder, making sure that the `ofSketchApp/` folder inside of `ofSketch/` is two directories below your openFrameworks distribution:
 
 		git clone https://github.com/olab-io/ofSketch.git
 		cd ofSketch
 		
-2. Run the init repo script:
+2. Run the init repo script. This will download and install a trimmed down version of the latest oF release in the `bin/data` folder of your ofSketch build:
 
 		./scripts/init_repo.sh
 		
-3. Clone the ofxAddon dependencies:
+3. Clone the ofxAddon dependencies. This script will attempt to clone the required addons and then pull the latest changes. If you already have these addons, make sure that any of your changes are saved:
 
 		./scripts/clone_addons.sh
 
 4. Compile ofSketch:
 
 		cd ofSketchApp
-		make
+		make && make run
+
+
+__Note__: OSX users may use the Xcode project instead of building from the command line in step 4.
 
 
 ### Info
