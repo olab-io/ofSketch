@@ -7,7 +7,8 @@
 	+ Fix bug that allowed ACE Editor to be resized vertically.
 	+ Improved front-end validation. Better alerts and checks if Project or Class name already exists ([#11](https://github.com/olab-io/ofSketch/issues/11)).
 	+ Error lines now reported correctly ([#77](https://github.com/olab-io/ofSketch/issues/77)).
-	+ Browser is no longer launched automatically at startup.	+ Stop button now closes running app. ([#45](https://github.com/olab-io/ofSketch/issues/45))
+	+ Browser is no longer launched automatically at startup.
+	+ Stop button now closes running app. ([#45](https://github.com/olab-io/ofSketch/issues/45))
 	+ Compilation errors and warnings now appear in-line in the editor ([#21](https://github.com/olab-io/ofSketch/issues/21)).
 	+ Add "Stop" button ([#45](https://github.com/olab-io/ofSketch/issues/45)).
 	
