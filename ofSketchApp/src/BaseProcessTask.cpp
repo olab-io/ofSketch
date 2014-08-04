@@ -71,6 +71,7 @@ void BaseProcessTask::runTask()
         if(isCancelled())
         {
             Poco::Process::kill(ph);
+            break;
         }
 
         istr.getline(buffer.begin(), buffer.size());
