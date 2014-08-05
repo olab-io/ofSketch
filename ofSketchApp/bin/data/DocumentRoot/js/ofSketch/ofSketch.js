@@ -242,7 +242,7 @@ $(document).ready( function()
                         sketchEditor.run(function(){}, runError);
                         compileSuccess = false;
                     } else {
-                        compileError();
+                        // compileError();
                     }
                 }
             }
@@ -419,10 +419,14 @@ $(document).ready( function()
                 runAlert();
                 consoleEmulator.clear();
                 sketchEditor.clearAnnotations();
-                sketchEditor.compile(function(){
-                    // this callback is now above
-                    // sketchEditor.run(function(){}, runError);
-                }, runError);
+                if (sketchEditor.isRunning()) {
+                    sketchEditor.stop(function(){
+                        sketchEditor.compile(function(){});
+                    });
+                } else {
+                    sketchEditor.compile(function(){});
+                }
+                
             }, saveError);
         } else {
             $('#name-project-modal').modal();

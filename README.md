@@ -21,11 +21,9 @@ ofSketch comes packaged with the following contents:
 - data
 - LICENSE.md
 - ofSketch.app
+- README.md
 
-README.md
-For ofSketch to work properly, the "Projects" folder __must__ be located in the same folder as the ofSketch app.
-
-**Note**: ofSketch prereleases uses an openFrameworks v0.8.1 distribution bundled inside of the App's data folder itself. All code written in ofSketch must be oF v0.8.1 compatible. 
+**Note**: ofSketch prereleases use an openFrameworks v0.8.3 distribution bundled inside of the App's data folder itself. All code written in ofSketch must be oF v0.8.3 compatible. 
 
 ### Running Examples
 
@@ -37,7 +35,7 @@ From there you can create, load, save, and run ofSketch projects. The projects f
 
 ### Coding
 
-As you may have noticed, ofSketch projects look a bit different than the openFrameworks/C++ code that you might be used to writing in Xcode or Code::Blocks. That is for a reason! Writing ofSketch code is akin to writing header-style C++ (don't worry if that doesn't make since), and should look similar to [Processing](http://processing.org/).
+As you may have noticed, ofSketch projects look a bit different than the openFrameworks/C++ code that you might be used to writing in Xcode or Code::Blocks. That is for a reason! Writing ofSketch code is akin to writing header-style C++ (don't worry if that doesn't make since), and should look similar to [Processing](http://processing.org/) code.
 
 ### Classes
 
@@ -49,7 +47,7 @@ Writing you're own classes is easy with ofSketch! Simply add a new tab by clicki
 
 ### Using Addons
 
-Currently, there is no elegant way to use ofxAddons with ofSketch. This feature is coming, but in the meantime all addons must be specified in the `addons.make` files. ofSketch uses its own openFrameworks distribution in the `bin/data/` folder, meaning only core addons work out of the box. To add an addon that ofSketch projects can use, you must place the add-on inside of ofSketch's `openFrameworks/addons` folder.
+Currently, there is no elegant way to use ofxAddons with ofSketch. This feature is coming, but in the meantime all addons must be specified in the `addons.make` files of each project you mean to use them in. ofSketch uses its own openFrameworks distribution in the `bin/data/` folder, meaning only core addons work out of the box. To add an addon that ofSketch projects can use, you must place the add-on inside of ofSketch's `openFrameworks/addons` folder.
 
 This is terribly annoying and we can assure you that there will be a better system for managing addons soon.
 
@@ -59,16 +57,7 @@ ofSketch prereleases are chock-full of disabled features and undoubtedly some pr
 
 ### Play Nice
 
-- Currently, there is absolutely __NO__ input validation on __ANYTHING__. Be careful when naming projects, classes, etc... that you don't include illegal characters (like spaces) or clash names.
-- Don't play with project files. Only modify projects through ofSketch, not your file browser (unless you are adding files to the `data/` folder).
-
-### Known Issues
-
-Here are a few problems that we already know about, and that are intended to be fixed in the next few pre-releases:
-
-- Often the ofSketch.app needs doesn't shut down properly and needs a force quit
-- Renaming tabs doesn't always work that smoothly
-- Projects that are renamed often leave the build with an old name inside of bin/
+Don't edit project files in the `sketch/` or `src/` files of each project. Only modify projects through ofSketch (unless you are adding files to `bin/data/` folder).
 
 ### Feature Requests
 
@@ -80,7 +69,35 @@ Is something just downright wrong? Don't hesitate to submit an [issue](https://g
 
 ## Developers
 
-Building ofSketch from source requires openFrameworks v0.8.1 and the following add ons:
+### Building from source
+
+To build using openFrameworks v0.8.3 on OSX and Linux follow the steps below.
+
+1. Clone the ofSketch repo into your `OF_ROOT/apps` folder, making sure that the `ofSketchApp/` folder inside of `ofSketch/` is two directories below your openFrameworks distribution:
+
+		git clone https://github.com/olab-io/ofSketch.git
+		cd ofSketch
+		
+2. Run the init repo script. This will download and install a trimmed down version of the latest oF release in the `bin/data` folder of your ofSketch build:
+
+		./scripts/init_repo.sh
+		
+3. Clone the ofxAddon dependencies. This script will attempt to clone the required addons and then pull the latest changes. If you already have these addons, make sure that any of your changes are saved:
+
+		./scripts/clone_addons.sh
+
+4. Compile ofSketch:
+
+		cd ofSketchApp
+		make && make run
+
+
+__Note__: OSX users may use the Xcode project instead of building from the command line in step 4.
+
+
+### Info
+
+Building ofSketch from source requires openFrameworks v0.8.3 and the following addons:
 
 - [ofxHTTP](https://github.com/bakercp/ofxHTTP)
 - [ofxIO](https://github.com/bakercp/ofxIO)
@@ -90,11 +107,8 @@ Building ofSketch from source requires openFrameworks v0.8.1 and the following a
 - [ofxSSLManager](https://github.com/bakercp/ofxSSLManager)
 - [ofxTaskQueue](https://github.com/bakercp/ofxTaskQueue)
 
-For more information, see the ARCHITECTURE.md document in this repository.
+For more information, see the [ARCHITECTURE.md](ARCHITECTURE.md) document in this repository.
 
-__You must__ also replace the empty openFrameworks directory inside of `bin/data` with the openFrameworks distribution that you would like your ofSketch projects to use.
-
-Hypothetically, ofSketch should work on all platforms when compiled from source (with the exception of a few obvious tings, however this is untested.
 
 ## Links
 
