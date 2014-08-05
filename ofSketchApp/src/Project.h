@@ -32,6 +32,7 @@
 #include "Poco/URI.h"
 #include "ofTypes.h"
 #include "ofFileUtils.h"
+#include "Poco/RegularExpression.h"
 
 
 namespace of {

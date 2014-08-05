@@ -185,9 +185,27 @@ bool Project::rename(const std::string& newName)
         _path = projectDir.getAbsolutePath();
 
         ofFile projectFile(projectDir.getAbsolutePath() + "/sketch/" + oldProjectName + "." + SKETCH_FILE_EXTENSION);
+        
+        
+        // remove old executable
+        ofDirectory bin;
+        bin.listDir(projectDir.path() + "/bin");
+        std::vector<ofFile> files = bin.getFiles();
+        
+        Poco::RegularExpression appExpression( oldProjectName + "(.exe|.app)*$", Poco::RegularExpression::RE_ANCHORED);
+
+        for (int i = 0; i < files.size(); i++)
+        {
+            std::string baseName = files[i].getBaseName();
+            if (appExpression.match(baseName)) {
+                files[i].remove(true);
+                ofLogVerbose("Project::rename")
+                    << "removed " << files[i].getFileName() << " from " << bin.getAbsolutePath() << endl;
+            }
+        }
+        
 
         ofLogVerbose("Project::rename") << "projectDir path after rename: " << projectDir.getAbsolutePath();
-
         ofLogVerbose("Project::rename") << "projectFile path: " << projectFile.getAbsolutePath();
 
         if (!projectFile.renameTo(projectDir.getAbsolutePath() + "/sketch/" + newName + "." + SKETCH_FILE_EXTENSION)) return false;
