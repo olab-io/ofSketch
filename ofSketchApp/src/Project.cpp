@@ -286,11 +286,11 @@ bool Project::isClassName(const std::string& className) const
 {
     if (hasClasses()) 
     {
-        Json::ArrayIndex numClasses = getNumClasses();
+        unsigned int numClasses = getNumClasses();
 
-        for (Json::ArrayIndex i = 0; i < numClasses; ++i)
+        for (unsigned int i = 0; i < numClasses; ++i)
         {
-            if (_data["classes"][i]["name"] == className) 
+            if (_data["classes"][i]["name"] == className)
             {
                 return true;
             }
@@ -301,7 +301,7 @@ bool Project::isClassName(const std::string& className) const
 }
 
     
-int Project::getNumClasses() const
+unsigned int Project::getNumClasses() const
 {
     return _data["classes"].size();
 }
