@@ -119,7 +119,7 @@ void ProjectManager::getProjectList(const void* pSender,
 {
     Json::Value projectList;
 
-    for (int i = 0; i < _projects.size(); ++i) {
+    for (unsigned int i = 0; i < _projects.size(); ++i) {
         projectList[i]["projectName"] = _projects[i].getName();
     }
 
@@ -234,7 +234,7 @@ void ProjectManager::deleteProject(const void *pSender,
     Project& project = getProjectRef(projectName);
     project.remove();
 
-    for (int i = 0; i < _projects.size(); ++i) 
+    for (std::size_t i = 0; i < _projects.size(); ++i)
     {
         if (_projects[i].getName() == projectName) 
         {
@@ -338,7 +338,7 @@ void ProjectManager::onDirectoryWatcherError(const Poco::Exception& exc)
 
 bool ProjectManager::_removeFromOpenProjectNames(const std::string& projectName)
 {
-    for (int i = 0; i < _openProjectNames.size(); i++)
+    for (std::size_t i = 0; i < _openProjectNames.size(); i++)
     {
         if (_openProjectNames[i] == projectName)
         {

@@ -113,13 +113,13 @@ void Project::save(const Json::Value& data)
         std::vector<Json::Value> deletedClasses;
         
 
-        for (int i = 0; i < _data["classes"].size(); ++i)
+        for (unsigned int i = 0; i < _data["classes"].size(); ++i)
         {
             Json::Value& classFile = _data["classes"][i];
 
             bool matchFound = false;
             
-            for (int j = 0; j < data.size(); ++j)
+            for (unsigned int j = 0; j < data.size(); ++j)
             {
                 const Json::Value& newClassFile = data["classes"][j];
                 
@@ -258,7 +258,9 @@ bool Project::renameClass(const std::string& currentName, const std::string& new
 
         if (file.exists() && hasClasses()) 
         {
-            for (int i = 0; i < getNumClasses(); ++i)
+            unsigned int numClasses = getNumClasses();
+
+            for (unsigned int i = 0; i < numClasses; ++i)
             {
                 if (_data["classes"][i]["name"] == currentName)
                 {
