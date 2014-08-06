@@ -66,7 +66,7 @@ public:
 
     bool isClassName(const std::string& className) const;
     
-    int getNumClasses() const;
+    unsigned int getNumClasses() const;
     
     Json::Value createClass(const std::string& className);
     const Json::Value& getData() const;

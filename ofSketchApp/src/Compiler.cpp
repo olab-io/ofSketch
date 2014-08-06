@@ -77,7 +77,7 @@ void Compiler::generateSourceFiles(const Project& project)
 
     if (project.hasClasses())
     {
-        for (int i = 0; i < projectData["classes"].size(); i++)
+        for (unsigned int i = 0; i < projectData["classes"].size(); ++i)
         {
             Json::Value c = projectData["classes"][i];
             
