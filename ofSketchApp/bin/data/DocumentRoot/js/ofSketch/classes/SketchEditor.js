@@ -493,6 +493,18 @@ function SketchEditor(callback)
 					        });
 	}
 
+	this.getAddonList = function(onSuccess, onError)
+	{
+		JSONRPCClient.call('get-addon-list', 
+        					{},
+					        function(result) {
+					            onSuccess(result);
+					        },
+					        function(error) {
+					            onError(error);
+					        });
+	}
+
 	this.isRunning = function()
 	{
 		return _isRunning;

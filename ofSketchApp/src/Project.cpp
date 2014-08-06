@@ -82,7 +82,8 @@ void Project::load(const std::string& path, const std::string& name)
                 classCounter++;
             }
         }
-
+        
+        _loadAddons();
         _isLoaded = true;
     }
 }
@@ -344,13 +345,80 @@ const Json::Value& Project::getData() const
 {
     return _data;
 }
-
+    
+void Project::addAddon(std::string& addon)
+{
+    if (!usingAddon(addon)) {
+        _addons.push_back(addon);
+        _saveAddons();
+    }
+}
+    
+bool Project::removeAddon(std::string& addon)
+{
+    for (unsigned int i = 0; i < _addons.size(); i++)
+    {
+        if (addon == _addons[i]) {
+            _addons.erase(_addons.begin() + i);
+            _saveAddons();
+            return true;
+        }
+    }
+    
+    return false;
+}
+  
+bool Project::hasAddons() const
+{
+    return _addons.size() > 0;
+}
+    
+bool Project::usingAddon(std::string& addon) const
+{
+    for (unsigned int i = 0; i < _addons.size(); i++)
+    {
+        if (addon == _addons[i]) {
+            return true;
+        }
+    }
+    
+    return false;
+}
+    
+std::vector<std::string> Project::getAddons() const
+{
+    return _addons;
+}
+    
+void Project::_loadAddons()
+{
+    _addons.clear();
+    ofFile addonsMakefile(_path + "/addons.make");
+    
+    if (addonsMakefile.exists()) {
+        
+        std::vector<std::string> lines = ofSplitString(ofBufferFromFile(addonsMakefile.path()), "\n");
+        
+        for (unsigned int i = 0; i < lines.size(); i++) {
+            
+            if (lines[i] != "") {
+                
+                _addons.push_back(lines[i]);
+            }
+        }
+    }
+}
+    
+void Project::_saveAddons()
+{
+    ofBuffer buffer(ofJoinString(_addons, "\n"));
+    ofBufferToFile(_path + "/addons.make", buffer);
+}
 
 void Project::_saveFile(const Json::Value& fileData)
 {
     ofBuffer fileBuffer(fileData["fileContents"].asString());
     ofBufferToFile(getPath() + "/sketch/" + fileData["fileName"].asString(), fileBuffer);
 }
-
 
 } } // namespace of::Sketch

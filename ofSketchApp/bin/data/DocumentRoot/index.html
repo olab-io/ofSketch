@@ -97,9 +97,12 @@
                 <button id="toolbar-task-queue" type="button" class="btn btn-default" title="Task Queue" data-toggle="modal" data-target="#task-queue-modal"> 
                   <span class="glyphicon glyphicon-tasks"></span> 
                 </button> -->
-                <button id="toolbar-logger" type="button" class="btn btn-default hideable" title="Server Log" data-toggle="modal" data-target="#logger-modal">
-                  <span class="glyphicon glyphicon-th"></span> 
+                <button id="toolbar-addons" type="button" class="btn btn-default hideable" title="Addons">
+                  <span class="glyphicon glyphicon-plus-sign"></span> 
                 </button>
+                <!-- <button id="toolbar-logger" type="button" class="btn btn-default hideable" title="Server Log" data-toggle="modal" data-target="#logger-modal">
+                  <span class="glyphicon glyphicon-th"></span> 
+                </button> -->
               </div>
                 
               <div class="btn-group">
@@ -538,6 +541,40 @@
                     to download v<span class="remote-version"></span>.
                   </p>
               </div>
+          </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+      </div><!-- /.modal -->
+
+      <!-- Addons Modal -->
+      <div class="modal fade" id="addons-modal" tabindex="-1" role="dialog" aria-labelledby="addons-modal" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+              <h4 class="modal-title" data-localize="addons">Addons</h4>
+            </div>
+            <div class="modal-body">
+              <h4 class="text-center" data-localize="core-addons">Core Addons</h4>
+              <div id="core-addons-list" class="list-group"></div>
+              <div id="contributed-addons-container" style="display: none;">
+                <h4 class="text-center" data-localize="core-addons">Contributed Addons</h4>
+                <div id="contributed-addons-list" class="list-group"></div>
+              </div>
+              <div id="download-addons-container">
+                <h4 class="text-center" data-localize="core-addons">Download Addons</h4>
+                <p><a href="ofxaddons.com">ofxAddons.com</a> has many contributed addons available for download. To download a new one from the site, copy the GitHub URL into the box below.</p>
+                
+                <div class="input-group">
+                  <input type="text" placeholder="https://github.com/bakercp/ofxSatellite" class="form-control">
+                  <span class="input-group-btn">
+                    <button class="btn btn-default" type="button">Download</button>
+                  </span>
+                </div><!-- /input-group -->
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal" data-localize="close">Close</button>
+            </div>
           </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
       </div><!-- /.modal -->

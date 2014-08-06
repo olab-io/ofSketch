@@ -621,6 +621,122 @@ $(document).ready( function()
            save();
         });
 
+        $('#toolbar-addons').on('click', function(){
+
+            if (!sketchEditor.getProject().isTemplate()) {
+
+                sketchEditor.getAddonList(function(globalAddons) {
+                    
+                    sketchEditor.getProject().getAddonList(function(projectAddons){
+                        
+                        var coreAddonsList = $('#core-addons-list');
+                        var contributedAddonsList = $('#contributed-addons-list');
+                        
+                        var hasContributedAddons = false;
+
+                        // core addons at openFrameworks master.
+                        // Eventually these should be seperated at the backend.
+                        var coreAddons = [
+
+                            "ofx3DModelLoader",
+                            "ofxAccelerometer",
+                            "ofxAndroid",
+                            "ofxAssimpModelLoader",
+                            "ofxEmscripten",
+                            "ofxGui",
+                            "ofxKinect",
+                            "ofxMultiTouch",
+                            "ofxNetwork",
+                            "ofxOpenCv",
+                            "ofxOsc",
+                            "ofxSvg",
+                            "ofxSynth",
+                            "ofxThreadedImageLoader",
+                            "ofxVectorGraphics",
+                            "ofxXmlSettings",
+                            "ofxiOS"
+                        ];
+
+                        coreAddonsList.empty();
+                        contributedAddonsList.empty();
+
+                        _.each(globalAddons, function(globalAddon) {
+
+                            // if this addon is already included
+                            var alreadyInProject = projectAddons.indexOf(globalAddon.name) != -1;
+                            
+                            var linkElement = $('<a href="#" data-included=' + alreadyInProject + ' class="list-group-item"><span class="addon-name">'
+                                                 + globalAddon.name + '</span>'
+                                                 +'<span class="include-marker" style="float: right; display: none" >Included</span></a>');
+                            
+                            if (alreadyInProject) {
+                                linkElement.addClass('list-group-item-info');
+                                linkElement.find('.include-marker').show();
+                            }
+
+                            linkElement.on('click', function(e){
+                                
+                                e.preventDefault();
+
+                                var addon = globalAddon.name;
+                                var isIncluded = $(this).data('included');
+
+                                if (!isIncluded) {
+
+                                    sketchEditor.getProject().addAddon(addon,
+                                                                       function(){
+
+                                                                        isIncluded = !isIncluded;
+                                                                        linkElement.addClass('list-group-item-info');
+                                                                        linkElement.find('.include-marker').show();
+                                                                        linkElement.data('included', isIncluded);
+
+                                                                       }, function(err){
+                                                                        console.log(err);
+                                                                       });
+                                } else {
+
+                                    sketchEditor.getProject().removeAddon(addon,
+                                                                       function(){
+
+                                                                        isIncluded = !isIncluded;
+                                                                        linkElement.removeClass('list-group-item-info');
+                                                                        linkElement.find('.include-marker').hide();
+                                                                        linkElement.data('included', isIncluded);
+
+                                                                       }, function(err){
+                                                                        console.log(err);
+                                                                       });
+                                }
+                                
+                            });
+        
+                            if (coreAddons.indexOf(globalAddon.name) != -1) coreAddonsList.append(linkElement);
+                            else {
+                                
+                                if (!hasContributedAddons) {
+                                    hasContributedAddons = true;
+                                    $('#contributed-addons-container').show();
+                                }
+                                
+                                contributedAddonsList.append(linkElement);
+                                
+                            }
+                        });
+                    }, console.log);
+
+                    $('#addons-modal').modal();
+
+                }, function(err) {
+                    console.log("Error requesting addon list: ");
+                    console.log(err);
+                });
+
+            } else {
+                $('#name-project-modal').modal();
+            }
+        });
+
         $('.open-project').on('click', function() {
             openProject();
         });
@@ -640,7 +756,7 @@ $(document).ready( function()
             } else {
                 $('#name-project-modal').modal();
             }
-            
+
         });
 
         $('.rename-class').on('click', function() {
