@@ -39,6 +39,7 @@ function SketchEditor(callback)
 	var _project = undefined;
 	var _isRunning = false;
 	var _isCompiling = false;
+	var _disabled = false;
 	var _projectFileTemplate;
 	var _classTemplate;
 	var _autosaveTimeout;
@@ -113,7 +114,7 @@ function SketchEditor(callback)
 		    name: 'Show Editor Settings',
 		    bindKey: {mac: 'Command-,', win: 'Ctrl-,'},
 		    exec: function(editor) {
-		    	_self.showSettingsMenu();
+		    	if (!_self.isDisabled()) _self.showSettingsMenu();
 		    }
 		});
 
@@ -684,6 +685,16 @@ function SketchEditor(callback)
 			tab.editSession.clearAnnotations();
 			tab.tabElement.find('.badge').text('');
 		});
+	}
+
+	this.setDisabled = function(bool)
+	{
+		_disabled = bool
+	}
+
+	this.isDisabled = function()
+	{
+		return _disabled;
 	}
 
 	_settings.load(function(data){
