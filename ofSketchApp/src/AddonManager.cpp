@@ -56,8 +56,13 @@ AddonManager::AddonManager(const std::string& path):
     {
         std::string addonPath = (*iter).path();
         std::string addonName = Poco::Path(addonPath).getBaseName();
-
-        _addons[addonName] = Addon::SharedPtr(new Addon(addonName, addonPath));
+        
+        Poco::RegularExpression addonExpression("ofx.+$", Poco::RegularExpression::RE_ANCHORED);
+        
+        if (addonExpression.match(addonName))
+        {
+            _addons[addonName] = Addon::SharedPtr(new Addon(addonName, addonPath));
+        }
 
         ++iter;
     }

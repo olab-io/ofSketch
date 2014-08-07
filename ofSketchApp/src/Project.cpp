@@ -82,7 +82,8 @@ void Project::load(const std::string& path, const std::string& name)
                 classCounter++;
             }
         }
-
+        
+        _loadAddons();
         _isLoaded = true;
     }
 }
@@ -184,9 +185,27 @@ bool Project::rename(const std::string& newName)
         _path = projectDir.getAbsolutePath();
 
         ofFile projectFile(projectDir.getAbsolutePath() + "/sketch/" + oldProjectName + "." + SKETCH_FILE_EXTENSION);
+        
+        
+        // remove old executable
+        ofDirectory bin;
+        bin.listDir(projectDir.path() + "/bin");
+        std::vector<ofFile> files = bin.getFiles();
+        
+        Poco::RegularExpression appExpression( oldProjectName + "(.exe|.app)*$", Poco::RegularExpression::RE_ANCHORED);
+
+        for (int i = 0; i < files.size(); i++)
+        {
+            std::string baseName = files[i].getBaseName();
+            if (appExpression.match(baseName)) {
+                files[i].remove(true);
+                ofLogVerbose("Project::rename")
+                    << "removed " << files[i].getFileName() << " from " << bin.getAbsolutePath() << endl;
+            }
+        }
+        
 
         ofLogVerbose("Project::rename") << "projectDir path after rename: " << projectDir.getAbsolutePath();
-
         ofLogVerbose("Project::rename") << "projectFile path: " << projectFile.getAbsolutePath();
 
         if (!projectFile.renameTo(projectDir.getAbsolutePath() + "/sketch/" + newName + "." + SKETCH_FILE_EXTENSION)) return false;
@@ -326,13 +345,80 @@ const Json::Value& Project::getData() const
 {
     return _data;
 }
-
+    
+void Project::addAddon(std::string& addon)
+{
+    if (!usingAddon(addon)) {
+        _addons.push_back(addon);
+        _saveAddons();
+    }
+}
+    
+bool Project::removeAddon(std::string& addon)
+{
+    for (unsigned int i = 0; i < _addons.size(); i++)
+    {
+        if (addon == _addons[i]) {
+            _addons.erase(_addons.begin() + i);
+            _saveAddons();
+            return true;
+        }
+    }
+    
+    return false;
+}
+  
+bool Project::hasAddons() const
+{
+    return _addons.size() > 0;
+}
+    
+bool Project::usingAddon(std::string& addon) const
+{
+    for (unsigned int i = 0; i < _addons.size(); i++)
+    {
+        if (addon == _addons[i]) {
+            return true;
+        }
+    }
+    
+    return false;
+}
+    
+std::vector<std::string> Project::getAddons() const
+{
+    return _addons;
+}
+    
+void Project::_loadAddons()
+{
+    _addons.clear();
+    ofFile addonsMakefile(_path + "/addons.make");
+    
+    if (addonsMakefile.exists()) {
+        
+        std::vector<std::string> lines = ofSplitString(ofBufferFromFile(addonsMakefile.path()), "\n");
+        
+        for (unsigned int i = 0; i < lines.size(); i++) {
+            
+            if (lines[i] != "") {
+                
+                _addons.push_back(lines[i]);
+            }
+        }
+    }
+}
+    
+void Project::_saveAddons()
+{
+    ofBuffer buffer(ofJoinString(_addons, "\n"));
+    ofBufferToFile(_path + "/addons.make", buffer);
+}
 
 void Project::_saveFile(const Json::Value& fileData)
 {
     ofBuffer fileBuffer(fileData["fileContents"].asString());
     ofBufferToFile(getPath() + "/sketch/" + fileData["fileName"].asString(), fileBuffer);
 }
-
 
 } } // namespace of::Sketch

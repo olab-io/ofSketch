@@ -184,6 +184,27 @@ void App::setup()
                            this,
                            &App::saveEditorSettings);
     
+    server->registerMethod("get-addon-list",
+                           "Get a list of all addons.",
+                           this,
+                           &App::getAddonList);
+    
+    server->registerMethod("get-project-addon-list",
+                           "Get a list of addons for a project.",
+                           this,
+                           &App::getProjectAddonList);
+    
+    server->registerMethod("add-project-addon",
+                           "Add an addon to a project.",
+                           this,
+                           &App::addProjectAddon);
+    
+    server->registerMethod("remove-project-addon",
+                           "Remove an addon from a project.",
+                           this,
+                           &App::removeProjectAddon);
+
+    
     server->start();
 
 
@@ -425,11 +446,84 @@ void App::stop(const void* pSender, ofx::JSONRPC::MethodArgs& args)
         args.error = "No task id.";
     }
 }
-
-
+    
 void App::getProjectList(const void* pSender, ofx::JSONRPC::MethodArgs& args)
 {
     _projectManager.getProjectList(pSender, args);
+}
+
+
+void App::getAddonList(const void *pSender, ofx::JSONRPC::MethodArgs &args)
+{
+    ofLogVerbose("App::getAddonList") << " sending addon list.";
+    Json::Value addonsJSON;
+    
+    std::vector<Addon::SharedPtr> addons = _addonManager.getAddons();
+    
+    std::vector<Addon::SharedPtr>::const_iterator iter = addons.begin();
+    
+    while (iter != addons.end())
+    {
+        Json::Value addon;
+        addon["name"] = (*iter)->getName();
+        addon["path"] = (*iter)->getPath();
+        addonsJSON.append(addon);
+        ++iter;
+    }
+    
+    args.result = addonsJSON;
+}
+    
+void App::getProjectAddonList(const void *pSender, ofx::JSONRPC::MethodArgs &args)
+{
+    std::string projectName = args.params["projectName"].asString();
+    if (_projectManager.projectExists(projectName))
+    {
+        const Project& project = _projectManager.getProject(projectName);
+
+        if (project.hasAddons()) {
+            
+            std::vector<std::string> addons = project.getAddons();
+
+            for (unsigned int i = 0; i < addons.size(); i++) {
+                args.result["addons"][i] = addons[i];
+            }
+            
+            args.result["hasAddons"] = true;
+        }
+        else
+        {
+            args.result["hasAddons"] = false;
+        }
+        
+    }
+    else args.error["message"] = "The requested project does not exist.";
+}
+    
+void App::addProjectAddon(const void* pSender, ofx::JSONRPC::MethodArgs& args)
+{
+    std::string projectName = args.params["projectName"].asString();
+    std::string addon = args.params["addon"].asString();
+    
+    if (_projectManager.projectExists(projectName))
+    {
+        Project& project = _projectManager.getProjectRef(projectName);
+        project.addAddon(addon);
+    }
+    else args.error["message"] = "The requested project does not exist.";
+}
+    
+void App::removeProjectAddon(const void* pSender, ofx::JSONRPC::MethodArgs& args)
+{
+    std::string projectName = args.params["projectName"].asString();
+    std::string addon = args.params["addon"].asString();
+    
+    if (_projectManager.projectExists(projectName))
+    {
+        Project& project = _projectManager.getProjectRef(projectName);
+        project.removeAddon(addon);
+    }
+    else args.error["message"] = "The requested project does not exist.";
 }
 
 
@@ -485,31 +579,6 @@ bool App::onWebSocketOpenEvent(ofx::HTTP::WebSocketOpenEventArgs& args)
 
     args.getConnectionRef().sendFrame(frame);
 
-    params.clear();
-
-    Json::Value addonsJSON;
-
-    std::vector<Addon::SharedPtr> addons = _addonManager.getAddons();
-
-    std::vector<Addon::SharedPtr>::const_iterator iter = addons.begin();
-
-    while (iter != addons.end())
-    {
-        Json::Value addon;
-        addon["name"] = (*iter)->getName();
-        addon["path"] = (*iter)->getPath();
-        addonsJSON.append(addon);
-        ++iter;
-    }
-
-    params["addons"] = addonsJSON;
-
-    json = App::toJSONMethod("Server", "addons", params);
-    frame = ofx::HTTP::WebSocketFrame(App::toJSONString(json));
-
-    args.getConnectionRef().sendFrame(frame);
-
-// Send editor settings
 //    params.clear();
 //    
 //    params["editorSettings"] = _editorSettings.getData();
