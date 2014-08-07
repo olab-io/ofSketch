@@ -28,6 +28,8 @@
 
 #include <string>
 #include <vector>
+#include "Poco/PipeStream.h"
+#include "Poco/Process.h"
 #include "Poco/Task.h"
 
 
@@ -49,6 +51,8 @@ public:
 
     virtual ~BaseProcessTask();
 
+	virtual void cancel();
+
     virtual void runTask();
 
     virtual void processLine(const std::string& line) = 0;
@@ -65,6 +69,7 @@ protected:
 
     std::size_t _bufferSize;
 
+    Poco::Pipe _outAndErrPipe;
 };
 
 

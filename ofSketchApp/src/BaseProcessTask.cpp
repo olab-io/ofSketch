@@ -25,8 +25,7 @@
 
 #include "BaseProcessTask.h"
 #include "Poco/Buffer.h"
-#include "Poco/PipeStream.h"
-#include "Poco/Process.h"
+#include "Poco/Thread.h"
 #include <iostream>
 #include "ofLog.h"
 
@@ -52,28 +51,27 @@ BaseProcessTask::~BaseProcessTask()
 }
 
 
+void BaseProcessTask::cancel()
+{
+    Poco::Task::cancel();
+    _outAndErrPipe.close(); // Releases istr.getline if needed.
+}
+
+
 void BaseProcessTask::runTask()
 {
-    Poco::Pipe outAndErrPipe;
+    Poco::PipeInputStream istr(_outAndErrPipe);
 
     Poco::ProcessHandle ph = Poco::Process::launch(_command,
                                                    _args,
                                                    0,
-                                                   &outAndErrPipe,
-                                                   &outAndErrPipe);
-
-    Poco::PipeInputStream istr(outAndErrPipe);
+                                                   &_outAndErrPipe,
+                                                   &_outAndErrPipe);
 
     Poco::Buffer<char> buffer(_bufferSize);
 
-    while(istr.good() && !istr.fail())
+    while (istr.good() && !istr.fail() && !isCancelled())
     {
-        if(isCancelled())
-        {
-            Poco::Process::kill(ph);
-            break;
-        }
-
         istr.getline(buffer.begin(), buffer.size());
 
         if (buffer.begin())
@@ -89,10 +87,11 @@ void BaseProcessTask::runTask()
         }
     }
 
+    Poco::Process::kill(ph);
+
     int exitCode = ph.wait();
 
     ofLogVerbose("BaseProcessTask::runTask") << "Exit with: " << exitCode;
-
 }
 
 
