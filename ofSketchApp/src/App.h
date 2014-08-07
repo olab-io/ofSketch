@@ -144,13 +144,14 @@ private:
 
 //    WebSocketLoggerChannel::SharedPtr _loggerChannel;
 
-    Poco::ThreadPool _threadPool;
-    ProcessTaskQueue _taskQueue;
-    EditorSettings _editorSettings;
-    OfSketchSettings _ofSketchSettings;
-    Compiler _compiler;
-    ProjectManager _projectManager;
-    AddonManager _addonManager;
+    EditorSettings      _editorSettings;
+    OfSketchSettings    _ofSketchSettings;
+
+    Poco::ThreadPool    _threadPool;
+    ProcessTaskQueue    _taskQueue;
+    Compiler            _compiler;
+    AddonManager        _addonManager;
+    ProjectManager      _projectManager;
 
     ofImage _logo;
     ofTrueTypeFont _font;

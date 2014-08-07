@@ -35,17 +35,16 @@ const std::string App::VERSION_SPECIAL = "RC1";
 
 
 App::App():
-    _threadPool("ofSketchThreadPool"),
-    _taskQueue(ofx::TaskQueue_<std::string>::UNLIMITED_TASKS, _threadPool),
     _editorSettings(ofToDataPath("Resources/Settings/EditorSettings.json")),
     _ofSketchSettings(ofToDataPath("Resources/Settings/OfSketchSettings.json")),
+    _threadPool("ofSketchThreadPool"),
+    _taskQueue(ofx::TaskQueue_<std::string>::UNLIMITED_TASKS, _threadPool),
     _compiler(_taskQueue, ofToDataPath("Resources/Templates/CompilerTemplates")),
-    _projectManager(ofToDataPath(_ofSketchSettings.getProjectDir(), true)),
-    _addonManager(ofToDataPath(_ofSketchSettings.getAddonsDir()))
+    _addonManager(ofToDataPath(_ofSketchSettings.getAddonsDir())),
+    _projectManager(ofToDataPath(_ofSketchSettings.getProjectDir(), true))
 {
     ofLogNotice("App::App") << "Editor setting's projectDir: " << _ofSketchSettings.getProjectDir();
     _taskQueue.registerTaskEvents(this);
-
 
     ofLogNotice("App::App") << "Starting server on port: " << _ofSketchSettings.getPort() << " With Websocket Buffer Size: " << _ofSketchSettings.getBufferSize();
 
