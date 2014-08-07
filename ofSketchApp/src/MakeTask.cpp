@@ -36,9 +36,10 @@ MakeTask::Settings::Settings():
     ofRoot(ofToDataPath("openFrameworks")),
     numProcessors(Poco::Environment::processorCount()),
     isSilent(true),
-    useDistccServer(false),
-    cxx(""),
-    cc("")
+    CXX(""),
+    CC(""),
+    platformVariant(""),
+    makefileDebug(false)
 {
 }
 
@@ -63,9 +64,27 @@ MakeTask::MakeTask(const Settings& settings,
         _args.push_back("-s");
     }
 
-    _args.push_back(_target);
+    if (!_settings.CC.empty())
+    {
+        _args.push_back("CC=" + _settings.CC);
+    }
 
-//    _args.push_back("OF_ROOT=" + _settings.ofRoot);
+    if (!_settings.CXX.empty())
+    {
+        _args.push_back("CXX=" + _settings.CXX);
+    }
+
+    if (!_settings.platformVariant.empty())
+    {
+        _args.push_back("PLATFORM_VARIANT=" + _settings.platformVariant);
+    }
+
+    if (_settings.makefileDebug)
+    {
+        _args.push_back("MAKEFILE_DEBUG=1");
+    }
+
+    _args.push_back(_target);
 
     ofLogNotice("MakeTask::MakeTask") << "Configuring Make Task with Args: " << ofToString(_args);
 }
