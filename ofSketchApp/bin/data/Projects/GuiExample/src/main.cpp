@@ -10,6 +10,10 @@ public:
 
 #line 2 "GuiExample"
 
+// To add the ofxGui addon to this example,
+// click the addons button in the toolbar and
+// select "ofxGui"
+
 bool bHide;
 
 ofxFloatSlider radius;
@@ -27,6 +31,7 @@ ofSoundPlayer ring;
 
 void setup() {
 	ofSetVerticalSync(true);
+	ofSetWindowShape(1024, 768);
 
 	// we add this listener before setting up so the initial circle resolution is correct
 	circleResolution.addListener(this, &ofApp::circleResolutionChanged);
