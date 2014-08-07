@@ -81,8 +81,11 @@ public:
     void requestProjectClosed(const void* pSender, ofx::JSONRPC::MethodArgs& args);
     void notifyProjectClosed(const void* pSender, ofx::JSONRPC::MethodArgs& args);
     void requestAppQuit(const void* pSender, ofx::JSONRPC::MethodArgs& args);
+    void getAddonList(const void* pSender, ofx::JSONRPC::MethodArgs& args);
+    void getProjectAddonList(const void* pSender, ofx::JSONRPC::MethodArgs& args);
+    void addProjectAddon(const void* pSender, ofx::JSONRPC::MethodArgs& args);
+    void removeProjectAddon(const void* pSender, ofx::JSONRPC::MethodArgs& args);
 
-    
     bool onWebSocketOpenEvent(ofx::HTTP::WebSocketOpenEventArgs& args);
     bool onWebSocketCloseEvent(ofx::HTTP::WebSocketCloseEventArgs& args);
     bool onWebSocketFrameReceivedEvent(ofx::HTTP::WebSocketFrameEventArgs& args);
@@ -144,13 +147,14 @@ private:
 
 //    WebSocketLoggerChannel::SharedPtr _loggerChannel;
 
-    Poco::ThreadPool _threadPool;
-    ProcessTaskQueue _taskQueue;
-    EditorSettings _editorSettings;
-    OfSketchSettings _ofSketchSettings;
-    Compiler _compiler;
-    ProjectManager _projectManager;
-    AddonManager _addonManager;
+    EditorSettings      _editorSettings;
+    OfSketchSettings    _ofSketchSettings;
+
+    Poco::ThreadPool    _threadPool;
+    ProcessTaskQueue    _taskQueue;
+    Compiler            _compiler;
+    AddonManager        _addonManager;
+    ProjectManager      _projectManager;
 
     ofImage _logo;
     ofTrueTypeFont _font;

@@ -173,6 +173,57 @@ function Project(projectName, onSuccess, onError, isTemplate)
 					        });
 	}
 
+	this.getAddonList = function(onSuccess, onError)
+	{
+		JSONRPCClient.call('get-project-addon-list', 
+        					{ 
+        						projectName: _self.getName(),
+        					},
+					        function(result) {
+
+					        	var addons = [];
+					        	
+					        	if (result.hasAddons) {
+					        		addons = result.addons;
+					        	}
+
+					        	onSuccess(addons);
+					        },
+					        function(error) {
+					            onError(error);
+					        });
+	}
+
+	this.addAddon = function(addon, onSuccess, onError)
+	{
+		JSONRPCClient.call('add-project-addon', 
+        					{ 
+        						projectName: _self.getName(),
+        						addon: addon
+        					},
+					        function(result) {
+					        	onSuccess(result);
+					        },
+					        function(error) {
+					            onError(error);
+					        });
+	}
+
+	this.removeAddon = function(addon, onSuccess, onError)
+	{
+		JSONRPCClient.call('remove-project-addon', 
+        					{ 
+        						projectName: _self.getName(),
+        						addon: addon
+        					},
+					        function(result) {
+					        	onSuccess(result);
+					        },
+					        function(error) {
+					            onError(error);
+					        });
+	}
+
 	// used to assign the name of a template project only
 	this.assignName = function(name)
 	{

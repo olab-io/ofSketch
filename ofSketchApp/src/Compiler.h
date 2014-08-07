@@ -39,6 +39,7 @@
 #include "ofMain.h"
 #include "ProcessTaskQueue.h"
 #include "MakeTask.h"
+#include "RunTask.h"
 
 
 namespace of {
@@ -52,7 +53,7 @@ public:
 
     Poco::UUID compile(const Project& project);
     Poco::UUID run(const Project& project);
-    
+
     void generateSourceFiles(const Project& project);
     Json::Value parseError(std::string message) const;
     
@@ -66,7 +67,7 @@ private:
     
     void _parseAddons();
     void _getAddons();
-    
+
     void _replaceIncludes(std::string& fileContents);
 };
 

@@ -336,6 +336,7 @@ void ProjectManager::onDirectoryWatcherError(const Poco::Exception& exc)
     ofLogError("ofApp::onDirectoryWatcherError") << "Error: " << exc.displayText();
 }
 
+
 bool ProjectManager::_removeFromOpenProjectNames(const std::string& projectName)
 {
     for (std::size_t i = 0; i < _openProjectNames.size(); i++)
@@ -349,5 +350,6 @@ bool ProjectManager::_removeFromOpenProjectNames(const std::string& projectName)
     
     return false;
 }
+
 
 } } // namespace of::Sketch

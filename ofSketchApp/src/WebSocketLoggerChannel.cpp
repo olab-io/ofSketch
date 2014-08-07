@@ -69,10 +69,10 @@ void WebSocketLoggerChannel::log(ofLogLevel level,
                                  const std::string& module,
                                  const char* format, ...)
 {
-	va_list args;
-	va_start(args, format);
-	log(level, module, format, args);
-	va_end(args);
+    va_list args;
+    va_start(args, format);
+    log(level, module, format, args);
+    va_end(args);
 }
 
 void WebSocketLoggerChannel::log(ofLogLevel level,
@@ -89,5 +89,6 @@ void WebSocketLoggerChannel::setWebSocketRoute(ofx::HTTP::WebSocketRoute::Shared
 {
     _webSocketRoute = webSocketRoute;
 }
+
 
 } } // namespace of::Sketch

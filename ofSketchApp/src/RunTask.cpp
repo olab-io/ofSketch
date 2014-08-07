@@ -1,6 +1,6 @@
 // =============================================================================
 //
-// Copyright (c) 2014 Brannon Dorsey <http://brannondorsey.com>
+// Copyright (c) 2013-2014 Christopher Baker <http://christopherbaker.net>
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -23,35 +23,42 @@
 // =============================================================================
 
 
-#pragma once
-
-
-#include <string>
-#include <json/json.h>
-#include "ofxJSONElement.h"
+#include "RunTask.h"
+#include "Poco/TaskNotification.h"
+#include "App.h"
 
 
 namespace of {
 namespace Sketch {
 
 
-class EditorSettings
+RunTask::RunTask(const Project& project, Target target):
+    BaseProcessTask(project.getName(), getExecutable(project, target))
 {
-public:
-    EditorSettings(const std::string& path);
+}
 
-    void update(const ofxJSONElement& data);
-    
-    bool load();
-    bool save();
 
-    const Json::Value& getData() const;
+RunTask::~RunTask()
+{
+}
 
-private:
-    std::string _path;
-    ofxJSONElement _data; //ofxJSONElement for load functionality
 
-};
+void RunTask::processLine(const std::string& line)
+{
+    postNotification(new Poco::TaskCustomNotification<std::string>(this, line));
+}
+
+
+std::string RunTask::getExecutable(const Project& project, Target target)
+{
+    std::string suffix = (target == DEBUG) ? "_debug" : "";
+
+#if defined(TARGET_OSX)
+    return project.getPath() + "/bin/" + project.getName() + suffix + ".app/Contents/MacOS/" + project.getName() + suffix;
+#else
+    return project.getPath() + "/bin/" + project.getName() + suffix;
+#endif
+}
 
 
 } } // namespace of::Sketch

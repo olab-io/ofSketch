@@ -133,6 +133,7 @@
 		F809A1C11982E8050033987C /* EditorSettings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F809A1C01982E8050033987C /* EditorSettings.cpp */; };
 		FBD94A76B3CB5B29D734DAE7 /* DefaultSessionProvider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 16B7E0D9EC1C62B8EAFA8110 /* DefaultSessionProvider.cpp */; };
 		FD72D31F1991B61800E3A1AA /* jsoncpp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FD72D31E1991B61800E3A1AA /* jsoncpp.cpp */; };
+		FDBA50A8199312000000F50B /* RunTask.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FDBA50A6199312000000F50B /* RunTask.cpp */; };
 		FF980E849E802376597006F2 /* BasicJSONRPCServer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 99B9D33995649A77E12F05FC /* BasicJSONRPCServer.cpp */; };
 /* End PBXBuildFile section */
 
@@ -443,6 +444,8 @@
 		FD72D31D1991B61100E3A1AA /* json-forwards.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "json-forwards.h"; path = "../../../addons/ofxJSON/libs/jsoncpp/include/json/json-forwards.h"; sourceTree = "<group>"; };
 		FD72D31E1991B61800E3A1AA /* jsoncpp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = jsoncpp.cpp; path = ../../../addons/ofxJSON/libs/jsoncpp/src/jsoncpp.cpp; sourceTree = "<group>"; };
 		FD7C8908D1BCC7E7170A424C /* PostRouteHandler.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = PostRouteHandler.cpp; path = ../../../addons/ofxHTTP/libs/ofxHTTP/src/PostRouteHandler.cpp; sourceTree = SOURCE_ROOT; };
+		FDBA50A6199312000000F50B /* RunTask.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RunTask.cpp; sourceTree = "<group>"; };
+		FDBA50A7199312000000F50B /* RunTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RunTask.h; sourceTree = "<group>"; };
 		FE5B3B19544657B6F9CCCA03 /* ByteBufferUtils.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ByteBufferUtils.cpp; path = ../../../addons/ofxIO/libs/ofxIO/src/ByteBufferUtils.cpp; sourceTree = SOURCE_ROOT; };
 		FFE96AA616BC97AEB4FCED47 /* Project.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = Project.cpp; path = src/Project.cpp; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
@@ -1221,6 +1224,8 @@
 				4AFDEBB7DE39F350B20F5E5B /* AddonManager.h */,
 				33A937A4598FE853C51EB326 /* App.cpp */,
 				A72A9CCF86C5B616747F4214 /* App.h */,
+				FDBA50A6199312000000F50B /* RunTask.cpp */,
+				FDBA50A7199312000000F50B /* RunTask.h */,
 				805432FD02D669F8AB87523A /* BaseProcessTask.cpp */,
 				16BF8CD7F23D5D051DE9B8AC /* BaseProcessTask.h */,
 				BA556D3D36C8D01C120B7F53 /* Compiler.cpp */,
@@ -1473,6 +1478,7 @@
 				FF980E849E802376597006F2 /* BasicJSONRPCServer.cpp in Sources */,
 				D5E7AD644FB83A08B6979110 /* BaseMessage.cpp in Sources */,
 				4B9AF9399F7DA7A1CA3D2C58 /* Deserializer.cpp in Sources */,
+				FDBA50A8199312000000F50B /* RunTask.cpp in Sources */,
 				78BA1FD4E09251D06176CDD6 /* Error.cpp in Sources */,
 				3ECBBD88E4445067ADD3B75B /* Errors.cpp in Sources */,
 				7FC21E7A1A5F55F52854C237 /* MethodRegistry.cpp in Sources */,

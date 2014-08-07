@@ -35,22 +35,24 @@ const std::string App::VERSION_SPECIAL = "RC1";
 
 
 App::App():
-    _threadPool("ofSketchThreadPool"),
-    _taskQueue(ofx::TaskQueue_<std::string>::UNLIMITED_TASKS, _threadPool),
     _editorSettings(ofToDataPath("Resources/Settings/EditorSettings.json")),
     _ofSketchSettings(ofToDataPath("Resources/Settings/OfSketchSettings.json")),
+    _threadPool("ofSketchThreadPool"),
+    _taskQueue(ofx::TaskQueue_<std::string>::UNLIMITED_TASKS, _threadPool),
     _compiler(_taskQueue, ofToDataPath("Resources/Templates/CompilerTemplates")),
-    _projectManager(ofToDataPath(_ofSketchSettings.getProjectDir(), true)),
-    _addonManager(ofToDataPath(_ofSketchSettings.getAddonsDir()))
+    _addonManager(ofToDataPath(_ofSketchSettings.getAddonsDir())),
+    _projectManager(ofToDataPath(_ofSketchSettings.getProjectDir(), true))
 {
     ofLogNotice("App::App") << "Editor setting's projectDir: " << _ofSketchSettings.getProjectDir();
     _taskQueue.registerTaskEvents(this);
 
+    ofLogNotice("App::App") << "Starting server on port: " << _ofSketchSettings.getPort() << " With Websocket Buffer Size: " << _ofSketchSettings.getBufferSize();
+
     ofx::HTTP::BasicJSONRPCServerSettings settings; // TODO: load from file.
-    settings.setBufferSize(1024 * 1024 * 3); // 3 MB
-    settings.setPort(7890);
+    settings.setBufferSize(_ofSketchSettings.getBufferSize());
+    settings.setPort(_ofSketchSettings.getPort());
     server = ofx::HTTP::BasicJSONRPCServer::makeShared(settings);
-    
+
     // Must register for all events before initializing server.
     ofSSLManager::registerAllEvents(this);
 
@@ -96,57 +98,57 @@ void App::setup()
                            "Load the requested project.",
                            this,
                            &App::loadProject);
-    
+
     server->registerMethod("load-template-project",
                            "Load an anonymous project.",
                            this,
                            &App::loadTemplateProject);
-    
+
     server->registerMethod("save-project",
                            "Save the current project.",
                            this,
                            &App::saveProject);
-    
+
     server->registerMethod("create-project",
                            "Create a new project.",
                            this,
                            &App::createProject);
-    
+
     server->registerMethod("delete-project",
                            "Delete the current project.",
                            this,
                            &App::deleteProject);
-    
+
     server->registerMethod("rename-project",
                            "Rename the current project.",
                            this,
                            &App::renameProject);
-    
+
     server->registerMethod("notify-project-closed",
                            "Notify the server that project was closed.",
                            this,
                            &App::notifyProjectClosed);
-    
+
     server->registerMethod("request-project-closed",
                            "Broadcast a project close request to connected clients.",
                            this,
                            &App::requestProjectClosed);
-    
+
     server->registerMethod("request-app-quit",
                            "Quit the app.",
                            this,
                            &App::requestAppQuit);
-    
+
     server->registerMethod("create-class",
                            "Create a new class for the current project.",
                            this,
                            &App::createClass);
-    
+
     server->registerMethod("delete-class",
                            "Delete a select class from for the current project.",
                            this,
                            &App::deleteClass);
-    
+
     server->registerMethod("rename-class",
                            "Rename a select class from for the current project.",
                            this,
@@ -156,7 +158,7 @@ void App::setup()
                            "Run the requested project.",
                            this,
                            &App::runProject);
-    
+
     server->registerMethod("compile-project",
                            "Run the requested project.",
                            this,
@@ -166,24 +168,53 @@ void App::setup()
                            "Stop the requested project.",
                            this,
                            &App::stop);
-    
+
     server->registerMethod("get-project-list",
                            "Get list of all projects in the Project directory.",
                            this,
                            &App::getProjectList);
-    
+
     server->registerMethod("load-editor-settings",
                            "Get the editor settings.",
                            this,
                            &App::loadEditorSettings);
-    
+
     server->registerMethod("save-editor-settings",
                            "Save the editor settings.",
                            this,
                            &App::saveEditorSettings);
     
+    server->registerMethod("get-addon-list",
+                           "Get a list of all addons.",
+                           this,
+                           &App::getAddonList);
+    
+    server->registerMethod("get-project-addon-list",
+                           "Get a list of addons for a project.",
+                           this,
+                           &App::getProjectAddonList);
+    
+    server->registerMethod("add-project-addon",
+                           "Add an addon to a project.",
+                           this,
+                           &App::addProjectAddon);
+    
+    server->registerMethod("remove-project-addon",
+                           "Remove an addon from a project.",
+                           this,
+                           &App::removeProjectAddon);
+
+    
     server->start();
 
+
+    ofTargetPlatform arch = getTargetPlatform();
+
+    if (arch != OF_TARGET_LINUXARMV6L && arch != OF_TARGET_LINUXARMV7L)
+    {
+        // Launch a browser with the address of the server.
+        ofLaunchBrowser(server->getURL() + "/?project=HelloWorld");
+    }
 }
 
 
@@ -211,7 +242,7 @@ void App::exit()
     ofx::HTTP::WebSocketFrame frame(App::toJSONString(json));
     server->getWebSocketRoute()->broadcast(frame);
     ofLogNotice("App::exit") << "appExit frame broadcasted" << endl;
-    
+
     // Reset default logger.
     ofLogToConsole();
 }
@@ -248,7 +279,7 @@ void App::loadTemplateProject(const void* pSender, ofx::JSONRPC::MethodArgs& arg
 void App::saveProject(const void* pSender, ofx::JSONRPC::MethodArgs& args)
 {
     std::string projectName = args.params["projectData"]["projectFile"]["name"].asString();
-    
+
     if (_projectManager.projectExists(projectName))
     {
         _projectManager.saveProject(pSender, args);
@@ -272,7 +303,6 @@ void App::createProject(const void* pSender, ofx::JSONRPC::MethodArgs& args)
 
 void App::deleteProject(const void* pSender, ofx::JSONRPC::MethodArgs& args)
 {
-    
     std::string projectName = args.params["projectName"].asString();
     if (_projectManager.projectExists(projectName))
     {
@@ -293,9 +323,10 @@ void App::renameProject(const void* pSender, ofx::JSONRPC::MethodArgs& args)
     }
     else args.error["message"] = "The project that you are trying to delete does not exist.";
 }
-    
-void App::notifyProjectClosed(const void* pSender, ofx::JSONRPC::MethodArgs& args) {
-    
+
+
+void App::notifyProjectClosed(const void* pSender, ofx::JSONRPC::MethodArgs& args)
+{
     std::string projectName = args.params["projectName"].asString();
     _projectManager.notifyProjectClosed(projectName);
     ofLogNotice("App::notifyProjectClosed") << projectName << " closed.";
@@ -303,10 +334,9 @@ void App::notifyProjectClosed(const void* pSender, ofx::JSONRPC::MethodArgs& arg
     
 void App::requestProjectClosed(const void* pSender, ofx::JSONRPC::MethodArgs& args)
 {
-    
     std::string projectName = args.params["projectName"].asString();
     std::string clientUUID = args.params["clientUUID"].asString();
-    
+
     // broadcast requestProjectClosed settings to all connected clients
     Json::Value params;
     params["projectName"] = projectName;
@@ -315,22 +345,25 @@ void App::requestProjectClosed(const void* pSender, ofx::JSONRPC::MethodArgs& ar
     ofx::HTTP::WebSocketFrame frame(App::toJSONString(json));
     server->getWebSocketRoute()->broadcast(frame);
 }
-    
+
+
 void App::requestAppQuit(const void *pSender, ofx::JSONRPC::MethodArgs &args)
 {
 //    args.result = "App quit";
 //    ofExit();
 }
 
+
 void App::createClass(const void* pSender, ofx::JSONRPC::MethodArgs& args)
 {
     std::string projectName = args.params["projectName"].asString();
+
     if (_projectManager.projectExists(projectName))
     {
         std::string className = args.params["className"].asString();
         Project& project = _projectManager.getProjectRef(projectName);
         args.result["classFile"] = project.createClass(className);
-        
+
     }
     else args.error["message"] = "The requested project does not exist.";
 }
@@ -368,13 +401,11 @@ void App::renameClass(const void* pSender, ofx::JSONRPC::MethodArgs& args)
         else args.error["message"] = "Error renaming " + className + " class.";
     }
     else args.error["message"] = "The requested project does not exist.";
-
 }
 
 
 void App::runProject(const void* pSender, ofx::JSONRPC::MethodArgs& args)
 {
-
     std::string projectName = args.params["projectName"].asString();
     if (_projectManager.projectExists(projectName))
     {
@@ -389,7 +420,6 @@ void App::runProject(const void* pSender, ofx::JSONRPC::MethodArgs& args)
 
 void App::compileProject(const void* pSender, ofx::JSONRPC::MethodArgs& args)
 {
-    
     std::string projectName = args.params["projectName"].asString();
     if (_projectManager.projectExists(projectName))
     {
@@ -416,26 +446,100 @@ void App::stop(const void* pSender, ofx::JSONRPC::MethodArgs& args)
         args.error = "No task id.";
     }
 }
-
-
+    
 void App::getProjectList(const void* pSender, ofx::JSONRPC::MethodArgs& args)
 {
     _projectManager.getProjectList(pSender, args);
 }
+
+
+void App::getAddonList(const void *pSender, ofx::JSONRPC::MethodArgs &args)
+{
+    ofLogVerbose("App::getAddonList") << " sending addon list.";
+    Json::Value addonsJSON;
     
+    std::vector<Addon::SharedPtr> addons = _addonManager.getAddons();
+    
+    std::vector<Addon::SharedPtr>::const_iterator iter = addons.begin();
+    
+    while (iter != addons.end())
+    {
+        Json::Value addon;
+        addon["name"] = (*iter)->getName();
+        addon["path"] = (*iter)->getPath();
+        addonsJSON.append(addon);
+        ++iter;
+    }
+    
+    args.result = addonsJSON;
+}
+    
+void App::getProjectAddonList(const void *pSender, ofx::JSONRPC::MethodArgs &args)
+{
+    std::string projectName = args.params["projectName"].asString();
+    if (_projectManager.projectExists(projectName))
+    {
+        const Project& project = _projectManager.getProject(projectName);
+
+        if (project.hasAddons()) {
+            
+            std::vector<std::string> addons = project.getAddons();
+
+            for (unsigned int i = 0; i < addons.size(); i++) {
+                args.result["addons"][i] = addons[i];
+            }
+            
+            args.result["hasAddons"] = true;
+        }
+        else
+        {
+            args.result["hasAddons"] = false;
+        }
+        
+    }
+    else args.error["message"] = "The requested project does not exist.";
+}
+    
+void App::addProjectAddon(const void* pSender, ofx::JSONRPC::MethodArgs& args)
+{
+    std::string projectName = args.params["projectName"].asString();
+    std::string addon = args.params["addon"].asString();
+    
+    if (_projectManager.projectExists(projectName))
+    {
+        Project& project = _projectManager.getProjectRef(projectName);
+        project.addAddon(addon);
+    }
+    else args.error["message"] = "The requested project does not exist.";
+}
+    
+void App::removeProjectAddon(const void* pSender, ofx::JSONRPC::MethodArgs& args)
+{
+    std::string projectName = args.params["projectName"].asString();
+    std::string addon = args.params["addon"].asString();
+    
+    if (_projectManager.projectExists(projectName))
+    {
+        Project& project = _projectManager.getProjectRef(projectName);
+        project.removeAddon(addon);
+    }
+    else args.error["message"] = "The requested project does not exist.";
+}
+
 
 void App::loadEditorSettings(const void *pSender, ofx::JSONRPC::MethodArgs &args)
 {
     args.result = _editorSettings.getData();
 }
-    
+
+
 void App::saveEditorSettings(const void *pSender, ofx::JSONRPC::MethodArgs &args)
 {
     ofLogVerbose("App::saveEditorSettings") << "Saving editor settings" << endl;
     Json::Value settings = args.params["data"]; // must make a copy
     _editorSettings.update(settings);
     _editorSettings.save();
-    
+
     // broadcast new editor settings to all connected clients
     Json::Value params;
     params["data"] = settings;
@@ -475,32 +579,6 @@ bool App::onWebSocketOpenEvent(ofx::HTTP::WebSocketOpenEventArgs& args)
 
     args.getConnectionRef().sendFrame(frame);
 
-    params.clear();
-
-    Json::Value addonsJSON;
-
-    std::vector<Addon::SharedPtr> addons = _addonManager.getAddons();
-
-    std::vector<Addon::SharedPtr>::const_iterator iter = addons.begin();
-
-    while (iter != addons.end())
-    {
-        Json::Value addon;
-        addon["name"] = (*iter)->getName();
-        addon["path"] = (*iter)->getPath();
-        addonsJSON.append(addon);
-        ++iter;
-    }
-
-    params["addons"] = addonsJSON;
-
-    json = App::toJSONMethod("Server", "addons", params);
-    frame = ofx::HTTP::WebSocketFrame(App::toJSONString(json));
-
-    args.getConnectionRef().sendFrame(frame);
-
-
-    // Send editor ettings
 //    params.clear();
 //    
 //    params["editorSettings"] = _editorSettings.getData();
@@ -524,7 +602,7 @@ bool App::onWebSocketCloseEvent(ofx::HTTP::WebSocketCloseEventArgs& args)
 
     return false; // did not handle it
 }
-    
+
 
 bool App::onWebSocketFrameReceivedEvent(ofx::HTTP::WebSocketFrameEventArgs& args)
 {
@@ -543,7 +621,6 @@ bool App::onWebSocketFrameSentEvent(ofx::HTTP::WebSocketFrameEventArgs& args)
 bool App::onWebSocketErrorEvent(ofx::HTTP::WebSocketErrorEventArgs& args)
 {
     ofLogError("App::onWebSocketErrorEvent") << "Stop: " << args.getError();
-
 //    ofLogVerbose("App::onWebSocketErrorEvent") << "Error on: " << args.getConnectionRef().getClientAddress().toString();
     return false; // did not handle it
 }
@@ -726,7 +803,9 @@ bool App::onTaskData(const ofx::TaskDataEventArgs<std::string>& args)
     params["message"] = args.getData();
     
     Json::Value error = _compiler.parseError(args.getData());
-    if (!error.empty()) {
+
+    if (!error.empty())
+    {
         params["compileError"] = error;
     }
     
@@ -852,11 +931,8 @@ ofTargetPlatform App::getTargetPlatform()
 #elif defined(TARGET_EMSCRIPTEN)
         return OF_TARGET_EMSCRIPTEN;
 #endif
-    }
+}
 
-
-////////////////////////////////////////////////////////////////////////////////
-    
 
 std::string App::toString(ofTargetPlatform targetPlatform)
 {
@@ -885,5 +961,6 @@ std::string App::toString(ofTargetPlatform targetPlatform)
     }
 }
 
+////////////////////////////////////////////////////////////////////////////////
 
 } } // namespace of::Sketch

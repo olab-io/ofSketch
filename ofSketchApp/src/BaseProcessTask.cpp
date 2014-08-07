@@ -25,10 +25,10 @@
 
 #include "BaseProcessTask.h"
 #include "Poco/Buffer.h"
-#include "Poco/PipeStream.h"
-#include "Poco/Process.h"
+#include "Poco/Thread.h"
 #include <iostream>
 #include "ofLog.h"
+#include "ofUtils.h"
 
 
 namespace of {
@@ -54,45 +54,57 @@ BaseProcessTask::~BaseProcessTask()
 
 void BaseProcessTask::runTask()
 {
-    Poco::Pipe outAndErrPipe;
+    Poco::Pipe _outAndErrPipe;
+
+    Poco::PipeInputStream istr(_outAndErrPipe);
 
     Poco::ProcessHandle ph = Poco::Process::launch(_command,
                                                    _args,
                                                    0,
-                                                   &outAndErrPipe,
-                                                   &outAndErrPipe);
+                                                   &_outAndErrPipe,
+                                                   &_outAndErrPipe);
 
-    Poco::PipeInputStream istr(outAndErrPipe);
+    ofLogVerbose("BaseProcessTask::runTask") << "Launching Task: " << _command << " Args: " << ofToString(_args) << " PID: " << ph.id();
 
     Poco::Buffer<char> buffer(_bufferSize);
 
-    while(istr.good() && !istr.fail())
+    while (istr.good() && !istr.fail() && !isCancelled())
     {
-        if(isCancelled())
+        fd_set readset;
+        struct timeval tv;
+
+        FD_ZERO(&readset);
+        FD_SET(_outAndErrPipe.readHandle(), &readset);
+
+        tv.tv_sec = 0;
+        tv.tv_usec = 50 * 1000; // 50 ms.
+
+        int rc = ::select(_outAndErrPipe.readHandle() + 1, &readset, 0, 0, &tv);
+
+        if (rc > 0)
         {
-            Poco::Process::kill(ph);
-            break;
-        }
+            istr.getline(buffer.begin(), buffer.size());
 
-        istr.getline(buffer.begin(), buffer.size());
-
-        if (buffer.begin())
-        {
-            std::string str(buffer.begin());
-
-            if (!str.empty())
+            if (buffer.begin())
             {
-                // Progress callbacks and custom data events are the
-                // responsibility of the subclass.
-                processLine(str);
+                std::string str(buffer.begin());
+
+                if (!str.empty())
+                {
+                    // Progress callbacks and custom data events are the
+                    // responsibility of the subclass.
+                    processLine(str);
+                }
             }
         }
+
     }
+
+    Poco::Process::kill(ph);
 
     int exitCode = ph.wait();
 
-    ofLogVerbose("BaseProcessTask::runTask") << "Exit with: " << exitCode;
-
+    ofLogVerbose("BaseProcessTask::runTask") << "Exit PID: " << ph.id() << " with: " << exitCode;
 }
 
 

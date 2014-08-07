@@ -28,6 +28,8 @@
 
 #include <string>
 #include <vector>
+#include "Poco/PipeStream.h"
+#include "Poco/Process.h"
 #include "Poco/Task.h"
 
 
@@ -64,7 +66,6 @@ protected:
     std::vector<std::string> _args;
 
     std::size_t _bufferSize;
-
 };
 
 

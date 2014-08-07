@@ -29,6 +29,7 @@
 #include <string>
 #include <set>
 #include "Poco/URI.h"
+#include "Poco/RegularExpression.h"
 #include "ofx/IO/DirectoryUtils.h"
 #include "ofx/IO/DirectoryFilter.h"
 #include "ofx/IO/DirectoryWatcherManager.h"

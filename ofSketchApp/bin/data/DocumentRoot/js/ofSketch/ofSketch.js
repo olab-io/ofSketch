@@ -308,6 +308,7 @@ $(document).ready( function()
         // console.log("on close");
         // console.log(evt);
         $('#server-disconnected-modal').modal();
+        sketchEditor.setDisabled(true);
     }
 
     function onWebSocketError(evt) {
@@ -394,6 +395,7 @@ $(document).ready( function()
                         $('title').text(project);
                         if (result.alreadyOpen == true){
                             $('#project-already-open-modal').modal('show');
+                            sketchEditor.setDisabled(true);
                         }
                     }, loadError);
                 } else {
@@ -414,35 +416,41 @@ $(document).ready( function()
 
     function run()
     {
-        if (!sketchEditor.getProject().isTemplate()) {
-            sketchEditor.saveProject(function() {
-                runAlert();
-                consoleEmulator.clear();
-                sketchEditor.clearAnnotations();
-                if (sketchEditor.isRunning()) {
-                    sketchEditor.stop(function(){
+        if (!sketchEditor.isDisabled()) {
+
+            if (!sketchEditor.getProject().isTemplate()) {
+                sketchEditor.saveProject(function() {
+                    runAlert();
+                    consoleEmulator.clear();
+                    sketchEditor.clearAnnotations();
+                    if (sketchEditor.isRunning()) {
+                        sketchEditor.stop(function(){
+                            sketchEditor.compile(function(){});
+                        });
+                    } else {
                         sketchEditor.compile(function(){});
-                    });
-                } else {
-                    sketchEditor.compile(function(){});
-                }
-                
-            }, saveError);
-        } else {
-            $('#name-project-modal').modal();
+                    }
+                    
+                }, saveError);
+            } else {
+                $('#name-project-modal').modal();
+            }
         }
     }
 
     function save()
     {
-         if (sketchEditor.projectLoaded()) {
-            if (!sketchEditor.getProject().isTemplate()) {
-                sketchEditor.saveProject(function() {
-                    saveAlert();
-                }, saveError);
-            } else {
-                $('#name-project-modal').modal();
-            }   
+        if (!sketchEditor.isDisabled()) {
+            
+            if (sketchEditor.projectLoaded()) {
+                if (!sketchEditor.getProject().isTemplate()) {
+                    sketchEditor.saveProject(function() {
+                        saveAlert();
+                    }, saveError);
+                } else {
+                    $('#name-project-modal').modal();
+                }   
+            }
         }
     }
 
@@ -511,31 +519,6 @@ $(document).ready( function()
 
     });
 
-    // input validation
-    // $('.needs-validation').tooltip({
-    //     title: 'A-Z, 0-9, _ and - allowed',
-    //     trigger: 'manual',
-    //     placement: 'top'
-    // });
-
-    // $('.needs-validation').on('mouseout', function(e){
-        
-    //     $(this).tooltip('hide');
-    // });
-    
-    // $('.needs-validation').keypress(function(e){
-    //     var code = e.which || e.keyCode;
-
-    //     // 65 - 90 for A-Z and 97 - 122 for a-z 48 - 57 for 0-9 95 for _ 45 for - 46 for .
-    //     if (!((code >= 65 && code <= 90) ||
-    //           (code >= 97 && code <= 122) || 
-    //           (code >= 48 && code <= 57) || 
-    //            code == 95 || code == 45)) {
-    //         e.preventDefault();
-    //         $(e.currentTarget).tooltip('show');
-    //     } else $(e.currentTarget).tooltip('hide');
-    // });
-    
     $('.needs-validation').on('');
 
     var systemInfo = {
@@ -621,6 +604,122 @@ $(document).ready( function()
            save();
         });
 
+        $('#toolbar-addons').on('click', function(){
+
+            if (!sketchEditor.getProject().isTemplate()) {
+
+                sketchEditor.getAddonList(function(globalAddons) {
+                    
+                    sketchEditor.getProject().getAddonList(function(projectAddons){
+                        
+                        var coreAddonsList = $('#core-addons-list');
+                        var contributedAddonsList = $('#contributed-addons-list');
+                        
+                        var hasContributedAddons = false;
+
+                        // core addons at openFrameworks master.
+                        // Eventually these should be seperated at the backend.
+                        var coreAddons = [
+
+                            "ofx3DModelLoader",
+                            "ofxAccelerometer",
+                            "ofxAndroid",
+                            "ofxAssimpModelLoader",
+                            "ofxEmscripten",
+                            "ofxGui",
+                            "ofxKinect",
+                            "ofxMultiTouch",
+                            "ofxNetwork",
+                            "ofxOpenCv",
+                            "ofxOsc",
+                            "ofxSvg",
+                            "ofxSynth",
+                            "ofxThreadedImageLoader",
+                            "ofxVectorGraphics",
+                            "ofxXmlSettings",
+                            "ofxiOS"
+                        ];
+
+                        coreAddonsList.empty();
+                        contributedAddonsList.empty();
+
+                        _.each(globalAddons, function(globalAddon) {
+
+                            // if this addon is already included
+                            var alreadyInProject = projectAddons.indexOf(globalAddon.name) != -1;
+                            
+                            var linkElement = $('<a href="#" data-included=' + alreadyInProject + ' class="list-group-item"><span class="addon-name">'
+                                                 + globalAddon.name + '</span>'
+                                                 +'<span class="include-marker" style="float: right; display: none" >Included</span></a>');
+                            
+                            if (alreadyInProject) {
+                                linkElement.addClass('list-group-item-info');
+                                linkElement.find('.include-marker').show();
+                            }
+
+                            linkElement.on('click', function(e){
+                                
+                                e.preventDefault();
+
+                                var addon = globalAddon.name;
+                                var isIncluded = $(this).data('included');
+
+                                if (!isIncluded) {
+
+                                    sketchEditor.getProject().addAddon(addon,
+                                                                       function(){
+
+                                                                        isIncluded = !isIncluded;
+                                                                        linkElement.addClass('list-group-item-info');
+                                                                        linkElement.find('.include-marker').show();
+                                                                        linkElement.data('included', isIncluded);
+
+                                                                       }, function(err){
+                                                                        console.log(err);
+                                                                       });
+                                } else {
+
+                                    sketchEditor.getProject().removeAddon(addon,
+                                                                       function(){
+
+                                                                        isIncluded = !isIncluded;
+                                                                        linkElement.removeClass('list-group-item-info');
+                                                                        linkElement.find('.include-marker').hide();
+                                                                        linkElement.data('included', isIncluded);
+
+                                                                       }, function(err){
+                                                                        console.log(err);
+                                                                       });
+                                }
+                                
+                            });
+        
+                            if (coreAddons.indexOf(globalAddon.name) != -1) coreAddonsList.append(linkElement);
+                            else {
+                                
+                                if (!hasContributedAddons) {
+                                    hasContributedAddons = true;
+                                    $('#contributed-addons-container').show();
+                                }
+                                
+                                contributedAddonsList.append(linkElement);
+                                
+                            }
+                        });
+                    }, console.log);
+
+                    $('#addons-modal').modal();
+
+                }, function(err) {
+                    console.log("Error requesting addon list: ");
+                    console.log(err);
+                });
+
+            } else {
+                $('#name-project-modal').modal();
+            }
+        });
+
         $('.open-project').on('click', function() {
             openProject();
         });
@@ -640,7 +739,7 @@ $(document).ready( function()
             } else {
                 $('#name-project-modal').modal();
             }
-            
+
         });
 
         $('.rename-class').on('click', function() {
@@ -836,6 +935,7 @@ $(document).ready( function()
         $('#request-project-closed').on('click', function(){
             sketchEditor.requestProjectClosed(function(){
                 $('#project-already-open-modal').modal('hide');
+                sketchEditor.setDisabled(false);
             });
         });
 

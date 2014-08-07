@@ -1,6 +1,6 @@
 // =============================================================================
 //
-// Copyright (c) 2014 Brannon Dorsey <http://brannondorsey.com>
+// Copyright (c) 2013-2014 Christopher Baker <http://christopherbaker.net>
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -26,30 +26,39 @@
 #pragma once
 
 
-#include <string>
-#include <json/json.h>
-#include "ofxJSONElement.h"
+#include <iostream>
+#include <set>
+#include "Poco/Process.h"
+#include "Poco/PipeStream.h"
+#include "Poco/StreamCopier.h"
+#include "Poco/Task.h"
+#include "Poco/Net/SocketAddress.h"
+#include "ofUtils.h"
+#include "Project.h"
+#include "BaseProcessTask.h"
 
 
 namespace of {
 namespace Sketch {
 
 
-class EditorSettings
+class RunTask: public BaseProcessTask
 {
 public:
-    EditorSettings(const std::string& path);
+    enum Target
+    {
+        DEBUG,
+        RELEASE
+    };
 
-    void update(const ofxJSONElement& data);
-    
-    bool load();
-    bool save();
+    RunTask(const Project& project, Target target);
 
-    const Json::Value& getData() const;
+    virtual ~RunTask();
 
-private:
-    std::string _path;
-    ofxJSONElement _data; //ofxJSONElement for load functionality
+    virtual void processLine(const std::string& line);
+
+    static std::string getExecutable(const Project& project, Target target);
+    static std::string getExecutablePath(const Project& project, Target target);
 
 };
 

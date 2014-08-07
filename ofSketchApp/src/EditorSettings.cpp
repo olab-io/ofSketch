@@ -34,25 +34,30 @@ EditorSettings::EditorSettings(const std::string& path):
 {
     load();
 }
-    
+
+
 void EditorSettings::update(const ofxJSONElement& data)
 {
     _data = data;
 }
+
 
 bool EditorSettings::load()
 {
     return _data.open(_path);
 }
 
+
 bool EditorSettings::save()
 {
     return _data.save(_path, true);
 }
 
+
 const Json::Value& EditorSettings::getData() const
 {
     return _data;
 }
-    
+
+
 } } // namespace of::Sketch

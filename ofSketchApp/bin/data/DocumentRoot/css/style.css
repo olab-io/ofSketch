@@ -120,6 +120,16 @@ code {
   margin-bottom: 30px;
 }
 
+#download-addons-container {
+  margin: auto;
+  margin-top: 40px;
+  width: 80%;
+}
+
+#download-addons-container .input-group{
+  margin-top: 15px;
+}
+
 
 
 @media (max-width: 768px) {

@@ -62,11 +62,11 @@ public:
         int  numProcessors; // -j
         bool isSilent; // -s
 
-        bool useDistccServer;
-        std::set<Poco::Net::SocketAddress> distccAddresses;
+        std::string CXX; // CXX=/usr/lib/distcc/arm-linux-gnueabihf-g++
+        std::string CC;  // CC=/usr/lib/distcc/arm-linux-gnueabihf-gcc
 
-        std::string cxx; // CXX=/usr/lib/distcc/arm-linux-gnueabihf-g++
-        std::string cc;  // CC=/usr/lib/distcc/arm-linux-gnueabihf-gcc
+        std::string platformVariant; // e.g. PLATFORM_VARIANT=udoo
+        bool makefileDebug; // e.g. MAKEFILE_DEBUG=1
 
         Settings();
     };
