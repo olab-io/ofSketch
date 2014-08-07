@@ -53,9 +53,15 @@ const Json::Value& OfSketchSettings::getData() const
 
 int OfSketchSettings::getPort() const
 {
-    return _data["port"].asInt();
+    return _data["server"]["port"].asInt();
 }
-    
+
+int OfSketchSettings::getBufferSize() const
+{
+    return _data["server"]["bufferSize"].asInt();
+}
+
+
 std::string OfSketchSettings::getProjectDir() const
 {
     return _data["projectDir"].asString();

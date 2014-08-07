@@ -46,6 +46,7 @@ public:
     const Json::Value& getData() const;
     
     int getPort() const;
+    int getBufferSize() const;
     std::string getProjectDir() const;
     std::string getSketchDir() const;
     std::string getOpenFrameworksDir() const;
