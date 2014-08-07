@@ -10,10 +10,6 @@ public:
 
 #line 2 "GuiExample"
 
-// To add the ofxGui addon to this example,
-// click the addons button in the toolbar and
-// select "ofxGui"
-
 bool bHide;
 
 ofxFloatSlider radius;
