@@ -72,11 +72,7 @@ public:
 
     static const std::string SKETCH_FILE_EXTENSION;
 
-protected:
-
-
 private:
-    
     std::string _path;
     std::string _classFileTemplate;
     ofDirectory _sketchDir;
