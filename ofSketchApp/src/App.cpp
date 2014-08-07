@@ -31,7 +31,7 @@ namespace of {
 namespace Sketch {
 
 
-const std::string App::VERSION_SPECIAL = "RC1";
+const std::string App::VERSION_SPECIAL = "";
 
 
 App::App():
