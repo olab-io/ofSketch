@@ -47,9 +47,7 @@ Writing you're own classes is easy with ofSketch! Simply add a new tab by clicki
 
 ### Using Addons
 
-Currently, there is no elegant way to use ofxAddons with ofSketch. This feature is coming, but in the meantime all addons must be specified in the `addons.make` files of each project you mean to use them in. ofSketch uses its own openFrameworks distribution in the `bin/data/` folder, meaning only core addons work out of the box. To add an addon that ofSketch projects can use, you must place the add-on inside of ofSketch's `openFrameworks/addons` folder.
-
-This is terribly annoying and we can assure you that there will be a better system for managing addons soon.
+ofSketch uses its own openFrameworks distribution in the `bin/data/` folder, meaning only core addons work out of the box. To add an addon that ofSketch projects can use, you must place the add-on inside of ofSketch's `openFrameworks/addons` folder.
 
 ## Issues
 

@@ -1,4 +1,4 @@
-- 0.3.0 (pending)
+- 0.3.0 (08-07-2014)
 	+ Adapt default ACE Settings Menu to support global ofSketch editor settings ([#42](https://github.com/olab-io/ofSketch/issues/42)).
 	+ Added Raspberry Pi support, added workaround for ofSystem issue ([#58](https://github.com/olab-io/ofSketch/issues/58)).
 	+ Fix bug that caused Editor to hang on "loading..." when a non-existent project was opened and added "Project Not Found" modal ([#80](https://github.com/olab-io/ofSketch/issues/80)).
@@ -9,12 +9,15 @@
 	+ Error lines now reported correctly ([#77](https://github.com/olab-io/ofSketch/issues/77)).
 	+ Stop button now closes running app. ([#45](https://github.com/olab-io/ofSketch/issues/45))
 	+ Compilation errors and warnings now appear in-line in the editor ([#21](https://github.com/olab-io/ofSketch/issues/21)).
+	+ Fix stop button bug ([#45](https://github.com/olab-io/ofSketch/issues/45)).
+	+ Addon support ([#20](https://github.com/olab-io/ofSketch/issues/20))!
 	
 - 0.2.2 (07-22-14)
 	+ Add "About ofSketch" to settings ([#64](https://github.com/olab-io/ofSketch/issues/64)).
 	+ Basic localization support for Spanish, German, and Japanese ([#68](https://github.com/olab-io/ofSketch/issues/68)).
 	+ Fix bug that prevented new class tabs from displaying when a project was first created ([#76](https://github.com/olab-io/ofSketch/issues/76)).
 	+ Updated NewProject template ([#67](https://github.com/olab-io/ofSketch/issues/67)).
+	
 
 - 0.2.1 (07-19-14)
 	+ Editor fills browser window.
