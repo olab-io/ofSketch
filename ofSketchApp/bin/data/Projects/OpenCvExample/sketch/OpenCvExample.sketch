@@ -1,5 +1,5 @@
 #include "ofxOpenCv.h"
-//#define _USE_LIVE_VIDEO		// uncomment this to use a live camera
+#define _USE_LIVE_VIDEO		// uncomment this to use a live camera
 								// otherwise, we'll use a movie file
 								
 #ifdef _USE_LIVE_VIDEO
@@ -20,7 +20,7 @@ int threshold;
 bool bLearnBakground;
 
 void setup() {
-	// put your setup code here, to run once:
+    ofSetWindowShape(1024, 800);
 
 	#ifdef _USE_LIVE_VIDEO
         vidGrabber.setVerbose(true);
@@ -80,8 +80,6 @@ void update() {
 }
 
 void draw() {
-	
-	// put your main code here, to run once each frame:
 	// draw the incoming, the grayscale, the bg and the thresholded difference
 	ofSetHexColor(0xffffff);
 	colorImg.draw(20,20);

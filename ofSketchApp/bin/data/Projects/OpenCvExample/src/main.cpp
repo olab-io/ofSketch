@@ -9,7 +9,7 @@ class ofApp: public ofBaseApp
 public:
 
 #line 2 "OpenCvExample"
-//#define _USE_LIVE_VIDEO		// uncomment this to use a live camera
+#define _USE_LIVE_VIDEO		// uncomment this to use a live camera
 								// otherwise, we'll use a movie file
 								
 #ifdef _USE_LIVE_VIDEO
@@ -30,7 +30,7 @@ int threshold;
 bool bLearnBakground;
 
 void setup() {
-	// put your setup code here, to run once:
+    ofSetWindowShape(1024, 800);
 
 	#ifdef _USE_LIVE_VIDEO
         vidGrabber.setVerbose(true);
@@ -90,8 +90,6 @@ void update() {
 }
 
 void draw() {
-	
-	// put your main code here, to run once each frame:
 	// draw the incoming, the grayscale, the bg and the thresholded difference
 	ofSetHexColor(0xffffff);
 	colorImg.draw(20,20);
@@ -156,7 +154,7 @@ void keyPressed(int key) {
 
 int main()
 {
-    ofSetupOpenGL(320,240,OF_WINDOW);
+    ofSetupOpenGL(320, 240, OF_WINDOW);
     ofRunApp(new ofApp());
 }
 
