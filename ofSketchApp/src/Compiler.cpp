@@ -56,7 +56,7 @@ Poco::UUID Compiler::run(const Project& project)
 //    _taskQueue.start(new MakeTask(settings, project, "Release"));
 
     // Run task.
-    return _taskQueue.start(new MakeTask(settings, project, "RunRelease"));
+    return _taskQueue.start(new RunTask(project, RunTask::RELEASE));
 
 }
 

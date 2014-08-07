@@ -39,6 +39,7 @@
 #include "ofMain.h"
 #include "ProcessTaskQueue.h"
 #include "MakeTask.h"
+#include "RunTask.h"
 
 
 namespace of {
