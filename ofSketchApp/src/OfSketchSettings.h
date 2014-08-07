@@ -33,18 +33,18 @@
 
 namespace of {
 namespace Sketch {
-    
-    
+
+
 class OfSketchSettings
 {
 public:
     OfSketchSettings(const std::string& path);
-    
+
     bool load();
     bool save();
-    
+
     const Json::Value& getData() const;
-    
+
     int getPort() const;
     int getBufferSize() const;
     std::string getProjectDir() const;
@@ -55,11 +55,12 @@ public:
     std::string getProjectSettingsFilename() const;
     std::string getProjectExtension() const;
     std::string getClassExtension() const;
-    
+
 private:
-    
     std::string _path;
     ofxJSONElement _data; //ofxJSONElement for load functionality
+
 };
-    
+
+
 } } // namespace of::Sketch

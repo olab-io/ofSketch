@@ -51,8 +51,7 @@ public:
 
     // const std::vector<std::string>& getOpenProjectNames() const;
     const std::vector<Project>& getProjects() const;
-    
-    
+
     void getProjectList(const void* pSender, ofx::JSONRPC::MethodArgs& args);
     void loadProject(const void* pSender, ofx::JSONRPC::MethodArgs& args);
     void loadTemplateProject(const void* pSender, ofx::JSONRPC::MethodArgs& args);
@@ -67,7 +66,7 @@ public:
     bool projectExists(const std::string& projectName) const;
     const Project& getProject(const std::string& projectName) const;
     Project& getProjectRef(const std::string& projectName);
-    
+
     void onDirectoryWatcherItemAdded(const ofx::DirectoryWatcher::DirectoryEvent& evt);
     void onDirectoryWatcherItemRemoved(const ofx::DirectoryWatcher::DirectoryEvent& evt);
     void onDirectoryWatcherItemModified(const ofx::DirectoryWatcher::DirectoryEvent& evt);

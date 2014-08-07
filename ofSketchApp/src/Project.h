@@ -58,7 +58,7 @@ public:
     void save(const Json::Value& data);
     void load(const std::string& path,
               const std::string& name);
-    
+
     bool deleteClass(const std::string& className);
     bool renameClass(const std::string& currentName,
                      const std::string& newName);
@@ -66,7 +66,7 @@ public:
     bool isClassName(const std::string& className) const;
     
     unsigned int getNumClasses() const;
-    
+
     Json::Value createClass(const std::string& className);
     const Json::Value& getData() const;
 
@@ -79,7 +79,7 @@ private:
 
     bool _isLoaded;
     Json::Value _data;
-    
+
     void _saveFile(const Json::Value& fileData);
 
 };

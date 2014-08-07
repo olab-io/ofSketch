@@ -36,15 +36,18 @@ OfSketchSettings::OfSketchSettings(const std::string& path):
     ofLogVerbose("EditorSettings::EditorSettings") << "Project Directory: " << getProjectDir();
 }
 
+
 bool OfSketchSettings::load()
 {
     return _data.open(_path);
 }
 
+
 bool OfSketchSettings::save()
 {
     return _data.save(_path);
 }
+
 
 const Json::Value& OfSketchSettings::getData() const
 {
@@ -55,6 +58,7 @@ int OfSketchSettings::getPort() const
 {
     return _data["server"]["port"].asInt();
 }
+
 
 int OfSketchSettings::getBufferSize() const
 {
@@ -67,6 +71,7 @@ std::string OfSketchSettings::getProjectDir() const
     return _data["projectDir"].asString();
 }
 
+
 std::string OfSketchSettings::getSketchDir() const
 {
     return _data["sketchDir"].asString();
@@ -77,29 +82,35 @@ std::string OfSketchSettings::getAddonsDir() const
     return _data["addonsDir"].asString();
 }
 
+
 std::string OfSketchSettings::getOpenFrameworksDir() const
 {
     return _data["openFrameworksDir"].asString();
 }
 
+
 std::string OfSketchSettings::getOpenFrameworksVersion() const
 {
     return _data["openFrameworksVersion"].asString();
 }
-   
+
+
 std::string OfSketchSettings::getProjectSettingsFilename() const
 {
     return _data["projectSettingsFilename"].asString();
 }
-    
+
+
 std::string OfSketchSettings::getProjectExtension() const
 {
     return _data["projectExtension"].asString();
 }
 
+
 std::string OfSketchSettings::getClassExtension() const
 {
     return _data["classExtension"].asString();
 }
+
 
 } } // namespace of::Sketch

@@ -43,21 +43,12 @@ Poco::UUID Compiler::compile(const Project& project)
 {
     MakeTask::Settings settings;
     return _taskQueue.start(new MakeTask(settings, project, "Release"));
-//    return Poco::UUID::null();
 }
 
 
 Poco::UUID Compiler::run(const Project& project)
 {
-    MakeTask::Settings settings;
-
-//    // We don't return this handle yet, but it is available in the callback.
-//    // Compile task.
-//    _taskQueue.start(new MakeTask(settings, project, "Release"));
-
-    // Run task.
     return _taskQueue.start(new RunTask(project, RunTask::RELEASE));
-
 }
 
 
@@ -66,7 +57,7 @@ void Compiler::generateSourceFiles(const Project& project)
     ofDirectory src(project.getPath() + "/src");
     src.remove(true);
     src.create(true);
-    
+
     Json::Value projectData = project.getData();
     std::string projectFile = _projectFileTemplate;
     ofStringReplace(projectFile, "<projectfile>", projectData["projectFile"]["fileContents"].asString());
@@ -91,19 +82,20 @@ void Compiler::generateSourceFiles(const Project& project)
         }
     }
 }
-    
+
+
 Json::Value Compiler::parseError(std::string message) const
 {
     // i.e. Mike-Test:8:6: error: cannot initialize a variable of type 'int' with an lvalue of type 'const char [3]'
-    
+
     Json::Value compileError;
-    
+
     Poco::RegularExpression errorExpression(".+:[0-9]+:[0-9]+: (fatal error|error|warning|note): .+$", Poco::RegularExpression::RE_ANCHORED);
-    
+
     if (errorExpression.match(message))
     {
         std::vector<std::string> vals = ofSplitString(message, ":");
-    
+
         if (vals.size() == 5)
         {
             ofStringReplace(vals[3], " ", "");
@@ -120,7 +112,7 @@ Json::Value Compiler::parseError(std::string message) const
            
         }
     }
-    
+
     return compileError;
 }
 
@@ -144,12 +136,10 @@ void Compiler::_replaceIncludes(std::string& fileContents)
         matchOffset = match.offset + match.length;
         numMatches++;
     }
-    
+
     includesExpression.subst(fileContents, "", Poco::RegularExpression::RE_GLOBAL);
     ofStringReplace(fileContents, "<includes>", ofJoinString(includes, ""));
     ofStringReplace(fileContents, "<line>", ofToString(includes.size()));
-
-
 }
 
 

@@ -82,7 +82,6 @@ public:
     void notifyProjectClosed(const void* pSender, ofx::JSONRPC::MethodArgs& args);
     void requestAppQuit(const void* pSender, ofx::JSONRPC::MethodArgs& args);
 
-    
     bool onWebSocketOpenEvent(ofx::HTTP::WebSocketOpenEventArgs& args);
     bool onWebSocketCloseEvent(ofx::HTTP::WebSocketCloseEventArgs& args);
     bool onWebSocketFrameReceivedEvent(ofx::HTTP::WebSocketFrameEventArgs& args);

@@ -35,8 +35,8 @@
 
 namespace of {
 namespace Sketch {
-        
-        
+
+
 class WebSocketLoggerChannel: public ofConsoleLoggerChannel
 {
 public:
@@ -46,7 +46,7 @@ public:
 
     virtual ~WebSocketLoggerChannel();
 
-	void log(ofLogLevel level,
+    void log(ofLogLevel level,
              const std::string& module,
              const std::string& message);
 

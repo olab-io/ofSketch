@@ -33,24 +33,25 @@
 
 namespace of {
 namespace Sketch {
-    
-    
+
+
 class EditorSettings
 {
 public:
     EditorSettings(const std::string& path);
-    
+
     void update(const ofxJSONElement& data);
     
     bool load();
     bool save();
-    
+
     const Json::Value& getData() const;
-    
+
 private:
-    
     std::string _path;
     ofxJSONElement _data; //ofxJSONElement for load functionality
+
 };
-    
+
+
 } } // namespace of::Sketch
