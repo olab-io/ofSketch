@@ -75,19 +75,34 @@ void BaseProcessTask::runTask()
 
     while (istr.good() && !istr.fail() && !isCancelled())
     {
-        istr.getline(buffer.begin(), buffer.size());
+        fd_set readset;
+        struct timeval tv;
 
-        if (buffer.begin())
+        FD_ZERO(&readset);
+        FD_SET(_outAndErrPipe.readHandle(), &readset);
+
+        tv.tv_sec = 0;
+        tv.tv_usec = 250 * 1000; // 250 ms.
+
+        int rc = ::select(_outAndErrPipe.readHandle() + 1, &readset, 0, 0, &tv);
+
+        if (rc > 0)
         {
-            std::string str(buffer.begin());
+            istr.getline(buffer.begin(), buffer.size());
 
-            if (!str.empty())
+            if (buffer.begin())
             {
-                // Progress callbacks and custom data events are the
-                // responsibility of the subclass.
-                processLine(str);
+                std::string str(buffer.begin());
+
+                if (!str.empty())
+                {
+                    // Progress callbacks and custom data events are the
+                    // responsibility of the subclass.
+                    processLine(str);
+                }
             }
         }
+
     }
 
     Poco::Process::kill(ph);
