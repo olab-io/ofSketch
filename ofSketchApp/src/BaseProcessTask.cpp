@@ -28,6 +28,7 @@
 #include "Poco/Thread.h"
 #include <iostream>
 #include "ofLog.h"
+#include "ofUtils.h"
 
 
 namespace of {
@@ -68,6 +69,8 @@ void BaseProcessTask::runTask()
                                                    &_outAndErrPipe,
                                                    &_outAndErrPipe);
 
+    ofLogVerbose("BaseProcessTask::runTask") << "Launching Task: " << _command << " Args: " << ofToString(_args) << " PID: " << ph.id();
+
     Poco::Buffer<char> buffer(_bufferSize);
 
     while (istr.good() && !istr.fail() && !isCancelled())
@@ -91,7 +94,7 @@ void BaseProcessTask::runTask()
 
     int exitCode = ph.wait();
 
-    ofLogVerbose("BaseProcessTask::runTask") << "Exit with: " << exitCode;
+    ofLogVerbose("BaseProcessTask::runTask") << "Exit PID: " << ph.id() << " with: " << exitCode;
 }
 
 
