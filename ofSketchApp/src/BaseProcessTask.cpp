@@ -52,15 +52,10 @@ BaseProcessTask::~BaseProcessTask()
 }
 
 
-void BaseProcessTask::cancel()
-{
-    Poco::Task::cancel();
-    _outAndErrPipe.close(); // Releases istr.getline if needed.
-}
-
-
 void BaseProcessTask::runTask()
 {
+    Poco::Pipe _outAndErrPipe;
+
     Poco::PipeInputStream istr(_outAndErrPipe);
 
     Poco::ProcessHandle ph = Poco::Process::launch(_command,
@@ -82,7 +77,7 @@ void BaseProcessTask::runTask()
         FD_SET(_outAndErrPipe.readHandle(), &readset);
 
         tv.tv_sec = 0;
-        tv.tv_usec = 250 * 1000; // 250 ms.
+        tv.tv_usec = 50 * 1000; // 50 ms.
 
         int rc = ::select(_outAndErrPipe.readHandle() + 1, &readset, 0, 0, &tv);
 

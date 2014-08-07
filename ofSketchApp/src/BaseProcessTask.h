@@ -51,8 +51,6 @@ public:
 
     virtual ~BaseProcessTask();
 
-	virtual void cancel();
-
     virtual void runTask();
 
     virtual void processLine(const std::string& line) = 0;
@@ -68,8 +66,6 @@ protected:
     std::vector<std::string> _args;
 
     std::size_t _bufferSize;
-
-    Poco::Pipe _outAndErrPipe;
 };
 
 
