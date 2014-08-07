@@ -57,7 +57,7 @@ AddonManager::AddonManager(const std::string& path):
         std::string addonPath = (*iter).path();
         std::string addonName = Poco::Path(addonPath).getBaseName();
         
-        Poco::RegularExpression addonExpression("ofx.+$", Poco::RegularExpression::RE_ANCHORED);
+        Poco::RegularExpression addonExpression("^ofx.+");
         
         if (addonExpression.match(addonName))
         {
