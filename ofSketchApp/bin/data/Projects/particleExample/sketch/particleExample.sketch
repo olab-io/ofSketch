@@ -1,9 +1,9 @@
-#include "demoParticle.h" 
+#include "DemoParticle.h" 
 
-demoParticle::particleMode currentMode;
+DemoParticle::particleMode currentMode;
 string currentModeStr; 
 
-vector <demoParticle> p;
+vector <DemoParticle> p;
 vector <ofPoint> attractPoints;
 vector <ofPoint> attractPointsWithMovement;
 
@@ -13,8 +13,8 @@ void setup() {
 	ofSetFullscreen(true);
 	
 	int num = 1500;
-	p.assign(num, demoParticle());
-	currentMode = demoParticle::PARTICLE_MODE_ATTRACT;
+	p.assign(num, DemoParticle());
+	currentMode = DemoParticle::PARTICLE_MODE_ATTRACT;
 
 	currentModeStr = "1 - PARTICLE_MODE_ATTRACT: attracts to mouse"; 
 
@@ -45,7 +45,7 @@ void draw() {
 	}
 	
 	ofSetColor(190);
-	if( currentMode == demoParticle::PARTICLE_MODE_NEAREST_POINTS ){
+	if( currentMode == DemoParticle::PARTICLE_MODE_NEAREST_POINTS ){
 		for(unsigned int i = 0; i < attractPoints.size(); i++){
 			ofNoFill();
 			ofCircle(attractPointsWithMovement[i], 10);
@@ -78,19 +78,19 @@ void resetParticles(){
 void keyPressed(int key) {
     
     if( key == '1'){
-		currentMode = demoParticle::PARTICLE_MODE_ATTRACT;
+		currentMode = DemoParticle::PARTICLE_MODE_ATTRACT;
 		currentModeStr = "1 - PARTICLE_MODE_ATTRACT: attracts to mouse"; 		
 	}
 	if( key == '2'){
-		currentMode = demoParticle::PARTICLE_MODE_REPEL;
+		currentMode = DemoParticle::PARTICLE_MODE_REPEL;
 		currentModeStr = "2 - PARTICLE_MODE_REPEL: repels from mouse"; 				
 	}
 	if( key == '3'){
-		currentMode = demoParticle::PARTICLE_MODE_NEAREST_POINTS;
+		currentMode = DemoParticle::PARTICLE_MODE_NEAREST_POINTS;
 		currentModeStr = "3 - PARTICLE_MODE_NEAREST_POINTS: hold 'f' to disable force"; 						
 	}
 	if( key == '4'){
-		currentMode = demoParticle::PARTICLE_MODE_NOISE;
+		currentMode = DemoParticle::PARTICLE_MODE_NOISE;
 		currentModeStr = "4 - PARTICLE_MODE_NOISE: snow particle simulation"; 						
 		resetParticles();
 	}	

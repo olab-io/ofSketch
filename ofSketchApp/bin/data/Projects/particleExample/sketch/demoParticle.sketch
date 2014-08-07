@@ -17,7 +17,7 @@ particleMode mode;
 		
 vector <ofPoint> * attractPoints; 
 
-demoParticle(){
+DemoParticle(){
     attractPoints = NULL;
 }
 
