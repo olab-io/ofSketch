@@ -194,7 +194,7 @@ bool Project::rename(const std::string& newName)
         
         Poco::RegularExpression appExpression( oldProjectName + "(.exe|.app)*$", Poco::RegularExpression::RE_ANCHORED);
 
-        for (int i = 0; i < files.size(); i++)
+        for (unsigned int i = 0; i < files.size(); ++i)
         {
             std::string baseName = files[i].getBaseName();
             if (appExpression.match(baseName)) {
