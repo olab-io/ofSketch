@@ -28,6 +28,7 @@
 
 #include <string>
 #include <json/json.h>
+#include "ofUtils.h"
 #include "ofxJSONElement.h"
 
 

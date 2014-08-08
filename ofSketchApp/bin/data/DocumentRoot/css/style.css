@@ -130,6 +130,10 @@ code {
   margin-top: 15px;
 }
 
+#ofsketch-settings-container {
+ /* width: 80%;
+  margin: auto;*/
+}
 
 
 @media (max-width: 768px) {

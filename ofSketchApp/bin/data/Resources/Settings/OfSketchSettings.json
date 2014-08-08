@@ -2,10 +2,8 @@
 	"server": 
 	{
 		"port": 7890,
-		"defaultHostname": "http://127.0.0.1",
 		"bufferSize": 3145728
 	},
-	"icon": "some/path",
 	"projectDir": "Projects",
 	"sketchDir": "sketch",
 	"addonsDir": "openFrameworks/addons",

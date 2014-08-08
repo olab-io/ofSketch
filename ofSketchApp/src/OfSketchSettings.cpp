@@ -39,7 +39,20 @@ OfSketchSettings::OfSketchSettings(const std::string& path):
 
 bool OfSketchSettings::load()
 {
-    return _data.open(_path);
+    if(_data.open(_path)) {
+        
+        std::string projectDir = _data["projectDir"].asString();
+        _data["projectDir"] = ofToDataPath(projectDir, true);
+        
+        std::string openFrameworksDir = _data["openFrameworksDir"].asString();
+        _data["openFrameworksDir"] = ofToDataPath(openFrameworksDir, true);
+        
+        ofLogVerbose("OfSketchSettings::load") << _data["projectDir"].asString();
+        ofLogVerbose("OfSketchSettings::load") << _data["openFrameworksDir"].asString();
+
+        return true;
+    }
+    else return false;
 }
 
 

@@ -28,6 +28,7 @@ var CLIENT_UUID = generateUUID();
 $(document).ready( function()
 {
 
+    $('#ofsketch-settings-modal').modal('show');
     function resizeEditor() {
 
         // get the new ratio

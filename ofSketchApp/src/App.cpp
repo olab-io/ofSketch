@@ -40,7 +40,7 @@ App::App():
     _threadPool("ofSketchThreadPool"),
     _taskQueue(ofx::TaskQueue_<std::string>::UNLIMITED_TASKS, _threadPool),
     _compiler(_taskQueue, ofToDataPath("Resources/Templates/CompilerTemplates")),
-    _addonManager(ofToDataPath(_ofSketchSettings.getAddonsDir())),
+    _addonManager(ofToDataPath(_ofSketchSettings.getOpenFrameworksDir() + "/addons")),
     _projectManager(ofToDataPath(_ofSketchSettings.getProjectDir(), true))
 {
     ofLogNotice("App::App") << "Editor setting's projectDir: " << _ofSketchSettings.getProjectDir();
