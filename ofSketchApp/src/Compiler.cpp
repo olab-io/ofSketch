@@ -30,11 +30,14 @@ namespace of {
 namespace Sketch {
 
 
-Compiler::Compiler(ProcessTaskQueue& taskQueue, const std::string& pathToTemplates):
+Compiler::Compiler(ProcessTaskQueue& taskQueue,
+                   const std::string& pathToTemplates,
+                   const std::string& openFrameworksDir):
     _taskQueue(taskQueue),
     _pathToTemplates(pathToTemplates),
     _projectFileTemplate(ofBufferFromFile(ofToDataPath(_pathToTemplates + "/main.tmpl")).getText()),
-    _classTemplate(ofBufferFromFile(ofToDataPath(_pathToTemplates + "/class.tmpl")).getText())
+    _classTemplate(ofBufferFromFile(ofToDataPath(_pathToTemplates + "/class.tmpl")).getText()),
+    _openFrameworksDir(openFrameworksDir)
 {
 }
 
@@ -42,6 +45,7 @@ Compiler::Compiler(ProcessTaskQueue& taskQueue, const std::string& pathToTemplat
 Poco::UUID Compiler::compile(const Project& project)
 {
     MakeTask::Settings settings;
+    settings.ofRoot = _openFrameworksDir;
     return _taskQueue.start(new MakeTask(settings, project, "Release"));
 }
 

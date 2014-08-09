@@ -49,7 +49,9 @@ namespace Sketch {
 class Compiler
 {
 public:
-    Compiler(ProcessTaskQueue& taskQueue, const std::string& pathToTemplates);
+    Compiler(ProcessTaskQueue& taskQueue,
+             const std::string& pathToTemplates,
+             const std::string& openFrameworksDir);
 
     Poco::UUID compile(const Project& project);
     Poco::UUID run(const Project& project);
@@ -64,6 +66,7 @@ private:
     std::string _pathToSrc;
     std::string _projectFileTemplate;
     std::string _classTemplate;
+    std::string _openFrameworksDir;
     
     void _parseAddons();
     void _getAddons();

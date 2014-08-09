@@ -36,11 +36,13 @@ const std::string App::VERSION_SPECIAL = "";
 
 App::App():
     _editorSettings(ofToDataPath("Resources/Settings/EditorSettings.json")),
-    _ofSketchSettings(ofToDataPath("Resources/Settings/OfSketchSettings.json")),
+    _ofSketchSettings(),
     _threadPool("ofSketchThreadPool"),
     _taskQueue(ofx::TaskQueue_<std::string>::UNLIMITED_TASKS, _threadPool),
-    _compiler(_taskQueue, ofToDataPath("Resources/Templates/CompilerTemplates")),
-    _addonManager(ofToDataPath(_ofSketchSettings.getAddonsDir())),
+    _compiler(_taskQueue,
+              ofToDataPath("Resources/Templates/CompilerTemplates"),
+              _ofSketchSettings.getOpenFrameworksDir()),
+    _addonManager(ofToDataPath(_ofSketchSettings.getOpenFrameworksDir() + "/addons")),
     _projectManager(ofToDataPath(_ofSketchSettings.getProjectDir(), true))
 {
     ofLogNotice("App::App") << "Editor setting's projectDir: " << _ofSketchSettings.getProjectDir();
@@ -183,6 +185,16 @@ void App::setup()
                            "Save the editor settings.",
                            this,
                            &App::saveEditorSettings);
+    
+    server->registerMethod("load-ofsketch-settings",
+                           "Get ofSketch settings.",
+                           this,
+                           &App::loadOfSketchSettings);
+    
+    server->registerMethod("save-ofsketch-settings",
+                           "Save ofSketch settings.",
+                           this,
+                           &App::saveOfSketchSettings);
     
     server->registerMethod("get-addon-list",
                            "Get a list of all addons.",
@@ -546,6 +558,30 @@ void App::saveEditorSettings(const void *pSender, ofx::JSONRPC::MethodArgs &args
     params["clientUUID"] = args.params["clientUUID"];
     ofLogNotice("App::saveEditorSettings") << "clientUUID: " << params["clientUUID"] << endl;
     Json::Value json = App::toJSONMethod("Server", "updateEditorSettings", params);
+    ofx::HTTP::WebSocketFrame frame(App::toJSONString(json));
+    server->getWebSocketRoute()->broadcast(frame);
+}
+    
+void App::loadOfSketchSettings(const void *pSender, ofx::JSONRPC::MethodArgs &args)
+{
+    args.result = _ofSketchSettings.getData();
+}
+
+void App::saveOfSketchSettings(const void *pSender, ofx::JSONRPC::MethodArgs &args)
+{
+    ofLogVerbose("App::saveOfSketchSettings") << "Saving ofSketch settings" << endl;
+    
+    Json::Value settings = args.params["data"]; // must make a copy
+    
+    _ofSketchSettings.update(settings);
+    _ofSketchSettings.save();
+    
+    // broadcast new editor settings to all connected clients
+    Json::Value params;
+    params["data"] = settings;
+    params["clientUUID"] = args.params["clientUUID"];
+    
+    Json::Value json = App::toJSONMethod("Server", "updateOfSketchSettings", params);
     ofx::HTTP::WebSocketFrame frame(App::toJSONString(json));
     server->getWebSocketRoute()->broadcast(frame);
 }
