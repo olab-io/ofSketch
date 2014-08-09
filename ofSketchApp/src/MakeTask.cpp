@@ -54,6 +54,11 @@ MakeTask::MakeTask(const Settings& settings,
 {
     _args.push_back("--directory=" + ofToDataPath(_project.getPath()));
 
+    if (!_settings.ofRoot.empty())
+    {
+        _args.push_back("OF_ROOT=" + _settings.ofRoot);
+    }
+    
     if (_settings.numProcessors > 1)
     {
         _args.push_back("-j" + ofToString(_settings.numProcessors));
