@@ -22,51 +22,40 @@
 //
 // =============================================================================
 
-
-#pragma once
-
-
-#include <string>
-#include <json/json.h>
-#include "Poco/Environment.h"
-#include "ofUtils.h"
-#include "ofxJSONElement.h"
-
-
-namespace of {
-namespace Sketch {
-
-
-class OfSketchSettings
+function OfSketchSettings(data) 
 {
-public:
-    OfSketchSettings();
+	var _data;
 
-    bool load(const std::string& path);
-    bool save();
+	this.load = function(onSuccess, onError)
+	{
+		JSONRPCClient.call('load-ofsketch-settings', 
+    					{},
+    					function(data){
+    						_data = data;
+				        	onSuccess(data)
+				    	}, onError);
+	}
 
-    void update(const ofxJSONElement& data);
+	this.save = function(onSuccess, onError)
+	{
+		console.log("Saving editor settings");
+		console.log(_data);
+		JSONRPCClient.call('save-ofsketch-settings',
+    					{
+    						data: _data,
+    					 	clientUUID: CLIENT_UUID
+    					},
+				        onSuccess,
+				        onError);
+	}
 
-    const Json::Value& getData() const;
+	this.update = function(ofSketchSettings)
+	{
+		_data = ofSketchSettings;
+	}
 
-    int getPort() const;
-    int getBufferSize() const;
-    std::string getProjectDir() const;
-    std::string getSketchDir() const;
-    std::string getOpenFrameworksDir() const;
-    std::string getOpenFrameworksVersion() const;
-    std::string getAddonsDir() const;
-    std::string getProjectSettingsFilename() const;
-    std::string getProjectExtension() const;
-    std::string getClassExtension() const;
-
-private:
-    
-    std::string _templateSettingsFilePath;
-    std::string _path;
-    ofxJSONElement _data; //ofxJSONElement for load functionality
-
-};
-
-
-} } // namespace of::Sketch
+	this.getData = function()
+	{
+		return _data;
+	}
+}

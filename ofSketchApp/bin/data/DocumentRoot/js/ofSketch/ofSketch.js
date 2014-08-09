@@ -28,7 +28,6 @@ var CLIENT_UUID = generateUUID();
 $(document).ready( function()
 {
 
-    $('#ofsketch-settings-modal').modal('show');
     function resizeEditor() {
 
         // get the new ratio
@@ -531,10 +530,6 @@ $(document).ready( function()
     var aceWrapperHeight;
     var compileSuccess = false; // this is a terrible global var. Get it out ASAP.
     var inputRegex = /^[A-Za-z0-9_-]+$/;
-    alertBox = $('#editor-messages');
-    alertBox.hide();
-
-    var logger = new Logger();
 
     JSONRPCClient = new $.JsonRpcClient({ 
             ajaxUrl: getDefaultPostURL(),
@@ -545,21 +540,12 @@ $(document).ready( function()
             onerror: onWebSocketError
         });
 
-    $('#set-log-level').addClass(logger.getLogLevelLabelClass(logger.getLogLevel()));
-    $('#current-log-level').text(logger.getLogLevelName(logger.getLogLevel()));
+    alertBox = $('#editor-messages');
+    alertBox.hide();
 
-    $('#log-levels li a').on('click', function() {
-        
-        var logLevel = parseInt($(this).data('log-level'));
-        logger.setLogLevel(logLevel);
-
-        var button = $('#set-log-level');
-        button.removeClass();
-        button.addClass('btn btn-xs dropdown-toggle ' + logger.getLogLevelLabelClass(logLevel));
-        $('#current-log-level').text($(this).text());
-    });
-
+    var ofSketchSettings = new OfSketchSettings();
     var consoleEmulator = new ConsoleEmulator();
+    var logger = new Logger();
 
     var sketchEditor = new SketchEditor(function() {
         
@@ -731,6 +717,44 @@ $(document).ready( function()
 
         $('#editor-settings').on('click', function(e){
             sketchEditor.showSettingsMenu();
+        });
+
+        $('#ofsketch-settings').on('click', function(e){
+            
+            ofSketchSettings.load(function(settings){
+                
+                $('#ofsketch-settings-port').attr('value', settings.server.port);
+                $('#ofsketch-settings-buffer-size').attr('value', settings.server.bufferSize);
+                $('#ofsketch-settings-openframeworks-directory').attr('value', settings.openFrameworksDir);
+                $('#ofsketch-settings-project-directory').attr('value', settings.projectDir);
+
+                $('#ofsketch-settings-modal').modal('show');
+
+            }, function(){
+
+                console.log('Error loading ofSketch settings');
+                console.log(err);
+            });
+        });
+
+        $('#save-ofsketch-settings').on('click', function(){
+
+            var settings = ofSketchSettings.getData();
+
+            settings.server.port = parseInt($('#ofsketch-settings-port').val());
+            settings.server.bufferSize = parseInt($('#ofsketch-settings-buffer-size').val());
+            settings.openFrameworksDir = $('#ofsketch-settings-openframeworks-directory').val();
+            settings.projectDir = $('#ofsketch-settings-project-directory').val();
+
+            ofSketchSettings.update(settings);
+            ofSketchSettings.save(function(){
+                $('#ofsketch-settings-modal').modal('hide');
+            }, function(err){
+                console.log('Error saving ofSketch settings');
+                console.log(err);
+            });
+
+            console.log(settings.server.port);
         });
 
         // Modals
@@ -955,6 +979,21 @@ $(document).ready( function()
 
         $('#rename-class-modal').on('shown.bs.modal', function () {
             $('#renamed-class-name').focus();
+        });
+
+        // logging
+        $('#set-log-level').addClass(logger.getLogLevelLabelClass(logger.getLogLevel()));
+        $('#current-log-level').text(logger.getLogLevelName(logger.getLogLevel()));
+
+        $('#log-levels li a').on('click', function() {
+            
+            var logLevel = parseInt($(this).data('log-level'));
+            logger.setLogLevel(logLevel);
+
+            var button = $('#set-log-level');
+            button.removeClass();
+            button.addClass('btn btn-xs dropdown-toggle ' + logger.getLogLevelLabelClass(logLevel));
+            $('#current-log-level').text($(this).text());
         });
 
         parseURLParameters();

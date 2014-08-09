@@ -78,6 +78,8 @@ public:
     void getProjectList(const void* pSender, ofx::JSONRPC::MethodArgs& args);
     void loadEditorSettings(const void* pSender, ofx::JSONRPC::MethodArgs& args);
     void saveEditorSettings(const void* pSender, ofx::JSONRPC::MethodArgs& args);
+    void loadOfSketchSettings(const void* pSender, ofx::JSONRPC::MethodArgs& args);
+    void saveOfSketchSettings(const void* pSender, ofx::JSONRPC::MethodArgs& args);
     void requestProjectClosed(const void* pSender, ofx::JSONRPC::MethodArgs& args);
     void notifyProjectClosed(const void* pSender, ofx::JSONRPC::MethodArgs& args);
     void requestAppQuit(const void* pSender, ofx::JSONRPC::MethodArgs& args);
