@@ -26,11 +26,6 @@ while read ADDON; do
 	# update to the latest
 	git pull
 
-	if [ "${ADDON}" == "ofxIO" ]; then
-		git checkout develop
-	fi
-
-
 	# back to addons path
 	cd -
 
