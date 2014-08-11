@@ -3,9 +3,9 @@
    "autosave" : true,
    "autosaveFrequency" : 60,
    "classExtension" : ".sketch",
-   "openFrameworksDir" : "/Users/bdorse/Documents/openFrameworks/apps/ofSketch/ofSketchApp/bin/data/openFrameworks",
+   "openFrameworksDir" : "openFrameworks",
    "openFrameworksVersion" : "v0.8.3",
-   "projectDir" : "/Users/bdorse/Documents/openFrameworks/apps/ofSketch/ofSketchApp/bin/data/Projects",
+   "projectDir" : "Projects",
    "projectExtension" : ".sketch",
    "projectSettingsFilename" : ".sketchconfig",
    "server" : {
