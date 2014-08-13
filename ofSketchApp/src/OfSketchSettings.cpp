@@ -25,6 +25,7 @@
 
 #include "OfSketchSettings.h"
 
+
 namespace of {
 namespace Sketch {
 
@@ -33,7 +34,6 @@ OfSketchSettings::OfSketchSettings():
     _templateSettingsFilePath(ofToDataPath("Resources/Settings/OfSketchSettings.json")),
     _path(_templateSettingsFilePath)
 {
-    
     if (Poco::Environment::has("HOME")) {
         
         ofFile settingsFile = Poco::Environment::get("HOME") + "/.ofsketchsettings.json";
@@ -59,8 +59,8 @@ OfSketchSettings::OfSketchSettings():
 
 bool OfSketchSettings::load(const std::string& path)
 {
-    if(_data.open(path)) {
-        
+    if(_data.open(path))
+    {
         std::string projectDir = _data["projectDir"].asString();
         _data["projectDir"] = ofToDataPath(projectDir, true);
         
@@ -80,16 +80,19 @@ bool OfSketchSettings::save()
 {
     return _data.save(_path, true);
 }
+
     
 void OfSketchSettings::update(const ofxJSONElement& data)
 {
     _data = data;
 }
 
+
 const Json::Value& OfSketchSettings::getData() const
 {
     return _data;
 }
+
 
 int OfSketchSettings::getPort() const
 {

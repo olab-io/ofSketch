@@ -61,9 +61,9 @@ public:
     std::string getClassExtension() const;
 
 private:
-    
     std::string _templateSettingsFilePath;
     std::string _path;
+
     ofxJSONElement _data; //ofxJSONElement for load functionality
 
 };
