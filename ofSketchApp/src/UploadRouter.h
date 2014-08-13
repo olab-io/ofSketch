@@ -39,24 +39,23 @@ namespace Sketch {
 class UploadRouter
 {
 public:
-    
-    UploadRouter(){};
     UploadRouter(const std::string& projectDir);
     
     bool onHTTPPostEvent(ofx::HTTP::PostEventArgs& args);
     bool onHTTPFormEvent(ofx::HTTP::PostFormEventArgs& args);
     bool onHTTPUploadEvent(ofx::HTTP::PostUploadEventArgs& args);
     
-    struct UploadedFile {
+    struct UploadedFile
+    {
         std::string tempFilename;
         std::string filename;
         std::string type;
     };
     
 private:
-    
     std::string _path;
     std::map<std::string, UploadRouter::UploadedFile> _uploadedFiles;
+
 };
 
 

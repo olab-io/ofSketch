@@ -28,13 +28,13 @@
 namespace of {
 namespace Sketch {
     
-    
+
 UploadRouter::UploadRouter(const std::string& projectDir):
     _path(projectDir)
 {
-    
 }
-    
+
+
 bool UploadRouter::onHTTPPostEvent(ofx::HTTP::PostEventArgs& args)
 {
     ofLogNotice("UploadManager::onHTTPPostEvent") << "Data: " << args.getBuffer().getText();
@@ -44,35 +44,35 @@ bool UploadRouter::onHTTPPostEvent(ofx::HTTP::PostEventArgs& args)
 
 bool UploadRouter::onHTTPFormEvent(ofx::HTTP::PostFormEventArgs& args)
 {
-    
     const Poco::Net::NameValueCollection& form = args.getForm();
     std::string projectName = form["projectName"];
     
     UploadRouter::UploadedFile uploadedFile = _uploadedFiles[args.getPostId().toString()];
     ofFile tempFile(uploadedFile.tempFilename);
     
-    ofLogNotice("UploadRouter::onHTTPFormEvent") << "Project path" << _path + "/" + projectName << endl;
+    ofLogNotice("UploadRouter::onHTTPFormEvent") << "Project path" << _path << "/" << projectName;
+
     ofDirectory project(_path + "/" + projectName);
     
-    if (project.exists()) {
-        
+    if (project.exists())
+    {
         tempFile.renameTo(project.getAbsolutePath() + "/bin/data/" + uploadedFile.filename);
         ofx::HTTP::Utils::dumpNameValueCollection(args.getForm(), ofGetLogLevel());
     }
     
-//    Json::Value json;
-//    
-//    json["files"][0]["name"] = "picture1.jpg";
-//    json["files"][0]["size"] = 902604;
-//    json["files"][0]["url"] = "http://example.org/files/picture1.jpg";
-//    json["files"][0]["thumbnailUrl"] = "http://example.org/files/thumbnail/picture1.jpg";
-//    json["files"][0]["deleteUrl"] = "http://example.org/files/picture1.jpg";
-//    json["files"][0]["deleteType"] = "DELETE";
-//    
-//    ofBuffer buffer(json.asString());
-//    std::string string(json.asString());
-//    args.response.sendBuffer(&string, string.size());
+    Json::Value json;
     
+    json["files"][0]["name"] = "picture1.jpg";
+    json["files"][0]["size"] = 902604;
+    json["files"][0]["url"] = "http://example.org/files/picture1.jpg";
+    json["files"][0]["thumbnailUrl"] = "http://example.org/files/thumbnail/picture1.jpg";
+    json["files"][0]["deleteUrl"] = "http://example.org/files/picture1.jpg";
+    json["files"][0]["deleteType"] = "DELETE";
+
+    Json::FastWriter writer;
+    std::string jsonString = writer.write(json);
+    args.response.sendBuffer(jsonString.c_str(), jsonString.size());
+
     return true;
 }
 
@@ -94,8 +94,8 @@ bool UploadRouter::onHTTPUploadEvent(ofx::HTTP::PostUploadEventArgs& args)
             break;
     }
     
-    if (stateString == "FINISHED") {
-
+    if (stateString == "FINISHED")
+    {
         UploadRouter::UploadedFile file;
         
         file.tempFilename = args.getFilename();

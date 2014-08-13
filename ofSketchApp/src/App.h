@@ -154,7 +154,7 @@ private:
     Compiler            _compiler;
     AddonManager        _addonManager;
     ProjectManager      _projectManager;
-    UploadRouter      _uploadRouter;
+    UploadRouter        _uploadRouter;
 
     ofImage _logo;
     ofTrueTypeFont _font;
