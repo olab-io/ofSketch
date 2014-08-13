@@ -39,7 +39,7 @@ Building ofSketch from source requires openFrameworks master branch and the foll
 - [ofxMediaType](https://github.com/bakercp/ofxMediaType)
 - [ofxSSLManager](https://github.com/bakercp/ofxSSLManager)
 - [ofxTaskQueue](https://github.com/bakercp/ofxTaskQueue)
-- [ofxProjectGenerator](https://github.com/bakercp/ofxProjectGenerator)
+- [ofxPG](https://github.com/bakercp/ofxPG)
 - [ofxPugiXML](https://github.com/bakercp/ofxPugiXML)
 
 For more information, see the [ARCHITECTURE.md](ARCHITECTURE.md) document in this repository.
