@@ -219,6 +219,11 @@ void App::setup()
                            "Remove an addon from a project.",
                            this,
                            &App::removeProjectAddon);
+    
+    server->registerMethod("export-project",
+                           "Export the project for target platform.",
+                           this,
+                           &App::exportProject);
 
     
     server->start();
@@ -589,6 +594,14 @@ void App::saveOfSketchSettings(const void *pSender, ofx::JSONRPC::MethodArgs &ar
     Json::Value json = Utils::toJSONMethod("Server", "updateOfSketchSettings", params);
     ofx::HTTP::WebSocketFrame frame(Utils::toJSONString(json));
     server->getWebSocketRoute()->broadcast(frame);
+}
+    
+void App::exportProject(const void *pSender, ofx::JSONRPC::MethodArgs &args) {
+    
+    std::string platform = args.params["platform"].asString();
+    std::string projectName = args.params["projectName"].asString();
+    
+//    Project& project = _projectManager.getProjectRef(projectName);
 }
 
 bool App::onWebSocketOpenEvent(ofx::HTTP::WebSocketOpenEventArgs& args)

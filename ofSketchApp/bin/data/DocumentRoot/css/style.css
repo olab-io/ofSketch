@@ -135,6 +135,15 @@ code {
   margin: auto;*/
 }
 
+#export-project-modal .list-group a {
+  /*font-size: 1.1em;*/
+}
+
+#export-project-modal .list-group .label {
+  float: right;
+  margin-left: 5px;
+}
+
 
 @media (max-width: 768px) {
 
