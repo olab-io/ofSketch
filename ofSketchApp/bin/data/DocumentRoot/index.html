@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -85,19 +86,19 @@
                 <button id="toolbar-open-project" type="button" class="btn btn-default open-project" title="Open Project">
                   <span class="glyphicon glyphicon-folder-open"></span> 
                 </button>
-                <button id="toolbar-create-project" type="button" class="btn btn-default new-project" title="New Project">
+                <button id="toolbar-create-project" type="button" class="btn btn-default new-project hideable" title="New Project">
                   <span class="glyphicon glyphicon-folder-close"></span> 
                 </button>
               </div>
 
               <div class="btn-group">
-                <!-- <button id="toolbar-upload-media" type="button" class="btn btn-default" title="Upload File" data-toggle="modal" data-target="#upload-media-modal">
+                <button id="toolbar-upload-media" type="button" class="btn btn-default" title="Upload File">
                   <span class="glyphicon glyphicon-paperclip"></span> 
                 </button>
-                <button id="toolbar-task-queue" type="button" class="btn btn-default" title="Task Queue" data-toggle="modal" data-target="#task-queue-modal"> 
+                <!-- <button id="toolbar-task-queue" type="button" class="btn btn-default" title="Task Queue" data-toggle="modal" data-target="#task-queue-modal"> 
                   <span class="glyphicon glyphicon-tasks"></span> 
                 </button> -->
-                <button id="toolbar-addons" type="button" class="btn btn-default hideable" title="Addons">
+                <button id="toolbar-addons" type="button" class="btn btn-default" title="Addons">
                   <span class="glyphicon glyphicon-plus-sign"></span> 
                 </button>
                 <!-- <button id="toolbar-logger" type="button" class="btn btn-default hideable" title="Server Log" data-toggle="modal" data-target="#logger-modal">
@@ -169,15 +170,6 @@
               <h4 class="modal-title" data-localize="editor-settings">ofSketch Settings</h4>
             </div>
             <div class="modal-body">
-              <!-- see http://tutsme-webdesign.info/bootstrap-3-contact-modal/ -->
-<!--               <form class="form-horizontal">
-                <div class="form-group">
-                    <label class="control-label col-md-4" for="editor-settings-port">Port</label>
-                    <div class="col-md-6">
-                        <input type="number" class="form-control" id="editor-settings-port" name="ofSketch Port" placeholder="8998"/>
-                    </div>
-                </div>
-            </form> -->
             <form id="ofsketch-settings-container" class="form-horizontal" role="form">
               <div class="form-group">
                 <label for="ofsketch-settings-port" class="col-sm-3 control-label">Port</label>
@@ -203,21 +195,8 @@
                   <input id="ofsketch-settings-project-directory" type="text" class="form-control">
                 </div>
               </div>
-             <!--  <div class="form-group">
-                <div class="form-inline">
-                  <label for="" class="col-sm-3 control-label">Autosave</label>
-                  <div class="checkbox-inline">
-                    <input  type="checkbox" id="inputPassword3" placeholder="Password">
-                  </div>
-                </div>
-              </div>
-              <div class="form-group">
-                <label for="" class="col-sm-3 control-label">Project Directory</label>
-                <div class="col-sm-9">
-                  <input type="password" class="form-control" id="inputPassword3" placeholder="Password">
-                </div>
-              </div> -->
             </form>
+            <p style="margin-top: 20px"><strong>Note</strong>: ofSketch must be restarted for changes to these settings to take effect.</p>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -984,103 +963,9 @@
 <script src="./js/ofSketch/classes/Project.js"></script>
 <script src="./js/ofSketch/classes/SketchEditor.js"></script>
 <script src="./js/ofSketch/classes/ConsoleEmulator.js"></script>
+<script src="./js/ofSketch/classes/FileUploader.js"></script>
 <script src="./js/ofSketch/classes/Logger.js"></script>
 <script src="./js/ofSketch/ofSketch.js"></script>
 
-<script>
-/*jslint unparam: true, regexp: true */
-/*global window, $ */
-$(function () {
-    'use strict';
-    // Change this to the location of your server-side upload handler:
-    var url = '/upload',
-        uploadButton = $('<button/>')
-            .addClass('btn btn-primary')
-            .prop('disabled', true)
-            .text('Processing...')
-            .on('click', function () {
-                var $this = $(this),
-                    data = $this.data();
-                $this
-                    .off('click')
-                    .text('Abort')
-                    .on('click', function () {
-                        $this.remove();
-                        data.abort();
-                    });
-                data.submit().always(function () {
-                    $this.remove();
-                });
-            });
-    $('#fileupload').fileupload({
-        url: url,
-        dataType: 'json',
-        autoUpload: false,
-        acceptFileTypes: /(\.|\/)(gif|jpe?g|png|mov|mp3)$/i,
-        maxFileSize: 5000000*1024, // 5 GB
-        // Enable image resizing, except for Android and Opera,
-        // which actually support image resizing, but fail to
-        // send Blob objects via XHR requests:
-        disableImageResize: /Android(?!.*Chrome)|Opera/
-            .test(window.navigator.userAgent),
-        previewMaxWidth: 100,
-        previewMaxHeight: 100,
-        previewCrop: true
-    }).on('fileuploadadd', function (e, data) {
-        data.context = $('<div/>').appendTo('#files');
-        $.each(data.files, function (index, file) {
-            var node = $('<p/>')
-                    .append($('<span/>').text(file.name));
-            if (!index) {
-                node
-                    .append('<br>')
-                    .append(uploadButton.clone(true).data(data));
-            }
-            node.appendTo(data.context);
-        });
-    }).on('fileuploadprocessalways', function (e, data) {
-        var index = data.index,
-            file = data.files[index],
-            node = $(data.context.children()[index]);
-        if (file.preview) {
-            node
-                .prepend('<br>')
-                .prepend(file.preview);
-        }
-        if (file.error) {
-            node
-                .append('<br>')
-                .append(file.error);
-        }
-        if (index + 1 === data.files.length) {
-            data.context.find('button')
-                .text('Upload')
-                .prop('disabled', !!data.files.error);
-        }
-    }).on('fileuploadprogressall', function (e, data) {
-        var progress = parseInt(data.loaded / data.total * 100, 10);
-        $('#progress .progress-bar').css(
-            'width',
-            progress + '%'
-        );
-    }).on('fileuploaddone', function (e, data) {
-        $.each(data.result.files, function (index, file) {
-            var link = $('<a>')
-                .attr('target', '_blank')
-                .prop('href', file.url);
-            $(data.context.children()[index])
-                .wrap(link);
-        });
-    }).on('fileuploadfail', function (e, data) {
-        $.each(data.result.files, function (index, file) {
-            var error = $('<span/>').text(file.error);
-            $(data.context.children()[index])
-                .append('<br>')
-                .append(error);
-        });
-    }).prop('disabled', !$.support.fileInput)
-        .parent().addClass($.support.fileInput ? undefined : 'disabled');
-});
-</script>
-  </body>
+</body>
 </html>

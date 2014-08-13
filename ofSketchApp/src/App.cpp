@@ -43,7 +43,8 @@ App::App():
               ofToDataPath("Resources/Templates/CompilerTemplates"),
               _ofSketchSettings.getOpenFrameworksDir()),
     _addonManager(ofToDataPath(_ofSketchSettings.getOpenFrameworksDir() + "/addons")),
-    _projectManager(ofToDataPath(_ofSketchSettings.getProjectDir(), true))
+    _projectManager(ofToDataPath(_ofSketchSettings.getProjectDir(), true)),
+    _uploadRouter(ofToDataPath(_ofSketchSettings.getProjectDir(), true))
 {
     ofLogNotice("App::App") << "Editor setting's projectDir: " << _ofSketchSettings.getProjectDir();
     _taskQueue.registerTaskEvents(this);
@@ -53,12 +54,13 @@ App::App():
     ofx::HTTP::BasicJSONRPCServerSettings settings; // TODO: load from file.
     settings.setBufferSize(_ofSketchSettings.getBufferSize());
     settings.setPort(_ofSketchSettings.getPort());
+    settings.setUploadRedirect("");
     server = ofx::HTTP::BasicJSONRPCServer::makeShared(settings);
 
     // Must register for all events before initializing server.
     ofSSLManager::registerAllEvents(this);
 
-    server->getPostRoute()->registerPostEvents(this);
+    server->getPostRoute()->registerPostEvents(&_uploadRouter);
     server->getWebSocketRoute()->registerWebSocketEvents(this);
 
     // Set up websocket logger.
@@ -76,7 +78,7 @@ App::~App()
     _taskQueue.unregisterTaskEvents(this);
 
     server->getWebSocketRoute()->unregisterWebSocketEvents(this);
-    server->getPostRoute()->unregisterPostEvents(this);
+    server->getPostRoute()->unregisterPostEvents(&_uploadRouter);
 
     ofSSLManager::unregisterAllEvents(this);
 }
@@ -659,49 +661,6 @@ bool App::onWebSocketErrorEvent(ofx::HTTP::WebSocketErrorEventArgs& args)
     ofLogError("App::onWebSocketErrorEvent") << "Stop: " << args.getError();
 //    ofLogVerbose("App::onWebSocketErrorEvent") << "Error on: " << args.getConnectionRef().getClientAddress().toString();
     return false; // did not handle it
-}
-
-
-bool App::onHTTPPostEvent(ofx::HTTP::PostEventArgs& args)
-{
-//    ofLogNotice("ofApp::onHTTPPostEvent") << "Data: " << args.getBuffer().getText();
-    return false;
-}
-
-
-bool App::onHTTPFormEvent(ofx::HTTP::PostFormEventArgs& args)
-{
-//    ofLogNotice("ofApp::onHTTPFormEvent") << "";
-//    HTTP::Utils::dumpNameValueCollection(args.getForm(), ofGetLogLevel());
-    return false;
-}
-
-
-bool App::onHTTPUploadEvent(ofx::HTTP::PostUploadEventArgs& args)
-{
-//    std::string stateString = "";
-//
-//    switch (args.getState())
-//    {
-//        case HTTP::PostUploadEventArgs::UPLOAD_STARTING:
-//            stateString = "STARTING";
-//            break;
-//        case HTTP::PostUploadEventArgs::UPLOAD_PROGRESS:
-//            stateString = "PROGRESS";
-//            break;
-//        case HTTP::PostUploadEventArgs::UPLOAD_FINISHED:
-//            stateString = "FINISHED";
-//            break;
-//    }
-//
-//    ofLogNotice("ofApp::onHTTPUploadEvent") << "";
-//    ofLogNotice("ofApp::onHTTPUploadEvent") << "         state: " << stateString;
-//    ofLogNotice("ofApp::onHTTPUploadEvent") << " formFieldName: " << args.getFormFieldName();
-//    ofLogNotice("ofApp::onHTTPUploadEvent") << "orig. filename: " << args.getOriginalFilename();
-//    ofLogNotice("ofApp::onHTTPUploadEvent") <<  "      filename: " << args.getFilename();
-//    ofLogNotice("ofApp::onHTTPUploadEvent") <<  "      fileType: " << args.getFileType().toString();
-//    ofLogNotice("ofApp::onHTTPUploadEvent") << "# bytes xfer'd: " << args.getNumBytesTransferred();
-    return false;
 }
 
 

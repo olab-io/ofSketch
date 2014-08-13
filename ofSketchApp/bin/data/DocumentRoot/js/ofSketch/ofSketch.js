@@ -392,7 +392,11 @@ $(document).ready( function()
                 var match = _.findWhere(result, { projectName: project });
                 if (match) {
                     sketchEditor.loadProject(project, function(result) {
+
                         $('title').text(project);
+
+                        fileUploader.init(project);
+
                         if (result.alreadyOpen == true){
                             $('#project-already-open-modal').modal('show');
                             sketchEditor.setDisabled(true);
@@ -545,6 +549,7 @@ $(document).ready( function()
 
     var ofSketchSettings = new OfSketchSettings();
     var consoleEmulator = new ConsoleEmulator();
+    var fileUploader = new FileUploader();
     var logger = new Logger();
 
     var sketchEditor = new SketchEditor(function() {
@@ -589,6 +594,15 @@ $(document).ready( function()
 
         $('#toolbar-save').on('click', function() {
            save();
+        });
+
+        $('#toolbar-upload-media').on('click', function(){
+
+            if (!sketchEditor.getProject().isTemplate()) {
+                $('#upload-media-modal').modal('show');               
+            } else {
+                $('#name-project-modal').modal('show');
+            }
         });
 
         $('#toolbar-addons').on('click', function(){
@@ -995,7 +1009,7 @@ $(document).ready( function()
             button.addClass('btn btn-xs dropdown-toggle ' + logger.getLogLevelLabelClass(logLevel));
             $('#current-log-level').text($(this).text());
         });
-
+        
         parseURLParameters();
 
     });

@@ -37,6 +37,7 @@
 #include "ofxHTTP.h"
 #include "ofxJSONRPC.h"
 #include "AddonManager.h"
+#include "UploadRouter.h"
 #include "Project.h"
 #include "ProjectManager.h"
 #include "Compiler.h"
@@ -93,10 +94,6 @@ public:
     bool onWebSocketFrameReceivedEvent(ofx::HTTP::WebSocketFrameEventArgs& args);
     bool onWebSocketFrameSentEvent(ofx::HTTP::WebSocketFrameEventArgs& args);
     bool onWebSocketErrorEvent(ofx::HTTP::WebSocketErrorEventArgs& args);
-
-    bool onHTTPPostEvent(ofx::HTTP::PostEventArgs& args);
-    bool onHTTPFormEvent(ofx::HTTP::PostFormEventArgs& args);
-    bool onHTTPUploadEvent(ofx::HTTP::PostUploadEventArgs& args);
 
     void onSSLServerVerificationError(Poco::Net::VerificationErrorArgs& args);
     void onSSLClientVerificationError(Poco::Net::VerificationErrorArgs& args);
@@ -157,6 +154,7 @@ private:
     Compiler            _compiler;
     AddonManager        _addonManager;
     ProjectManager      _projectManager;
+    UploadRouter      _uploadRouter;
 
     ofImage _logo;
     ofTrueTypeFont _font;

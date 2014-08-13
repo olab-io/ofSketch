@@ -135,6 +135,7 @@
 		F3273A4CCC710A908066CFDD /* Serializer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 60AE6D5DCA5F27A5330014D4 /* Serializer.cpp */; };
 		F6AFEB8AFA51C11E04D848A5 /* BaseRouteHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5A04423C9EB5BA018371071 /* BaseRouteHandler.cpp */; };
 		F7BE9B8CD3F35077ADA4E3D4 /* ProjectManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8E9BF742600BDD67A2C1C707 /* ProjectManager.cpp */; };
+		F8F60B8719996CA50057689C /* UploadRouter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F8F60B8619996CA50057689C /* UploadRouter.cpp */; };
 		F953E11952BFF8C207418550 /* HexBinaryEncoding.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 22565CAF8FFEF25C805A438F /* HexBinaryEncoding.cpp */; };
 		FB84AAF8D1B7A95266DB5C09 /* jsoncpp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 21BDE665988474F1B1F4D302 /* jsoncpp.cpp */; };
 		FBD94A76B3CB5B29D734DAE7 /* DefaultSessionProvider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 16B7E0D9EC1C62B8EAFA8110 /* DefaultSessionProvider.cpp */; };
@@ -456,6 +457,8 @@
 		F5A5F646C4C5F08773CBCD0F /* Utils.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = Utils.h; path = ../../../addons/ofxJSONRPC/libs/ofxJSONRPC/include/ofx/JSONRPC/Utils.h; sourceTree = SOURCE_ROOT; };
 		F5E31A831B4A68051A87AB3F /* lz4.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = lz4.h; path = ../../../addons/ofxIO/libs/lz4/src/lz4.h; sourceTree = SOURCE_ROOT; };
 		F8E8424237BB0ADA99E92DC1 /* WebSocketRouteSettings.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = WebSocketRouteSettings.cpp; path = ../../../addons/ofxHTTP/libs/ofxHTTP/src/WebSocketRouteSettings.cpp; sourceTree = SOURCE_ROOT; };
+		F8F60B8519996C940057689C /* UploadRouter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UploadRouter.h; sourceTree = "<group>"; };
+		F8F60B8619996CA50057689C /* UploadRouter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UploadRouter.cpp; sourceTree = "<group>"; };
 		F99624C097E7F1940FDA80F0 /* WebSocketConnection.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = WebSocketConnection.cpp; path = ../../../addons/ofxHTTP/libs/ofxHTTP/src/WebSocketConnection.cpp; sourceTree = SOURCE_ROOT; };
 		FCAF85B857266C511DB50341 /* HiddenFileFilter.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = HiddenFileFilter.cpp; path = ../../../addons/ofxIO/libs/ofxIO/src/HiddenFileFilter.cpp; sourceTree = SOURCE_ROOT; };
 		FD35DEC21FE06BF7F1516022 /* RegexPathFilter.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = RegexPathFilter.h; path = ../../../addons/ofxIO/libs/ofxIO/include/ofx/IO/RegexPathFilter.h; sourceTree = SOURCE_ROOT; };
@@ -1253,6 +1256,8 @@
 				0D275B6F94E944D0689BED10 /* Compiler.h */,
 				96F00995B100422D0488B930 /* EditorSettings.cpp */,
 				C750666299F5ACF18B5B7070 /* EditorSettings.h */,
+				F8F60B8619996CA50057689C /* UploadRouter.cpp */,
+				F8F60B8519996C940057689C /* UploadRouter.h */,
 				71B9D10D4931309E684AA1FD /* MakeTask.cpp */,
 				6EB042BFE6D256A232CD82F7 /* MakeTask.h */,
 				8A6414FC9B6E6B9EB7AD1211 /* OfSketchSettings.cpp */,
@@ -1497,6 +1502,7 @@
 				B7E0003B826CBA379A3F66E5 /* PathFilterCollection.cpp in Sources */,
 				E2C54FD4C85A860582282F7C /* RecursiveDirectoryIterator.cpp in Sources */,
 				899BAF53175868463FE1B029 /* RecursiveDirectoryIteratorStategies.cpp in Sources */,
+				F8F60B8719996CA50057689C /* UploadRouter.cpp in Sources */,
 				3C9A355A55D68A8E882FEF85 /* RegexPathFilter.cpp in Sources */,
 				1CC07C1A616F29EB8EEC3D21 /* SearchPath.cpp in Sources */,
 				D81A435CE7FDF51B41956210 /* snappy-sinksource.cc in Sources */,
