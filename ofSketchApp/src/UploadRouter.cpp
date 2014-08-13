@@ -56,7 +56,7 @@ bool UploadRouter::onHTTPFormEvent(ofx::HTTP::PostFormEventArgs& args)
     
     if (project.exists()) {
         
-        tempFile.renameTo(project.getAbsolutePath() + "/bin/data/" + uploadedFile.filename);
+        tempFile.renameTo(project.getAbsolutePath() + "/bin/data/" + uploadedFile.filename, true);
         ofx::HTTP::Utils::dumpNameValueCollection(args.getForm(), ofGetLogLevel());
     }
     

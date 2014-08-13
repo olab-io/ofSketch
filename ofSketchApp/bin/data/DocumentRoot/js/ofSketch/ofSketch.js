@@ -995,6 +995,25 @@ $(document).ready( function()
             $('#renamed-class-name').focus();
         });
 
+
+        // Enter keypress events for 1-line input in modals
+        $('#new-project-name').on('keypress', function(evt){
+            if ((evt.keyCode || evt.which) == 13) $('#name-project').click();
+        });
+
+        $('#renamed-project-name').on('keypress', function(evt){
+            if ((evt.keyCode || evt.which) == 13) $('#rename-project').click();
+        });
+
+        $('#new-class-name').on('keypress', function(evt){
+            if ((evt.keyCode || evt.which) == 13) $('#create-class').click();
+        });
+
+        $('#renamed-class-name').on('keypress', function(evt){
+            if ((evt.keyCode || evt.which) == 13) $('#rename-class').click();
+        });
+
+
         // logging
         $('#set-log-level').addClass(logger.getLogLevelLabelClass(logger.getLogLevel()));
         $('#current-log-level').text(logger.getLogLevelName(logger.getLogLevel()));
