@@ -70,7 +70,7 @@ App::App():
     // _loggerChannel->setWebSocketRoute(server->getWebSocketRoute());
     // ofSetLoggerChannel(_loggerChannel);
 
-    // _logo.loadImage("media/openFrameworks.png");
+     _logo.loadImage("media/openFrameworks.png");
     _font.loadFont(OF_TTF_SANS, 20);
 }
 
@@ -243,7 +243,7 @@ void App::draw()
 {
     ofBackground(255);
 
-    // _logo.draw(10, 0);
+    _logo.draw(10, 0);
 
     ofSetColor(80);
     _font.drawString("Launch", 70, 30);
