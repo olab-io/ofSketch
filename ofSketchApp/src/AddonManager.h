@@ -45,7 +45,7 @@ namespace Sketch {
 class AddonManager
 {
 public:
-    AddonManager(const std::string& addonsPath);
+    AddonManager(const Poco::Path& addonsPath);
     virtual ~AddonManager();
 
     void onDirectoryWatcherItemAdded(const ofx::DirectoryWatcher::DirectoryEvent& evt);
@@ -60,7 +60,8 @@ public:
     static const std::string DEFAULT_ADDON_PATH;
 
 private:
-    std::string _path;
+    Poco::Path _path;
+    
     std::map<std::string, Addon::SharedPtr> _addons;
     ofx::IO::DirectoryWatcherManager _addonWatcher;
 
