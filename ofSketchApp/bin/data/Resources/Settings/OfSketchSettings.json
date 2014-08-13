@@ -12,6 +12,8 @@
       "bufferSize" : 3145728,
       "port" : 7890
    },
-   "sketchDir" : "sketch"
+   "sketchDir" : "sketch",
+   "allowRemote": false,
+   "whitelistedIPs": []
 }
 

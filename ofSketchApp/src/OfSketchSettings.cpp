@@ -105,6 +105,12 @@ int OfSketchSettings::getBufferSize() const
     return _data["server"]["bufferSize"].asInt();
 }
 
+bool OfSketchSettings::getAllowRemote() const
+{
+    if (_data.isMember("allowRemote")) {
+        return _data["allowRemote"].asBool();
+    } else return false;
+}
 
 std::string OfSketchSettings::getProjectDir() const
 {
@@ -150,6 +156,20 @@ std::string OfSketchSettings::getProjectExtension() const
 std::string OfSketchSettings::getClassExtension() const
 {
     return _data["classExtension"].asString();
+}
+    
+std::vector<std::string> OfSketchSettings::getWhitelistedIPs() const
+{
+    std::vector<std::string> IPs;
+    
+    if (_data.isMember("whitelistedIPs"))
+    {
+        for (unsigned int i = 0; i < _data["whitelistedIPs"].size(); i++) {
+            IPs.push_back(_data["whitelistedIPs"][i].asString());
+        }
+    }
+    
+    return IPs;
 }
 
 

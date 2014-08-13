@@ -144,6 +144,10 @@ code {
   margin-left: 5px;
 }
 
+textarea {
+  max-width: 100%;
+}
+
 /* Custom override for toolbar
 http://stackoverflow.com/questions/18192082/bootstrap-3-navbar-collapse */
 @media (max-width: 880px) {

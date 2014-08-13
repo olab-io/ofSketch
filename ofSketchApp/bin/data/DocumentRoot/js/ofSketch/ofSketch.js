@@ -763,6 +763,17 @@ $(document).ready( function()
                 $('#ofsketch-settings-openframeworks-directory').attr('value', settings.openFrameworksDir);
                 $('#ofsketch-settings-project-directory').attr('value', settings.projectDir);
 
+                // when new settings are added to the GUI
+                // we must check if they are undefined before using them
+                // in case the user has an old version of .ofsketchsettings.json
+                if (!_.isUndefined(settings.allowRemote)) {
+                    $('#ofsketch-settings-allow-remote').prop('checked', settings.allowRemote);
+                }
+                
+                if (!_.isUndefined(settings.whitelistedIPs)) {
+                    $('#ofsketch-settings-whitelisted-ips').val(settings.whitelistedIPs.join(',\n'));
+                }
+                
                 $('#ofsketch-settings-modal').modal('show');
 
             }, function(){
@@ -780,6 +791,15 @@ $(document).ready( function()
             settings.server.bufferSize = parseInt($('#ofsketch-settings-buffer-size').val());
             settings.openFrameworksDir = $('#ofsketch-settings-openframeworks-directory').val();
             settings.projectDir = $('#ofsketch-settings-project-directory').val();
+            settings.allowRemote = $('#ofsketch-settings-allow-remote').is(':checked');
+           
+            var IPs = $('#ofsketch-settings-whitelisted-ips').val();
+            IPs = IPs.replace(/ /g, '');
+            IPs = IPs.replace(/\n/g, '');
+            IPs = IPs.split(',');
+            if (IPs.length == 1 && IPs[0] == "") IPs = [];                                        
+
+            settings.whitelistedIPs = IPs;
 
             ofSketchSettings.update(settings);
             ofSketchSettings.save(function(){
