@@ -37,14 +37,15 @@
 #include "ofxHTTP.h"
 #include "ofxJSONRPC.h"
 #include "AddonManager.h"
-#include "UploadRouter.h"
-#include "Project.h"
-#include "ProjectManager.h"
 #include "Compiler.h"
-#include "WebSocketLoggerChannel.h"
-#include "ProcessTaskQueue.h"
 #include "EditorSettings.h"
 #include "OfSketchSettings.h"
+#include "ProcessTaskQueue.h"
+#include "Project.h"
+#include "ProjectManager.h"
+#include "UploadRouter.h"
+#include "Utils.h"
+#include "WebSocketLoggerChannel.h"
 
 
 namespace of {
@@ -107,30 +108,11 @@ public:
     bool onTaskProgress(const ofx::TaskProgressEventArgs& args);
     bool onTaskData(const ofx::TaskDataEventArgs<std::string>& args);
 
-    // TODO: Move this.
-    // Wraps a json method in the ofSketch protocol headers.
-    static Json::Value toJSONMethod(const std::string& module,
-                                    const std::string& method,
-                                    const Json::Value& params);
-
-    // TODO: Move this.
-    // This is a utility method for quickly converting a json value to a string.
-    static std::string toJSONString(const Json::Value& json);
-
-    // TODO: Move this.
     static std::string getVersion();
     static int getVersionMajor();
     static int getVersionMinor();
     static int getVersionPatch();
     static std::string getVersionSpecial();
-
-    // TODO: HACK while openFrameworks core is updated.
-    // - https://github.com/openframeworks/openFrameworks/issues/2162
-    // - https://github.com/openframeworks/openFrameworks/pull/3109
-    static ofTargetPlatform getTargetPlatform();
-    
-    // TODO: Move this.
-    static std::string toString(ofTargetPlatform targetPlatform);
 
     enum Version
     {
