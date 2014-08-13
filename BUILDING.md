@@ -1,18 +1,10 @@
 ## Building from source
 
-To build ofSketch you will need a copy of openFrameworks at <https://github.com/bakercp/openFrameworks/tree/ofSketch-develop>: 
-
-
 
 1. (__NOTE__: If you already have a cloned copy of openFrameworks you may skip this step). Clone openFrameworks:
 
 		git clone https://github.com/openFrameworks/openFrameworks
-
-2. To pull the required ofSketch-develop branch:
-		
-		git add remote bakercp https://github.com/bakercp/openFrameworks
-		git checkout -b ofSketch-develop
-		git pull bakercp ofSketch-develop	
+		git checkout master
 
 2. Clone the ofSketch repo into your `OF_ROOT/apps` folder, making sure that the `ofSketchApp/` folder inside of `ofSketch/` is two directories below your openFrameworks distribution:
 
@@ -33,12 +25,12 @@ To build ofSketch you will need a copy of openFrameworks at <https://github.com/
 		make && make run
 
 
-__Note__: OSX users may use the Xcode project instead of building from the command line in step 4.
+__Note__: OSX users may use the Xcode project instead of building from the command line in step 5.
 
 
 ### Info
 
-Building ofSketch from source requires openFrameworks v0.8.3 and the following addons:
+Building ofSketch from source requires openFrameworks master branch and the following addons:
 
 - [ofxHTTP](https://github.com/bakercp/ofxHTTP)
 - [ofxIO](https://github.com/bakercp/ofxIO)
@@ -47,6 +39,8 @@ Building ofSketch from source requires openFrameworks v0.8.3 and the following a
 - [ofxMediaType](https://github.com/bakercp/ofxMediaType)
 - [ofxSSLManager](https://github.com/bakercp/ofxSSLManager)
 - [ofxTaskQueue](https://github.com/bakercp/ofxTaskQueue)
+- [ofxProjectGenerator](https://github.com/bakercp/ofxProjectGenerator)
+- [ofxPugiXML](https://github.com/bakercp/ofxPugiXML)
 
 For more information, see the [ARCHITECTURE.md](ARCHITECTURE.md) document in this repository.
 
