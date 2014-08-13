@@ -30,7 +30,7 @@ namespace of {
 namespace Sketch {
 
 
-Addon::Addon(const std::string& name, const std::string& path):
+Addon::Addon(const std::string& name, const Poco::Path& path):
     _name(name),
     _path(path)
 {
@@ -48,7 +48,7 @@ const std::string& Addon::getName() const
 }
 
 
-const std::string& Addon::getPath() const
+const Poco::Path& Addon::getPath() const
 {
     return _path;
 }

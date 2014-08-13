@@ -1,6 +1,7 @@
 // =============================================================================
 //
-// Copyright (c) 2014 Brannon Dorsey <http://brannondorsey.com>
+// Copyright (c) 2013-2014 Christopher Baker <http://christopherbaker.net>
+//               2014 Brannon Dorsey <http://brannondorsey.com>
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -28,43 +29,30 @@
 
 #include <string>
 #include <json/json.h>
-#include "Poco/Environment.h"
-#include "ofUtils.h"
-#include "ofxJSONElement.h"
+#include "ofConstants.h"
 
 
 namespace of {
 namespace Sketch {
 
 
-class OfSketchSettings
+class Utils
 {
 public:
-    OfSketchSettings();
+    // Wraps a json method in the ofSketch protocol headers.
+    static Json::Value toJSONMethod(const std::string& module,
+                                    const std::string& method,
+                                    const Json::Value& params);
 
-    bool load(const std::string& path);
-    bool save();
+    // This is a utility method for quickly converting a json value to a string.
+    static std::string toJSONString(const Json::Value& json);
 
-    void update(const ofxJSONElement& data);
-
-    const Json::Value& getData() const;
-
-    int getPort() const;
-    int getBufferSize() const;
-    std::string getProjectDir() const;
-    std::string getSketchDir() const;
-    std::string getOpenFrameworksDir() const;
-    std::string getOpenFrameworksVersion() const;
-    std::string getAddonsDir() const;
-    std::string getProjectSettingsFilename() const;
-    std::string getProjectExtension() const;
-    std::string getClassExtension() const;
-
-private:
-    std::string _templateSettingsFilePath;
-    std::string _path;
-
-    ofxJSONElement _data; //ofxJSONElement for load functionality
+    // TODO: HACK while openFrameworks core is updated.
+    // - https://github.com/openframeworks/openFrameworks/issues/2162
+    // - https://github.com/openframeworks/openFrameworks/pull/3109
+    static ofTargetPlatform getTargetPlatform();
+    
+    static std::string toString(ofTargetPlatform targetPlatform);
 
 };
 

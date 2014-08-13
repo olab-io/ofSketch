@@ -26,6 +26,7 @@
 #pragma once
 
 
+#include "Poco/Path.h"
 #include "ofTypes.h"
 
 
@@ -38,16 +39,16 @@ class Addon
 public:
     typedef std::shared_ptr<Addon> SharedPtr;
 
-    Addon(const std::string& name, const std::string& path);
+    Addon(const std::string& name, const Poco::Path& path);
 
     virtual ~Addon();
 
     const std::string& getName() const;
-    const std::string& getPath() const;
+    const Poco::Path& getPath() const;
 
 private:
     std::string _name;
-    std::string _path;
+    Poco::Path _path;
 
 };
 
