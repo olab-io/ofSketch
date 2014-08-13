@@ -5,3 +5,5 @@ ofxJSONRPC
 ofxMediaType
 ofxSSLManager
 ofxTaskQueue
+ofxProjectGenerator
+ofxPugiXML
