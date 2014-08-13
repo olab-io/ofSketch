@@ -30,6 +30,7 @@
 #include <string>
 #include <json/json.h>
 #include "ofConstants.h"
+#include "ofUtils.h"
 
 
 namespace of {

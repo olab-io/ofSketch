@@ -25,6 +25,9 @@
 
 
 #include "Utils.h"
+#include "Poco/Process.h"
+#include "Poco/PipeStream.h"
+#include "Poco/StreamCopier.h"
 
 
 namespace of {
@@ -50,9 +53,6 @@ std::string Utils::toJSONString(const Json::Value& json)
     return writer.write(json);
 }
 
-#include "Poco/Process.h"
-#include "Poco/PipeStream.h"
-#include "Poco/StreamCopier.h"
 
 ofTargetPlatform Utils::getTargetPlatform()
 {

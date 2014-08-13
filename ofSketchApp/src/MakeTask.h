@@ -59,7 +59,7 @@ public:
     {
         std::string ofRoot;
 
-        int  numProcessors; // -j
+        std::size_t numProcessors; // -j
         bool isSilent; // -s
 
         std::string CXX; // CXX=/usr/lib/distcc/arm-linux-gnueabihf-g++

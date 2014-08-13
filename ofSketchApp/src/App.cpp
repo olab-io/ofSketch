@@ -502,11 +502,12 @@ void App::getProjectAddonList(const void *pSender, ofx::JSONRPC::MethodArgs &arg
     {
         const Project& project = _projectManager.getProject(projectName);
 
-        if (project.hasAddons()) {
-            
+        if (project.hasAddons())
+        {
             std::vector<std::string> addons = project.getAddons();
 
-            for (unsigned int i = 0; i < addons.size(); i++) {
+            for (unsigned int i = 0; i < addons.size(); ++i)
+            {
                 args.result["addons"][i] = addons[i];
             }
             
