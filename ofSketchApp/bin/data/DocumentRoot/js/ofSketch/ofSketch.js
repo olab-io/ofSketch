@@ -488,7 +488,7 @@ $(document).ready( function()
     $('[data-localize]').localize('lang', { pathPrefix: "../../localization", skipLanguage: /^en/ });
     
     // prevent defaults
-    $('#toolbar li a, #log-levels li a, .file-tab a, #new-class a, .action-menu li a').on('click', function(e) {
+    $('#toolbar li a, #export-project-modal .list-group a, #log-levels li a, .file-tab a, #new-class a, .action-menu li a').on('click', function(e) {
         e.preventDefault(); 
     });
 
@@ -600,6 +600,15 @@ $(document).ready( function()
 
             if (!sketchEditor.getProject().isTemplate()) {
                 $('#upload-media-modal').modal('show');               
+            } else {
+                $('#name-project-modal').modal('show');
+            }
+        });
+
+        $('#toolbar-export').on('click', function(){
+
+            if (!sketchEditor.getProject().isTemplate()) {
+                $('#export-project-modal').modal('show');               
             } else {
                 $('#name-project-modal').modal('show');
             }
@@ -969,6 +978,17 @@ $(document).ready( function()
                 // project is template
             }
 
+        });
+
+        $('#export-project-modal .list-group-item').on('click', function(){
+            var platform = $(this).data('export-platform');
+            console.log(platform);
+            sketchEditor.exportProject(platform, function(data){
+                console.log("Exported project.");
+            }, function(err){
+                console.log("Error exporting project:");
+                console.log(err);
+            });
         });
 
         $('#request-project-closed').on('click', function(){

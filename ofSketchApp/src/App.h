@@ -88,6 +88,7 @@ public:
     void getProjectAddonList(const void* pSender, ofx::JSONRPC::MethodArgs& args);
     void addProjectAddon(const void* pSender, ofx::JSONRPC::MethodArgs& args);
     void removeProjectAddon(const void* pSender, ofx::JSONRPC::MethodArgs& args);
+    void exportProject(const void* pSender, ofx::JSONRPC::MethodArgs& args);
 
     bool onWebSocketOpenEvent(ofx::HTTP::WebSocketOpenEventArgs& args);
     bool onWebSocketCloseEvent(ofx::HTTP::WebSocketCloseEventArgs& args);

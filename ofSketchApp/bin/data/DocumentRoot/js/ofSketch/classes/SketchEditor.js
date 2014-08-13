@@ -368,6 +368,15 @@ function SketchEditor(callback)
 		}, onError);
 	}
 
+	this.exportProject = function(platform, onSuccess, onError)
+	{
+		JSONRPCClient.call('export-project', 
+        					{ projectName: _project.getName(),
+        					  platform: platform},
+					        onSuccess,
+					        onError);
+	}
+
 	this.getProject = function()
 	{
 		return _project;
