@@ -356,9 +356,10 @@ void Project::addAddon(std::string& addon)
     
 bool Project::removeAddon(std::string& addon)
 {
-    for (unsigned int i = 0; i < _addons.size(); i++)
+    for (std::size_t i = 0; i < _addons.size(); ++i)
     {
-        if (addon == _addons[i]) {
+        if (addon == _addons[i])
+        {
             _addons.erase(_addons.begin() + i);
             _saveAddons();
             return true;
