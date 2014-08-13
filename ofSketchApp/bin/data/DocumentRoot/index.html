@@ -79,26 +79,26 @@
                 </button>
               </div>
 
-              <div class="btn-group">
+              <div class="btn-group hideable">
                 <button id="toolbar-save" type="button" class="btn btn-default" title="Save Project">
                   <span class="glyphicon glyphicon-floppy-save"></span> 
                 </button>
                 <button id="toolbar-open-project" type="button" class="btn btn-default open-project" title="Open Project">
                   <span class="glyphicon glyphicon-folder-open"></span> 
                 </button>
-                <button id="toolbar-create-project" type="button" class="btn btn-default new-project hideable" title="New Project">
+                <button id="toolbar-create-project" type="button" class="btn btn-default new-project" title="New Project">
                   <span class="glyphicon glyphicon-folder-close"></span> 
                 </button>
               </div>
 
               <div class="btn-group">
-                <button id="toolbar-upload-media" type="button" class="btn btn-default" title="Upload File">
+                <button id="toolbar-upload-media" type="button" class="btn btn-default upload-media" title="Upload File">
                   <span class="glyphicon glyphicon-paperclip"></span> 
                 </button>
                 <!-- <button id="toolbar-task-queue" type="button" class="btn btn-default" title="Task Queue" data-toggle="modal" data-target="#task-queue-modal"> 
                   <span class="glyphicon glyphicon-tasks"></span> 
                 </button> -->
-                <button id="toolbar-addons" type="button" class="btn btn-default" title="Addons">
+                <button id="toolbar-addons" type="button" class="btn btn-default include-addons" title="Addons">
                   <span class="glyphicon glyphicon-plus-sign"></span> 
                 </button>
                 <!-- <button id="toolbar-logger" type="button" class="btn btn-default hideable" title="Server Log" data-toggle="modal" data-target="#logger-modal">
@@ -106,14 +106,14 @@
                 </button> -->
               </div>
               
-              <div class="btn-group">
-                <button id="toolbar-export" type="button" class="btn btn-default" title="Export Project">
+              <div class="btn-group hideable">
+                <button id="toolbar-export-project" type="button" class="btn btn-default export-project" title="Export Project">
                     <span class="glyphicon glyphicon-share-alt"></span>
                 </button>
               </div>
 
-              <div class="btn-group">
-                <button id="version-alert" type="button" class="btn btn-danger hidden hideable" title="Version warning" data-toggle="modal" data-target="#version-modal">
+              <div class="btn-group hideable">
+                <button id="version-alert" type="button" class="btn btn-danger hidden" title="Version warning" data-toggle="modal" data-target="#version-modal">
                     <span class="glyphicon glyphicon-exclamation-sign"></span>
                 </button>
               </div>
@@ -121,7 +121,8 @@
             </div> <!-- btn-toolbar -->
 
             <nav class="nav navbar-default">
-                <div id="collapsable-navbar" class="collapse navbar-collapse">
+                <div id="collapsable-navbar" class="collapse 
+                ">
                   <ul class="nav navbar-nav navbar-right text-center">
                     <li><a href="http://openframeworks.cc/documentation" title="openFrameworks Reference" target="_blank" data-localize="reference-link">Reference</a></li>
                     <li><a href="http://forum.openframeworks.cc/" title="openFrameworks Forum" target="_blank" data-localize="forum-link">Forum</a></li>
@@ -941,6 +942,10 @@
                 <li class="rename-class"><a href="#" data-localize="rename-class">Rename <strong><span class="selected-tab-name"></span></strong> Class</a></li>
                 <li class="delete-class"><a href="#" data-localize="delete-class">Delete <strong><span class="selected-tab-name"></span></strong> Class</a></li>
                 <li class="divider"></li>
+                <li class="upload-media"><a href="#" data-localize="upload-files">Upload Files</a></li>
+                <li class="include-addons"><a href="#" data-localize="include-addons">Include Addons</a></li>
+                <li class="divider"></li>
+                <li class="export-project"><a href="#" data-localize="export-project">Export Project</a></li>
                 <li class="rename-project"><a href="#" data-localize="rename-project">Rename Project</a></li>
                 <li class="delete-project"><a href="#" data-localize="delete-project">Delete Project</a></li>
                 <li class="divider"></li>

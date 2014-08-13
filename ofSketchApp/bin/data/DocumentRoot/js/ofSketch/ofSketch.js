@@ -55,6 +55,17 @@ $(document).ready( function()
         }
     }
 
+    function onWindowResize() {
+
+        // if ($(window).width() <= 580) {
+        //     $('#toolbar button').addClass('btn-sm');
+        // } else {
+        //     console.log('fired');
+        //     $('#toolbar button').removeClass('btn-sm');
+        // }
+        
+    }
+
     function checkVersion() {
         var releaseURL = "https://api.github.com/repos/olab-io/ofSketch/releases";
 
@@ -565,6 +576,7 @@ $(document).ready( function()
         $(window).resize(function(){
             sketchEditor.resize();
             resizeEditor();
+            onWindowResize();
         });
         
         $('#tab-bar .dropdown').on('click', function(){
@@ -596,7 +608,7 @@ $(document).ready( function()
            save();
         });
 
-        $('#toolbar-upload-media').on('click', function(){
+        $('.upload-media').on('click', function(){
 
             if (!sketchEditor.getProject().isTemplate()) {
                 $('#upload-media-modal').modal('show');               
@@ -605,7 +617,7 @@ $(document).ready( function()
             }
         });
 
-        $('#toolbar-export').on('click', function(){
+        $('.export-project').on('click', function(){
 
             if (!sketchEditor.getProject().isTemplate()) {
                 $('#export-project-modal').modal('show');               
@@ -614,7 +626,7 @@ $(document).ready( function()
             }
         });
 
-        $('#toolbar-addons').on('click', function(){
+        $('.include-addons').on('click', function(){
 
             if (!sketchEditor.getProject().isTemplate()) {
 
