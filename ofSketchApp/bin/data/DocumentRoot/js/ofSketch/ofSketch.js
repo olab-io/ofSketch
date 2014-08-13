@@ -995,6 +995,10 @@ $(document).ready( function()
             $('#renamed-class-name').focus();
         });
 
+        $('#upload-media-modal').on('hidden.bs.modal', function() {
+            fileUploader.reset();
+        });
+
 
         // Enter keypress events for 1-line input in modals
         $('#new-project-name').on('keypress', function(evt){

@@ -54,23 +54,31 @@ bool UploadRouter::onHTTPFormEvent(ofx::HTTP::PostFormEventArgs& args)
 
     ofDirectory project(_path + "/" + projectName);
     
-    if (project.exists())
+    Json::Value result;
+    
+    if (project.exists() &&
+        !uploadedFile.filename.empty())
     {
-        tempFile.renameTo(project.getAbsolutePath() + "/bin/data/" + uploadedFile.filename, true);
+        tempFile.renameTo(project.getAbsolutePath() + "/bin/data/" + uploadedFile.filename, false, true);
         ofx::HTTP::Utils::dumpNameValueCollection(args.getForm(), ofGetLogLevel());
     }
     
-    Json::Value json;
+    // see link below for spec
+    // https://github.com/blueimp/jQuery-File-Upload/wiki/Setup
+    result["files"][0]["name"] = uploadedFile.filename;
+    result["files"][0]["size"] = uploadedFile.size;
+    result["files"][0]["url"] = tempFile.getAbsolutePath();
+    result["files"][0]["thumbnailUrl"] = "";
+    result["files"][0]["deleteUrl"] = "";
+    result["files"][0]["deleteType"] = "DELETE";
     
-    json["files"][0]["name"] = "picture1.jpg";
-    json["files"][0]["size"] = 902604;
-    json["files"][0]["url"] = "http://example.org/files/picture1.jpg";
-    json["files"][0]["thumbnailUrl"] = "http://example.org/files/thumbnail/picture1.jpg";
-    json["files"][0]["deleteUrl"] = "http://example.org/files/picture1.jpg";
-    json["files"][0]["deleteType"] = "DELETE";
+    if (uploadedFile.filename.empty())
+    {
+        result["files"][0]["error"] = "Error uploading file.";
+    }
 
     Json::FastWriter writer;
-    std::string jsonString = writer.write(json);
+    std::string jsonString = writer.write(result);
     args.response.sendBuffer(jsonString.c_str(), jsonString.size());
 
     return true;
@@ -101,6 +109,7 @@ bool UploadRouter::onHTTPUploadEvent(ofx::HTTP::PostUploadEventArgs& args)
         file.tempFilename = args.getFilename();
         file.filename = args.getOriginalFilename();
         file.type = args.getFileType().toString();
+        file.size = args.getNumBytesTransferred();
         
         _uploadedFiles[args.getPostId().toString()] = file;
 

@@ -50,6 +50,7 @@ public:
         std::string tempFilename;
         std::string filename;
         std::string type;
+        int size;
     };
     
 private:

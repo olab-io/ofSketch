@@ -55,6 +55,8 @@ App::App():
     settings.setBufferSize(_ofSketchSettings.getBufferSize());
     settings.setPort(_ofSketchSettings.getPort());
     settings.setUploadRedirect("");
+    settings.setMaximumFileUploadSize(5000000*1024); // 50 GB
+    
     server = ofx::HTTP::BasicJSONRPCServer::makeShared(settings);
 
     // Must register for all events before initializing server.
