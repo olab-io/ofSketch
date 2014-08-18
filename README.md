@@ -8,6 +8,21 @@ ofSketch is being developed by [Brannon Dorsey](http://brannondorsey.com) and [C
 
 **Warning:** ofSketch is currently in development. This is the first pre-release and it is not completely stable.
 
+## Installing Dependencies
+
+### OSX
+
+ofSketch requires Xcode, and the Xcode Command Line Tools to be installed on your computer. If you already have those, then you can skip to the [download section](#download).
+
+1. Download and install Xcode from the App Store.
+2. Download the Xcode Command Line Tools. If you are on OSX Mavericks, these should already be installed, and you can update them using Software Update. If you are on OSX 10.8, open Xcode and select Xcode > Preferences > Downloads from the menu bar. From there, install the Xcode Command Line Tools.
+
+### Linux
+
+ofSketch requires the same linux dependencies as a normal installation of openFrameworks.  If you have already followed the Linux installation instructions for a recent version of openFrameworks (since 0.8.0), you can skip to the [download section](#download).
+
+To install the latest version of openFrameworks on Linux, follow the instructions  [here](http://openframeworks.cc/setup/linux-codeblocks/).
+
 ## Getting Started
 
 ### Download

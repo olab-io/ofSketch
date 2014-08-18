@@ -39,13 +39,17 @@ App::App():
     _ofSketchSettings(),
     _threadPool("ofSketchThreadPool"),
     _taskQueue(ofx::TaskQueue_<std::string>::UNLIMITED_TASKS, _threadPool),
-    _compiler(_taskQueue,
-              ofToDataPath("Resources/Templates/CompilerTemplates"),
-              _ofSketchSettings.getOpenFrameworksDir()),
-    _addonManager(ofToDataPath(_ofSketchSettings.getOpenFrameworksDir() + "/addons")),
+    _compiler(_taskQueue, ofToDataPath("Resources/Templates/CompilerTemplates")),
+    _addonManager(ofToDataPath(_ofSketchSettings.getAddonsDir())),
     _projectManager(ofToDataPath(_ofSketchSettings.getProjectDir(), true)),
     _uploadRouter(ofToDataPath(_ofSketchSettings.getProjectDir(), true))
+    _missingDependencies(true)
 {
+    if (hasDependency("make"))
+    {
+        _missingDependencies = false;
+    }
+
     ofLogNotice("App::App") << "Editor setting's projectDir: " << _ofSketchSettings.getProjectDir();
     _taskQueue.registerTaskEvents(this);
 
@@ -225,7 +229,6 @@ void App::setup()
                            this,
                            &App::exportProject);
 
-    
     server->start();
 
 
@@ -272,6 +275,21 @@ void App::exit()
 void App::mousePressed(int x, int y, int button)
 {
     ofLaunchBrowser(server->getURL());
+}
+
+
+bool App::hasDependency(const std::string& command)
+{
+    std::string cmd("which");
+    std::vector<std::string> args;
+    args.push_back(command);
+    Poco::Pipe outPipe;
+    Poco::ProcessHandle ph = Poco::Process::launch(cmd, args, 0, &outPipe, 0);
+    Poco::PipeInputStream istr(outPipe);
+    std::stringstream ostr;
+    Poco::StreamCopier::copyStream(istr, ostr);
+    std::string result = ostr.str();
+    return !result.empty();
 }
 
 
@@ -633,14 +651,14 @@ bool App::onWebSocketOpenEvent(ofx::HTTP::WebSocketOpenEventArgs& args)
 
     args.getConnectionRef().sendFrame(frame);
 
-//    params.clear();
-//    
-//    params["editorSettings"] = _editorSettings.getData();
-//    json = Utils::toJSONMethod("Server", "editorSettings", params);
-//    frame = ofx::HTTP::WebSocketFrame(Utils::toJSONString(json));
-//    
-//    args.getConnectionRef().sendFrame(frame);
-    
+    if (_missingDependencies)
+    {
+        params = Json::nullValue;
+        json = App::toJSONMethod("Server", "missingDependencies", params);
+        frame = ofx::HTTP::WebSocketFrame(App::toJSONString(json));
+        args.getConnectionRef().sendFrame(frame);
+    }
+
     return false; // did not handle it
 }
 
