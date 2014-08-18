@@ -19,7 +19,9 @@ ofSketch requires Xcode, and the Xcode Command Line Tools to be installed on you
 
 ### Linux
 
-1. On Linux, you should follow the installation instructions for the most recent version of openFrameworks [here](http://openframeworks.cc/setup/linux-codeblocks/).  While ofSketch doesn't require Codeblocks, following these instructions will install all required dependencies.
+ofSketch requires the same linux dependencies as a normal installation of openFrameworks.  If you have already followed the Linux installation instructions for a recent version of openFrameworks (since 0.8.0), you can skip to the [download section](#download).
+
+To install the latest version of openFrameworks on Linux, follow the instructions  [here](http://openframeworks.cc/setup/linux-codeblocks/).
 
 ## Getting Started
 
