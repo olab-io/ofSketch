@@ -8,6 +8,17 @@ ofSketch is being developed by [Brannon Dorsey](http://brannondorsey.com) and [C
 
 **Warning:** ofSketch is currently in development. This is the first pre-release and it is not completely stable.
 
+## Install Dependencies
+
+### OSX
+
+ofSketch requires Xcode, and the Xcode Command Line Tools to be installed on your computer. If you already have those, then you can skip to the [download section](#download).
+
+1. Download and install Xcode from the App Store.
+2. Download the Xcode Command Line Tools. If you are on OSX Mavericks, these should already be installed, and you can update them using Software Update. If you are on OSX 10.8, open Xcode and select Xcode > Preferences > Downloads from the menu bar. From there, install the Xcode Command Line Tools.
+
+### Linux
+
 ## Getting Started
 
 ### Download
