@@ -2,13 +2,13 @@
 
 # How does ofSketch work?
 
-This document serves as a quick overview of the ofSketch software architecture. The ofSketch app is coded completely with openFrameworks and its core libs (Poco, etc). Using ofxHTTP, the app acts as a file server to deliver and communicate with the ofSketch browser GUI via websockets and [JSONRPC](http://www.jsonrpc.org/specification).
+This document serves as a quick overview of the ofSketch software architecture. The ofSketch app is coded completely with openFrameworks and its core libs (Poco, etc). Using ofxHTTP, the app acts as a file server to deliver and communicate with the ofSketch browser GUI using [JSONRPC](http://www.jsonrpc.org/specification) via HTTP WebSockets.
 
 ## Client/Server Relationship
 
-The ofSketch browser client acts as a controller, making commands and requests for the app to perform tasks that involve things like disk I/O, system calls (`make` tasks, etc), and other things that the client doesn't have permission to execute on its own. We use two protocols to facilitate this communication, each with its own role.
+The ofSketch browser client acts as a controller, making commands and requests for the app to perform tasks that involve things like disk I/O, system calls (`make` tasks, etc), and other activities that the client doesn't have permission to execute on its own. We use two protocols to facilitate this communication, each with its own role.
 
-### JSONRPC
+### JSONRPC over WebSockets
 
 Whenever the client requests the server to complete a task, it is done via the JSONRPC "remote procedure call" protocol. with ofSketch, a JSONRPC message is sent to the server for it to complete actions like:
 
@@ -19,9 +19,9 @@ Whenever the client requests the server to complete a task, it is done via the J
 
 JSONRPC methods are asynchronous and are guaranteed to return an error or success object to the client, which then handles displaying results to the user.
 
-### Websockets
+### Custom Protocol over WebSockets
 
-Regular websocket connections are used whenever data is streamed from the server to the client without being explicitly requested by the client. There are a set of messages that the client is constantly listening for, and it acts accordingly whenever one of these messages are received. Some of the data sent via raw websockets include:
+Regular WebSocket connections are used whenever data is streamed from the server to the client without being explicitly requested by the client. There are a set of messages that the client is constantly listening for, and it acts accordingly whenever one of these messages arrive over the WebSocket. Some of the data sent via the Custom Protocol include:
 
 - Version info
 - Compilation Feedback
@@ -33,12 +33,11 @@ Regular websocket connections are used whenever data is streamed from the server
 
 Each ofSketch project folder has a `sketch/` directory where all source files created with ofSketch are saved. The files in this folder represent the exact files that were edited in the ofSketch app at the last state they were saved. These files have a `.sketch` extension, and have not undergone any file concatenation or string replacement to be turned into valid `.h` files for compilation. They are the raw files that are loaded to and saved from the ofSketch IDE.
 
-ofSketch abstracts the reality that code is being written in header-style C++, where code implementation is written in the header `.h` file itself, and no `.cpp` files are used.
+ofSketch abstracts the reality that code is being written in header-style C++, where code implementation is written in the header (`.h`) file itself, and no implementation (`.cpp`) files are used.
 
 ## Compilation
 
-When you press the play button in the ofSketch IDE, all project files are first saved in the `sketch/` directory. From there, they are transformed into `.h` files by the ofSketch app using templates found in `data/Resources/Templates/CompilerTemplates/`. ofSketch then runs a `make && make run` like system call declaring the `OF_ROOT` directory, and other make flags, using the ofSketch Settings. Finally, Compilation feedback is piped to the client via a websockets connection.
-
+When the play button is pressed in the ofSketch IDE, all project files are first saved in the `sketch/` directory. From there, they are transformed into `.h` files by the ofSketch app using templates found in `data/Resources/Templates/CompilerTemplates/`. ofSketch then runs a `make` like system call declaring the `OF_ROOT` directory, and other make flags, using the ofSketch Settings.  If compiler errors are present, those errors are parsed and sent to the IDE.  If compilation is successful, then the application binary is executed and the resulting process handle is passed to the IDE so that the application can be stopped using the stop button.  
 
 ## Addons
 
