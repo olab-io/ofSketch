@@ -39,10 +39,11 @@ App::App():
     _ofSketchSettings(),
     _threadPool("ofSketchThreadPool"),
     _taskQueue(ofx::TaskQueue_<std::string>::UNLIMITED_TASKS, _threadPool),
-    _compiler(_taskQueue, ofToDataPath("Resources/Templates/CompilerTemplates")),
+    _compiler(_taskQueue, ofToDataPath("Resources/Templates/CompilerTemplates"),
+              ofToDataPath("openFrameworks", true)),
     _addonManager(ofToDataPath(_ofSketchSettings.getAddonsDir())),
     _projectManager(ofToDataPath(_ofSketchSettings.getProjectDir(), true)),
-    _uploadRouter(ofToDataPath(_ofSketchSettings.getProjectDir(), true))
+    _uploadRouter(ofToDataPath(_ofSketchSettings.getProjectDir(), true)),
     _missingDependencies(true)
 {
     if (hasDependency("make"))
@@ -659,8 +660,8 @@ bool App::onWebSocketOpenEvent(ofx::HTTP::WebSocketOpenEventArgs& args)
     if (_missingDependencies)
     {
         params = Json::nullValue;
-        json = App::toJSONMethod("Server", "missingDependencies", params);
-        frame = ofx::HTTP::WebSocketFrame(App::toJSONString(json));
+        json = Utils::toJSONMethod("Server", "missingDependencies", params);
+        frame = ofx::HTTP::WebSocketFrame(Utils::toJSONString(json));
         args.getConnectionRef().sendFrame(frame);
     }
 
