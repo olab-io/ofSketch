@@ -33,78 +33,77 @@ Assumes that the following are globally pre-defined:
 function Logger() 
 {
 
-	var OF_LOG_VERBOSE     = 0;
-	var OF_LOG_NOTICE      = 1;
-	var OF_LOG_WARNING     = 2;
-	var OF_LOG_ERROR       = 3;
-	var OF_LOG_FATAL_ERROR = 4;
-	var OF_LOG_SILENT	   = 5;
+    var OF_LOG_VERBOSE     = 0;
+    var OF_LOG_NOTICE      = 1;
+    var OF_LOG_WARNING     = 2;
+    var OF_LOG_ERROR       = 3;
+    var OF_LOG_FATAL_ERROR = 4;
+    var OF_LOG_SILENT       = 5;
 
-	var _self = this;
-	var _logLevel = OF_LOG_VERBOSE;
+    var _self = this;
+    var _logLevel = OF_LOG_VERBOSE;
 
-	var _logContainerObj = $('#logger-container');
+    var _logContainerObj = $('#logger-container');
 
-	var _registerEvents = function()
-	{
-		
-	}
+    var _registerEvents = function()
+    {
+    }
 
-	var _addLogElement = function(logLevel, module, message)
-	{
-		console.log("logging " + message);
-		var logElement = $('<li class="list-group-item"></li>');
-		var message = $('<span><strong>' + module + '</strong><br><p style="overflow:auto">'+ message + "</p></span>");
-		var label = $('<span class="label" style="float:right">' + _self.getLogLevelName(logLevel) + '</span>');
-		
-		label.addClass(_self.getLogLevelLabelClass(logLevel));
+    var _addLogElement = function(logLevel, module, message)
+    {
+        console.log("logging " + message);
+        var logElement = $('<li class="list-group-item"></li>');
+        var message = $('<span><strong>' + module + '</strong><br><p style="overflow:auto">'+ message + "</p></span>");
+        var label = $('<span class="label" style="float:right">' + _self.getLogLevelName(logLevel) + '</span>');
+        
+        label.addClass(_self.getLogLevelLabelClass(logLevel));
 
-		logElement.append(label);
-		logElement.append(message);
-		_logContainerObj.append(logElement);
-	}
+        logElement.append(label);
+        logElement.append(message);
+        _logContainerObj.append(logElement);
+    }
 
-	this.setLogLevel = function(logLevel)
-	{
-		console.log("changed log level to " + logLevel);
-		_logLevel = logLevel;
-	}
+    this.setLogLevel = function(logLevel)
+    {
+        console.log("changed log level to " + logLevel);
+        _logLevel = logLevel;
+    }
 
-	this.getLogLevel = function()
-	{
-		return _logLevel;
-	}
+    this.getLogLevel = function()
+    {
+        return _logLevel;
+    }
 
-	this.getLogLevelName = function(logLevel) {
+    this.getLogLevelName = function(logLevel) {
 
-		if      (logLevel == OF_LOG_VERBOSE)     return "Verbose";
-		else if (logLevel == OF_LOG_NOTICE)      return "Notice";
-		else if (logLevel == OF_LOG_WARNING)     return "Warning";
-		else if (logLevel == OF_LOG_ERROR)       return "Error";
-		else if (logLevel == OF_LOG_FATAL_ERROR) return "Fatal Error";
-		else if (logLevel == OF_LOG_SILENT)      return "Silent";
-	}
+        if      (logLevel == OF_LOG_VERBOSE)     return "Verbose";
+        else if (logLevel == OF_LOG_NOTICE)      return "Notice";
+        else if (logLevel == OF_LOG_WARNING)     return "Warning";
+        else if (logLevel == OF_LOG_ERROR)       return "Error";
+        else if (logLevel == OF_LOG_FATAL_ERROR) return "Fatal Error";
+        else if (logLevel == OF_LOG_SILENT)      return "Silent";
+    }
 
-	this.getLogLevelLabelClass = function(logLevel) {
+    this.getLogLevelLabelClass = function(logLevel) {
 
-		if      (logLevel == OF_LOG_VERBOSE)     return "btn-info";
-		else if (logLevel == OF_LOG_NOTICE)      return "btn-primary";
-		else if (logLevel == OF_LOG_WARNING)     return "btn-warning";
-		else if (logLevel == OF_LOG_ERROR)       return "btn-danger";
-		else if (logLevel == OF_LOG_FATAL_ERROR) return "btn-danger";
-		else if (logLevel == OF_LOG_SILENT)      return "btn-default";
-	}
+        if      (logLevel == OF_LOG_VERBOSE)     return "btn-info";
+        else if (logLevel == OF_LOG_NOTICE)      return "btn-primary";
+        else if (logLevel == OF_LOG_WARNING)     return "btn-warning";
+        else if (logLevel == OF_LOG_ERROR)       return "btn-danger";
+        else if (logLevel == OF_LOG_FATAL_ERROR) return "btn-danger";
+        else if (logLevel == OF_LOG_SILENT)      return "btn-default";
+    }
 
-	this.log = function(logLevel, module, message)
-	{
-		if (logLevel >= _self.getLogLevel()) {
-			_addLogElement(logLevel, module, message);
-		}
-	}
+    this.log = function(logLevel, module, message)
+    {
+        if (logLevel >= _self.getLogLevel()) {
+            _addLogElement(logLevel, module, message);
+        }
+    }
 
-	this.clear = function()
-	{
-		_logContainerObj.empty()
-	}
+    this.clear = function()
+    {
+        _logContainerObj.empty()
+    }
 
 }
