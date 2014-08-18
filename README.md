@@ -8,7 +8,7 @@ ofSketch is being developed by [Brannon Dorsey](http://brannondorsey.com) and [C
 
 **Warning:** ofSketch is currently in development. This is the first pre-release and it is not completely stable.
 
-## Install Dependencies
+## Installing Dependencies
 
 ### OSX
 
