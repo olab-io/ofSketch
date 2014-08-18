@@ -31,7 +31,6 @@
 #include <json/json.h>
 #include "ofx/IO/DirectoryFilter.h"
 #include "ofx/IO/DirectoryUtils.h"
-#include "ofx/IO/DirectoryWatcherManager.h"
 #include "ofx/JSONRPC/MethodArgs.h"
 #include "ofx/JSONRPC/Utils.h"
 #include "Project.h"
@@ -77,7 +76,6 @@ private:
     std::vector<std::string> _openProjectNames;
     std::vector<Project> _projects;
     Project _templateProject;
-    ofx::IO::DirectoryWatcherManager _projectWatcher;
 
     bool _removeFromOpenProjectNames(const std::string& projectName);
 };

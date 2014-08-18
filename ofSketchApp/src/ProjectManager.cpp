@@ -36,7 +36,6 @@ ProjectManager::ProjectManager(const std::string& path):
     _templateProject(ofToDataPath("Resources/Templates/NewProject", true))
 {
     ofLogNotice("ProjectManager::ProjectManager") << "_path: " <<_path;
-    _projectWatcher.addPath(_path);
 
     std::vector<std::string> files;
 
