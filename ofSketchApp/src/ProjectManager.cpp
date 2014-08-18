@@ -301,41 +301,6 @@ void ProjectManager::notifyProjectClosed(const std::string& projectName)
     _removeFromOpenProjectNames(projectName);
 }
 
-void ProjectManager::onDirectoryWatcherItemAdded(const ofx::DirectoryWatcher::DirectoryEvent& evt)
-{
-    ofSendMessage("Added:    " + evt.item.path());
-}
-
-
-void ProjectManager::onDirectoryWatcherItemRemoved(const ofx::DirectoryWatcher::DirectoryEvent& evt)
-{
-    ofSendMessage("Removed:  " + evt.item.path());
-}
-
-
-void ProjectManager::onDirectoryWatcherItemModified(const ofx::DirectoryWatcher::DirectoryEvent& evt)
-{
-    ofSendMessage("Modified: " + evt.item.path());
-}
-
-
-void ProjectManager::onDirectoryWatcherItemMovedFrom(const ofx::DirectoryWatcher::DirectoryEvent& evt)
-{
-    ofLogNotice("ofApp::onDirectoryWatcherItemMovedFrom") << "Moved From: " << evt.item.path();
-}
-
-
-void ProjectManager::onDirectoryWatcherItemMovedTo(const ofx::DirectoryWatcher::DirectoryEvent& evt)
-{
-    ofLogNotice("ofApp::onDirectoryWatcherItemMovedTo") << "Moved To: " << evt.item.path();
-}
-
-
-void ProjectManager::onDirectoryWatcherError(const Poco::Exception& exc)
-{
-    ofLogError("ofApp::onDirectoryWatcherError") << "Error: " << exc.displayText();
-}
-
 
 bool ProjectManager::_removeFromOpenProjectNames(const std::string& projectName)
 {

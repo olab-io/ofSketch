@@ -67,13 +67,6 @@ public:
     const Project& getProject(const std::string& projectName) const;
     Project& getProjectRef(const std::string& projectName);
 
-    void onDirectoryWatcherItemAdded(const ofx::DirectoryWatcher::DirectoryEvent& evt);
-    void onDirectoryWatcherItemRemoved(const ofx::DirectoryWatcher::DirectoryEvent& evt);
-    void onDirectoryWatcherItemModified(const ofx::DirectoryWatcher::DirectoryEvent& evt);
-    void onDirectoryWatcherItemMovedFrom(const ofx::DirectoryWatcher::DirectoryEvent& evt);
-    void onDirectoryWatcherItemMovedTo(const ofx::DirectoryWatcher::DirectoryEvent& evt);
-    void onDirectoryWatcherError(const Poco::Exception& exc);
-
     static SharedPtr makeShared(const std::string& projectsPath)
     {
         return SharedPtr(new ProjectManager(projectsPath));
