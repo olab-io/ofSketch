@@ -28,10 +28,58 @@
 #include "Poco/Process.h"
 #include "Poco/PipeStream.h"
 #include "Poco/StreamCopier.h"
+#include "ofxIO.h"
 
 
 namespace of {
 namespace Sketch {
+
+
+bool Utils::JSONfromFile(const std::string& path, Json::Value& value)
+{
+    try
+    {
+        ofx::IO::ByteBuffer buffer;
+        ofx::IO::ByteBufferUtils::loadFromFile(path, buffer);
+        return JSONfromString(buffer.toString(), value);
+    }
+    catch (const Poco::Exception& exc)
+    {
+        ofLogError("Utils::fromFile") << exc.displayText();
+        return false;
+    }
+}
+
+
+bool Utils::JSONtoFile(const std::string& path, const Json::Value& value)
+{
+    try
+    {
+        ofx::IO::ByteBuffer buffer(Utils::toJSONString(value));
+        return ofx::IO::ByteBufferUtils::saveToFile(buffer, path);
+    }
+    catch (const Poco::Exception& exc)
+    {
+        ofLogError("Utils::fromFile") << exc.displayText();
+        return false;
+    }
+}
+
+
+bool Utils::JSONfromString(const std::string& jsonString, Json::Value& value)
+{
+    Json::Reader reader;
+
+    if (!reader.parse(jsonString, value))
+    {
+        ofLogError("Utils::fromFile") << "Unable to parse " << jsonString << ": " << reader.getFormattedErrorMessages();
+        return false;
+    }
+    else
+    {
+        return true;
+    }
+}
 
 
 Json::Value Utils::toJSONMethod(const std::string& module,

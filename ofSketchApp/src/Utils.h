@@ -40,6 +40,10 @@ namespace Sketch {
 class Utils
 {
 public:
+    static bool JSONfromFile(const std::string& path, Json::Value& value);
+    static bool JSONtoFile(const std::string& path, const Json::Value& value);
+    static bool JSONfromString(const std::string& jsonString, Json::Value& value);
+
     // Wraps a json method in the ofSketch protocol headers.
     static Json::Value toJSONMethod(const std::string& module,
                                     const std::string& method,
