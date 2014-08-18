@@ -73,6 +73,13 @@ This allows us to easily use SSL with the ofxHTTP server.
 
 This is a multi-threaded task queue that allows us to submit "tasks" (extends Poco::Task) and submit them to a Poco::TaskManager.  The key is that task events are serviced in the main void update() loop which makes tasks that involve OpenGL easier to deal with.  We use this to submit Make tasks and carry out code indexing, etc.  Everything that needs threading goes through the task queue and reports its progress (serialized as JSON) back to the client(s).
 
+#### [ofxPG](https://github.com/bakercp/ofxPG)
+
+ofxPG is represents the core functionality of the openFrameworks Project Generator.  This addon is used to produce project files for more advanced IDEs such as Xcode, Visual Studio, etc.
+
+#### [ofxPugiXML](https://github.com/bakercp/ofxPugiXML)
+
+PugiXML is required by ofxPG and used because of its more advanced XPath-based XML search capabilities. 
 
 ## Front-end Libraries
 
