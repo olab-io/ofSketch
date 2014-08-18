@@ -137,6 +137,8 @@ $(document).ready( function()
             var link = $('#issue-link').attr('href');
             $('#issue-link').attr('href', link + '?body=' + encodeURIComponent(issuePrefill));
 
+            $('.current-platform').text(systemInfo.version.target);
+
             checkVersion();
         }
         else if (evt.method == "addons")
@@ -163,6 +165,10 @@ $(document).ready( function()
         }
         else if (evt.method == "appExit") {
             window.close();
+        }
+        else if (evt.method == "missingDependencies")
+        {
+            $('#missing-dependencies-modal').modal('show');
         }
 
         console.log(evt);
