@@ -33,8 +33,7 @@ namespace Sketch {
 const std::string AddonManager::DEFAULT_ADDON_PATH = "addons/";
 
 
-AddonManager::AddonManager(const Poco::Path& path):
-    _path(path)
+AddonManager::AddonManager(const Poco::Path& path): _path(path)
 {
     Poco::Path fullPath(ofToDataPath(_path.toString(), true));
 
