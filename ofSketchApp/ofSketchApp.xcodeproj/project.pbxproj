@@ -148,6 +148,7 @@
 		F953E11952BFF8C207418550 /* HexBinaryEncoding.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 22565CAF8FFEF25C805A438F /* HexBinaryEncoding.cpp */; };
 		FB84AAF8D1B7A95266DB5C09 /* jsoncpp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 21BDE665988474F1B1F4D302 /* jsoncpp.cpp */; };
 		FBD94A76B3CB5B29D734DAE7 /* DefaultSessionProvider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 16B7E0D9EC1C62B8EAFA8110 /* DefaultSessionProvider.cpp */; };
+		FDB29EB319A265EE00660B32 /* Settings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FDB29EB119A265EE00660B32 /* Settings.cpp */; };
 		FE9170FE54D704DF97B0E5BD /* COBSEncoding.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4164C6C6CE5115889A99F42C /* COBSEncoding.cpp */; };
 		FF980E849E802376597006F2 /* BasicJSONRPCServer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 99B9D33995649A77E12F05FC /* BasicJSONRPCServer.cpp */; };
 /* End PBXBuildFile section */
@@ -494,6 +495,8 @@
 		FCAF85B857266C511DB50341 /* HiddenFileFilter.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = HiddenFileFilter.cpp; path = ../../../addons/ofxIO/libs/ofxIO/src/HiddenFileFilter.cpp; sourceTree = SOURCE_ROOT; };
 		FD35DEC21FE06BF7F1516022 /* RegexPathFilter.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = RegexPathFilter.h; path = ../../../addons/ofxIO/libs/ofxIO/include/ofx/IO/RegexPathFilter.h; sourceTree = SOURCE_ROOT; };
 		FD7C8908D1BCC7E7170A424C /* PostRouteHandler.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = PostRouteHandler.cpp; path = ../../../addons/ofxHTTP/libs/ofxHTTP/src/PostRouteHandler.cpp; sourceTree = SOURCE_ROOT; };
+		FDB29EB119A265EE00660B32 /* Settings.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Settings.cpp; sourceTree = "<group>"; };
+		FDB29EB219A265EE00660B32 /* Settings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Settings.h; sourceTree = "<group>"; };
 		FE5B3B19544657B6F9CCCA03 /* ByteBufferUtils.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ByteBufferUtils.cpp; path = ../../../addons/ofxIO/libs/ofxIO/src/ByteBufferUtils.cpp; sourceTree = SOURCE_ROOT; };
 		FFE96AA616BC97AEB4FCED47 /* Project.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = Project.cpp; path = src/Project.cpp; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
@@ -1413,6 +1416,8 @@
 				3621818EA5FF99900091C481 /* ProjectManager.h */,
 				8E2344D1D4899D32D6C66D54 /* RunTask.cpp */,
 				7DF358F770A9AA90E0CAB6FC /* RunTask.h */,
+				FDB29EB119A265EE00660B32 /* Settings.cpp */,
+				FDB29EB219A265EE00660B32 /* Settings.h */,
 				7E491E6995A2802A3CB51AF8 /* UploadRouter.cpp */,
 				342D481B54AD38916A274FC1 /* UploadRouter.h */,
 				A842FAA158FB434DF69D04F8 /* Utils.cpp */,
@@ -1604,6 +1609,7 @@
 				83C322AB5E53A247E323678E /* Compression.cpp in Sources */,
 				8D1E10EF50181EB4AFF75AEB /* Context.cpp in Sources */,
 				4988D302D1C9EF8B8D35D0AC /* Cookie.cpp in Sources */,
+				FDB29EB319A265EE00660B32 /* Settings.cpp in Sources */,
 				E5BEC572AA1067BA32E4E08F /* CookieStore.cpp in Sources */,
 				06FEA34978C04F7152694850 /* CookieUtils.cpp in Sources */,
 				772FF91429C7FFC731E5D04E /* Credentials.cpp in Sources */,
