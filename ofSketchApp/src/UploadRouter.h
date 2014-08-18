@@ -40,11 +40,11 @@ class UploadRouter
 {
 public:
     UploadRouter(const std::string& projectDir);
-    
+
     bool onHTTPPostEvent(ofx::HTTP::PostEventArgs& args);
     bool onHTTPFormEvent(ofx::HTTP::PostFormEventArgs& args);
     bool onHTTPUploadEvent(ofx::HTTP::PostUploadEventArgs& args);
-    
+
     struct UploadedFile
     {
         std::string tempFilename;
@@ -52,7 +52,7 @@ public:
         std::string type;
         int size;
     };
-    
+
 private:
     std::string _path;
     std::map<std::string, UploadRouter::UploadedFile> _uploadedFiles;

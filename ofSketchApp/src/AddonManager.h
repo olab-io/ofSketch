@@ -61,7 +61,7 @@ public:
 
 private:
     Poco::Path _path;
-    
+
     std::map<std::string, Addon::SharedPtr> _addons;
     ofx::IO::DirectoryWatcherManager _addonWatcher;
 

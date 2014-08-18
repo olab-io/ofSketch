@@ -54,11 +54,11 @@ public:
     bool hasClasses() const;
     bool hasAddons() const;
     bool usingAddon(std::string& addon) const;
-    
+
     bool create(const std::string& path);
     bool remove();
     bool rename(const std::string& newName);
-    
+
     void save(const Json::Value& data);
     void load(const std::string& path,
               const std::string& name);
@@ -71,13 +71,13 @@ public:
                      const std::string& newName);
 
     bool isClassName(const std::string& className) const;
-    
+
     unsigned int getNumClasses() const;
 
     Json::Value createClass(const std::string& className);
-    
+
     std::vector<std::string> getAddons() const;
-    
+
     const Json::Value& getData() const;
 
     static const std::string SKETCH_FILE_EXTENSION;

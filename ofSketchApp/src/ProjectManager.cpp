@@ -177,7 +177,7 @@ void ProjectManager::loadTemplateProject(const void *pSender,
     {
         _templateProject.load(_templateProject.getPath(), _templateProject.getName());
     }
-    
+
     args.result = _templateProject.getData();
 
     ofLogNotice("Project::loadTemplateProject") << "Loaded a template project.";
@@ -213,7 +213,7 @@ void ProjectManager::createProject(const void* pSender,
     std::string projectName = args.params["projectData"]["projectFile"]["name"].asString();
 
     ofDirectory projectDir(_templateProject.getPath());
-    
+
     projectDir.copyTo(_path + "/" + projectName);
 
     ofFile templateProjectFile(_path + "/" + projectName + "/sketch/NewProject." + Project::SKETCH_FILE_EXTENSION);
@@ -226,7 +226,7 @@ void ProjectManager::createProject(const void* pSender,
     args.result = project.getData();
     ofLogNotice("Project::createProject") << "Created " << projectName << " project";
 }
-    
+
 void ProjectManager::deleteProject(const void *pSender,
                                    ofx::JSONRPC::MethodArgs &args)
 {
@@ -248,7 +248,7 @@ void ProjectManager::deleteProject(const void *pSender,
     args.error["message"] = "Error deleting " + projectName + " project.";
     ofLogError("Project::deleteProject") << "Error deleting " << projectName << " project";
 }
-    
+
 void ProjectManager::renameProject(const void *pSender, ofx::JSONRPC::MethodArgs &args)
 {
     std::string projectName = args.params["projectName"].asString();
@@ -295,7 +295,7 @@ void ProjectManager::updateProject(const std::string& projectName)
 {
     // TODO:
 }
-    
+
 void ProjectManager::notifyProjectClosed(const std::string& projectName)
 {
     _removeFromOpenProjectNames(projectName);
@@ -347,7 +347,7 @@ bool ProjectManager::_removeFromOpenProjectNames(const std::string& projectName)
             return true;
         }
     }
-    
+
     return false;
 }
 

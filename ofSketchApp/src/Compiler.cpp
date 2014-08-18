@@ -75,12 +75,12 @@ void Compiler::generateSourceFiles(const Project& project)
         for (unsigned int i = 0; i < projectData["classes"].size(); ++i)
         {
             Json::Value c = projectData["classes"][i];
-            
+        
             std::string classFile = _classTemplate;
             ofStringReplace(classFile, "<classname>", c["name"].asString());
             ofStringReplace(classFile, "<classfile>", c["fileContents"].asString());
             _replaceIncludes(classFile);
-            
+        
             ofBuffer sourceBuffer(classFile);
             ofBufferToFile(src.getAbsolutePath() + "/" + c["name"].asString() + ".h", sourceBuffer);
         }
@@ -103,17 +103,17 @@ Json::Value Compiler::parseError(std::string message) const
         if (vals.size() == 5)
         {
             ofStringReplace(vals[3], " ", "");
-            
+        
             // ACE Editor refers to "note" as "info"
             if (vals[3] == "note") vals[3] = "info";
             else if (vals[3] == "fatalerror") vals[3] = "error";
-            
+        
             compileError["tabName"] = vals[0];
             compileError["annotation"]["row"] = ofToInt(vals[1]);
             compileError["annotation"]["column"] = ofToInt(vals[2]);
             compileError["annotation"]["type"] = vals[3];
             compileError["annotation"]["text"] = vals[4];
-           
+       
         }
     }
 
@@ -125,12 +125,12 @@ void Compiler::_replaceIncludes(std::string& fileContents)
 {
     Poco::RegularExpression includesExpression("#include .*\n");
     Poco::RegularExpression::Match match;
-    
+
     std::vector<std::string> includes;
-    
+
     int numMatches = 0;
     std::size_t matchOffset = 0;
-    
+
     while (matchOffset < fileContents.size())
     {
         if (includesExpression.match(fileContents, matchOffset, match) == 0) break;

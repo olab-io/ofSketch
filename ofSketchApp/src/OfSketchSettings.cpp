@@ -35,11 +35,11 @@ OfSketchSettings::OfSketchSettings():
     _path(_templateSettingsFilePath)
 {
     if (Poco::Environment::has("HOME")) {
-        
+
         ofFile settingsFile = Poco::Environment::get("HOME") + "/.ofsketchsettings.json";
-        
+
         _path = settingsFile.getAbsolutePath();
-        
+
         if (settingsFile.exists())
         {
             load(_path);
@@ -63,10 +63,10 @@ bool OfSketchSettings::load(const std::string& path)
     {
         std::string projectDir = _data["projectDir"].asString();
         _data["projectDir"] = ofToDataPath(projectDir, true);
-        
+
         std::string openFrameworksDir = _data["openFrameworksDir"].asString();
         _data["openFrameworksDir"] = ofToDataPath(openFrameworksDir, true);
-        
+
         ofLogVerbose("OfSketchSettings::load") << _data["projectDir"].asString();
         ofLogVerbose("OfSketchSettings::load") << _data["openFrameworksDir"].asString();
 
@@ -81,7 +81,7 @@ bool OfSketchSettings::save()
     return _data.save(_path, true);
 }
 
-    
+
 void OfSketchSettings::update(const ofxJSONElement& data)
 {
     _data = data;
@@ -157,18 +157,19 @@ std::string OfSketchSettings::getClassExtension() const
 {
     return _data["classExtension"].asString();
 }
-    
+
+
 std::vector<std::string> OfSketchSettings::getWhitelistedIPs() const
 {
     std::vector<std::string> IPs;
-    
+
     if (_data.isMember("whitelistedIPs"))
     {
         for (unsigned int i = 0; i < _data["whitelistedIPs"].size(); i++) {
             IPs.push_back(_data["whitelistedIPs"][i].asString());
         }
     }
-    
+
     return IPs;
 }
 

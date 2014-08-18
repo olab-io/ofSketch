@@ -60,7 +60,7 @@ App::App():
     settings.setPort(_ofSketchSettings.getPort());
     settings.setUploadRedirect("");
     settings.setMaximumFileUploadSize(5000000 * 1024); // 50 GB
-    
+
     server = ofx::HTTP::BasicJSONRPCServer::makeShared(settings);
 
     // Must register for all events before initializing server.
@@ -74,7 +74,7 @@ App::App():
     // _loggerChannel->setWebSocketRoute(server->getWebSocketRoute());
     // ofSetLoggerChannel(_loggerChannel);
 
-     _logo.loadImage("media/openFrameworks.png");
+    _logo.loadImage("media/openFrameworks.png");
     _font.loadFont(OF_TTF_SANS, 20);
 }
 
@@ -103,7 +103,6 @@ void App::setup()
                                                           ofToDataPath("ssl/cacert.pem")));
 
     // TODO: configure these via settings files
-
     server->registerMethod("load-project",
                            "Load the requested project.",
                            this,
@@ -193,44 +192,43 @@ void App::setup()
                            "Save the editor settings.",
                            this,
                            &App::saveEditorSettings);
-    
+
     server->registerMethod("load-ofsketch-settings",
                            "Get ofSketch settings.",
                            this,
                            &App::loadOfSketchSettings);
-    
+
     server->registerMethod("save-ofsketch-settings",
                            "Save ofSketch settings.",
                            this,
                            &App::saveOfSketchSettings);
-    
+
     server->registerMethod("get-addon-list",
                            "Get a list of all addons.",
                            this,
                            &App::getAddonList);
-    
+
     server->registerMethod("get-project-addon-list",
                            "Get a list of addons for a project.",
                            this,
                            &App::getProjectAddonList);
-    
+
     server->registerMethod("add-project-addon",
                            "Add an addon to a project.",
                            this,
                            &App::addProjectAddon);
-    
+
     server->registerMethod("remove-project-addon",
                            "Remove an addon from a project.",
                            this,
                            &App::removeProjectAddon);
-    
+
     server->registerMethod("export-project",
                            "Export the project for target platform.",
                            this,
                            &App::exportProject);
 
     server->start();
-
 
     ofTargetPlatform arch = Utils::getTargetPlatform();
 
@@ -370,7 +368,8 @@ void App::notifyProjectClosed(const void* pSender, ofx::JSONRPC::MethodArgs& arg
     _projectManager.notifyProjectClosed(projectName);
     ofLogNotice("App::notifyProjectClosed") << projectName << " closed.";
 }
-    
+
+
 void App::requestProjectClosed(const void* pSender, ofx::JSONRPC::MethodArgs& args)
 {
     std::string projectName = args.params["projectName"].asString();
@@ -457,6 +456,7 @@ void App::runProject(const void* pSender, ofx::JSONRPC::MethodArgs& args)
     else args.error["message"] = "The requested project does not exist.";
 }
 
+
 void App::compileProject(const void* pSender, ofx::JSONRPC::MethodArgs& args)
 {
     std::string projectName = args.params["projectName"].asString();
@@ -470,6 +470,7 @@ void App::compileProject(const void* pSender, ofx::JSONRPC::MethodArgs& args)
     }
     else args.error["message"] = "The requested project does not exist.";
 }
+
 
 void App::stop(const void* pSender, ofx::JSONRPC::MethodArgs& args)
 {
@@ -485,7 +486,8 @@ void App::stop(const void* pSender, ofx::JSONRPC::MethodArgs& args)
         args.error = "No task id.";
     }
 }
-    
+
+
 void App::getProjectList(const void* pSender, ofx::JSONRPC::MethodArgs& args)
 {
     _projectManager.getProjectList(pSender, args);
@@ -496,11 +498,11 @@ void App::getAddonList(const void *pSender, ofx::JSONRPC::MethodArgs &args)
 {
     ofLogVerbose("App::getAddonList") << " sending addon list.";
     Json::Value addonsJSON;
-    
+
     std::vector<Addon::SharedPtr> addons = _addonManager.getAddons();
-    
+
     std::vector<Addon::SharedPtr>::const_iterator iter = addons.begin();
-    
+
     while (iter != addons.end())
     {
         Json::Value addon;
@@ -509,10 +511,11 @@ void App::getAddonList(const void *pSender, ofx::JSONRPC::MethodArgs &args)
         addonsJSON.append(addon);
         ++iter;
     }
-    
+
     args.result = addonsJSON;
 }
-    
+
+
 void App::getProjectAddonList(const void *pSender, ofx::JSONRPC::MethodArgs &args)
 {
     std::string projectName = args.params["projectName"].asString();
@@ -528,23 +531,24 @@ void App::getProjectAddonList(const void *pSender, ofx::JSONRPC::MethodArgs &arg
             {
                 args.result["addons"][i] = addons[i];
             }
-            
-            args.result["hasAddons"] = true;
+        
+                    args.result["hasAddons"] = true;
         }
         else
         {
             args.result["hasAddons"] = false;
         }
-        
-    }
+    
+        }
     else args.error["message"] = "The requested project does not exist.";
 }
-    
+
+
 void App::addProjectAddon(const void* pSender, ofx::JSONRPC::MethodArgs& args)
 {
     std::string projectName = args.params["projectName"].asString();
     std::string addon = args.params["addon"].asString();
-    
+
     if (_projectManager.projectExists(projectName))
     {
         Project& project = _projectManager.getProjectRef(projectName);
@@ -552,12 +556,13 @@ void App::addProjectAddon(const void* pSender, ofx::JSONRPC::MethodArgs& args)
     }
     else args.error["message"] = "The requested project does not exist.";
 }
-    
+
+
 void App::removeProjectAddon(const void* pSender, ofx::JSONRPC::MethodArgs& args)
 {
     std::string projectName = args.params["projectName"].asString();
     std::string addon = args.params["addon"].asString();
-    
+
     if (_projectManager.projectExists(projectName))
     {
         Project& project = _projectManager.getProjectRef(projectName);
@@ -589,7 +594,7 @@ void App::saveEditorSettings(const void *pSender, ofx::JSONRPC::MethodArgs &args
     ofx::HTTP::WebSocketFrame frame(Utils::toJSONString(json));
     server->getWebSocketRoute()->broadcast(frame);
 }
-    
+
 void App::loadOfSketchSettings(const void *pSender, ofx::JSONRPC::MethodArgs &args)
 {
     args.result = _ofSketchSettings.getData();
@@ -598,27 +603,27 @@ void App::loadOfSketchSettings(const void *pSender, ofx::JSONRPC::MethodArgs &ar
 void App::saveOfSketchSettings(const void *pSender, ofx::JSONRPC::MethodArgs &args)
 {
     ofLogVerbose("App::saveOfSketchSettings") << "Saving ofSketch settings" << endl;
-    
+
     Json::Value settings = args.params["data"]; // must make a copy
-    
+
     _ofSketchSettings.update(settings);
     _ofSketchSettings.save();
-    
+
     // broadcast new editor settings to all connected clients
     Json::Value params;
     params["data"] = settings;
     params["clientUUID"] = args.params["clientUUID"];
-    
+
     Json::Value json = Utils::toJSONMethod("Server", "updateOfSketchSettings", params);
     ofx::HTTP::WebSocketFrame frame(Utils::toJSONString(json));
     server->getWebSocketRoute()->broadcast(frame);
 }
-    
+
 void App::exportProject(const void *pSender, ofx::JSONRPC::MethodArgs &args) {
-    
+
     std::string platform = args.params["platform"].asString();
     std::string projectName = args.params["projectName"].asString();
-    
+
 //    Project& project = _projectManager.getProjectRef(projectName);
 }
 
@@ -741,7 +746,7 @@ void App::onSSLClientVerificationError(Poco::Net::VerificationErrorArgs& args)
 void App::onSSLPrivateKeyPassphraseRequired(std::string& args)
 {
     ofLogVerbose("ofApp::onPrivateKeyPassphraseRequired") << args;
-    
+
     // if you want to proceed, you should allow your user set the
     // the certificate and set:
     args = "password";
@@ -830,14 +835,14 @@ bool App::onTaskData(const ofx::TaskDataEventArgs<std::string>& args)
     params["name"] = args.getTaskName();
     params["uuid"] = args.getTaskId().toString();
     params["message"] = args.getData();
-    
+
     Json::Value error = _compiler.parseError(args.getData());
 
     if (!error.empty())
     {
         params["compileError"] = error;
     }
-    
+
     Json::Value json = Utils::toJSONMethod("TaskQueue", "taskMessage", params);
     ofx::HTTP::WebSocketFrame frame(Utils::toJSONString(json));
     server->getWebSocketRoute()->broadcast(frame);

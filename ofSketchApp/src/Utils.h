@@ -52,7 +52,7 @@ public:
     // - https://github.com/openframeworks/openFrameworks/issues/2162
     // - https://github.com/openframeworks/openFrameworks/pull/3109
     static ofTargetPlatform getTargetPlatform();
-    
+
     static std::string toString(ofTargetPlatform targetPlatform);
 
 };

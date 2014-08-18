@@ -58,7 +58,7 @@ MakeTask::MakeTask(const Settings& settings,
     {
         _args.push_back("OF_ROOT=" + _settings.ofRoot);
     }
-    
+
     if (_settings.numProcessors > 1)
     {
         _args.push_back("-j" + ofToString(_settings.numProcessors));

@@ -27,7 +27,7 @@
 
 namespace of {
 namespace Sketch {
-    
+
 
 UploadRouter::UploadRouter(const std::string& projectDir):
     _path(projectDir)
@@ -46,23 +46,23 @@ bool UploadRouter::onHTTPFormEvent(ofx::HTTP::PostFormEventArgs& args)
 {
     const Poco::Net::NameValueCollection& form = args.getForm();
     std::string projectName = form["projectName"];
-    
+
     UploadRouter::UploadedFile uploadedFile = _uploadedFiles[args.getPostId().toString()];
     ofFile tempFile(uploadedFile.tempFilename);
-    
+
     ofLogNotice("UploadRouter::onHTTPFormEvent") << "Project path" << _path << "/" << projectName;
 
     ofDirectory project(_path + "/" + projectName);
-    
+
     Json::Value result;
-    
+
     if (project.exists() &&
         !uploadedFile.filename.empty())
     {
         tempFile.renameTo(project.getAbsolutePath() + "/bin/data/" + uploadedFile.filename, false, true);
         ofx::HTTP::Utils::dumpNameValueCollection(args.getForm(), ofGetLogLevel());
     }
-    
+
     // see link below for spec
     // https://github.com/blueimp/jQuery-File-Upload/wiki/Setup
     result["files"][0]["name"] = uploadedFile.filename;
@@ -71,7 +71,7 @@ bool UploadRouter::onHTTPFormEvent(ofx::HTTP::PostFormEventArgs& args)
     result["files"][0]["thumbnailUrl"] = "";
     result["files"][0]["deleteUrl"] = "";
     result["files"][0]["deleteType"] = "DELETE";
-    
+
     if (uploadedFile.filename.empty())
     {
         result["files"][0]["error"] = "Error uploading file.";
@@ -88,7 +88,7 @@ bool UploadRouter::onHTTPFormEvent(ofx::HTTP::PostFormEventArgs& args)
 bool UploadRouter::onHTTPUploadEvent(ofx::HTTP::PostUploadEventArgs& args)
 {
     std::string stateString = "";
-    
+
     switch (args.getState())
     {
         case ofx::HTTP::PostUploadEventArgs::UPLOAD_STARTING:
@@ -101,16 +101,16 @@ bool UploadRouter::onHTTPUploadEvent(ofx::HTTP::PostUploadEventArgs& args)
             stateString = "FINISHED";
             break;
     }
-    
+
     if (stateString == "FINISHED")
     {
         UploadRouter::UploadedFile file;
-        
+
         file.tempFilename = args.getFilename();
         file.filename = args.getOriginalFilename();
         file.type = args.getFileType().toString();
         file.size = args.getNumBytesTransferred();
-        
+
         _uploadedFiles[args.getPostId().toString()] = file;
 
         ofLogNotice("UploadManager::onHTTPUploadEvent") << "Post ID: " << args.getPostId().toString() << endl;
@@ -123,9 +123,9 @@ bool UploadRouter::onHTTPUploadEvent(ofx::HTTP::PostUploadEventArgs& args)
         ofLogNotice("UploadManager::onHTTPUploadEvent") <<  "      fileType: " << args.getFileType().toString();
         ofLogNotice("UploadManager::onHTTPUploadEvent") << "# bytes xfer'd: " << args.getNumBytesTransferred();
     }
-    
+
     return true;
 }
 
-    
+
 } } // namespace of::Sketch

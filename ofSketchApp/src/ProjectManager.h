@@ -62,7 +62,7 @@ public:
     void notifyProjectClosed(const std::string& projectName);
     void reloadProjects();
     void updateProject(const std::string& projectName);
-    
+
     bool projectExists(const std::string& projectName) const;
     const Project& getProject(const std::string& projectName) const;
     Project& getProjectRef(const std::string& projectName);
