@@ -63,6 +63,8 @@ public:
 
     void mousePressed(int x, int y, int button);
 
+    bool hasDependency(const std::string& command);
+
     void loadProject(const void* pSender, ofx::JSONRPC::MethodArgs& args);
     void loadTemplateProject(const void* pSender, ofx::JSONRPC::MethodArgs& args);
     void saveProject(const void* pSender, ofx::JSONRPC::MethodArgs& args);
@@ -158,6 +160,8 @@ private:
 
     ofImage _logo;
     ofTrueTypeFont _font;
+
+    bool _missingDependencies;
 
 };
 
