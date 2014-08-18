@@ -4,6 +4,8 @@ releases/
 ofSketchApp/bin/data/Projects/*/src
 ofSketchApp/bin/data/Projects/*/obj
 
+ofSketchApp/ofSketchApp.xcodeproj/project.xcworkspace/xcshareddata/ofSketchApp.xccheckout
+
 scripts/access_token.txt
 
 *.mode1v3
