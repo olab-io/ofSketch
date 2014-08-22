@@ -75,7 +75,7 @@ App::App():
     // _loggerChannel->setWebSocketRoute(server->getWebSocketRoute());
     // ofSetLoggerChannel(_loggerChannel);
 
-    _logo.loadImage("media/openFrameworks.png");
+    _logo.loadImage("media/openFrameworks.jpg");
     _font.loadFont(OF_TTF_SANS, 20);
 }
 
