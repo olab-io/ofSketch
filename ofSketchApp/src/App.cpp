@@ -250,6 +250,7 @@ void App::draw()
 {
     ofBackground(255);
 
+    ofSetColor(255);
     _logo.draw(10, 0);
 
     ofSetColor(80);
