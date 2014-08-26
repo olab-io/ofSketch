@@ -34,48 +34,36 @@ OfSketchSettings::OfSketchSettings():
     _templateSettingsFilePath(ofToDataPath("Resources/Settings/OfSketchSettings.json")),
     _path(_templateSettingsFilePath)
 {
-    if (Poco::Environment::has("HOME")) {
+//    if (Poco::Environment::has("HOME")) {
+//
+//        ofFile settingsFile = Poco::Environment::get("HOME") + "/.ofsketchsettings.json";
+//
+//        _path = settingsFile.getAbsolutePath();
+//
+//        if (settingsFile.exists())
+//        {
+//            load(_path);
+//        }
+//        else
+//        {
+//            load(_templateSettingsFilePath);
+//        }
+//    }
+//    else {
+//        load(_templateSettingsFilePath);
+//    }
 
-        ofFile settingsFile = Poco::Environment::get("HOME") + "/.ofsketchsettings.json";
-
-        _path = settingsFile.getAbsolutePath();
-
-        if (settingsFile.exists())
-        {
-            load(_path);
-        }
-        else
-        {
-            load(_templateSettingsFilePath);
-        }
-    }
-    else {
-        load(_templateSettingsFilePath);
-    }
-
+    load(_templateSettingsFilePath);
     ofLogVerbose("EditorSettings::EditorSettings") << "Project Directory: " << getProjectDir();
 }
 
 
 bool OfSketchSettings::load(const std::string& path)
 {
-    if(_data.open(path))
-    {
-        std::string projectDir = _data["projectDir"].asString();
-        _data["projectDir"] = ofToDataPath(projectDir, true);
-
-        std::string openFrameworksDir = _data["openFrameworksDir"].asString();
-        _data["openFrameworksDir"] = ofToDataPath(openFrameworksDir, true);
-
-        ofLogVerbose("OfSketchSettings::load") << _data["projectDir"].asString();
-        ofLogVerbose("OfSketchSettings::load") << _data["openFrameworksDir"].asString();
-
-        return true;
-    }
-    else return false;
+    return _data.open(path);
 }
 
-
+    
 bool OfSketchSettings::save()
 {
     return _data.save(_path, true);
@@ -114,7 +102,7 @@ bool OfSketchSettings::getAllowRemote() const
 
 std::string OfSketchSettings::getProjectDir() const
 {
-    return _data["projectDir"].asString();
+    return ofToDataPath(_data["projectDir"].asString());
 }
 
 
@@ -131,7 +119,7 @@ std::string OfSketchSettings::getAddonsDir() const
 
 std::string OfSketchSettings::getOpenFrameworksDir() const
 {
-    return _data["openFrameworksDir"].asString();
+    return ofToDataPath(_data["openFrameworksDir"].asString());
 }
 
 
