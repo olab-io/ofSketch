@@ -41,7 +41,7 @@ public:
     EditorSettings(const std::string& path);
 
     void update(const ofxJSONElement& data);
-    
+
     bool load();
     bool save();
 

@@ -28,6 +28,8 @@
 
 #include <string>
 #include <json/json.h>
+#include "Poco/Environment.h"
+#include "ofUtils.h"
 #include "ofxJSONElement.h"
 
 
@@ -38,15 +40,18 @@ namespace Sketch {
 class OfSketchSettings
 {
 public:
-    OfSketchSettings(const std::string& path);
+    OfSketchSettings();
 
-    bool load();
+    bool load(const std::string& path);
     bool save();
+
+    void update(const ofxJSONElement& data);
 
     const Json::Value& getData() const;
 
     int getPort() const;
     int getBufferSize() const;
+    bool getAllowRemote() const;
     std::string getProjectDir() const;
     std::string getSketchDir() const;
     std::string getOpenFrameworksDir() const;
@@ -55,9 +60,12 @@ public:
     std::string getProjectSettingsFilename() const;
     std::string getProjectExtension() const;
     std::string getClassExtension() const;
+    std::vector<std::string> getWhitelistedIPs() const;
 
 private:
+    std::string _templateSettingsFilePath;
     std::string _path;
+
     ofxJSONElement _data; //ofxJSONElement for load functionality
 
 };

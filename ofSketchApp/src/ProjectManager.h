@@ -1,6 +1,6 @@
 // =============================================================================
 //
-// Copyright (c) 2013 Christopher Baker <http://christopherbaker.net>
+// Copyright (c) 2013-2014 Christopher Baker <http://christopherbaker.net>
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -31,7 +31,6 @@
 #include <json/json.h>
 #include "ofx/IO/DirectoryFilter.h"
 #include "ofx/IO/DirectoryUtils.h"
-#include "ofx/IO/DirectoryWatcherManager.h"
 #include "ofx/JSONRPC/MethodArgs.h"
 #include "ofx/JSONRPC/Utils.h"
 #include "Project.h"
@@ -62,17 +61,10 @@ public:
     void notifyProjectClosed(const std::string& projectName);
     void reloadProjects();
     void updateProject(const std::string& projectName);
-    
+
     bool projectExists(const std::string& projectName) const;
     const Project& getProject(const std::string& projectName) const;
     Project& getProjectRef(const std::string& projectName);
-
-    void onDirectoryWatcherItemAdded(const ofx::DirectoryWatcher::DirectoryEvent& evt);
-    void onDirectoryWatcherItemRemoved(const ofx::DirectoryWatcher::DirectoryEvent& evt);
-    void onDirectoryWatcherItemModified(const ofx::DirectoryWatcher::DirectoryEvent& evt);
-    void onDirectoryWatcherItemMovedFrom(const ofx::DirectoryWatcher::DirectoryEvent& evt);
-    void onDirectoryWatcherItemMovedTo(const ofx::DirectoryWatcher::DirectoryEvent& evt);
-    void onDirectoryWatcherError(const Poco::Exception& exc);
 
     static SharedPtr makeShared(const std::string& projectsPath)
     {
@@ -84,7 +76,6 @@ private:
     std::vector<std::string> _openProjectNames;
     std::vector<Project> _projects;
     Project _templateProject;
-    ofx::IO::DirectoryWatcherManager _projectWatcher;
 
     bool _removeFromOpenProjectNames(const std::string& projectName);
 };

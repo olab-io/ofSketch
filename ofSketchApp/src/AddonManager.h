@@ -1,6 +1,6 @@
 // =============================================================================
 //
-// Copyright (c) 2013 Christopher Baker <http://christopherbaker.net>
+// Copyright (c) 2013-2014 Christopher Baker <http://christopherbaker.net>
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -45,7 +45,7 @@ namespace Sketch {
 class AddonManager
 {
 public:
-    AddonManager(const std::string& addonsPath);
+    AddonManager(const Poco::Path& addonsPath);
     virtual ~AddonManager();
 
     void onDirectoryWatcherItemAdded(const ofx::DirectoryWatcher::DirectoryEvent& evt);
@@ -60,7 +60,8 @@ public:
     static const std::string DEFAULT_ADDON_PATH;
 
 private:
-    std::string _path;
+    Poco::Path _path;
+
     std::map<std::string, Addon::SharedPtr> _addons;
     ofx::IO::DirectoryWatcherManager _addonWatcher;
 

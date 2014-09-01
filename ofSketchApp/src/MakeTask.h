@@ -1,6 +1,6 @@
 // =============================================================================
 //
-// Copyright (c) 2013 Christopher Baker <http://christopherbaker.net>
+// Copyright (c) 2013-2014 Christopher Baker <http://christopherbaker.net>
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -59,7 +59,7 @@ public:
     {
         std::string ofRoot;
 
-        int  numProcessors; // -j
+        std::size_t numProcessors; // -j
         bool isSilent; // -s
 
         std::string CXX; // CXX=/usr/lib/distcc/arm-linux-gnueabihf-g++

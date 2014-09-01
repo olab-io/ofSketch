@@ -47,12 +47,23 @@ $(document).ready( function()
         resize();
 
         function resize() {
-            
+
             $('#console').height($('#ace-wrapper').height() -($('#editor-container').height()));
             sketchEditor.resize();
             consoleEmulator.resize();
 
         }
+    }
+
+    function onWindowResize() {
+
+        // if ($(window).width() <= 580) {
+        //     $('#toolbar button').addClass('btn-sm');
+        // } else {
+        //     console.log('fired');
+        //     $('#toolbar button').removeClass('btn-sm');
+        // }
+
     }
 
     function checkVersion() {
@@ -71,7 +82,7 @@ $(document).ready( function()
             // Get the cleaned semver string.
             var remoteVersion = semver.clean(latestRelease.tag_name);
             var localVersion = semver.clean(systemInfo.version.version);
-            
+
             $('.local-version').text(localVersion);
 
             // Compare the semver number provided by the server to the remote.
@@ -111,7 +122,7 @@ $(document).ready( function()
                 $('#version-alert').removeClass('hidden');
 
             }
-        
+
         }).fail(function() {
             console.log("Unable to contact github for a version check.");
         });
@@ -140,10 +151,6 @@ $(document).ready( function()
             $('.current-platform').text(systemInfo.version.target);
 
             checkVersion();
-        }
-        else if (evt.method == "addons")
-        {
-            console.log(evt.params);
         }
         else if (evt.method == "updateEditorSettings")
         {  
@@ -189,7 +196,7 @@ $(document).ready( function()
     }
 
     function handleTaskQueueEvent(evt) {
-        
+
         // console.log(evt);
         // console.log(evt.params.message);
  
@@ -217,7 +224,7 @@ $(document).ready( function()
             // var progressInfo = $("<span/>", {
             //     class: 'sr-only',
             //     text: '0% Complete'
-            // }).appendTo(progressBarContainer);         
+            // }).appendTo(progressBarContainer); 
 
             // var button = $('<button/>', {
             //     type: 'button',
@@ -239,9 +246,9 @@ $(document).ready( function()
         } else if (evt.method == "taskFinished") {
             // TODO: remove the task with the uuid
             if (evt.params.uuid == sketchEditor.getCurrentRunTaskId()) {
-                
+    
                 if (sketchEditor.isCompiling()) {
-                 
+     
                     sketchEditor.setCompiling(false);
                     if (compileSuccess) { // this is a terrible way to do this
                         consoleEmulator.clear();
@@ -263,7 +270,7 @@ $(document).ready( function()
             // TODO: remove the task with the uuid
             // update the message in the li with the message
             if (evt.params.uuid == sketchEditor.getCurrentRunTaskId()) {
-                
+    
                 // this is a terrible hack
                 if (evt.params.message.indexOf("make RunRelease") != -1) {
                     compileSuccess = true;
@@ -276,7 +283,7 @@ $(document).ready( function()
 
                 consoleEmulator.log(evt.params.message + '\n');
             }
-    
+
         } else {
 
             console.log("Unknown Task Queue method.");
@@ -382,7 +389,7 @@ $(document).ready( function()
             left:$(window).width()/2 - alertBox.width()/2,
             top: $(window).height()/2 - alertBox.height()/2
         });
-        
+
         alertBox.show();
         alertTimeout = setTimeout(function(){
             alertBox.hide();
@@ -398,7 +405,11 @@ $(document).ready( function()
                 var match = _.findWhere(result, { projectName: project });
                 if (match) {
                     sketchEditor.loadProject(project, function(result) {
+
                         $('title').text(project);
+
+                        fileUploader.init(project);
+
                         if (result.alreadyOpen == true){
                             $('#project-already-open-modal').modal('show');
                             sketchEditor.setDisabled(true);
@@ -436,7 +447,7 @@ $(document).ready( function()
                     } else {
                         sketchEditor.compile(function(){});
                     }
-                    
+        
                 }, saveError);
             } else {
                 $('#name-project-modal').modal();
@@ -447,7 +458,7 @@ $(document).ready( function()
     function save()
     {
         if (!sketchEditor.isDisabled()) {
-            
+
             if (sketchEditor.projectLoaded()) {
                 if (!sketchEditor.getProject().isTemplate()) {
                     sketchEditor.saveProject(function() {
@@ -470,7 +481,7 @@ $(document).ready( function()
                 var linkElement = $('<a href="' + location.protocol + '//' + location.host + '/?project=' 
                                      + encodeURIComponent(project.projectName)
                                      + '" class="list-group-item" target="_blank">' + project.projectName + '</a>');
-                
+    
                 linkElement.on('click', function(){
                     $('#open-project-modal').modal('hide');
                 });
@@ -488,16 +499,16 @@ $(document).ready( function()
 
     // localization
     $('[data-localize]').localize('lang', { pathPrefix: "../../localization", skipLanguage: /^en/ });
-    
+
     // prevent defaults
-    $('#toolbar li a, #log-levels li a, .file-tab a, #new-class a, .action-menu li a').on('click', function(e) {
+    $('#toolbar li a, #export-project-modal .list-group a, #log-levels li a, .file-tab a, #new-class a, .action-menu li a').on('click', function(e) {
         e.preventDefault(); 
     });
 
     $(window).on('beforeunload', function(){
         sketchEditor.notifyProjectClosed();
     });
-    
+
     // key bindings
     $(document).on("keydown", function(e){
 
@@ -511,14 +522,14 @@ $(document).ready( function()
 
         // cmd-s, ctrl-s
         if ((e.which || e.keyCode) == 83 && (e.metaKey || e.ctrlKey)) {
-            
+
             e.preventDefault();
             save();
         }
 
         // cmd-o, ctrl-o
         if ((e.which || e.keyCode) == 79 && (e.metaKey || e.ctrlKey)) {
-            
+
             e.preventDefault();
             openProject();
         }
@@ -536,10 +547,6 @@ $(document).ready( function()
     var aceWrapperHeight;
     var compileSuccess = false; // this is a terrible global var. Get it out ASAP.
     var inputRegex = /^[A-Za-z0-9_-]+$/;
-    alertBox = $('#editor-messages');
-    alertBox.hide();
-
-    var logger = new Logger();
 
     JSONRPCClient = new $.JsonRpcClient({ 
             ajaxUrl: getDefaultPostURL(),
@@ -550,24 +557,16 @@ $(document).ready( function()
             onerror: onWebSocketError
         });
 
-    $('#set-log-level').addClass(logger.getLogLevelLabelClass(logger.getLogLevel()));
-    $('#current-log-level').text(logger.getLogLevelName(logger.getLogLevel()));
+    alertBox = $('#editor-messages');
+    alertBox.hide();
 
-    $('#log-levels li a').on('click', function() {
-        
-        var logLevel = parseInt($(this).data('log-level'));
-        logger.setLogLevel(logLevel);
-
-        var button = $('#set-log-level');
-        button.removeClass();
-        button.addClass('btn btn-xs dropdown-toggle ' + logger.getLogLevelLabelClass(logLevel));
-        $('#current-log-level').text($(this).text());
-    });
-
+    var ofSketchSettings = new OfSketchSettings();
     var consoleEmulator = new ConsoleEmulator();
+    var fileUploader = new FileUploader();
+    var logger = new Logger();
 
     var sketchEditor = new SketchEditor(function() {
-        
+
         // editor resize stuff
         aceWrapperHeight = window.innerHeight - $('#wrap').height() - 2;
         $('#editor-container').height(aceWrapperHeight * 3/4);
@@ -579,10 +578,11 @@ $(document).ready( function()
         $(window).resize(function(){
             sketchEditor.resize();
             resizeEditor();
+            onWindowResize();
         });
-        
+
         $('#tab-bar .dropdown').on('click', function(){
-            
+
             var tabName = sketchEditor.getSelectedTabName();
             if (tabName == sketchEditor.getProject().getName()) {
                 $('.rename-class, .delete-class').addClass('disabled');
@@ -610,17 +610,35 @@ $(document).ready( function()
            save();
         });
 
-        $('#toolbar-addons').on('click', function(){
+        $('.upload-media').on('click', function(){
+
+            if (!sketchEditor.getProject().isTemplate()) {
+                $('#upload-media-modal').modal('show');   
+            } else {
+                $('#name-project-modal').modal('show');
+            }
+        });
+
+        $('.export-project').on('click', function(){
+
+            if (!sketchEditor.getProject().isTemplate()) {
+                $('#export-project-modal').modal('show');   
+            } else {
+                $('#name-project-modal').modal('show');
+            }
+        });
+
+        $('.include-addons').on('click', function(){
 
             if (!sketchEditor.getProject().isTemplate()) {
 
                 sketchEditor.getAddonList(function(globalAddons) {
-                    
+        
                     sketchEditor.getProject().getAddonList(function(projectAddons){
-                        
+            
                         var coreAddonsList = $('#core-addons-list');
                         var contributedAddonsList = $('#contributed-addons-list');
-                        
+            
                         var hasContributedAddons = false;
 
                         // core addons at openFrameworks master.
@@ -653,18 +671,18 @@ $(document).ready( function()
 
                             // if this addon is already included
                             var alreadyInProject = projectAddons.indexOf(globalAddon.name) != -1;
-                            
+                
                             var linkElement = $('<a href="#" data-included=' + alreadyInProject + ' class="list-group-item"><span class="addon-name">'
                                                  + globalAddon.name + '</span>'
                                                  +'<span class="include-marker" style="float: right; display: none" >Included</span></a>');
-                            
+                
                             if (alreadyInProject) {
                                 linkElement.addClass('list-group-item-info');
                                 linkElement.find('.include-marker').show();
                             }
 
                             linkElement.on('click', function(e){
-                                
+                    
                                 e.preventDefault();
 
                                 var addon = globalAddon.name;
@@ -697,19 +715,19 @@ $(document).ready( function()
                                                                         console.log(err);
                                                                        });
                                 }
-                                
+                    
                             });
-        
+
                             if (coreAddons.indexOf(globalAddon.name) != -1) coreAddonsList.append(linkElement);
                             else {
-                                
+                    
                                 if (!hasContributedAddons) {
                                     hasContributedAddons = true;
                                     $('#contributed-addons-container').show();
                                 }
-                                
+                    
                                 contributedAddonsList.append(linkElement);
-                                
+                    
                             }
                         });
                     }, console.log);
@@ -738,10 +756,68 @@ $(document).ready( function()
             sketchEditor.showSettingsMenu();
         });
 
+        // $('#ofsketch-settings').on('click', function(e){
+
+        //     ofSketchSettings.load(function(settings){
+    
+        //         $('#ofsketch-settings-port').attr('value', settings.server.port);
+        //         $('#ofsketch-settings-buffer-size').attr('value', settings.server.bufferSize);
+        //         $('#ofsketch-settings-openframeworks-directory').attr('value', settings.openFrameworksDir);
+        //         $('#ofsketch-settings-project-directory').attr('value', settings.projectDir);
+
+        //         // when new settings are added to the GUI
+        //         // we must check if they are undefined before using them
+        //         // in case the user has an old version of .ofsketchsettings.json
+        //         if (!_.isUndefined(settings.allowRemote)) {
+        //             $('#ofsketch-settings-allow-remote').prop('checked', settings.allowRemote);
+        //         }
+    
+        //         if (!_.isUndefined(settings.whitelistedIPs)) {
+        //             $('#ofsketch-settings-whitelisted-ips').val(settings.whitelistedIPs.join(',\n'));
+        //         }
+    
+        //         $('#ofsketch-settings-modal').modal('show');
+
+        //     }, function(){
+
+        //         console.log('Error loading ofSketch settings');
+        //         console.log(err);
+        //     });
+        // });
+
+        $('#save-ofsketch-settings').on('click', function(){
+
+            var settings = ofSketchSettings.getData();
+
+            settings.server.port = parseInt($('#ofsketch-settings-port').val());
+            settings.server.bufferSize = parseInt($('#ofsketch-settings-buffer-size').val());
+            settings.openFrameworksDir = $('#ofsketch-settings-openframeworks-directory').val();
+            settings.projectDir = $('#ofsketch-settings-project-directory').val();
+            settings.allowRemote = $('#ofsketch-settings-allow-remote').is(':checked');
+   
+            var IPs = $('#ofsketch-settings-whitelisted-ips').val();
+            IPs = IPs.replace(/ /g, '');
+            IPs = IPs.replace(/\n/g, '');
+            IPs = IPs.split(',');
+            if (IPs.length == 1 && IPs[0] == "") IPs = [];                            
+
+            settings.whitelistedIPs = IPs;
+
+            ofSketchSettings.update(settings);
+            ofSketchSettings.save(function(){
+                $('#ofsketch-settings-modal').modal('hide');
+            }, function(err){
+                console.log('Error saving ofSketch settings');
+                console.log(err);
+            });
+
+            console.log(settings.server.port);
+        });
+
         // Modals
         $('.new-class').on('click', function() {
             if (!sketchEditor.getProject().isTemplate()) {
-                $('#new-class-modal').modal();               
+                $('#new-class-modal').modal();   
             } else {
                 $('#name-project-modal').modal();
             }
@@ -796,7 +872,7 @@ $(document).ready( function()
             }
             else {
                 sketchEditor.createClass(className, function() {
-                    
+        
                     $('#new-class-modal').modal('hide');
                     $('#new-class-name').val('');
 
@@ -808,7 +884,7 @@ $(document).ready( function()
         });
 
         $('#delete-class').on('click', function() {
-            
+
             var projectName = sketchEditor.getProject().getName();
             var tabName = sketchEditor.getSelectedTabName();
             if (tabName != projectName) {
@@ -822,13 +898,13 @@ $(document).ready( function()
         });
 
         $('#rename-class').on('click', function() {
-            
+
             $('#rename-class-modal .alert').hide();
 
             var projectName = sketchEditor.getProject().getName();
             var tabName = sketchEditor.getSelectedTabName();
             var newClassName = $('#renamed-class-name').val();
-            
+
             if (tabName != projectName) {
 
                 if (!inputRegex.test(newClassName)) {
@@ -840,7 +916,7 @@ $(document).ready( function()
                 else {
 
                     sketchEditor.renameClass(tabName, newClassName, function() {
-                       
+           
                        $('#rename-class-modal').modal('hide');
                        $('#renamed-class-name').val('');
 
@@ -853,17 +929,17 @@ $(document).ready( function()
         });
 
         $('#name-project').on('click', function() {
-            
+
             $('#name-project-modal .alert').hide();
             var projectName = $('#new-project-name').val();
-            
+
             if (!inputRegex.test(projectName)) {
                 $('#name-project-modal .validation-error').show();
             }
             else {
 
                 sketchEditor.getProjectList(function(result){
-        
+
                     var match = _.findWhere(result, { projectName: projectName });
                     if (match) {
                         $('#name-project-modal .name-taken-error').show();
@@ -877,7 +953,7 @@ $(document).ready( function()
                            }, saveError);
                         }, createProjectError);
                     }
-                
+    
                 }, function(err){
                     console.log("Error getting project list:");
                     console.log(err);
@@ -907,7 +983,7 @@ $(document).ready( function()
             $('#rename-project-modal .alert').hide();
             var newProjectName = $('#renamed-project-name').val();
             if (!sketchEditor.getProject().isTemplate()) {
-                
+    
                 if (!inputRegex.test(newProjectName)) {
                     $('#rename-project-modal .validation-error').show();
                 } else {
@@ -938,6 +1014,17 @@ $(document).ready( function()
 
         });
 
+        $('#export-project-modal .list-group-item').on('click', function(){
+            var platform = $(this).data('export-platform');
+            console.log(platform);
+            sketchEditor.exportProject(platform, function(data){
+                console.log("Exported project.");
+            }, function(err){
+                console.log("Error exporting project:");
+                console.log(err);
+            });
+        });
+
         $('#request-project-closed').on('click', function(){
             sketchEditor.requestProjectClosed(function(){
                 $('#project-already-open-modal').modal('hide');
@@ -960,6 +1047,44 @@ $(document).ready( function()
 
         $('#rename-class-modal').on('shown.bs.modal', function () {
             $('#renamed-class-name').focus();
+        });
+
+        $('#upload-media-modal').on('hidden.bs.modal', function() {
+            fileUploader.reset();
+        });
+
+
+        // Enter keypress events for 1-line input in modals
+        $('#new-project-name').on('keypress', function(evt){
+            if ((evt.keyCode || evt.which) == 13) $('#name-project').click();
+        });
+
+        $('#renamed-project-name').on('keypress', function(evt){
+            if ((evt.keyCode || evt.which) == 13) $('#rename-project').click();
+        });
+
+        $('#new-class-name').on('keypress', function(evt){
+            if ((evt.keyCode || evt.which) == 13) $('#create-class').click();
+        });
+
+        $('#renamed-class-name').on('keypress', function(evt){
+            if ((evt.keyCode || evt.which) == 13) $('#rename-class').click();
+        });
+
+
+        // logging
+        $('#set-log-level').addClass(logger.getLogLevelLabelClass(logger.getLogLevel()));
+        $('#current-log-level').text(logger.getLogLevelName(logger.getLogLevel()));
+
+        $('#log-levels li a').on('click', function() {
+
+            var logLevel = parseInt($(this).data('log-level'));
+            logger.setLogLevel(logLevel);
+
+            var button = $('#set-log-level');
+            button.removeClass();
+            button.addClass('btn btn-xs dropdown-toggle ' + logger.getLogLevelLabelClass(logLevel));
+            $('#current-log-level').text($(this).text());
         });
 
         parseURLParameters();

@@ -1,7 +1,7 @@
 // =============================================================================
 //
 // Copyright (c) 2013-2014 Christopher Baker <http://christopherbaker.net>
-//               2014 Brannon Dorsey <http://brannondorsey.com>
+// Copyright (c) 2014 Brannon Dorsey <http://brannondorsey.com>
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -82,7 +82,7 @@ void Project::load(const std::string& path, const std::string& name)
                 classCounter++;
             }
         }
-        
+
         _loadAddons();
         _isLoaded = true;
     }
@@ -118,11 +118,11 @@ void Project::save(const Json::Value& data)
             Json::Value& classFile = _data["classes"][i];
 
             bool matchFound = false;
-            
+
             for (unsigned int j = 0; j < data.size(); ++j)
             {
                 const Json::Value& newClassFile = data["classes"][j];
-                
+
                 if (classFile["fileName"] == newClassFile["fileName"]) 
                 {
                     if (classFile != newClassFile)
@@ -185,13 +185,13 @@ bool Project::rename(const std::string& newName)
         _path = projectDir.getAbsolutePath();
 
         ofFile projectFile(projectDir.getAbsolutePath() + "/sketch/" + oldProjectName + "." + SKETCH_FILE_EXTENSION);
-        
-        
+
+
         // remove old executable
         ofDirectory bin;
         bin.listDir(projectDir.path() + "/bin");
         std::vector<ofFile> files = bin.getFiles();
-        
+
         Poco::RegularExpression appExpression( oldProjectName + "(.exe|.app)*$", Poco::RegularExpression::RE_ANCHORED);
 
         for (unsigned int i = 0; i < files.size(); ++i)
@@ -203,7 +203,7 @@ bool Project::rename(const std::string& newName)
                     << "removed " << files[i].getFileName() << " from " << bin.getAbsolutePath() << endl;
             }
         }
-        
+
 
         ofLogVerbose("Project::rename") << "projectDir path after rename: " << projectDir.getAbsolutePath();
         ofLogVerbose("Project::rename") << "projectFile path: " << projectFile.getAbsolutePath();
@@ -321,7 +321,7 @@ bool Project::isClassName(const std::string& className) const
     return false;
 }
 
-    
+
 unsigned int Project::getNumClasses() const
 {
     return _data["classes"].size();
@@ -345,7 +345,7 @@ const Json::Value& Project::getData() const
 {
     return _data;
 }
-    
+
 void Project::addAddon(std::string& addon)
 {
     if (!usingAddon(addon)) {
@@ -353,18 +353,19 @@ void Project::addAddon(std::string& addon)
         _saveAddons();
     }
 }
-    
+
 bool Project::removeAddon(std::string& addon)
 {
-    for (unsigned int i = 0; i < _addons.size(); i++)
+    for (std::size_t i = 0; i < _addons.size(); ++i)
     {
-        if (addon == _addons[i]) {
+        if (addon == _addons[i])
+        {
             _addons.erase(_addons.begin() + i);
             _saveAddons();
             return true;
         }
     }
-    
+
     return false;
 }
   
@@ -372,7 +373,7 @@ bool Project::hasAddons() const
 {
     return _addons.size() > 0;
 }
-    
+
 bool Project::usingAddon(std::string& addon) const
 {
     for (unsigned int i = 0; i < _addons.size(); i++)
@@ -381,34 +382,34 @@ bool Project::usingAddon(std::string& addon) const
             return true;
         }
     }
-    
+
     return false;
 }
-    
+
 std::vector<std::string> Project::getAddons() const
 {
     return _addons;
 }
-    
+
 void Project::_loadAddons()
 {
     _addons.clear();
     ofFile addonsMakefile(_path + "/addons.make");
-    
+
     if (addonsMakefile.exists()) {
-        
+
         std::vector<std::string> lines = ofSplitString(ofBufferFromFile(addonsMakefile.path()), "\n");
-        
+
         for (unsigned int i = 0; i < lines.size(); i++) {
-            
+
             if (lines[i] != "") {
-                
+
                 _addons.push_back(lines[i]);
             }
         }
     }
 }
-    
+
 void Project::_saveAddons()
 {
     ofBuffer buffer(ofJoinString(_addons, "\n"));

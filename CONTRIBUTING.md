@@ -1,6 +1,10 @@
 # Contributing to ofSketch
 
-First off, thanks for your interest contributing! ofSketch is still in its early stages of development, so there is plenty to do (and plenty that is undoubtedly broken, doesn't work, etc...). Here is a brief set of guidelines and pointers for contributing to ofSketch. For more information contact [Brannon Dorsey](http://brannondorsey.com) <<brannon@brannondorsey.com>> or [Christopher Baker](http://christopherbaker.net) <<me@christopherbaker.net>>. Also, check out openFrameworks' [CONTRIBUTING.md](https://github.com/openframeworks/openFrameworks/blob/master/CONTRIBUTING.md) for more info about contributing to ofSketch, openFrameworks, or open source projects in general.
+First off, thanks for your interest contributing! ofSketch is still in its early stages of development, so there is plenty to do (and plenty that is undoubtedly broken, doesn't work, etc...). Here is a brief set of guidelines and pointers for contributing to ofSketch. For more information contact [Brannon Dorsey](http://brannondorsey.com) <<brannon@brannondorsey.com>> or [Christopher Baker](http://christopherbaker.net) <<me@christopherbaker.net>>.
+
+If you plan on contributing heavily to ofSketch, check out our [ARCHITECTURE.md](ARCHITECTURE.md) file to learn more about the ofxAddons and Libs that ofSketch uses, as well as an overview of the way that ofSketch works.
+
+Also, check out openFrameworks' [CONTRIBUTING.md](https://github.com/openframeworks/openFrameworks/blob/master/CONTRIBUTING.md) for more info about contributing to ofSketch, openFrameworks, or open source projects in general.
 
 ## Report a Bug
 

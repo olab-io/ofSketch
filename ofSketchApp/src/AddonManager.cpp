@@ -1,6 +1,6 @@
 // =============================================================================
 //
-// Copyright (c) 2013 Christopher Baker <http://christopherbaker.net>
+// Copyright (c) 2013-2014 Christopher Baker <http://christopherbaker.net>
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -33,10 +33,9 @@ namespace Sketch {
 const std::string AddonManager::DEFAULT_ADDON_PATH = "addons/";
 
 
-AddonManager::AddonManager(const std::string& path):
-    _path(path)
+AddonManager::AddonManager(const Poco::Path& path): _path(path)
 {
-    Poco::Path fullPath(ofToDataPath(_path, true));
+    Poco::Path fullPath(ofToDataPath(_path.toString(), true));
 
     Poco::File file(fullPath);
 

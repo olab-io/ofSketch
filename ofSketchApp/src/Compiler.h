@@ -1,6 +1,6 @@
 // =============================================================================
 //
-// Copyright (c) 2014 Brannon Dorsey <http://christopherbaker.net>
+// Copyright (c) 2014 Brannon Dorsey <http://brannondorsey.com>
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -49,7 +49,9 @@ namespace Sketch {
 class Compiler
 {
 public:
-    Compiler(ProcessTaskQueue& taskQueue, const std::string& pathToTemplates);
+    Compiler(ProcessTaskQueue& taskQueue,
+             const std::string& pathToTemplates,
+             const std::string& openFrameworksDir);
 
     Poco::UUID compile(const Project& project);
     Poco::UUID run(const Project& project);
@@ -64,6 +66,7 @@ private:
     std::string _pathToSrc;
     std::string _projectFileTemplate;
     std::string _classTemplate;
+    std::string _openFrameworksDir;
     
     void _parseAddons();
     void _getAddons();

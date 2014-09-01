@@ -5,51 +5,59 @@
 	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
 	<false/>
 	<key>IDESourceControlProjectIdentifier</key>
-	<string>6B313040-E08D-4899-BEE4-E3DCB5A715B3</string>
+	<string>2A9E2F11-BC4C-48FC-B943-35B7171F92B7</string>
 	<key>IDESourceControlProjectName</key>
 	<string>ofSketchApp</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>1E9A3063-9CCE-40C7-8B87-F9AE3454602C</key>
-		<string>https://github.com/bakercp/ofxSSLManager.git</string>
-		<key>2244A796-F719-45C3-B7F7-40AB4ECDB3BD</key>
-		<string>https://github.com/bakercp/ofxIO.git</string>
-		<key>5FCC4AE4-2A86-4A84-AE19-17BE403DCBB5</key>
-		<string>https://github.com/bakercp/ofxTaskQueue.git</string>
-		<key>6C8258C6-2649-435F-AB11-22D301978CB4</key>
-		<string>https://github.com/bakercp/ofxJSONRPC.git</string>
-		<key>7E23354B-2D3E-43A6-ABA9-580963C946AD</key>
-		<string>ssh://github.com/brannondorsey/ofSketch.git</string>
-		<key>9D61F4B7-8B0E-4418-8AF3-8699016EF91E</key>
+		<key>1FDDC500-930D-4EF6-BA65-B5D45FEA26C5</key>
 		<string>https://github.com/bakercp/ofxJSON.git</string>
-		<key>9F891205-89EA-49C8-8D0A-AD7A143F7675</key>
-		<string>https://github.com/bakercp/ofxMediaType.git</string>
-		<key>DE90389D-73EF-478B-8E3A-C4C90FAE5FE9</key>
+		<key>2DAF2EF2-4FF6-40F9-A7C9-087B876AB485</key>
+		<string>https://github.com/bakercp/ofxPG.git</string>
+		<key>55C6906E-A560-4A9C-9F06-DF6519F6A874</key>
+		<string>https://github.com/bakercp/ofxJSONRPC.git</string>
+		<key>55FD3F74-06B8-4C6E-B454-305013D3CC53</key>
+		<string>https://github.com/bakercp/ofxSSLManager.git</string>
+		<key>5746EA8D-3F7C-4A38-A244-CA90572B5A3E</key>
 		<string>https://github.com/bakercp/ofxHTTP.git</string>
-		<key>E53B614E-A31E-4AA0-837A-BEE38AA4F480</key>
+		<key>84A9AD83-D8F1-4461-945C-74907EE279A2</key>
+		<string>https://github.com/bakercp/ofxTaskQueue.git</string>
+		<key>9A4AB956-7DF5-4D22-9FC8-F19B53EF924F</key>
+		<string>https://github.com/bakercp/ofxIO.git</string>
+		<key>9E51CC1D-869E-4A0C-9C85-79E4D186F438</key>
+		<string>https://github.com/bakercp/ofxPugiXML.git</string>
+		<key>A89A471B-DFC5-4635-9A9B-F06ABFB2F83E</key>
+		<string>ssh://github.com/brannondorsey/ofSketch.git</string>
+		<key>B0B1C099-9453-40C6-AEA1-DDBDB4AA03FF</key>
+		<string>https://github.com/bakercp/ofxMediaType.git</string>
+		<key>DC4CBBC7-B2A2-4266-AC46-889A7813D651</key>
 		<string>https://github.com/openframeworks/openFrameworks.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
 	<string>apps/ofSketch/ofSketchApp/ofSketchApp.xcodeproj/project.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>1E9A3063-9CCE-40C7-8B87-F9AE3454602C</key>
-		<string>../../../../../addons/ofxSSLManager</string>
-		<key>2244A796-F719-45C3-B7F7-40AB4ECDB3BD</key>
-		<string>../../../../../addons/ofxIO</string>
-		<key>5FCC4AE4-2A86-4A84-AE19-17BE403DCBB5</key>
-		<string>../../../../../addons/ofxTaskQueue</string>
-		<key>6C8258C6-2649-435F-AB11-22D301978CB4</key>
-		<string>../../../../../addons/ofxJSONRPC</string>
-		<key>7E23354B-2D3E-43A6-ABA9-580963C946AD</key>
-		<string>../../..</string>
-		<key>9D61F4B7-8B0E-4418-8AF3-8699016EF91E</key>
+		<key>1FDDC500-930D-4EF6-BA65-B5D45FEA26C5</key>
 		<string>../../../../../addons/ofxJSON</string>
-		<key>9F891205-89EA-49C8-8D0A-AD7A143F7675</key>
-		<string>../../../../../addons/ofxMediaType</string>
-		<key>DE90389D-73EF-478B-8E3A-C4C90FAE5FE9</key>
+		<key>2DAF2EF2-4FF6-40F9-A7C9-087B876AB485</key>
+		<string>../../../../../addons/ofxPG</string>
+		<key>55C6906E-A560-4A9C-9F06-DF6519F6A874</key>
+		<string>../../../../../addons/ofxJSONRPC</string>
+		<key>55FD3F74-06B8-4C6E-B454-305013D3CC53</key>
+		<string>../../../../../addons/ofxSSLManager</string>
+		<key>5746EA8D-3F7C-4A38-A244-CA90572B5A3E</key>
 		<string>../../../../../addons/ofxHTTP</string>
-		<key>E53B614E-A31E-4AA0-837A-BEE38AA4F480</key>
+		<key>84A9AD83-D8F1-4461-945C-74907EE279A2</key>
+		<string>../../../../../addons/ofxTaskQueue</string>
+		<key>9A4AB956-7DF5-4D22-9FC8-F19B53EF924F</key>
+		<string>../../../../../addons/ofxIO</string>
+		<key>9E51CC1D-869E-4A0C-9C85-79E4D186F438</key>
+		<string>../../../../../addons/ofxPugiXML</string>
+		<key>A89A471B-DFC5-4635-9A9B-F06ABFB2F83E</key>
+		<string>../../..</string>
+		<key>B0B1C099-9453-40C6-AEA1-DDBDB4AA03FF</key>
+		<string>../../../../../addons/ofxMediaType</string>
+		<key>DC4CBBC7-B2A2-4266-AC46-889A7813D651</key>
 		<string>../../../../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
@@ -57,14 +65,14 @@
 	<key>IDESourceControlProjectVersion</key>
 	<integer>110</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>E53B614E-A31E-4AA0-837A-BEE38AA4F480</string>
+	<string>DC4CBBC7-B2A2-4266-AC46-889A7813D651</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>7E23354B-2D3E-43A6-ABA9-580963C946AD</string>
+			<string>A89A471B-DFC5-4635-9A9B-F06ABFB2F83E</string>
 			<key>IDESourceControlWCCName</key>
 			<string>ofSketch</string>
 		</dict>
@@ -72,7 +80,7 @@
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>DE90389D-73EF-478B-8E3A-C4C90FAE5FE9</string>
+			<string>5746EA8D-3F7C-4A38-A244-CA90572B5A3E</string>
 			<key>IDESourceControlWCCName</key>
 			<string>ofxHTTP</string>
 		</dict>
@@ -80,7 +88,7 @@
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>2244A796-F719-45C3-B7F7-40AB4ECDB3BD</string>
+			<string>9A4AB956-7DF5-4D22-9FC8-F19B53EF924F</string>
 			<key>IDESourceControlWCCName</key>
 			<string>ofxIO</string>
 		</dict>
@@ -88,7 +96,7 @@
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>9D61F4B7-8B0E-4418-8AF3-8699016EF91E</string>
+			<string>1FDDC500-930D-4EF6-BA65-B5D45FEA26C5</string>
 			<key>IDESourceControlWCCName</key>
 			<string>ofxJSON</string>
 		</dict>
@@ -96,7 +104,7 @@
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>6C8258C6-2649-435F-AB11-22D301978CB4</string>
+			<string>55C6906E-A560-4A9C-9F06-DF6519F6A874</string>
 			<key>IDESourceControlWCCName</key>
 			<string>ofxJSONRPC</string>
 		</dict>
@@ -104,7 +112,7 @@
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>9F891205-89EA-49C8-8D0A-AD7A143F7675</string>
+			<string>B0B1C099-9453-40C6-AEA1-DDBDB4AA03FF</string>
 			<key>IDESourceControlWCCName</key>
 			<string>ofxMediaType</string>
 		</dict>
@@ -112,7 +120,23 @@
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>1E9A3063-9CCE-40C7-8B87-F9AE3454602C</string>
+			<string>2DAF2EF2-4FF6-40F9-A7C9-087B876AB485</string>
+			<key>IDESourceControlWCCName</key>
+			<string>ofxPG</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>9E51CC1D-869E-4A0C-9C85-79E4D186F438</string>
+			<key>IDESourceControlWCCName</key>
+			<string>ofxPugiXML</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>55FD3F74-06B8-4C6E-B454-305013D3CC53</string>
 			<key>IDESourceControlWCCName</key>
 			<string>ofxSSLManager</string>
 		</dict>
@@ -120,7 +144,7 @@
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>5FCC4AE4-2A86-4A84-AE19-17BE403DCBB5</string>
+			<string>84A9AD83-D8F1-4461-945C-74907EE279A2</string>
 			<key>IDESourceControlWCCName</key>
 			<string>ofxTaskQueue</string>
 		</dict>
@@ -128,7 +152,7 @@
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>E53B614E-A31E-4AA0-837A-BEE38AA4F480</string>
+			<string>DC4CBBC7-B2A2-4266-AC46-889A7813D651</string>
 			<key>IDESourceControlWCCName</key>
 			<string>openFrameworks</string>
 		</dict>

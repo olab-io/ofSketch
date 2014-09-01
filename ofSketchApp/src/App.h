@@ -1,7 +1,7 @@
 // =============================================================================
 //
 // Copyright (c) 2013-2014 Christopher Baker <http://christopherbaker.net>
-//               2014 Brannon Dorsey <http://brannondorsey.com>
+// Copyright (c) 2014 Brannon Dorsey <http://brannondorsey.com>
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -37,13 +37,15 @@
 #include "ofxHTTP.h"
 #include "ofxJSONRPC.h"
 #include "AddonManager.h"
-#include "Project.h"
-#include "ProjectManager.h"
 #include "Compiler.h"
-#include "WebSocketLoggerChannel.h"
-#include "ProcessTaskQueue.h"
 #include "EditorSettings.h"
 #include "OfSketchSettings.h"
+#include "ProcessTaskQueue.h"
+#include "Project.h"
+#include "ProjectManager.h"
+#include "UploadRouter.h"
+#include "Utils.h"
+#include "WebSocketLoggerChannel.h"
 
 
 namespace of {
@@ -80,6 +82,8 @@ public:
     void getProjectList(const void* pSender, ofx::JSONRPC::MethodArgs& args);
     void loadEditorSettings(const void* pSender, ofx::JSONRPC::MethodArgs& args);
     void saveEditorSettings(const void* pSender, ofx::JSONRPC::MethodArgs& args);
+    void loadOfSketchSettings(const void* pSender, ofx::JSONRPC::MethodArgs& args);
+    void saveOfSketchSettings(const void* pSender, ofx::JSONRPC::MethodArgs& args);
     void requestProjectClosed(const void* pSender, ofx::JSONRPC::MethodArgs& args);
     void notifyProjectClosed(const void* pSender, ofx::JSONRPC::MethodArgs& args);
     void requestAppQuit(const void* pSender, ofx::JSONRPC::MethodArgs& args);
@@ -87,16 +91,13 @@ public:
     void getProjectAddonList(const void* pSender, ofx::JSONRPC::MethodArgs& args);
     void addProjectAddon(const void* pSender, ofx::JSONRPC::MethodArgs& args);
     void removeProjectAddon(const void* pSender, ofx::JSONRPC::MethodArgs& args);
+    void exportProject(const void* pSender, ofx::JSONRPC::MethodArgs& args);
 
     bool onWebSocketOpenEvent(ofx::HTTP::WebSocketOpenEventArgs& args);
     bool onWebSocketCloseEvent(ofx::HTTP::WebSocketCloseEventArgs& args);
     bool onWebSocketFrameReceivedEvent(ofx::HTTP::WebSocketFrameEventArgs& args);
     bool onWebSocketFrameSentEvent(ofx::HTTP::WebSocketFrameEventArgs& args);
     bool onWebSocketErrorEvent(ofx::HTTP::WebSocketErrorEventArgs& args);
-
-    bool onHTTPPostEvent(ofx::HTTP::PostEventArgs& args);
-    bool onHTTPFormEvent(ofx::HTTP::PostFormEventArgs& args);
-    bool onHTTPUploadEvent(ofx::HTTP::PostUploadEventArgs& args);
 
     void onSSLServerVerificationError(Poco::Net::VerificationErrorArgs& args);
     void onSSLClientVerificationError(Poco::Net::VerificationErrorArgs& args);
@@ -110,36 +111,17 @@ public:
     bool onTaskProgress(const ofx::TaskProgressEventArgs& args);
     bool onTaskData(const ofx::TaskDataEventArgs<std::string>& args);
 
-    // TODO: Move this.
-    // Wraps a json method in the ofSketch protocol headers.
-    static Json::Value toJSONMethod(const std::string& module,
-                                    const std::string& method,
-                                    const Json::Value& params);
-
-    // TODO: Move this.
-    // This is a utility method for quickly converting a json value to a string.
-    static std::string toJSONString(const Json::Value& json);
-
-    // TODO: Move this.
     static std::string getVersion();
     static int getVersionMajor();
     static int getVersionMinor();
     static int getVersionPatch();
     static std::string getVersionSpecial();
 
-    // TODO: HACK while openFrameworks core is updated.
-    // - https://github.com/openframeworks/openFrameworks/issues/2162
-    // - https://github.com/openframeworks/openFrameworks/pull/3109
-    static ofTargetPlatform getTargetPlatform();
-    
-    // TODO: Move this.
-    static std::string toString(ofTargetPlatform targetPlatform);
-
     enum Version
     {
         VERSION_MAJOR = 0,
         VERSION_MINOR = 3,
-        VERSION_PATCH = 1
+        VERSION_PATCH = 2
     };
 
     static const std::string VERSION_SPECIAL;
@@ -157,6 +139,7 @@ private:
     Compiler            _compiler;
     AddonManager        _addonManager;
     ProjectManager      _projectManager;
+    UploadRouter        _uploadRouter;
 
     ofImage _logo;
     ofTrueTypeFont _font;

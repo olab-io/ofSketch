@@ -1,7 +1,7 @@
 // =============================================================================
 //
-// Copyright (c) 2013 Christopher Baker <http://christopherbaker.net>
-//               2014 Brannon Dorsey <http://brannondorsey.com>
+// Copyright (c) 2013-2014 Christopher Baker <http://christopherbaker.net>
+// Copyright (c) 2014 Brannon Dorsey <http://brannondorsey.com>
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -36,7 +36,6 @@ ProjectManager::ProjectManager(const std::string& path):
     _templateProject(ofToDataPath("Resources/Templates/NewProject", true))
 {
     ofLogNotice("ProjectManager::ProjectManager") << "_path: " <<_path;
-    _projectWatcher.addPath(_path);
 
     std::vector<std::string> files;
 
@@ -177,7 +176,7 @@ void ProjectManager::loadTemplateProject(const void *pSender,
     {
         _templateProject.load(_templateProject.getPath(), _templateProject.getName());
     }
-    
+
     args.result = _templateProject.getData();
 
     ofLogNotice("Project::loadTemplateProject") << "Loaded a template project.";
@@ -213,7 +212,7 @@ void ProjectManager::createProject(const void* pSender,
     std::string projectName = args.params["projectData"]["projectFile"]["name"].asString();
 
     ofDirectory projectDir(_templateProject.getPath());
-    
+
     projectDir.copyTo(_path + "/" + projectName);
 
     ofFile templateProjectFile(_path + "/" + projectName + "/sketch/NewProject." + Project::SKETCH_FILE_EXTENSION);
@@ -226,7 +225,7 @@ void ProjectManager::createProject(const void* pSender,
     args.result = project.getData();
     ofLogNotice("Project::createProject") << "Created " << projectName << " project";
 }
-    
+
 void ProjectManager::deleteProject(const void *pSender,
                                    ofx::JSONRPC::MethodArgs &args)
 {
@@ -248,7 +247,7 @@ void ProjectManager::deleteProject(const void *pSender,
     args.error["message"] = "Error deleting " + projectName + " project.";
     ofLogError("Project::deleteProject") << "Error deleting " << projectName << " project";
 }
-    
+
 void ProjectManager::renameProject(const void *pSender, ofx::JSONRPC::MethodArgs &args)
 {
     std::string projectName = args.params["projectName"].asString();
@@ -295,45 +294,10 @@ void ProjectManager::updateProject(const std::string& projectName)
 {
     // TODO:
 }
-    
+
 void ProjectManager::notifyProjectClosed(const std::string& projectName)
 {
     _removeFromOpenProjectNames(projectName);
-}
-
-void ProjectManager::onDirectoryWatcherItemAdded(const ofx::DirectoryWatcher::DirectoryEvent& evt)
-{
-    ofSendMessage("Added:    " + evt.item.path());
-}
-
-
-void ProjectManager::onDirectoryWatcherItemRemoved(const ofx::DirectoryWatcher::DirectoryEvent& evt)
-{
-    ofSendMessage("Removed:  " + evt.item.path());
-}
-
-
-void ProjectManager::onDirectoryWatcherItemModified(const ofx::DirectoryWatcher::DirectoryEvent& evt)
-{
-    ofSendMessage("Modified: " + evt.item.path());
-}
-
-
-void ProjectManager::onDirectoryWatcherItemMovedFrom(const ofx::DirectoryWatcher::DirectoryEvent& evt)
-{
-    ofLogNotice("ofApp::onDirectoryWatcherItemMovedFrom") << "Moved From: " << evt.item.path();
-}
-
-
-void ProjectManager::onDirectoryWatcherItemMovedTo(const ofx::DirectoryWatcher::DirectoryEvent& evt)
-{
-    ofLogNotice("ofApp::onDirectoryWatcherItemMovedTo") << "Moved To: " << evt.item.path();
-}
-
-
-void ProjectManager::onDirectoryWatcherError(const Poco::Exception& exc)
-{
-    ofLogError("ofApp::onDirectoryWatcherError") << "Error: " << exc.displayText();
 }
 
 
@@ -347,7 +311,7 @@ bool ProjectManager::_removeFromOpenProjectNames(const std::string& projectName)
             return true;
         }
     }
-    
+
     return false;
 }
 

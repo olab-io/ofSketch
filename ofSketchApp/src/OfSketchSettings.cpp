@@ -25,27 +25,54 @@
 
 #include "OfSketchSettings.h"
 
+
 namespace of {
 namespace Sketch {
 
 
-OfSketchSettings::OfSketchSettings(const std::string& path):
-    _path(path)
+OfSketchSettings::OfSketchSettings():
+    _templateSettingsFilePath(ofToDataPath("Resources/Settings/OfSketchSettings.json")),
+    _path(_templateSettingsFilePath)
 {
-    load();
+//    if (Poco::Environment::has("HOME")) {
+//
+//        ofFile settingsFile = Poco::Environment::get("HOME") + "/.ofsketchsettings.json";
+//
+//        _path = settingsFile.getAbsolutePath();
+//
+//        if (settingsFile.exists())
+//        {
+//            load(_path);
+//        }
+//        else
+//        {
+//            load(_templateSettingsFilePath);
+//        }
+//    }
+//    else {
+//        load(_templateSettingsFilePath);
+//    }
+
+    load(_templateSettingsFilePath);
     ofLogVerbose("EditorSettings::EditorSettings") << "Project Directory: " << getProjectDir();
 }
 
 
-bool OfSketchSettings::load()
+bool OfSketchSettings::load(const std::string& path)
 {
-    return _data.open(_path);
+    return _data.open(path);
+}
+
+    
+bool OfSketchSettings::save()
+{
+    return _data.save(_path, true);
 }
 
 
-bool OfSketchSettings::save()
+void OfSketchSettings::update(const ofxJSONElement& data)
 {
-    return _data.save(_path);
+    _data = data;
 }
 
 
@@ -53,6 +80,7 @@ const Json::Value& OfSketchSettings::getData() const
 {
     return _data;
 }
+
 
 int OfSketchSettings::getPort() const
 {
@@ -65,10 +93,16 @@ int OfSketchSettings::getBufferSize() const
     return _data["server"]["bufferSize"].asInt();
 }
 
+bool OfSketchSettings::getAllowRemote() const
+{
+    if (_data.isMember("allowRemote")) {
+        return _data["allowRemote"].asBool();
+    } else return false;
+}
 
 std::string OfSketchSettings::getProjectDir() const
 {
-    return _data["projectDir"].asString();
+    return ofToDataPath(_data["projectDir"].asString());
 }
 
 
@@ -85,7 +119,7 @@ std::string OfSketchSettings::getAddonsDir() const
 
 std::string OfSketchSettings::getOpenFrameworksDir() const
 {
-    return _data["openFrameworksDir"].asString();
+    return ofToDataPath(_data["openFrameworksDir"].asString());
 }
 
 
@@ -110,6 +144,21 @@ std::string OfSketchSettings::getProjectExtension() const
 std::string OfSketchSettings::getClassExtension() const
 {
     return _data["classExtension"].asString();
+}
+
+
+std::vector<std::string> OfSketchSettings::getWhitelistedIPs() const
+{
+    std::vector<std::string> IPs;
+
+    if (_data.isMember("whitelistedIPs"))
+    {
+        for (unsigned int i = 0; i < _data["whitelistedIPs"].size(); i++) {
+            IPs.push_back(_data["whitelistedIPs"][i].asString());
+        }
+    }
+
+    return IPs;
 }
 
 

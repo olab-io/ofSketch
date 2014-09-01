@@ -1,3 +1,14 @@
+- 0.3.2 (08-31-2014)
+	+ Basic file upload support ([#16](https://github.com/olab-io/ofSketch/issues/16)).
+	+ New Class template ([#102](https://github.com/olab-io/ofSketch/issues/102)).
+	+ Responsive toolbar fix.
+	+ 1-line input modals can now be submitted with the return key.
+	
+- 0.3.1 (08-17-2014)
+	+ Basic dependency toolchain checking that alerts user of install instructions if they are missing dependencies ([#100](https://github.com/olab-io/ofSketch/issues/100])) ([#98](https://github.com/olab-io/ofSketch/issues/98])). 
+	+ Added ROADMAP.md document.
+	+ Added BUILDING.md document.
+	
 - 0.3.0 (08-07-2014)
 	+ Adapt default ACE Settings Menu to support global ofSketch editor settings ([#42](https://github.com/olab-io/ofSketch/issues/42)).
 	+ Added Raspberry Pi support, added workaround for ofSystem issue ([#58](https://github.com/olab-io/ofSketch/issues/58)).
