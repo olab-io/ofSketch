@@ -1,4 +1,4 @@
-- 0.3.2 (pending)
+- 0.3.2 (08-31-2014)
 	+ Basic file upload support ([#16](https://github.com/olab-io/ofSketch/issues/16)).
 	+ New Class template ([#102](https://github.com/olab-io/ofSketch/issues/102)).
 	+ Responsive toolbar fix.
