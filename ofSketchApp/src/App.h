@@ -103,13 +103,14 @@ public:
     void onSSLClientVerificationError(Poco::Net::VerificationErrorArgs& args);
     void onSSLPrivateKeyPassphraseRequired(std::string& args);
 
-    bool onTaskQueued(const ofx::TaskQueuedEventArgs& args);
-    bool onTaskStarted(const ofx::TaskStartedEventArgs& args);
-    bool onTaskCancelled(const ofx::TaskCancelledEventArgs& args);
-    bool onTaskFinished(const ofx::TaskFinishedEventArgs& args);
+    bool onTaskQueued(const ofx::TaskQueueEventArgs& args);
+    bool onTaskStarted(const ofx::TaskQueueEventArgs& args);
+    bool onTaskCancelled(const ofx::TaskQueueEventArgs& args);
+    bool onTaskFinished(const ofx::TaskQueueEventArgs& args);
     bool onTaskFailed(const ofx::TaskFailedEventArgs& args);
     bool onTaskProgress(const ofx::TaskProgressEventArgs& args);
-    bool onTaskData(const ofx::TaskDataEventArgs<std::string>& args);
+
+    bool onTaskData(const ProcessTaskQueue::EventArgs& args);
 
     static std::string getVersion();
     static int getVersionMajor();

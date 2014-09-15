@@ -36,59 +36,48 @@ namespace of {
 namespace Sketch {
 
 
-class TaskProgress
+class ProcessTaskQueue: public ofx::TaskQueue
 {
 public:
-    TaskProgress(): progress(0)
-    {
-    }
+    typedef ofx::TaskDataEventArgs_<Poco::UUID, std::string> EventArgs;
 
-    Json::Value toJson() const
-    {
-        Json::Value progressJson;
-
-        progressJson["name"] = name;
-        progressJson["uuid"] = uuid.toString();
-        progressJson["progress"] = progress;
-        progressJson["message"] = message;
-
-        return progressJson;
-    }
-
-    std::string name;
-    Poco::UUID uuid;
-    float progress;
-    std::string message;
-
-};
-
-
-class ProcessTaskQueue: public ofx::TaskQueue_<std::string>
-{
-public:
     ProcessTaskQueue(int maximumTasks, Poco::ThreadPool& threadPool);
 
     virtual ~ProcessTaskQueue();
 
-    bool onTaskQueued(const ofx::TaskQueuedEventArgs& args);
-    bool onTaskStarted(const ofx::TaskStartedEventArgs& args);
-    bool onTaskCancelled(const ofx::TaskCancelledEventArgs& args);
-    bool onTaskFinished(const ofx::TaskFinishedEventArgs& args);
-    bool onTaskFailed(const ofx::TaskFailedEventArgs& args);
-    bool onTaskProgress(const ofx::TaskProgressEventArgs& args);
-    bool onTaskData(const ofx::TaskDataEventArgs<std::string>& args);
-
     Json::Value toJson() const;
 
-protected:
-    virtual void handleUserNotification(Poco::AutoPtr<Poco::TaskNotification> task,
-                                        const Poco::UUID& taskId,
-                                        Poco::Notification::Ptr pNotification);
+    ofEvent<const EventArgs> onTaskData;
 
-private:
-    std::map<Poco::UUID, TaskProgress> tasks;
+    template<typename ListenerClass>
+    void registerAllEvents(ListenerClass* listener);
+
+    template<typename ListenerClass>
+    void unregisterAllEvents(ListenerClass* listener);
+
+protected:
+    virtual void handleTaskCustomNotification(const Poco::UUID& taskID,
+                                             TaskNotificationPtr pNotification);
 
 };
+
+
+template<typename ListenerClass>
+void ProcessTaskQueue::registerAllEvents(ListenerClass* listener)
+{
+    registerTaskProgressEvents(listener);
+    ofAddListener(onTaskData, listener, &ListenerClass::onTaskData);
+}
+
+
+template<typename ListenerClass>
+void ProcessTaskQueue::unregisterAllEvents(ListenerClass* listener)
+{
+    unregisterTaskProgressEvents(listener);
+    ofRemoveListener(onTaskData, listener, &ListenerClass::onTaskData);
+}
+
+
 
 
 } } // namespace of::Sketch

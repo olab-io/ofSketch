@@ -32,129 +32,13 @@ namespace Sketch {
 
 ProcessTaskQueue::ProcessTaskQueue(int maximumTasks,
                                    Poco::ThreadPool& threadPool):
-    ofx::TaskQueue_<std::string>(maximumTasks, threadPool)
+    ofx::TaskQueue(maximumTasks, threadPool)
 {
-    registerTaskEvents(this);
 }
 
 
 ProcessTaskQueue::~ProcessTaskQueue()
 {
-    unregisterTaskEvents(this);
-}
-
-
-void ProcessTaskQueue::handleUserNotification(Poco::AutoPtr<Poco::TaskNotification> task,
-                                              const Poco::UUID& taskId,
-                                              Poco::Notification::Ptr pNotification)
-{
-    // TODO: add additional custom types in addition to string.
-    ofx::TaskQueue_<std::string>::handleUserNotification(task, taskId, pNotification);
-}
-
-
-bool ProcessTaskQueue::onTaskQueued(const ofx::TaskQueuedEventArgs& args)
-{
-    // Define a task handle.
-    TaskProgress task;
-    task.name = args.getTaskName();
-    task.uuid = args.getTaskId();
-
-    // Add the task.
-    tasks[task.uuid] = task;
-
-    return false;
-}
-
-
-bool ProcessTaskQueue::onTaskStarted(const ofx::TaskStartedEventArgs& args)
-{
-    tasks[args.getTaskId()].progress = args.getProgress();
-
-    return false;
-}
-
-
-bool ProcessTaskQueue::onTaskCancelled(const ofx::TaskCancelledEventArgs& args)
-{
-    if (tasks.find(args.getTaskId()) != tasks.end())
-    {
-        tasks[args.getTaskId()].progress = 0;
-    }
-    else
-    {
-        ofLogFatalError("ofApp::onTaskCancelled") << "Unknown UUID.";
-    }
-
-    // We did not consume the event, just made note of it.
-    return false;
-}
-
-
-bool ProcessTaskQueue::onTaskFinished(const ofx::TaskFinishedEventArgs& args)
-{
-    std::map<Poco::UUID, TaskProgress>::iterator iter = tasks.find(args.getTaskId());
-
-    if (tasks.find(args.getTaskId()) != tasks.end())
-    {
-        tasks.erase(iter);
-    }
-    else
-    {
-        ofLogFatalError("ofApp::onTaskFinished") << "Unknown UUID.";
-    }
-
-    // We did not consume the event, just made note of it.
-    return false;
-}
-
-
-bool ProcessTaskQueue::onTaskFailed(const ofx::TaskFailedEventArgs& args)
-{
-    if (tasks.find(args.getTaskId()) != tasks.end())
-    {
-        tasks[args.getTaskId()].progress = 0;
-        tasks[args.getTaskId()].message = args.getException().displayText();
-    }
-    else
-    {
-        ofLogFatalError("ofApp::onTaskFailed") << "Unknown UUID.";
-    }
-
-    // We did not consume the event, just made note of it.
-    return false;
-}
-
-
-bool ProcessTaskQueue::onTaskProgress(const ofx::TaskProgressEventArgs& args)
-{
-    if (tasks.find(args.getTaskId()) != tasks.end())
-    {
-        tasks[args.getTaskId()].progress = args.getProgress();
-    }
-    else
-    {
-        ofLogFatalError("ofApp::onTaskProgress") << "Unknown UUID.";
-    }
-
-    // We did not consume the event, just made note of it.
-    return false;
-}
-
-
-bool ProcessTaskQueue::onTaskData(const ofx::TaskDataEventArgs<std::string>& args)
-{
-    if (tasks.find(args.getTaskId()) != tasks.end())
-    {
-        tasks[args.getTaskId()].message = args.getData();
-    }
-    else
-    {
-        ofLogFatalError("ofApp::onTaskData") << "Unknown UUID.";
-    }
-
-    // We did not consume the event, just made note of it.
-    return false;
 }
 
 
@@ -166,16 +50,49 @@ Json::Value ProcessTaskQueue::toJson() const
 
     Json::Value json;
 
-    std::map<Poco::UUID, TaskProgress>::const_iterator iter = tasks.begin();
+    ProgressMap::const_iterator iter = _IDTaskProgressMap.begin();
 
-    while (iter != tasks.end())
+    while (iter != _IDTaskProgressMap.end())
     {
+        const ofx::TaskProgressEventArgs_<Poco::UUID> info = iter->second;
+
+        Json::Value progressJson;
+
+        progressJson["name"] = info.getTaskName();
+        progressJson["uuid"] = info.getTaskId().toString();
+        progressJson["progress"] = info.getProgress();
+        progressJson["message"] = ""; // None for now.
+
         // Add each of the current tasks to the json array.
-        json.append(iter->second.toJson());
+        json.append(progressJson);
+
         ++iter;
     }
 
     return json;
+}
+
+
+
+void ProcessTaskQueue::handleTaskCustomNotification(const Poco::UUID& taskID,
+                                                    TaskNotificationPtr pNotification)
+{
+    Poco::AutoPtr<Poco::TaskCustomNotification<std::string> > dataTask = 0;
+
+    if (!(dataTask = pNotification.cast<Poco::TaskCustomNotification<std::string> >()).isNull())
+    {
+        EventArgs args(taskID,
+                       pNotification->task()->name(),
+                       pNotification->task()->state(),
+                       pNotification->task()->progress(),
+                       dataTask->custom());
+
+        ofNotifyEvent(onTaskData, args, this);
+    }
+    else
+    {
+        ofx::TaskQueue::handleTaskCustomNotification(taskID, pNotification);
+    }
 }
 
 

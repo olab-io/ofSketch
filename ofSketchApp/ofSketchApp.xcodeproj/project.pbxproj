@@ -16,7 +16,6 @@
 		0E31603ECA7E5DABA2C37250 /* DefaultClientTask.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 71B63A3A2B265E69729FCD6C /* DefaultClientTask.cpp */; };
 		10A05DC42B1B9A5BB7F88DA6 /* PostRouteHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FD7C8908D1BCC7E7170A424C /* PostRouteHandler.cpp */; };
 		10B158B194807374A26775AC /* ProgressMonitor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 693FBDA754F1B87B41557858 /* ProgressMonitor.cpp */; };
-		110B9781F4F44BAE87500201 /* TaskQueueEvents.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 78F8C4EFD4D80B3430415F80 /* TaskQueueEvents.cpp */; };
 		111E97FD4195A8FD3F8F5E61 /* PostRequest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0C90D293D591AFDC80CD1DEC /* PostRequest.cpp */; };
 		124E9229C2F0ECBA383AE58A /* DefaultClientHeaders.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 15EA8147DB6BC7E4BE276B2A /* DefaultClientHeaders.cpp */; };
 		125AB007D29CECBA2D2B3CE1 /* Utils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A842FAA158FB434DF69D04F8 /* Utils.cpp */; };
@@ -333,7 +332,6 @@
 		78AA6D7DEEBD1DB09A9FB1F0 /* BaseAuthenticationRoute.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = BaseAuthenticationRoute.h; path = ../../../addons/ofxHTTP/libs/ofxHTTP/include/ofx/HTTP/BaseAuthenticationRoute.h; sourceTree = SOURCE_ROOT; };
 		78ABC0D4C166C96899B65B36 /* CredentialStore.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = CredentialStore.cpp; path = ../../../addons/ofxHTTP/libs/ofxHTTP/src/CredentialStore.cpp; sourceTree = SOURCE_ROOT; };
 		78BC8088D555F49447175CED /* Project.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = Project.h; path = src/Project.h; sourceTree = SOURCE_ROOT; };
-		78F8C4EFD4D80B3430415F80 /* TaskQueueEvents.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = TaskQueueEvents.cpp; path = ../../../addons/ofxTaskQueue/libs/ofxTaskQueue/src/TaskQueueEvents.cpp; sourceTree = SOURCE_ROOT; };
 		78FD9C48073800778B94DB30 /* MethodArgs.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = MethodArgs.h; path = ../../../addons/ofxJSONRPC/libs/ofxJSONRPC/include/ofx/JSONRPC/MethodArgs.h; sourceTree = SOURCE_ROOT; };
 		7913239832BBBF6B56ED2600 /* lz4.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 30; name = lz4.c; path = ../../../addons/ofxIO/libs/lz4/src/lz4.c; sourceTree = SOURCE_ROOT; };
 		7DF358F770A9AA90E0CAB6FC /* RunTask.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = RunTask.h; path = src/RunTask.h; sourceTree = SOURCE_ROOT; };
@@ -680,14 +678,6 @@
 				12DCBDFDA020CDAB691290FC /* PG */,
 			);
 			name = ofx;
-			sourceTree = "<group>";
-		};
-		2C10DE544FAB57D1F656BDAA /* src */ = {
-			isa = PBXGroup;
-			children = (
-				78F8C4EFD4D80B3430415F80 /* TaskQueueEvents.cpp */,
-			);
-			name = src;
 			sourceTree = "<group>";
 		};
 		3561608134E93F44875B2432 /* libs */ = {
@@ -1190,7 +1180,6 @@
 			isa = PBXGroup;
 			children = (
 				E8E3FC725FBBD5AF4DF06349 /* includes */,
-				2C10DE544FAB57D1F656BDAA /* src */,
 			);
 			name = ofxTaskQueue;
 			sourceTree = "<group>";
@@ -1702,7 +1691,6 @@
 				D7546F032F43E162B6D56173 /* XcodeProject.cpp in Sources */,
 				66E2ED967F8D6C833C7CC321 /* pugixml.cpp in Sources */,
 				7BDA2F54DF10A45BF4DBC88A /* ofSSLManager.cpp in Sources */,
-				110B9781F4F44BAE87500201 /* TaskQueueEvents.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

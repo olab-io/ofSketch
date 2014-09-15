@@ -52,7 +52,8 @@ App::App():
     }
 
     ofLogNotice("App::App") << "Editor setting's projectDir: " << _ofSketchSettings.getProjectDir();
-    _taskQueue.registerTaskEvents(this);
+
+    _taskQueue.registerAllEvents(this);
 
     ofLogNotice("App::App") << "Starting server on port: " << _ofSketchSettings.getPort() << " With Websocket Buffer Size: " << _ofSketchSettings.getBufferSize();
 
@@ -82,7 +83,7 @@ App::App():
 
 App::~App()
 {
-    _taskQueue.unregisterTaskEvents(this);
+    _taskQueue.unregisterAllEvents(this);
 
     server->getWebSocketRoute()->unregisterWebSocketEvents(this);
     server->getPostRoute()->unregisterPostEvents(&_uploadRouter);
@@ -754,7 +755,7 @@ void App::onSSLPrivateKeyPassphraseRequired(std::string& args)
 }
 
 
-bool App::onTaskQueued(const ofx::TaskQueuedEventArgs& args)
+bool App::onTaskQueued(const ofx::TaskQueueEventArgs& args)
 {
     Json::Value params;
     params["name"] = args.getTaskName();
@@ -766,7 +767,7 @@ bool App::onTaskQueued(const ofx::TaskQueuedEventArgs& args)
 }
 
 
-bool App::onTaskStarted(const ofx::TaskStartedEventArgs& args)
+bool App::onTaskStarted(const ofx::TaskQueueEventArgs& args)
 {
     Json::Value params;
     params["name"] = args.getTaskName();
@@ -778,7 +779,7 @@ bool App::onTaskStarted(const ofx::TaskStartedEventArgs& args)
 }
 
 
-bool App::onTaskCancelled(const ofx::TaskCancelledEventArgs& args)
+bool App::onTaskCancelled(const ofx::TaskQueueEventArgs& args)
 {
     Json::Value params;
     params["name"] = args.getTaskName();
@@ -790,7 +791,7 @@ bool App::onTaskCancelled(const ofx::TaskCancelledEventArgs& args)
 }
 
 
-bool App::onTaskFinished(const ofx::TaskFinishedEventArgs& args)
+bool App::onTaskFinished(const ofx::TaskQueueEventArgs& args)
 {
     Json::Value params;
     params["name"] = args.getTaskName();
@@ -828,7 +829,7 @@ bool App::onTaskProgress(const ofx::TaskProgressEventArgs& args)
 }
 
 
-bool App::onTaskData(const ofx::TaskDataEventArgs<std::string>& args)
+bool App::onTaskData(const ProcessTaskQueue::EventArgs& args)
 {
     // We use the custom events to send status messages, and other custom
     // events for custom data specific events.
