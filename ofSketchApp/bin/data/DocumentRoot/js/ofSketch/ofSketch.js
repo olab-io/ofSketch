@@ -756,34 +756,34 @@ $(document).ready( function()
             sketchEditor.showSettingsMenu();
         });
 
-        $('#ofsketch-settings').on('click', function(e){
+        // $('#ofsketch-settings').on('click', function(e){
 
-            ofSketchSettings.load(function(settings){
+        //     ofSketchSettings.load(function(settings){
     
-                $('#ofsketch-settings-port').attr('value', settings.server.port);
-                $('#ofsketch-settings-buffer-size').attr('value', settings.server.bufferSize);
-                $('#ofsketch-settings-openframeworks-directory').attr('value', settings.openFrameworksDir);
-                $('#ofsketch-settings-project-directory').attr('value', settings.projectDir);
+        //         $('#ofsketch-settings-port').attr('value', settings.server.port);
+        //         $('#ofsketch-settings-buffer-size').attr('value', settings.server.bufferSize);
+        //         $('#ofsketch-settings-openframeworks-directory').attr('value', settings.openFrameworksDir);
+        //         $('#ofsketch-settings-project-directory').attr('value', settings.projectDir);
 
-                // when new settings are added to the GUI
-                // we must check if they are undefined before using them
-                // in case the user has an old version of .ofsketchsettings.json
-                if (!_.isUndefined(settings.allowRemote)) {
-                    $('#ofsketch-settings-allow-remote').prop('checked', settings.allowRemote);
-                }
+        //         // when new settings are added to the GUI
+        //         // we must check if they are undefined before using them
+        //         // in case the user has an old version of .ofsketchsettings.json
+        //         if (!_.isUndefined(settings.allowRemote)) {
+        //             $('#ofsketch-settings-allow-remote').prop('checked', settings.allowRemote);
+        //         }
     
-                if (!_.isUndefined(settings.whitelistedIPs)) {
-                    $('#ofsketch-settings-whitelisted-ips').val(settings.whitelistedIPs.join(',\n'));
-                }
+        //         if (!_.isUndefined(settings.whitelistedIPs)) {
+        //             $('#ofsketch-settings-whitelisted-ips').val(settings.whitelistedIPs.join(',\n'));
+        //         }
     
-                $('#ofsketch-settings-modal').modal('show');
+        //         $('#ofsketch-settings-modal').modal('show');
 
-            }, function(){
+        //     }, function(){
 
-                console.log('Error loading ofSketch settings');
-                console.log(err);
-            });
-        });
+        //         console.log('Error loading ofSketch settings');
+        //         console.log(err);
+        //     });
+        // });
 
         $('#save-ofsketch-settings').on('click', function(){
 
