@@ -35,17 +35,24 @@ Compiler::Compiler(ProcessTaskQueue& taskQueue,
                    const std::string& openFrameworksDir):
     _taskQueue(taskQueue),
     _pathToTemplates(pathToTemplates),
-    _projectFileTemplate(ofBufferFromFile(ofToDataPath(_pathToTemplates + "/main.tmpl")).getText()),
-    _classTemplate(ofBufferFromFile(ofToDataPath(_pathToTemplates + "/class.tmpl")).getText()),
+    _projectFileTemplate(""),
+    _classTemplate(""),
     _openFrameworksDir(openFrameworksDir)
 {
+}
+
+
+void Compiler::setup()
+{
+    _projectFileTemplate = ofBufferFromFile(_pathToTemplates + "/main.tmpl").getText();
+    _classTemplate = ofBufferFromFile(_pathToTemplates + "/class.tmpl").getText();
 }
 
 
 Poco::UUID Compiler::compile(const Project& project)
 {
     MakeTask::Settings settings;
-    settings.ofRoot = _openFrameworksDir;
+    settings.ofRoot = ofToDataPath(_openFrameworksDir, true);
     return _taskQueue.start(new MakeTask(settings, project, "Release"));
 }
 

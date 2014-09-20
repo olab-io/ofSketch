@@ -35,6 +35,17 @@ const std::string AddonManager::DEFAULT_ADDON_PATH = "addons/";
 
 AddonManager::AddonManager(const Poco::Path& path): _path(path)
 {
+}
+
+
+AddonManager::~AddonManager()
+{
+    _addonWatcher.unregisterAllEvents(this);
+}
+
+
+void AddonManager::setup()
+{
     Poco::Path fullPath(ofToDataPath(_path.toString(), true));
 
     Poco::File file(fullPath);
@@ -55,9 +66,9 @@ AddonManager::AddonManager(const Poco::Path& path): _path(path)
     {
         std::string addonPath = (*iter).path();
         std::string addonName = Poco::Path(addonPath).getBaseName();
-        
+
         Poco::RegularExpression addonExpression("ofx.+$", Poco::RegularExpression::RE_ANCHORED);
- 
+
         if (addonExpression.match(addonName))
         {
             _addons[addonName] = Addon::SharedPtr(new Addon(addonName, addonPath));
@@ -71,12 +82,6 @@ AddonManager::AddonManager(const Poco::Path& path): _path(path)
                           false,
                           true,
                           &_directoryFilter);
-}
-
-
-AddonManager::~AddonManager()
-{
-    _addonWatcher.unregisterAllEvents(this);
 }
 
 

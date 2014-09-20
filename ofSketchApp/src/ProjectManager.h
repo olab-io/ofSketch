@@ -48,6 +48,8 @@ public:
     ProjectManager(const std::string& path);
     virtual ~ProjectManager();
 
+    void setup();
+
     // const std::vector<std::string>& getOpenProjectNames() const;
     const std::vector<Project>& getProjects() const;
 

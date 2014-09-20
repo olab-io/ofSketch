@@ -41,6 +41,8 @@ class UploadRouter
 public:
     UploadRouter(const std::string& projectDir);
 
+    void setup();
+
     bool onHTTPPostEvent(ofx::HTTP::PostEventArgs& args);
     bool onHTTPFormEvent(ofx::HTTP::PostFormEventArgs& args);
     bool onHTTPUploadEvent(ofx::HTTP::PostUploadEventArgs& args);

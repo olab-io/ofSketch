@@ -31,7 +31,7 @@ namespace Sketch {
 
 
 OfSketchSettings::OfSketchSettings():
-    _templateSettingsFilePath(ofToDataPath("Resources/Settings/OfSketchSettings.json")),
+    _templateSettingsFilePath("Resources/Settings/OfSketchSettings.json"),
     _path(_templateSettingsFilePath)
 {
 //    if (Poco::Environment::has("HOME")) {
@@ -52,9 +52,12 @@ OfSketchSettings::OfSketchSettings():
 //    else {
 //        load(_templateSettingsFilePath);
 //    }
+}
 
-    load(_templateSettingsFilePath);
-    ofLogVerbose("EditorSettings::EditorSettings") << "Project Directory: " << getProjectDir();
+
+bool OfSketchSettings::load()
+{
+    return load(_templateSettingsFilePath);
 }
 
 
@@ -102,7 +105,7 @@ bool OfSketchSettings::getAllowRemote() const
 
 std::string OfSketchSettings::getProjectDir() const
 {
-    return ofToDataPath(_data["projectDir"].asString());
+    return _data["projectDir"].asString();
 }
 
 
@@ -119,7 +122,7 @@ std::string OfSketchSettings::getAddonsDir() const
 
 std::string OfSketchSettings::getOpenFrameworksDir() const
 {
-    return ofToDataPath(_data["openFrameworksDir"].asString());
+    return _data["openFrameworksDir"].asString();
 }
 
 

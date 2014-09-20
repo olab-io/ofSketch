@@ -34,6 +34,10 @@ UploadRouter::UploadRouter(const std::string& projectDir):
 {
 }
 
+void UploadRouter::setup()
+{
+}
+
 
 bool UploadRouter::onHTTPPostEvent(ofx::HTTP::PostEventArgs& args)
 {

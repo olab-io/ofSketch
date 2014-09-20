@@ -35,63 +35,16 @@ const std::string App::VERSION_SPECIAL = "";
 
 
 App::App():
-    _editorSettings(ofToDataPath("Resources/Settings/EditorSettings.json")),
+    _editorSettings("Resources/Settings/EditorSettings.json"),
     _ofSketchSettings(),
     _threadPool("ofSketchThreadPool"),
     _taskQueue(ofx::TaskQueue_<std::string>::UNLIMITED_TASKS, _threadPool),
-    _compiler(_taskQueue, ofToDataPath("Resources/Templates/CompilerTemplates"),
-              ofToDataPath("openFrameworks", true)),
-    _addonManager(ofToDataPath(_ofSketchSettings.getAddonsDir())),
-    _projectManager(ofToDataPath(_ofSketchSettings.getProjectDir(), true)),
-    _uploadRouter(ofToDataPath(_ofSketchSettings.getProjectDir(), true)),
+    _compiler(_taskQueue, "Resources/Templates/CompilerTemplates", "openFrameworks"),
+    _addonManager("openFrameworks/addons"),
+    _projectManager("Projects"),
+    _uploadRouter("Projects"),
     _missingDependencies(true)
 {
-
-  try {
-    std::cout << "In here" << std::endl;
-
-    if (hasDependency("make"))
-    {
-        _missingDependencies = false;
-    }
-
-    ofLogNotice("App::App") << "Editor setting's projectDir: " << _ofSketchSettings.getProjectDir();
-
-    _taskQueue.registerAllEvents(this);
-
-    ofLogNotice("App::App") << "Starting server on port: " << _ofSketchSettings.getPort() << " With Websocket Buffer Size: " << _ofSketchSettings.getBufferSize();
-
-    ofx::HTTP::BasicJSONRPCServerSettings settings; // TODO: load from file.
-    settings.setBufferSize(_ofSketchSettings.getBufferSize());
-    settings.setPort(_ofSketchSettings.getPort());
-    settings.setUploadRedirect("");
-    settings.setMaximumFileUploadSize(5000000 * 1024); // 50 GB
-
-    server = ofx::HTTP::BasicJSONRPCServer::makeShared(settings);
-
-    // Must register for all events before initializing server.
-    ofSSLManager::registerAllEvents(this);
-
-    server->getPostRoute()->registerPostEvents(&_uploadRouter);
-    server->getWebSocketRoute()->registerWebSocketEvents(this);
-
-    // Set up websocket logger.
-    // _loggerChannel = WebSocketLoggerChannel::makeShared();
-    // _loggerChannel->setWebSocketRoute(server->getWebSocketRoute());
-    // ofSetLoggerChannel(_loggerChannel);
-
-    _logo.loadImage("media/openFrameworks.jpg");
-    _font.loadFont(OF_TTF_SANS, 20);
-
-
-    std::cout << "Out here" << std::endl;
-  }
-    catch (const Poco::Exception& exc)
-    {
-      cout << exc.displayText() << std::endl;
-
-    }
-
 }
 
 
@@ -112,6 +65,60 @@ void App::setup()
 
     ofSetLogLevel("ofThread", OF_LOG_ERROR);
     ofSetLogLevel(OF_LOG_VERBOSE);
+
+    _editorSettings.load();
+    _ofSketchSettings.load();
+    _compiler.setup();
+    _addonManager.setup();
+    _projectManager.setup();
+    _uploadRouter.setup();
+
+    try {
+        std::cout << "In here" << std::endl;
+
+        if (hasDependency("make"))
+        {
+            _missingDependencies = false;
+        }
+
+        ofLogNotice("App::App") << "Editor setting's projectDir: " << _ofSketchSettings.getProjectDir();
+
+        _taskQueue.registerAllEvents(this);
+
+        ofLogNotice("App::App") << "Starting server on port: " << _ofSketchSettings.getPort() << " With Websocket Buffer Size: " << _ofSketchSettings.getBufferSize();
+
+        ofx::HTTP::BasicJSONRPCServerSettings settings; // TODO: load from file.
+        settings.setBufferSize(_ofSketchSettings.getBufferSize());
+        settings.setPort(_ofSketchSettings.getPort());
+        settings.setUploadRedirect("");
+        settings.setMaximumFileUploadSize(5000000 * 1024); // 50 GB
+
+        server = ofx::HTTP::BasicJSONRPCServer::makeShared(settings);
+
+        // Must register for all events before initializing server.
+        ofSSLManager::registerAllEvents(this);
+
+        server->getPostRoute()->registerPostEvents(&_uploadRouter);
+        server->getWebSocketRoute()->registerWebSocketEvents(this);
+
+        // Set up websocket logger.
+        // _loggerChannel = WebSocketLoggerChannel::makeShared();
+        // _loggerChannel->setWebSocketRoute(server->getWebSocketRoute());
+        // ofSetLoggerChannel(_loggerChannel);
+
+        _logo.loadImage("media/openFrameworks.jpg");
+        _font.loadFont(OF_TTF_SANS, 20);
+        
+        
+        std::cout << "Out here" << std::endl;
+    }
+    catch (const Poco::Exception& exc)
+    {
+        cout << exc.displayText() << std::endl;
+        
+    }
+    
+
 
     ofSSLManager::initializeServer(new Poco::Net::Context(Poco::Net::Context::SERVER_USE,
                                                           ofToDataPath("ssl/privateKey.nopassword.pem"),
@@ -251,7 +258,7 @@ void App::setup()
     if (arch != OF_TARGET_LINUXARMV6L && arch != OF_TARGET_LINUXARMV7L)
     {
         // Launch a browser with the address of the server.
-        ofLaunchBrowser(server->getURL() + "/?project=HelloWorld");
+        ofLaunchBrowser(server->getURL());
     }
 }
 
