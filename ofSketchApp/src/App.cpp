@@ -66,6 +66,9 @@ void App::setup()
     ofSetLogLevel("ofThread", OF_LOG_ERROR);
     ofSetLogLevel(OF_LOG_VERBOSE);
 
+    // Hack to make sure that the net sybsystem is initialized on windows.
+    Poco::Net::initializeNetwork();
+
     _editorSettings.load();
     _ofSketchSettings.load();
     _compiler.setup();
@@ -74,8 +77,6 @@ void App::setup()
     _uploadRouter.setup();
 
     try {
-        std::cout << "In here" << std::endl;
-
         if (hasDependency("make"))
         {
             _missingDependencies = false;
@@ -107,17 +108,12 @@ void App::setup()
         // ofSetLoggerChannel(_loggerChannel);
 
         _logo.loadImage("media/openFrameworks.jpg");
-        _font.loadFont(OF_TTF_SANS, 20);
-        
-        
+        //_font.loadFont(OF_TTF_SANS, 20);
+
+
         std::cout << "Out here" << std::endl;
-    }
-    catch (const Poco::Exception& exc)
-    {
-        cout << exc.displayText() << std::endl;
-        
-    }
-    
+
+
 
 
     ofSSLManager::initializeServer(new Poco::Net::Context(Poco::Net::Context::SERVER_USE,
@@ -260,6 +256,13 @@ void App::setup()
         // Launch a browser with the address of the server.
         ofLaunchBrowser(server->getURL());
     }
+
+        }
+    catch (const Poco::Exception& exc)
+    {
+        cout << exc.displayText() << std::endl;
+
+    }
 }
 
 
@@ -276,7 +279,7 @@ void App::draw()
     _logo.draw(10, 0);
 
     ofSetColor(80);
-    _font.drawString("Launch", 70, 30);
+    //_font.drawString("Launch", 70, 30);
 }
 
 void App::exit()
@@ -560,14 +563,14 @@ void App::getProjectAddonList(const void *pSender, ofx::JSONRPC::MethodArgs &arg
             {
                 args.result["addons"][i] = addons[i];
             }
-        
+
                     args.result["hasAddons"] = true;
         }
         else
         {
             args.result["hasAddons"] = false;
         }
-    
+
         }
     else args.error["message"] = "The requested project does not exist.";
 }
