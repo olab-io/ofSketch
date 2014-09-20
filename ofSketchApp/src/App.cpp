@@ -46,6 +46,10 @@ App::App():
     _uploadRouter(ofToDataPath(_ofSketchSettings.getProjectDir(), true)),
     _missingDependencies(true)
 {
+
+  try {
+    std::cout << "In here" << std::endl;
+
     if (hasDependency("make"))
     {
         _missingDependencies = false;
@@ -78,6 +82,16 @@ App::App():
 
     _logo.loadImage("media/openFrameworks.jpg");
     _font.loadFont(OF_TTF_SANS, 20);
+
+
+    std::cout << "Out here" << std::endl;
+  }
+    catch (const Poco::Exception& exc)
+    {
+      cout << exc.displayText() << std::endl;
+
+    }
+
 }
 
 

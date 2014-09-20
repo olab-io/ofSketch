@@ -1,6 +1,6 @@
 // =============================================================================
 //
-// Copyright (c) 2013-2014 Christopher Baker <http://christopherbaker.net>
+// Copyright (c) 2013 Christopher Baker <http://christopherbaker.net>
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -35,13 +35,17 @@ namespace of {
 namespace Sketch {
 
 
-BaseProcessTask::BaseProcessTask(const std::string& name,
+BaseProcessTask::BaseProcessTask(const std::string& taskName,
                                  const std::string& command,
                                  const std::vector<std::string>& args,
+                                 const std::string& initialDirectory,
+                                 const Poco::Process::Env& env,
                                  std::size_t bufferSize):
-    Poco::Task(name),
+    Poco::Task(taskName),
     _command(command),
     _args(args),
+    _initialDirectory(initialDirectory),
+    _env(env),
     _bufferSize(bufferSize)
 {
 }
@@ -60,9 +64,11 @@ void BaseProcessTask::runTask()
 
     Poco::ProcessHandle ph = Poco::Process::launch(_command,
                                                    _args,
+                                                   _initialDirectory.toString(),
                                                    0,
                                                    &_outAndErrPipe,
-                                                   &_outAndErrPipe);
+                                                   &_outAndErrPipe,
+                                                   _env);
 
     ofLogVerbose("BaseProcessTask::runTask") << "Launching Task: " << _command << " Args: " << ofToString(_args) << " PID: " << ph.id();
 
@@ -70,6 +76,8 @@ void BaseProcessTask::runTask()
 
     while (istr.good() && !istr.fail() && !isCancelled())
     {
+
+#if !defined(TARGET_WIN32)
         fd_set readset;
         struct timeval tv;
 
@@ -80,6 +88,11 @@ void BaseProcessTask::runTask()
         tv.tv_usec = 50 * 1000; // 50 ms.
 
         int rc = ::select(_outAndErrPipe.readHandle() + 1, &readset, 0, 0, &tv);
+#else
+        // Temporary hack to get around the fact that
+        // there is no "select" on windows platforms.
+        int rc = 1;
+#endif
 
         if (rc > 0)
         {
@@ -97,7 +110,6 @@ void BaseProcessTask::runTask()
                 }
             }
         }
-
     }
 
     Poco::Process::kill(ph);

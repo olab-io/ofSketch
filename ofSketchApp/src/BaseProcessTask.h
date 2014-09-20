@@ -28,6 +28,7 @@
 
 #include <string>
 #include <vector>
+#include "Poco/Path.h"
 #include "Poco/PipeStream.h"
 #include "Poco/Process.h"
 #include "Poco/Task.h"
@@ -44,10 +45,13 @@ namespace Sketch {
 class BaseProcessTask: public Poco::Task
 {
 public:
-    BaseProcessTask(const std::string& name,
+    BaseProcessTask(const std::string& taskName,
                     const std::string& command,
                     const std::vector<std::string>& args = std::vector<std::string>(),
+                    const std::string& initialDirectory = "",
+                    const Poco::Process::Env& env = Poco::Process::Env(),
                     std::size_t bufferSize = DEFAULT_BUFFER_SIZE);
+
 
     virtual ~BaseProcessTask();
 
@@ -64,6 +68,10 @@ protected:
     std::string _command;
 
     std::vector<std::string> _args;
+
+    Poco::Path _initialDirectory;
+
+    Poco::Process::Env _env;
 
     std::size_t _bufferSize;
 };

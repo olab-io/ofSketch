@@ -84,6 +84,8 @@ bool Settings::update(const Json::Value& settings)
     // TODO:: validate these settings, as they come
     // from the web client and could be manipulated.
     _userSettings = settings;
+
+	return true;
 }
 
 
@@ -96,7 +98,7 @@ Json::Value Settings::toJSON() const
 Poco::Path Settings::getDataPath() const
 {
 //    ofToDataPath(<#const string &path#>)
-
+	return Poco::Path();
 }
 
 
