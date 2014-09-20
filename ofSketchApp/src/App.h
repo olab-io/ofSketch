@@ -143,7 +143,7 @@ private:
     UploadRouter        _uploadRouter;
 
     ofImage _logo;
-    ofTrueTypeFont _font;
+    // ofTrueTypeFont _font;
 
     bool _missingDependencies;
 
