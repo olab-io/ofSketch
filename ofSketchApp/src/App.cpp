@@ -302,6 +302,7 @@ void App::mousePressed(int x, int y, int button)
 
 bool App::hasDependency(const std::string& command)
 {
+#ifndef TARGET_WIN32
     std::string cmd("which");
     std::vector<std::string> args;
     args.push_back(command);
@@ -312,6 +313,10 @@ bool App::hasDependency(const std::string& command)
     Poco::StreamCopier::copyStream(istr, ostr);
     std::string result = ostr.str();
     return !result.empty();
+#else
+    return true;
+#endif
+
 }
 
 
