@@ -249,7 +249,7 @@ void App::setup()
 
     server->start();
 
-    ofTargetPlatform arch = Utils::getTargetPlatform();
+    ofTargetPlatform arch = SketchUtils::getTargetPlatform();
 
     if (arch != OF_TARGET_LINUXARMV6L && arch != OF_TARGET_LINUXARMV7L)
     {
@@ -287,8 +287,8 @@ void App::exit()
     // broadcast requestProjectClosed settings to all connected clients
     Json::Value params;
     params["foo"] = "bar";
-    Json::Value json = Utils::toJSONMethod("Server", "appExit", params);
-    ofx::HTTP::WebSocketFrame frame(Utils::toJSONString(json));
+    Json::Value json = SketchUtils::toJSONMethod("Server", "appExit", params);
+    ofx::HTTP::WebSocketFrame frame(SketchUtils::toJSONString(json));
     server->getWebSocketRoute()->broadcast(frame);
     ofLogNotice("App::exit") << "appExit frame broadcasted" << endl;
 
@@ -411,8 +411,8 @@ void App::requestProjectClosed(const void* pSender, ofx::JSONRPC::MethodArgs& ar
     Json::Value params;
     params["projectName"] = projectName;
     params["clientUUID"] = clientUUID;
-    Json::Value json = Utils::toJSONMethod("Server", "requestProjectClosed", params);
-    ofx::HTTP::WebSocketFrame frame(Utils::toJSONString(json));
+    Json::Value json = SketchUtils::toJSONMethod("Server", "requestProjectClosed", params);
+    ofx::HTTP::WebSocketFrame frame(SketchUtils::toJSONString(json));
     server->getWebSocketRoute()->broadcast(frame);
 }
 
@@ -529,10 +529,9 @@ void App::getProjectList(const void* pSender, ofx::JSONRPC::MethodArgs& args)
 void App::getAddonList(const void *pSender, ofx::JSONRPC::MethodArgs &args)
 {
     ofLogVerbose("App::getAddonList") << " sending addon list.";
+
     Json::Value addonsJSON;
-
     std::vector<Addon::SharedPtr> addons = _addonManager.getAddons();
-
     std::vector<Addon::SharedPtr>::const_iterator iter = addons.begin();
 
     while (iter != addons.end())
@@ -622,8 +621,8 @@ void App::saveEditorSettings(const void *pSender, ofx::JSONRPC::MethodArgs &args
     params["data"] = settings;
     params["clientUUID"] = args.params["clientUUID"];
     ofLogNotice("App::saveEditorSettings") << "clientUUID: " << params["clientUUID"] << endl;
-    Json::Value json = Utils::toJSONMethod("Server", "updateEditorSettings", params);
-    ofx::HTTP::WebSocketFrame frame(Utils::toJSONString(json));
+    Json::Value json = SketchUtils::toJSONMethod("Server", "updateEditorSettings", params);
+    ofx::HTTP::WebSocketFrame frame(SketchUtils::toJSONString(json));
     server->getWebSocketRoute()->broadcast(frame);
 }
 
@@ -646,8 +645,8 @@ void App::saveOfSketchSettings(const void *pSender, ofx::JSONRPC::MethodArgs &ar
     params["data"] = settings;
     params["clientUUID"] = args.params["clientUUID"];
 
-    Json::Value json = Utils::toJSONMethod("Server", "updateOfSketchSettings", params);
-    ofx::HTTP::WebSocketFrame frame(Utils::toJSONString(json));
+    Json::Value json = SketchUtils::toJSONMethod("Server", "updateOfSketchSettings", params);
+    ofx::HTTP::WebSocketFrame frame(SketchUtils::toJSONString(json));
     server->getWebSocketRoute()->broadcast(frame);
 }
 
@@ -668,8 +667,8 @@ bool App::onWebSocketOpenEvent(ofx::HTTP::WebSocketOpenEventArgs& args)
 
     Json::Value params = _taskQueue.toJson();
 
-    Json::Value json = Utils::toJSONMethod("TaskQueue", "taskList", params);
-    ofx::HTTP::WebSocketFrame frame(Utils::toJSONString(json));
+    Json::Value json = SketchUtils::toJSONMethod("TaskQueue", "taskList", params);
+    ofx::HTTP::WebSocketFrame frame(SketchUtils::toJSONString(json));
 
     // Send the update to the client that just connected.
     args.getConnectionRef().sendFrame(frame);
@@ -681,18 +680,18 @@ bool App::onWebSocketOpenEvent(ofx::HTTP::WebSocketOpenEventArgs& args)
     params["minor"] = getVersionMinor();
     params["patch"] = getVersionPatch();
     params["special"] = getVersionSpecial();
-    params["target"] = Utils::toString(Utils::getTargetPlatform());
+    params["target"] = SketchUtils::toString(SketchUtils::getTargetPlatform());
 
-    json = Utils::toJSONMethod("Server", "version", params);
-    frame = ofx::HTTP::WebSocketFrame(Utils::toJSONString(json));
+    json = SketchUtils::toJSONMethod("Server", "version", params);
+    frame = ofx::HTTP::WebSocketFrame(SketchUtils::toJSONString(json));
 
     args.getConnectionRef().sendFrame(frame);
 
     if (_missingDependencies)
     {
         params = Json::nullValue;
-        json = Utils::toJSONMethod("Server", "missingDependencies", params);
-        frame = ofx::HTTP::WebSocketFrame(Utils::toJSONString(json));
+        json = SketchUtils::toJSONMethod("Server", "missingDependencies", params);
+        frame = ofx::HTTP::WebSocketFrame(SketchUtils::toJSONString(json));
         args.getConnectionRef().sendFrame(frame);
     }
 
@@ -790,8 +789,8 @@ bool App::onTaskQueued(const ofx::TaskQueueEventArgs& args)
     Json::Value params;
     params["name"] = args.getTaskName();
     params["uuid"] = args.getTaskId().toString();
-    Json::Value json = Utils::toJSONMethod("TaskQueue", "taskQueued", params);
-    ofx::HTTP::WebSocketFrame frame(Utils::toJSONString(json));
+    Json::Value json = SketchUtils::toJSONMethod("TaskQueue", "taskQueued", params);
+    ofx::HTTP::WebSocketFrame frame(SketchUtils::toJSONString(json));
     server->getWebSocketRoute()->broadcast(frame);
     return false;
 }
@@ -802,8 +801,8 @@ bool App::onTaskStarted(const ofx::TaskQueueEventArgs& args)
     Json::Value params;
     params["name"] = args.getTaskName();
     params["uuid"] = args.getTaskId().toString();
-    Json::Value json = Utils::toJSONMethod("TaskQueue", "taskStarted", params);
-    ofx::HTTP::WebSocketFrame frame(Utils::toJSONString(json));
+    Json::Value json = SketchUtils::toJSONMethod("TaskQueue", "taskStarted", params);
+    ofx::HTTP::WebSocketFrame frame(SketchUtils::toJSONString(json));
     server->getWebSocketRoute()->broadcast(frame);
     return false;
 }
@@ -814,8 +813,8 @@ bool App::onTaskCancelled(const ofx::TaskQueueEventArgs& args)
     Json::Value params;
     params["name"] = args.getTaskName();
     params["uuid"] = args.getTaskId().toString();
-    Json::Value json = Utils::toJSONMethod("TaskQueue", "taskCancelled", params);
-    ofx::HTTP::WebSocketFrame frame(Utils::toJSONString(json));
+    Json::Value json = SketchUtils::toJSONMethod("TaskQueue", "taskCancelled", params);
+    ofx::HTTP::WebSocketFrame frame(SketchUtils::toJSONString(json));
     server->getWebSocketRoute()->broadcast(frame);
     return false;
 }
@@ -826,8 +825,8 @@ bool App::onTaskFinished(const ofx::TaskQueueEventArgs& args)
     Json::Value params;
     params["name"] = args.getTaskName();
     params["uuid"] = args.getTaskId().toString();
-    Json::Value json = Utils::toJSONMethod("TaskQueue", "taskFinished", params);
-    ofx::HTTP::WebSocketFrame frame(Utils::toJSONString(json));
+    Json::Value json = SketchUtils::toJSONMethod("TaskQueue", "taskFinished", params);
+    ofx::HTTP::WebSocketFrame frame(SketchUtils::toJSONString(json));
     server->getWebSocketRoute()->broadcast(frame);
     return false;
 }
@@ -839,8 +838,8 @@ bool App::onTaskFailed(const ofx::TaskFailedEventArgs& args)
     params["name"] = args.getTaskName();
     params["uuid"] = args.getTaskId().toString();
     params["exception"] = args.getException().displayText();
-    Json::Value json = Utils::toJSONMethod("TaskQueue", "taskFailed", params);
-    ofx::HTTP::WebSocketFrame frame(Utils::toJSONString(json));
+    Json::Value json = SketchUtils::toJSONMethod("TaskQueue", "taskFailed", params);
+    ofx::HTTP::WebSocketFrame frame(SketchUtils::toJSONString(json));
     server->getWebSocketRoute()->broadcast(frame);
     return false;
 }
@@ -852,8 +851,8 @@ bool App::onTaskProgress(const ofx::TaskProgressEventArgs& args)
     params["name"] = args.getTaskName();
     params["uuid"] = args.getTaskId().toString();
     params["progress"] = args.getProgress();
-    Json::Value json = Utils::toJSONMethod("TaskQueue", "taskProgress", params);
-    ofx::HTTP::WebSocketFrame frame(Utils::toJSONString(json));
+    Json::Value json = SketchUtils::toJSONMethod("TaskQueue", "taskProgress", params);
+    ofx::HTTP::WebSocketFrame frame(SketchUtils::toJSONString(json));
     server->getWebSocketRoute()->broadcast(frame);
     return false;
 }
@@ -875,8 +874,8 @@ bool App::onTaskData(const ProcessTaskQueue::EventArgs& args)
         params["compileError"] = error;
     }
 
-    Json::Value json = Utils::toJSONMethod("TaskQueue", "taskMessage", params);
-    ofx::HTTP::WebSocketFrame frame(Utils::toJSONString(json));
+    Json::Value json = SketchUtils::toJSONMethod("TaskQueue", "taskMessage", params);
+    ofx::HTTP::WebSocketFrame frame(SketchUtils::toJSONString(json));
     server->getWebSocketRoute()->broadcast(frame);
     return false;
 }

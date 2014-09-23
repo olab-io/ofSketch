@@ -32,7 +32,7 @@
 #include "ofx/IO/DirectoryFilter.h"
 #include "ofx/IO/DirectoryUtils.h"
 #include "ofx/JSONRPC/MethodArgs.h"
-#include "ofx/JSONRPC/Utils.h"
+#include "ofx/JSONRPC/JSONRPCUtils.h"
 #include "Project.h"
 
 

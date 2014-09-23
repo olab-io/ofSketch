@@ -37,7 +37,7 @@ namespace of {
 namespace Sketch {
 
 
-class Utils
+class SketchUtils
 {
 public:
     static bool JSONfromFile(const std::string& path, Json::Value& value);
