@@ -33,11 +33,11 @@ namespace Sketch {
 
 
 MakeTask::Settings::Settings():
-    ofRoot(ofToDataPath("openFrameworks")),
+    ofRoot(""),
     numProcessors(Poco::Environment::processorCount()),
     isSilent(true),
-    CXX(""),
-    CC(""),
+    CXX("g++"),
+    CC("gcc"),
     platformVariant(""),
     makefileDebug(false)
 {
@@ -52,11 +52,22 @@ MakeTask::MakeTask(const Settings& settings,
     _project(project),
     _target(target)
 {
-    _args.push_back("--directory=" + ofToDataPath(_project.getPath()));
+
+    Poco::Path projectPath = Poco::Path::forDirectory(ofToDataPath(_project.getPath()));
+	std::string projectPathString = projectPath.toString(Poco::Path::PATH_UNIX);
+
+	Poco::Path ofRootPath = Poco::Path::forDirectory(_settings.ofRoot);
+	std::string ofRootPathString = ofRootPath.toString(Poco::Path::PATH_UNIX);
+
+	// Replace colon in device path on windows.
+	ofStringReplace(projectPathString, ":", "");
+	ofStringReplace(ofRootPathString, ":", "");
+
+    _args.push_back("--directory=" + projectPathString);
 
     if (!_settings.ofRoot.empty())
     {
-        _args.push_back("OF_ROOT=" + _settings.ofRoot);
+        _args.push_back("OF_ROOT=" + ofRootPathString);
     }
 
     if (_settings.numProcessors > 1)
@@ -66,7 +77,7 @@ MakeTask::MakeTask(const Settings& settings,
 
     if (_settings.isSilent)
     {
-        _args.push_back("-s");
+		_args.push_back("-s");
     }
 
     if (!_settings.CC.empty())
@@ -84,10 +95,17 @@ MakeTask::MakeTask(const Settings& settings,
         _args.push_back("PLATFORM_VARIANT=" + _settings.platformVariant);
     }
 
-    if (_settings.makefileDebug)
+	if (_settings.makefileDebug)
     {
-        _args.push_back("MAKEFILE_DEBUG=1");
-    }
+		_args.push_back("MAKEFILE_DEBUG=1");
+	}
+
+#if defined(TARGET_WIN32)
+	// uname doesn't return the right host info when the bash environment isn't in an MSYS shell.
+    _args.push_back("HOST_OS=MINGW32_NT-6.2");
+    _args.push_back("PLATFORM_OS=MINGW32_NT-6.2");
+    _args.push_back("PLATFORM_ARCH=i686");
+#endif
 
     _args.push_back(_target);
 

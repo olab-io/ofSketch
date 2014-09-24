@@ -76,7 +76,8 @@ void App::setup()
     _projectManager.setup();
     _uploadRouter.setup();
 
-    try {
+    try 
+	{
         if (hasDependency("make"))
         {
             _missingDependencies = false;
@@ -110,158 +111,151 @@ void App::setup()
         _logo.loadImage("media/openFrameworks.jpg");
         //_font.loadFont(OF_TTF_SANS, 20);
 
+		ofSSLManager::initializeServer(new Poco::Net::Context(Poco::Net::Context::SERVER_USE,
+															  ofToDataPath("ssl/privateKey.nopassword.pem"),
+															  ofToDataPath("ssl/selfSignedCertificate.nopassword.pem"),
+															  ofToDataPath("ssl/cacert.pem")));
 
-        std::cout << "Out here" << std::endl;
+		// TODO: configure these via settings files
+		server->registerMethod("load-project",
+							   "Load the requested project.",
+							   this,
+							   &App::loadProject);
 
+		server->registerMethod("load-template-project",
+							   "Load an anonymous project.",
+							   this,
+							   &App::loadTemplateProject);
 
+		server->registerMethod("save-project",
+							   "Save the current project.",
+							   this,
+							   &App::saveProject);
 
+		server->registerMethod("create-project",
+							   "Create a new project.",
+							   this,
+							   &App::createProject);
 
-    ofSSLManager::initializeServer(new Poco::Net::Context(Poco::Net::Context::SERVER_USE,
-                                                          ofToDataPath("ssl/privateKey.nopassword.pem"),
-                                                          ofToDataPath("ssl/selfSignedCertificate.nopassword.pem"),
-                                                          ofToDataPath("ssl/cacert.pem")));
+		server->registerMethod("delete-project",
+							   "Delete the current project.",
+							   this,
+							   &App::deleteProject);
 
-    // TODO: configure these via settings files
-    server->registerMethod("load-project",
-                           "Load the requested project.",
-                           this,
-                           &App::loadProject);
+		server->registerMethod("rename-project",
+							   "Rename the current project.",
+							   this,
+							   &App::renameProject);
 
-    server->registerMethod("load-template-project",
-                           "Load an anonymous project.",
-                           this,
-                           &App::loadTemplateProject);
+		server->registerMethod("notify-project-closed",
+							   "Notify the server that project was closed.",
+							   this,
+							   &App::notifyProjectClosed);
 
-    server->registerMethod("save-project",
-                           "Save the current project.",
-                           this,
-                           &App::saveProject);
+		server->registerMethod("request-project-closed",
+							   "Broadcast a project close request to connected clients.",
+							   this,
+							   &App::requestProjectClosed);
 
-    server->registerMethod("create-project",
-                           "Create a new project.",
-                           this,
-                           &App::createProject);
+		server->registerMethod("request-app-quit",
+							   "Quit the app.",
+							   this,
+							   &App::requestAppQuit);
 
-    server->registerMethod("delete-project",
-                           "Delete the current project.",
-                           this,
-                           &App::deleteProject);
+		server->registerMethod("create-class",
+							   "Create a new class for the current project.",
+							   this,
+							   &App::createClass);
 
-    server->registerMethod("rename-project",
-                           "Rename the current project.",
-                           this,
-                           &App::renameProject);
+		server->registerMethod("delete-class",
+							   "Delete a select class from for the current project.",
+							   this,
+							   &App::deleteClass);
 
-    server->registerMethod("notify-project-closed",
-                           "Notify the server that project was closed.",
-                           this,
-                           &App::notifyProjectClosed);
+		server->registerMethod("rename-class",
+							   "Rename a select class from for the current project.",
+							   this,
+							   &App::renameClass);
 
-    server->registerMethod("request-project-closed",
-                           "Broadcast a project close request to connected clients.",
-                           this,
-                           &App::requestProjectClosed);
+		server->registerMethod("run-project",
+							   "Run the requested project.",
+							   this,
+							   &App::runProject);
 
-    server->registerMethod("request-app-quit",
-                           "Quit the app.",
-                           this,
-                           &App::requestAppQuit);
+		server->registerMethod("compile-project",
+							   "Run the requested project.",
+							   this,
+							   &App::compileProject);
 
-    server->registerMethod("create-class",
-                           "Create a new class for the current project.",
-                           this,
-                           &App::createClass);
+		server->registerMethod("stop",
+							   "Stop the requested project.",
+							   this,
+							   &App::stop);
 
-    server->registerMethod("delete-class",
-                           "Delete a select class from for the current project.",
-                           this,
-                           &App::deleteClass);
+		server->registerMethod("get-project-list",
+							   "Get list of all projects in the Project directory.",
+							   this,
+							   &App::getProjectList);
 
-    server->registerMethod("rename-class",
-                           "Rename a select class from for the current project.",
-                           this,
-                           &App::renameClass);
+		server->registerMethod("load-editor-settings",
+							   "Get the editor settings.",
+							   this,
+							   &App::loadEditorSettings);
 
-    server->registerMethod("run-project",
-                           "Run the requested project.",
-                           this,
-                           &App::runProject);
+		server->registerMethod("save-editor-settings",
+							   "Save the editor settings.",
+							   this,
+							   &App::saveEditorSettings);
 
-    server->registerMethod("compile-project",
-                           "Run the requested project.",
-                           this,
-                           &App::compileProject);
+		server->registerMethod("load-ofsketch-settings",
+							   "Get ofSketch settings.",
+							   this,
+							   &App::loadOfSketchSettings);
 
-    server->registerMethod("stop",
-                           "Stop the requested project.",
-                           this,
-                           &App::stop);
+		server->registerMethod("save-ofsketch-settings",
+							   "Save ofSketch settings.",
+							   this,
+							   &App::saveOfSketchSettings);
 
-    server->registerMethod("get-project-list",
-                           "Get list of all projects in the Project directory.",
-                           this,
-                           &App::getProjectList);
+		server->registerMethod("get-addon-list",
+							   "Get a list of all addons.",
+							   this,
+							   &App::getAddonList);
 
-    server->registerMethod("load-editor-settings",
-                           "Get the editor settings.",
-                           this,
-                           &App::loadEditorSettings);
+		server->registerMethod("get-project-addon-list",
+							   "Get a list of addons for a project.",
+							   this,
+							   &App::getProjectAddonList);
 
-    server->registerMethod("save-editor-settings",
-                           "Save the editor settings.",
-                           this,
-                           &App::saveEditorSettings);
+		server->registerMethod("add-project-addon",
+							   "Add an addon to a project.",
+							   this,
+							   &App::addProjectAddon);
 
-    server->registerMethod("load-ofsketch-settings",
-                           "Get ofSketch settings.",
-                           this,
-                           &App::loadOfSketchSettings);
+		server->registerMethod("remove-project-addon",
+							   "Remove an addon from a project.",
+							   this,
+							   &App::removeProjectAddon);
 
-    server->registerMethod("save-ofsketch-settings",
-                           "Save ofSketch settings.",
-                           this,
-                           &App::saveOfSketchSettings);
+		server->registerMethod("export-project",
+							   "Export the project for target platform.",
+							   this,
+							   &App::exportProject);
 
-    server->registerMethod("get-addon-list",
-                           "Get a list of all addons.",
-                           this,
-                           &App::getAddonList);
+		server->start();
 
-    server->registerMethod("get-project-addon-list",
-                           "Get a list of addons for a project.",
-                           this,
-                           &App::getProjectAddonList);
+		ofTargetPlatform arch = SketchUtils::getTargetPlatform();
 
-    server->registerMethod("add-project-addon",
-                           "Add an addon to a project.",
-                           this,
-                           &App::addProjectAddon);
+		if (arch != OF_TARGET_LINUXARMV6L && arch != OF_TARGET_LINUXARMV7L)
+		{
+			// Launch a browser with the address of the server.
+			ofLaunchBrowser(server->getURL() + "?project=HelloWorld");
+		}
 
-    server->registerMethod("remove-project-addon",
-                           "Remove an addon from a project.",
-                           this,
-                           &App::removeProjectAddon);
-
-    server->registerMethod("export-project",
-                           "Export the project for target platform.",
-                           this,
-                           &App::exportProject);
-
-    server->start();
-
-    ofTargetPlatform arch = SketchUtils::getTargetPlatform();
-
-    if (arch != OF_TARGET_LINUXARMV6L && arch != OF_TARGET_LINUXARMV7L)
-    {
-        // Launch a browser with the address of the server.
-        ofLaunchBrowser(server->getURL());
     }
-
-        }
     catch (const Poco::Exception& exc)
     {
-        cout << exc.displayText() << std::endl;
-
+		ofLogError() << exc.displayText();
     }
 }
 
@@ -319,7 +313,6 @@ bool App::hasDependency(const std::string& command)
 #else
     return true;
 #endif
-
 }
 
 
@@ -550,6 +543,7 @@ void App::getAddonList(const void *pSender, ofx::JSONRPC::MethodArgs &args)
 void App::getProjectAddonList(const void *pSender, ofx::JSONRPC::MethodArgs &args)
 {
     std::string projectName = args.params["projectName"].asString();
+
     if (_projectManager.projectExists(projectName))
     {
         const Project& project = _projectManager.getProject(projectName);
@@ -563,7 +557,7 @@ void App::getProjectAddonList(const void *pSender, ofx::JSONRPC::MethodArgs &arg
                 args.result["addons"][i] = addons[i];
             }
 
-                    args.result["hasAddons"] = true;
+			args.result["hasAddons"] = true;
         }
         else
         {
@@ -650,11 +644,10 @@ void App::saveOfSketchSettings(const void *pSender, ofx::JSONRPC::MethodArgs &ar
     server->getWebSocketRoute()->broadcast(frame);
 }
 
-void App::exportProject(const void *pSender, ofx::JSONRPC::MethodArgs &args) {
-
+void App::exportProject(const void *pSender, ofx::JSONRPC::MethodArgs &args) 
+{
     std::string platform = args.params["platform"].asString();
     std::string projectName = args.params["projectName"].asString();
-
 //    Project& project = _projectManager.getProjectRef(projectName);
 }
 
@@ -721,7 +714,7 @@ bool App::onWebSocketFrameReceivedEvent(ofx::HTTP::WebSocketFrameEventArgs& args
 
 bool App::onWebSocketFrameSentEvent(ofx::HTTP::WebSocketFrameEventArgs& args)
 {
-//    ofLogVerbose("App::onWebSocketFrameSentEvent") << "Frame sent to: " << args.getConnectionRef().getClientAddress().toString();
+    ofLogVerbose("App::onWebSocketFrameSentEvent") << "Frame sent to: " << args.getConnectionRef().getClientAddress().toString();
     return false; // did not handle it
 }
 
@@ -729,7 +722,6 @@ bool App::onWebSocketFrameSentEvent(ofx::HTTP::WebSocketFrameEventArgs& args)
 bool App::onWebSocketErrorEvent(ofx::HTTP::WebSocketErrorEventArgs& args)
 {
     ofLogError("App::onWebSocketErrorEvent") << "Stop: " << args.getError();
-//    ofLogVerbose("App::onWebSocketErrorEvent") << "Error on: " << args.getConnectionRef().getClientAddress().toString();
     return false; // did not handle it
 }
 
@@ -810,7 +802,7 @@ bool App::onTaskStarted(const ofx::TaskQueueEventArgs& args)
 
 bool App::onTaskCancelled(const ofx::TaskQueueEventArgs& args)
 {
-    Json::Value params;
+	Json::Value params;
     params["name"] = args.getTaskName();
     params["uuid"] = args.getTaskId().toString();
     Json::Value json = SketchUtils::toJSONMethod("TaskQueue", "taskCancelled", params);
@@ -877,7 +869,7 @@ bool App::onTaskData(const ProcessTaskQueue::EventArgs& args)
     Json::Value json = SketchUtils::toJSONMethod("TaskQueue", "taskMessage", params);
     ofx::HTTP::WebSocketFrame frame(SketchUtils::toJSONString(json));
     server->getWebSocketRoute()->broadcast(frame);
-    return false;
+	return false;
 }
 
 
