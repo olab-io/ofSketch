@@ -197,11 +197,13 @@ std::vector<Poco::Net::IPAddress> Settings::whitelistedIPs() const
             }
         }
 
+ 
     }
     else
     {
-        return addresses;
     }
+
+	return addresses;
 }
 
 Poco::Path Settings::sslPrivateKeyPath() const
