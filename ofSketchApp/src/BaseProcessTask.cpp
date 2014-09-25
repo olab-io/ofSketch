@@ -49,10 +49,6 @@ BaseProcessTask::BaseProcessTask(const std::string& taskName,
     _env(env),
     _bufferSize(bufferSize)
 {
-//#ifdef TARGET_WIN32
-
-
-//#endif // TARGET_WIN32
 }
 
 

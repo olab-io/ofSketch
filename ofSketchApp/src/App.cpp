@@ -502,7 +502,18 @@ void App::stop(const void* pSender, ofx::JSONRPC::MethodArgs& args)
     if (args.params.isMember("taskId"))
     {
         Poco::UUID taskId(args.params["taskId"].asString());
-        _taskQueue.cancel(taskId);
+
+        try
+        {
+            _taskQueue.cancel(taskId);
+        }
+        catch (const Poco::NotFoundException& exc)
+        {
+            ofLogWarning("App::stop") << "Task already stopped: " << taskId.toString();
+        }
+
+        args.result = taskId.toString();
+
         ofLogNotice("App::stop") << "Stopped task " << taskId.toString();
     }
     else

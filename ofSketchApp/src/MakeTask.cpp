@@ -59,9 +59,11 @@ MakeTask::MakeTask(const Settings& settings,
 	Poco::Path ofRootPath = Poco::Path::forDirectory(_settings.ofRoot);
 	std::string ofRootPathString = ofRootPath.toString(Poco::Path::PATH_UNIX);
 
+#if defined(TARGET_WIN32)
 	// Replace colon in device path on windows.
 	ofStringReplace(projectPathString, ":", "");
 	ofStringReplace(ofRootPathString, ":", "");
+#endif
 
     _args.push_back("--directory=" + projectPathString);
 

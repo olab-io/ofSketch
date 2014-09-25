@@ -58,13 +58,10 @@ public:
     struct Settings
     {
         std::string ofRoot;
-
         std::size_t numProcessors; // -j
         bool isSilent; // -s
-
         std::string CXX; // CXX=/usr/lib/distcc/arm-linux-gnueabihf-g++
         std::string CC;  // CC=/usr/lib/distcc/arm-linux-gnueabihf-gcc
-
         std::string platformVariant; // e.g. PLATFORM_VARIANT=udoo
         bool makefileDebug; // e.g. MAKEFILE_DEBUG=1
 
