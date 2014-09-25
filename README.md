@@ -1,10 +1,10 @@
-# ofSketch Prereleases
+# ofSketch Pre-releases
 
 #### The barebones code editor (IDE) for [openFrameworks](http://openframeworks.cc).
 
 [![ScreenShot](http://brannondorsey.com/images/ofsketch_release_video_screenshot.png)](https://vimeo.com/97796242)
 
-ofSketch is being developed by [Brannon Dorsey](http://brannondorsey.com) and [Christopher Baker](http://christopherbaker.net) at the [openLab](http://olab.io) through the [Google Summer of Code](https://developers.google.com/open-source/soc/?csw=1) 2014 program.
+ofSketch is developed by [Brannon Dorsey](http://brannondorsey.com) and [Christopher Baker](http://christopherbaker.net) at the [openLab](http://olab.io) with support from the [Google Summer of Code](https://developers.google.com/open-source/soc/?csw=1) 2014 program.
 
 **Warning:** ofSketch is currently in development. This is the first pre-release and it is not completely stable.
 
@@ -28,7 +28,6 @@ To install the latest version of openFrameworks on Linux, follow the instruction
 ### Download
 
 [Download](https://github.com/olab-io/ofSketch/releases/) the ofSketch app for your platform (all oF-compatible platforms will eventually be supported).
-
 ofSketch comes packaged with the following contents:
 
 - CHANGELOG.md
@@ -38,11 +37,13 @@ ofSketch comes packaged with the following contents:
 - ofSketch.app
 - README.md
 
-**Note**: ofSketch prereleases use an openFrameworks v0.8.3 distribution bundled inside of the App's data folder itself. All code written in ofSketch must be oF v0.8.3 compatible. 
+For ofSketch to work properly, the filepath to the application must not contain any spaces. Dragging your download to your Desktop or Applications folder should be fine.
+
+**Note**: ofSketch pre-releases use an openFrameworks v0.8.3 distribution bundled inside of the App's data folder itself. All code written in ofSketch must be oF v0.8.3 compatible. 
 
 ### Running Examples
 
-Double-click ofSketch to open the editor. 
+Double-click ofSketch to open the editor.
 
 _Note: If OSX does not allow you to open the program due to security restrictions, right click on the ofSketch.app bundle and click "open".  See [this link](http://support.apple.com/kb/ht5290) for more information about Apple's security system._
 
@@ -62,11 +63,11 @@ Writing you're own classes is easy with ofSketch! Simply add a new tab by clicki
 
 ### Using Addons
 
-ofSketch uses its own openFrameworks distribution in the `bin/data/` folder, meaning only core addons work out of the box. To add an addon that ofSketch projects can use, you must place the add-on inside of ofSketch's `openFrameworks/addons` folder.
+ofSketch uses its own openFrameworks distribution in the `bin/data/` folder, meaning only core addons work out of the box. To add an addon that ofSketch projects can use, you must place the add-on inside of ofSketch's `bin/data/openFrameworks/addons` folder.
 
 ## Issues
 
-ofSketch prereleases are chock-full of disabled features and undoubtedly some pretty nasty bugs. Sticking to the philosophy "Release early, release often", we have decided to unveil this early prototype to the masses. There are tons of documented (and undocumented) problems. Check out the [issues page](https://github.com/brannondorsey/ofSketch/issues?state=open) for more info.
+ofSketch pre-releases are chock-full of disabled features and undoubtedly some pretty nasty bugs. Sticking to the philosophy "Release early, release often", we have decided to unveil this early prototype to the masses. There are tons of documented (and undocumented) problems. Check out the [issues page](https://github.com/brannondorsey/ofSketch/issues?state=open) for more info.
 
 ### Play Nice
 
@@ -78,7 +79,7 @@ Check out the [Todo list](https://github.com/brannondorsey/ofSketch/issues/1) to
 
 ### Bug
 
-Is something just downright wrong? Don't hesitate to submit an [issue](https://github.com/brannondorsey/ofSketch/issues?state=open).
+Is something just wrong with ofSketch? Don't hesitate to submit an [issue](https://github.com/brannondorsey/ofSketch/issues?state=open).
 
 ## Links
 

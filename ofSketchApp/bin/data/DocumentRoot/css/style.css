@@ -148,17 +148,34 @@ textarea {
   max-width: 100%;
 }
 
+#collapsable-navbar.collapse{
+    display: block;
+}
+
+
 /* Custom override for toolbar
 http://stackoverflow.com/questions/18192082/bootstrap-3-navbar-collapse */
 @media (max-width: 880px) {
 
-  #collapsable-navbar {
+  /*#collapsable-navbar {
     margin-top: 50px;
-  }
+  }*/
 
   #collapse-toolbar-button {
     float: right; 
     margin-top: 10px;
+  }
+
+  /*#collapsable-navbar.collapsing {
+
+  }*/
+
+  #collapsable-navbar.collapse {
+      display: none;
+  }
+
+  #collapsable-navbar.collapse.in { 
+    display: block!important;
   }
 
   /*#toolbar {
@@ -168,6 +185,11 @@ http://stackoverflow.com/questions/18192082/bootstrap-3-navbar-collapse */
   #toolbar-settings {
 
     margin-left: -10px;
+  }
+
+  /* BEGIN CUSTOM OVERRIDE */
+  .navbar-collapse.collapse.in { 
+    display: block!important;
   }
 
   .navbar-header {

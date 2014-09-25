@@ -1,3 +1,8 @@
+- 0.4.0 (Pending)
+	+ Windows support! ([#49](https://github.com/olab-io/ofSketch/issues/49))
+	+ Fix bug that hid resources bar on desktop sized screens ([#104](https://github.com/olab-io/ofSketch/issues/104)).
+	+ Disable autocomplete in inline comments: "//" ([#108](https://github.com/olab-io/ofSketch/issues/108)).
+
 - 0.3.2 (08-31-2014)
 	+ Basic file upload support ([#16](https://github.com/olab-io/ofSketch/issues/16)).
 	+ New Class template ([#102](https://github.com/olab-io/ofSketch/issues/102)).

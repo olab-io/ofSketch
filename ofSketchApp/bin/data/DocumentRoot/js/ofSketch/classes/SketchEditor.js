@@ -88,8 +88,19 @@ function SketchEditor(callback)
 
         // autocomplete trigger
         _editor.commands.on("afterExec", function(e){
-             if (e.command.name == "insertstring"&&/^[\w.]$/.test(e.args)) {
-                 _editor.execCommand("startAutocomplete");
+            
+            var cursorPos = e.editor.getCursorPosition();
+            var rowText = _editor.session.getLine(cursorPos.row);
+            var textLeft = rowText.substring(0, cursorPos.column);
+            // only checking inline "//" style comments, not full 
+            // block "/* */" comments
+            var isComment = /(\/\/)|(\/\*)/.test(textLeft);
+
+             if (e.command.name == "insertstring" &&
+                /^[\w.]$/.test(e.args) &&
+                !isComment) {
+
+                _editor.execCommand("startAutocomplete");
              }
         });
 
