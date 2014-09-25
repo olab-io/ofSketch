@@ -64,7 +64,7 @@ void App::setup()
     ofSetFrameRate(30);
 
     ofSetLogLevel("ofThread", OF_LOG_ERROR);
-    ofSetLogLevel(OF_LOG_VERBOSE);
+    ofSetLogLevel(OF_LOG_NOTICE);
 
     // Hack to make sure that the net sybsystem is initialized on windows.
     Poco::Net::initializeNetwork();
