@@ -1,5 +1,6 @@
 - 0.4.0 (Pending)
 	+ Windows support! ([#49](https://github.com/olab-io/ofSketch/issues/49))
+	+ Fix bug that prevents new client connections when a project is compiling ([#82](https://github.com/olab-io/ofSketch/issues/82)).
 	+ Fix bug that hid resources bar on desktop sized screens ([#104](https://github.com/olab-io/ofSketch/issues/104)).
 	+ Disable autocomplete in inline comments: "//" ([#108](https://github.com/olab-io/ofSketch/issues/108)).
 
