@@ -637,16 +637,18 @@ bool App::onWebSocketOpenEvent(ofx::HTTP::WebSocketOpenEventArgs& args)
     // Here, we need to send all initial values, settings, etc to the
     // client before any other messages arrive.
 
-    Json::Value params = _taskQueue.toJson();
-
-    Json::Value json = Utils::toJSONMethod("TaskQueue", "taskList", params);
-    ofx::HTTP::WebSocketFrame frame(Utils::toJSONString(json));
-
-    // Send the update to the client that just connected.
-    args.getConnectionRef().sendFrame(frame);
+//    Json::Value params = _taskQueue.toJson();
+//    cout << "Params: " << params.toStyledString() << endl;
+//    Json::Value json = Utils::toJSONMethod("TaskQueue", "taskList", params);
+//    cout << "Json: " << json.toStyledString() << endl;
+//    ofx::HTTP::WebSocketFrame frame(Utils::toJSONString(json));
+//
+//    // Send the update to the client that just connected.
+//    args.getConnectionRef().sendFrame(frame);
 
     // Send version info.
-    params.clear();
+    // params.clear();
+    Json::Value params;
     params["version"] = getVersion();
     params["major"] = getVersionMajor();
     params["minor"] = getVersionMinor();
@@ -654,8 +656,8 @@ bool App::onWebSocketOpenEvent(ofx::HTTP::WebSocketOpenEventArgs& args)
     params["special"] = getVersionSpecial();
     params["target"] = Utils::toString(Utils::getTargetPlatform());
 
-    json = Utils::toJSONMethod("Server", "version", params);
-    frame = ofx::HTTP::WebSocketFrame(Utils::toJSONString(json));
+    Json::Value json = Utils::toJSONMethod("Server", "version", params);
+    ofx::HTTP::WebSocketFrame frame = ofx::HTTP::WebSocketFrame(Utils::toJSONString(json));
 
     args.getConnectionRef().sendFrame(frame);
 

@@ -318,8 +318,8 @@ $(document).ready( function()
     }
 
     function onWebSocketClose(evt) {
-        // console.log("on close");
-        // console.log(evt);
+        console.log("on close");
+        console.log(evt);
         $('#server-disconnected-modal').modal();
         sketchEditor.setDisabled(true);
     }
