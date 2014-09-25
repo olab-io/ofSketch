@@ -686,6 +686,24 @@ bool App::onWebSocketOpenEvent(ofx::HTTP::WebSocketOpenEventArgs& args)
     params["special"] = getVersionSpecial();
     params["target"] = SketchUtils::toString(SketchUtils::getTargetPlatform());
 
+    Json::Value host;
+    Json::Value os;
+    Json::Value node;
+
+    os["architecture"] = Poco::Environment::osArchitecture();
+    os["display_name"] = Poco::Environment::osDisplayName();
+    os["name"] = Poco::Environment::osName();
+    os["version"] = Poco::Environment::osVersion();
+
+    node["name"] = Poco::Environment::nodeName();
+    node["id"] = Poco::Environment::nodeId();
+
+    host["processor_count"] = Poco::Environment::processorCount();
+    host["node"] = node;
+    host["os"] = os;
+
+    params["host"] = host;
+
     json = SketchUtils::toJSONMethod("Server", "version", params);
     frame = ofx::HTTP::WebSocketFrame(SketchUtils::toJSONString(json));
 
