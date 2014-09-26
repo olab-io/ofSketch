@@ -69,6 +69,18 @@ void App::setup()
     // Hack to make sure that the net sybsystem is initialized on windows.
     Poco::Net::initializeNetwork();
 
+#ifdef TARGET_WIN32
+	// Set up toolchain path information for Windows.
+	std::string pathVar = Poco::Environment::get("PATH","");
+
+	std::string pathToolChain0 = ofToDataPath("Toolchains/ofMinGW/MinGW/msys/1.0/bin", true);
+	std::string pathToolChain1 = ofToDataPath("Toolchains/ofMinGW/MinGW/bin", true);
+
+	std::stringstream pathSS;
+	pathSS << pathToolChain0 << ";" << pathToolChain1 << ";" << pathVar;
+	Poco::Environment::set("PATH", pathSS.str());
+#endif
+
     _editorSettings.load();
     _ofSketchSettings.load();
     _compiler.setup();
@@ -251,7 +263,6 @@ void App::setup()
 			// Launch a browser with the address of the server.
 			ofLaunchBrowser(server->getURL() + "?project=HelloWorld");
 		}
-
     }
     catch (const Poco::Exception& exc)
     {
@@ -299,20 +310,25 @@ void App::mousePressed(int x, int y, int button)
 
 bool App::hasDependency(const std::string& command)
 {
-#ifndef TARGET_WIN32
-    std::string cmd("which");
-    std::vector<std::string> args;
-    args.push_back(command);
-    Poco::Pipe outPipe;
-    Poco::ProcessHandle ph = Poco::Process::launch(cmd, args, 0, &outPipe, 0);
-    Poco::PipeInputStream istr(outPipe);
-    std::stringstream ostr;
-    Poco::StreamCopier::copyStream(istr, ostr);
-    std::string result = ostr.str();
-    return !result.empty();
-#else
-    return true;
-#endif
+	try 
+	{
+		std::string cmd("which");
+		std::vector<std::string> args;
+		args.push_back(command);
+		Poco::Pipe outPipe;
+		Poco::ProcessHandle ph = Poco::Process::launch(cmd, args, 0, &outPipe, 0);
+		Poco::PipeInputStream istr(outPipe);
+		std::stringstream ostr;
+		Poco::StreamCopier::copyStream(istr, ostr);
+		std::string result = ostr.str();
+		return !result.empty();
+	} 
+	catch (const Poco::Exception& exc)
+	{
+		// This probably happened because the which program was not available on Windows.
+		ofLogError() << exc.displayText();
+		return true;
+	}
 }
 
 
