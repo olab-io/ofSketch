@@ -33,7 +33,16 @@ namespace Sketch {
 
 ProjectManager::ProjectManager(const std::string& path):
     _path(path),
-    _templateProject(ofToDataPath("Resources/Templates/NewProject", true))
+    _templateProject("Resources/Templates/NewProject")
+{
+}
+
+
+ProjectManager::~ProjectManager()
+{
+}
+
+void ProjectManager::setup()
 {
     ofLogNotice("ProjectManager::ProjectManager") << "_path: " <<_path;
 
@@ -54,11 +63,6 @@ ProjectManager::ProjectManager(const std::string& path):
         _projects.push_back(Project(*iter));
         ++iter;
     }
-}
-
-
-ProjectManager::~ProjectManager()
-{
 }
 
 

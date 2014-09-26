@@ -48,6 +48,8 @@ public:
     AddonManager(const Poco::Path& addonsPath);
     virtual ~AddonManager();
 
+    void setup();
+
     void onDirectoryWatcherItemAdded(const ofx::DirectoryWatcher::DirectoryEvent& evt);
     void onDirectoryWatcherItemRemoved(const ofx::DirectoryWatcher::DirectoryEvent& evt);
     void onDirectoryWatcherItemModified(const ofx::DirectoryWatcher::DirectoryEvent& evt);

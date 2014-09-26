@@ -24,7 +24,7 @@
 // =============================================================================
 
 
-#include "Utils.h"
+#include "SketchUtils.h"
 #include "Poco/Process.h"
 #include "Poco/PipeStream.h"
 #include "Poco/StreamCopier.h"
@@ -35,7 +35,7 @@ namespace of {
 namespace Sketch {
 
 
-bool Utils::JSONfromFile(const std::string& path, Json::Value& value)
+bool SketchUtils::JSONfromFile(const std::string& path, Json::Value& value)
 {
     try
     {
@@ -51,11 +51,11 @@ bool Utils::JSONfromFile(const std::string& path, Json::Value& value)
 }
 
 
-bool Utils::JSONtoFile(const std::string& path, const Json::Value& value)
+bool SketchUtils::JSONtoFile(const std::string& path, const Json::Value& value)
 {
     try
     {
-        ofx::IO::ByteBuffer buffer(Utils::toJSONString(value));
+        ofx::IO::ByteBuffer buffer(SketchUtils::toJSONString(value));
         return ofx::IO::ByteBufferUtils::saveToFile(buffer, path);
     }
     catch (const Poco::Exception& exc)
@@ -66,7 +66,7 @@ bool Utils::JSONtoFile(const std::string& path, const Json::Value& value)
 }
 
 
-bool Utils::JSONfromString(const std::string& jsonString, Json::Value& value)
+bool SketchUtils::JSONfromString(const std::string& jsonString, Json::Value& value)
 {
     Json::Reader reader;
 
@@ -82,9 +82,9 @@ bool Utils::JSONfromString(const std::string& jsonString, Json::Value& value)
 }
 
 
-Json::Value Utils::toJSONMethod(const std::string& module,
-                                const std::string& method,
-                                const Json::Value& params)
+Json::Value SketchUtils::toJSONMethod(const std::string& module,
+                                      const std::string& method,
+                                      const Json::Value& params)
 {
     Json::Value json;
     json["ofSketch"] = "1.0";
@@ -95,14 +95,14 @@ Json::Value Utils::toJSONMethod(const std::string& module,
 }
 
 
-std::string Utils::toJSONString(const Json::Value& json)
+std::string SketchUtils::toJSONString(const Json::Value& json)
 {
     Json::FastWriter writer;
     return writer.write(json);
 }
 
 
-ofTargetPlatform Utils::getTargetPlatform()
+ofTargetPlatform SketchUtils::getTargetPlatform()
 {
 #ifdef TARGET_LINUX
     std::string cmd("uname");
@@ -153,7 +153,7 @@ ofTargetPlatform Utils::getTargetPlatform()
 }
 
 
-std::string Utils::toString(ofTargetPlatform targetPlatform)
+std::string SketchUtils::toString(ofTargetPlatform targetPlatform)
 {
     switch (targetPlatform)
     {

@@ -42,6 +42,7 @@ class OfSketchSettings
 public:
     OfSketchSettings();
 
+    bool load();
     bool load(const std::string& path);
     bool save();
 

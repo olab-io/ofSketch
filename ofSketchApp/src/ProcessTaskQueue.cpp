@@ -81,6 +81,7 @@ void ProcessTaskQueue::handleTaskCustomNotification(const Poco::UUID& taskID,
 
     if (!(dataTask = pNotification.cast<Poco::TaskCustomNotification<std::string> >()).isNull())
     {
+
         EventArgs args(taskID,
                        pNotification->task()->name(),
                        pNotification->task()->state(),

@@ -32,7 +32,6 @@ namespace Sketch {
 EditorSettings::EditorSettings(const std::string& path):
     _path(path)
 {
-    load();
 }
 
 

@@ -3,7 +3,5 @@ ofxIO
 ofxJSON
 ofxJSONRPC
 ofxMediaType
-ofxPG
-ofxPugiXML
 ofxSSLManager
 ofxTaskQueue

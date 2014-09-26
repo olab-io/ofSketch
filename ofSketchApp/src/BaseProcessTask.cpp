@@ -1,6 +1,6 @@
 // =============================================================================
 //
-// Copyright (c) 2013-2014 Christopher Baker <http://christopherbaker.net>
+// Copyright (c) 2013 Christopher Baker <http://christopherbaker.net>
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -24,6 +24,7 @@
 
 
 #include "BaseProcessTask.h"
+#include "Poco/StreamCopier.h"
 #include "Poco/Buffer.h"
 #include "Poco/Thread.h"
 #include <iostream>
@@ -35,13 +36,17 @@ namespace of {
 namespace Sketch {
 
 
-BaseProcessTask::BaseProcessTask(const std::string& name,
+BaseProcessTask::BaseProcessTask(const std::string& taskName,
                                  const std::string& command,
                                  const std::vector<std::string>& args,
+                                 const std::string& initialDirectory,
+                                 const Poco::Process::Env& env,
                                  std::size_t bufferSize):
-    Poco::Task(name),
+    Poco::Task(taskName),
     _command(command),
     _args(args),
+    _initialDirectory(initialDirectory),
+    _env(env),
     _bufferSize(bufferSize)
 {
 }
@@ -55,56 +60,75 @@ BaseProcessTask::~BaseProcessTask()
 void BaseProcessTask::runTask()
 {
     Poco::Pipe _outAndErrPipe;
-
     Poco::PipeInputStream istr(_outAndErrPipe);
 
-    Poco::ProcessHandle ph = Poco::Process::launch(_command,
-                                                   _args,
-                                                   0,
-                                                   &_outAndErrPipe,
-                                                   &_outAndErrPipe);
+	// std::string toolChainPath = ofToDataPath("Toolchains/ofMinGW", true);
+	// std::string pathVar = toolChainPath + "\MinGW\msys\1.0\bin;" + toolChainPath + "\MinGW\bin;%PATH%";
+	// _env["Path"] = "%PATH%";
+	// _env["PATH"] = "C:\\WINDOWS\\system32";
+	// _env["Path"] = "C:\\Users\\bakercp\\Desktop\\openFrameworks\\apps\\ofSketch\\ofSketchApp\\bin\\data\\Toolchains\\ofMinGW\\MinGW\\bin;C:\\Users\\bakercp\\Desktop\\openFrameworks\\apps\\ofSketch\\ofSketchApp\\bin\\data\\Toolchains\\ofMinGW\\MinGW\\msys\\1.0\\bin";
 
-    ofLogVerbose("BaseProcessTask::runTask") << "Launching Task: " << _command << " Args: " << ofToString(_args) << " PID: " << ph.id();
-
-    Poco::Buffer<char> buffer(_bufferSize);
-
-    while (istr.good() && !istr.fail() && !isCancelled())
+    try
     {
-        fd_set readset;
-        struct timeval tv;
+		Poco::ProcessHandle ph = Poco::Process::launch(_command,
+													   _args,
+													   _initialDirectory.toString(),
+													   0,
+													   &_outAndErrPipe,
+													   &_outAndErrPipe,
+													   _env);
 
-        FD_ZERO(&readset);
-        FD_SET(_outAndErrPipe.readHandle(), &readset);
+		ofLogVerbose("BaseProcessTask::runTask") << "Launching Task: " << _command << " Args: " << ofToString(_args) << " PID: " << ph.id();
 
-        tv.tv_sec = 0;
-        tv.tv_usec = 50 * 1000; // 50 ms.
+		Poco::Buffer<char> buffer(_bufferSize);
 
-        int rc = ::select(_outAndErrPipe.readHandle() + 1, &readset, 0, 0, &tv);
+		while (istr.good() && !istr.fail() && !isCancelled())
+		{
 
-        if (rc > 0)
-        {
-            istr.getline(buffer.begin(), buffer.size());
+#if !defined(TARGET_WIN32)
+			fd_set readset;
+			struct timeval tv;
 
-            if (buffer.begin())
-            {
-                std::string str(buffer.begin());
+			FD_ZERO(&readset);
+			FD_SET(_outAndErrPipe.readHandle(), &readset);
 
-                if (!str.empty())
-                {
-                    // Progress callbacks and custom data events are the
-                    // responsibility of the subclass.
-                    processLine(str);
-                }
-            }
-        }
+			tv.tv_sec = 0;
+			tv.tv_usec = 50 * 1000; // 50 ms.
 
+			int rc = ::select(_outAndErrPipe.readHandle() + 1, &readset, 0, 0, &tv);
+#else
+			// Temporary hack to get around the fact that
+			// there is no "select" on Windows platforms.
+			int rc = 1;
+#endif
+
+			if (rc > 0)
+			{
+				istr.getline(buffer.begin(), buffer.size());
+
+				if (buffer.begin())
+				{
+					std::string str(buffer.begin());
+
+					if (!str.empty())
+					{
+						// Progress callbacks and custom data events are the
+						// responsibility of the subclass.
+						processLine(str);
+					}
+				}
+			}
+		}
+
+		Poco::Process::kill(ph);
+	    int exitCode = ph.wait();
+	    ofLogVerbose("BaseProcessTask::runTask") << "Exit PID: " << ph.id() << " with: " << exitCode;
+
+	}
+    catch(Poco::Exception& exc)
+    {
+        ofLogError("BaseProcessTask::runTask") << exc.displayText();
     }
-
-    Poco::Process::kill(ph);
-
-    int exitCode = ph.wait();
-
-    ofLogVerbose("BaseProcessTask::runTask") << "Exit PID: " << ph.id() << " with: " << exitCode;
 }
 
 

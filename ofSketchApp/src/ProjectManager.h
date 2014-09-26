@@ -32,7 +32,7 @@
 #include "ofx/IO/DirectoryFilter.h"
 #include "ofx/IO/DirectoryUtils.h"
 #include "ofx/JSONRPC/MethodArgs.h"
-#include "ofx/JSONRPC/Utils.h"
+#include "ofx/JSONRPC/JSONRPCUtils.h"
 #include "Project.h"
 
 
@@ -47,6 +47,8 @@ public:
 
     ProjectManager(const std::string& path);
     virtual ~ProjectManager();
+
+    void setup();
 
     // const std::vector<std::string>& getOpenProjectNames() const;
     const std::vector<Project>& getProjects() const;

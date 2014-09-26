@@ -24,7 +24,9 @@ while read ADDON; do
 	cd ${ADDON}
 
 	# update to the latest
+	git checkout master
 	git pull
+
 
 	# back to addons path
 	cd -

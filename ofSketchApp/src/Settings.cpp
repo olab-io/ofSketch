@@ -25,7 +25,7 @@
 
 #include "Settings.h"
 #include "ofUtils.h"
-#include "Utils.h"
+#include "SketchUtils.h"
 #include "Poco/Net/NetException.h"
 
 
@@ -48,7 +48,7 @@ Settings::Settings()
         return;
     }
 
-    if (Utils::JSONfromFile(defaultSettingsFile.path(), _defaultSettings))
+    if (SketchUtils::JSONfromFile(defaultSettingsFile.path(), _defaultSettings))
     {
         ofLogFatalError("Settings::Settings()") << "Unable to parse default settings file.";
         return;
@@ -61,7 +61,7 @@ Settings::Settings()
         _userSettings = _defaultSettings;
         save();
     }
-    else if (!Utils::JSONfromFile(userSettingsFile.path(), _userSettings))
+    else if (!SketchUtils::JSONfromFile(userSettingsFile.path(), _userSettings))
     {
         ofLogFatalError("Settings::Settings()") << "Default settings file not found: " << defaultSettingsFile.path();
         _userSettings = _defaultSettings;
@@ -75,7 +75,7 @@ Settings::Settings()
 
 bool Settings::save() const
 {
-    return Utils::JSONtoFile(USER_SETTINGS_PATH.toString(), _userSettings);
+    return SketchUtils::JSONtoFile(USER_SETTINGS_PATH.toString(), _userSettings);
 }
 
 
@@ -84,6 +84,8 @@ bool Settings::update(const Json::Value& settings)
     // TODO:: validate these settings, as they come
     // from the web client and could be manipulated.
     _userSettings = settings;
+
+	return true;
 }
 
 
@@ -96,7 +98,7 @@ Json::Value Settings::toJSON() const
 Poco::Path Settings::getDataPath() const
 {
 //    ofToDataPath(<#const string &path#>)
-
+	return Poco::Path();
 }
 
 
@@ -195,11 +197,13 @@ std::vector<Poco::Net::IPAddress> Settings::whitelistedIPs() const
             }
         }
 
+ 
     }
     else
     {
-        return addresses;
     }
+
+	return addresses;
 }
 
 Poco::Path Settings::sslPrivateKeyPath() const

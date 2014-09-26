@@ -44,7 +44,7 @@
 #include "Project.h"
 #include "ProjectManager.h"
 #include "UploadRouter.h"
-#include "Utils.h"
+#include "SketchUtils.h"
 #include "WebSocketLoggerChannel.h"
 
 
@@ -143,7 +143,7 @@ private:
     UploadRouter        _uploadRouter;
 
     ofImage _logo;
-    ofTrueTypeFont _font;
+    // ofTrueTypeFont _font;
 
     bool _missingDependencies;
 

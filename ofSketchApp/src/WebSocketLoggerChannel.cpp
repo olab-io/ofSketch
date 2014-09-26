@@ -57,9 +57,11 @@ void WebSocketLoggerChannel::log(ofLogLevel level,
         params["module"] = module;
         params["message"] = message;
 
-        Json::Value json = Utils::toJSONMethod("Logger", "message", params);
+        Json::Value json = SketchUtils::toJSONMethod("Logger",
+                                                     "message",
+                                                     params);
 
-        ofx::HTTP::WebSocketFrame frame(Utils::toJSONString(json));
+        ofx::HTTP::WebSocketFrame frame(SketchUtils::toJSONString(json));
 
         route->broadcast(frame);
     }

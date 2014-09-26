@@ -53,6 +53,8 @@ public:
              const std::string& pathToTemplates,
              const std::string& openFrameworksDir);
 
+    void setup();
+
     Poco::UUID compile(const Project& project);
     Poco::UUID run(const Project& project);
 
