@@ -66,9 +66,9 @@ $(document).ready( function()
 
     }
 
-    function checkVersion() {
+    function checkVersion(localVersion) {
+        
         var releaseURL = "https://api.github.com/repos/olab-io/ofSketch/releases";
-
         $.getJSON(releaseURL, function(data) {
 
             if (data.length == 0) {
@@ -81,9 +81,6 @@ $(document).ready( function()
 
             // Get the cleaned semver string.
             var remoteVersion = semver.clean(latestRelease.tag_name);
-            var localVersion = semver.clean(systemInfo.version.version);
-
-            $('.local-version').text(localVersion);
 
             // Compare the semver number provided by the server to the remote.
             if (semver.gt(remoteVersion, localVersion))
@@ -149,8 +146,11 @@ $(document).ready( function()
             $('#issue-link').attr('href', link + '?body=' + encodeURIComponent(issuePrefill));
 
             $('.current-platform').text(systemInfo.version.target);
-
-            checkVersion();
+            
+            var localVersion = semver.clean(systemInfo.version.version);
+            $('.local-version').text(localVersion);
+            
+            checkVersion(localVersion);
         }
         else if (evt.method == "updateEditorSettings")
         {  
