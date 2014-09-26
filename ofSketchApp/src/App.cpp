@@ -121,7 +121,7 @@ void App::setup()
         // ofSetLoggerChannel(_loggerChannel);
 
         _logo.loadImage("media/openFrameworks.jpg");
-        //_font.loadFont(OF_TTF_SANS, 20);
+        _font.loadFont(OF_TTF_SANS, 20);
 
 		ofSSLManager::initializeServer(new Poco::Net::Context(Poco::Net::Context::SERVER_USE,
 															  ofToDataPath("ssl/privateKey.nopassword.pem"),
@@ -284,7 +284,7 @@ void App::draw()
     _logo.draw(10, 0);
 
     ofSetColor(80);
-    //_font.drawString("Launch", 70, 30);
+    _font.drawString("Launch", 70, 30);
 }
 
 void App::exit()

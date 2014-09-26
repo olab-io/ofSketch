@@ -48,8 +48,8 @@ public:
     BaseProcessTask(const std::string& taskName,
                     const std::string& command,
                     const std::vector<std::string>& args = std::vector<std::string>(),
-                    const std::string& initialDirectory = "",
-                    const Poco::Process::Env& env = Poco::Process::Env(),
+                    //const std::string& initialDirectory = "",
+                    //const Poco::Process::Env& env = Poco::Process::Env(),
                     std::size_t bufferSize = DEFAULT_BUFFER_SIZE);
 
 
@@ -71,7 +71,7 @@ protected:
 
     Poco::Path _initialDirectory;
 
-    Poco::Process::Env _env;
+//    Poco::Process::Env _env;
 
     std::size_t _bufferSize;
 };
