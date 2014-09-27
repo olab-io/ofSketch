@@ -52,11 +52,11 @@ namespace of {
 namespace Sketch {
 
 
-class App: public ofBaseApp
+class ofApp: public ofBaseApp
 {
 public:
-    App();
-    ~App();
+    ofApp();
+    ~ofApp();
     void setup();
     void update();
     void draw();

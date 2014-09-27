@@ -25,7 +25,7 @@
 
 #include "RunTask.h"
 #include "Poco/TaskNotification.h"
-#include "App.h"
+//#include "ofApp.h"
 
 
 namespace of {

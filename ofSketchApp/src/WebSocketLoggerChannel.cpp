@@ -25,7 +25,7 @@
 
 #include "WebSocketLoggerChannel.h"
 #include "Poco/Buffer.h"
-#include "App.h"
+#include "ofApp.h"
 
 
 namespace of {
