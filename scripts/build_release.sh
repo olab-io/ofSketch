@@ -12,7 +12,7 @@ SCRIPTS_DIR=`pwd`
 OS=`./helpers/ostype.sh`
 
 # the current semantic version number, strip the "v"
-OF_SKETCH_VERSION=`git describe --abbrev=0 --tags | sed 's/v//g'`
+OF_SKETCH_VERSION='0.4.0-RC1'
 
 cd ../ofSketchApp/bin/data
 

@@ -3,6 +3,7 @@
 	+ Fix bug that prevents new client connections when a project is compiling ([#82](https://github.com/olab-io/ofSketch/issues/82)).
 	+ Fix bug that hid resources bar on desktop sized screens ([#104](https://github.com/olab-io/ofSketch/issues/104)).
 	+ Disable autocomplete in inline comments: "//" ([#108](https://github.com/olab-io/ofSketch/issues/108)).
+	+ Xcode 6 / 10.9 compatible.
 
 - 0.3.2 (08-31-2014)
 	+ Basic file upload support ([#16](https://github.com/olab-io/ofSketch/issues/16)).

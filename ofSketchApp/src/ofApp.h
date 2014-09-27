@@ -52,11 +52,11 @@ namespace of {
 namespace Sketch {
 
 
-class App: public ofBaseApp
+class ofApp: public ofBaseApp
 {
 public:
-    App();
-    ~App();
+    ofApp();
+    ~ofApp();
     void setup();
     void update();
     void draw();
@@ -121,8 +121,8 @@ public:
     enum Version
     {
         VERSION_MAJOR = 0,
-        VERSION_MINOR = 3,
-        VERSION_PATCH = 2
+        VERSION_MINOR = 4,
+        VERSION_PATCH = 0
     };
 
     static const std::string VERSION_SPECIAL;
@@ -143,7 +143,7 @@ private:
     UploadRouter        _uploadRouter;
 
     ofImage _logo;
-    // ofTrueTypeFont _font;
+    ofTrueTypeFont _font;
 
     bool _missingDependencies;
 

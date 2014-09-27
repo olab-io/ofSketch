@@ -23,11 +23,11 @@
 // =============================================================================
 
 
-#include "App.h"
+#include "ofApp.h"
 
 
 int main()
 {
     ofSetupOpenGL(200, 40, OF_WINDOW);
-    ofRunApp(new of::Sketch::App());
+    ofRunApp(new of::Sketch::ofApp());
 }

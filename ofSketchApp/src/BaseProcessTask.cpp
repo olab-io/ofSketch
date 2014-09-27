@@ -62,14 +62,9 @@ void BaseProcessTask::runTask()
     Poco::Pipe _outAndErrPipe;
     Poco::PipeInputStream istr(_outAndErrPipe);
 
-	// std::string toolChainPath = ofToDataPath("Toolchains/ofMinGW", true);
-	// std::string pathVar = toolChainPath + "\MinGW\msys\1.0\bin;" + toolChainPath + "\MinGW\bin;%PATH%";
-	// _env["Path"] = "%PATH%";
-	// _env["PATH"] = "C:\\WINDOWS\\system32";
-	// _env["Path"] = "C:\\Users\\bakercp\\Desktop\\openFrameworks\\apps\\ofSketch\\ofSketchApp\\bin\\data\\Toolchains\\ofMinGW\\MinGW\\bin;C:\\Users\\bakercp\\Desktop\\openFrameworks\\apps\\ofSketch\\ofSketchApp\\bin\\data\\Toolchains\\ofMinGW\\MinGW\\msys\\1.0\\bin";
-
     try
     {
+
 		Poco::ProcessHandle ph = Poco::Process::launch(_command,
 													   _args,
 													   _initialDirectory.toString(),
