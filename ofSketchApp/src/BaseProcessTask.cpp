@@ -39,14 +39,14 @@ namespace Sketch {
 BaseProcessTask::BaseProcessTask(const std::string& taskName,
                                  const std::string& command,
                                  const std::vector<std::string>& args,
-                                 //const std::string& initialDirectory,
-                                 //const Poco::Process::Env& env,
+                                 const std::string& initialDirectory,
+                                 const Poco::Process::Env& env,
                                  std::size_t bufferSize):
     Poco::Task(taskName),
     _command(command),
     _args(args),
-//    _initialDirectory(initialDirectory),
-//    _env(env),
+    _initialDirectory(initialDirectory),
+    _env(env),
     _bufferSize(bufferSize)
 {
 }
@@ -67,11 +67,11 @@ void BaseProcessTask::runTask()
 
 		Poco::ProcessHandle ph = Poco::Process::launch(_command,
 													   _args,
-													   //_initialDirectory.toString(),
+													   _initialDirectory.toString(),
 													   0,
 													   &_outAndErrPipe,
-													   &_outAndErrPipe);//,
-													   //_env);
+													   &_outAndErrPipe,
+													   _env);
 
 		ofLogVerbose("BaseProcessTask::runTask") << "Launching Task: " << _command << " Args: " << ofToString(_args) << " PID: " << ph.id();
 
