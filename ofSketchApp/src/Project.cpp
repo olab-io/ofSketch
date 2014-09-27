@@ -208,7 +208,10 @@ bool Project::rename(const std::string& newName)
         ofLogVerbose("Project::rename") << "projectDir path after rename: " << projectDir.getAbsolutePath();
         ofLogVerbose("Project::rename") << "projectFile path: " << projectFile.getAbsolutePath();
 
-        if (!projectFile.renameTo(projectDir.getAbsolutePath() + "/sketch/" + newName + "." + SKETCH_FILE_EXTENSION)) return false;
+        if (!projectFile.renameTo(projectDir.getAbsolutePath() + "/sketch/" + newName + "." + SKETCH_FILE_EXTENSION)) {
+            ofLogError("Project::rename") << "Project file could not be renamed.";
+            return false;
+        }
 
         ofLogVerbose("Project::rename") << "projectFile path after rename: " << projectFile.getAbsolutePath();
 
