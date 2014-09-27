@@ -53,7 +53,7 @@ Poco::UUID Compiler::compile(const Project& project)
 {
     MakeTask::Settings settings;
     settings.ofRoot = ofToDataPath(_openFrameworksDir, true);
-    return _taskQueue.start(new MakeTask(settings, project, "Release"));
+    return _taskQueue.start(new MakeTask(settings, project, "ReleaseProject"));
 }
 
 
