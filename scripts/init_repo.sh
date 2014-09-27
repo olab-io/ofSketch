@@ -11,7 +11,7 @@ SCRIPTS_DIR=`pwd`
 OS=`./helpers/ostype.sh`
 
 # current of version
-OF_VERSION="0.8.3"
+OF_VERSION="0.8.4"
 
 # make the release file name.
 OF_RELEASE="of_v${OF_VERSION}_${OS}_release"
@@ -85,7 +85,24 @@ then
 
     cd ..
     rm -rf tmp/
+
+    # copy the app only makefile
+    cp ../../../scripts/patches/libs/openFrameworksCompiled/project/makefileCommon/compile.project.mk openFrameworks/libs/openFrameworksCompiled/project/makefileCommon/
+
+    # copy the 10.9 / Xcode 6 compatible makefiles
+    if [[ $OS == osx ]]
+    then
+        cp ../../../scripts/patches/libs/openFrameworksCompiled/project/osx/config.osx.default.mk openFrameworks/libs/openFrameworksCompiled/project/osx/
+    fi
+
+    # copy the win_cb compatible makefile
+    if [[ $OS == win_cb ]]
+    then
+        cp ../../../scripts/patches/libs/openFrameworksCompiled/project/win_cb/config.win_cb.default.mk openFrameworks/libs/openFrameworksCompiled/win_cb/
+    fi
+
 fi
+
 
 echo "Building openFrameworks distribution ..."
 
