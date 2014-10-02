@@ -106,7 +106,10 @@ void ofApp::setup()
         settings.setBufferSize(_ofSketchSettings.getBufferSize());
         settings.setPort(_ofSketchSettings.getPort());
         settings.setUploadRedirect("");
-        settings.setMaximumFileUploadSize(5000000 * 1024); // 50 GB
+
+        unsigned long long maximumFileUploadSize = 5120000000; // 50 GB
+
+        settings.setMaximumFileUploadSize(maximumFileUploadSize);
 
         ofx::Net::IPAddressRange::IPAddressRange::List whitelist;
         whitelist.push_back(ofx::Net::IPAddressRange("127.0.0.1/32"));
