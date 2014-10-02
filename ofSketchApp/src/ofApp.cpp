@@ -25,6 +25,7 @@
 
 
 #include "ofApp.h"
+#include "ofx/Net/IPAddressRange.h"
 
 
 namespace of {
@@ -106,6 +107,10 @@ void ofApp::setup()
         settings.setPort(_ofSketchSettings.getPort());
         settings.setUploadRedirect("");
         settings.setMaximumFileUploadSize(5000000 * 1024); // 50 GB
+
+        ofx::Net::IPAddressRange::IPAddressRange::List whitelist;
+        whitelist.push_back(ofx::Net::IPAddressRange("127.0.0.1/32"));
+        settings.setWhitelist(whitelist);
 
         server = ofx::HTTP::BasicJSONRPCServer::makeShared(settings);
 
