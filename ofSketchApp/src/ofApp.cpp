@@ -269,7 +269,7 @@ void ofApp::setup()
 		if (arch != OF_TARGET_LINUXARMV6L && arch != OF_TARGET_LINUXARMV7L)
 		{
 			// Launch a browser with the address of the server.
-			ofLaunchBrowser(server->getURL() + "?project=HelloWorld");
+            ofLaunchBrowser(server->getURL());
 		}
     }
     catch (const Poco::Exception& exc)
