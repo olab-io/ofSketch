@@ -16,8 +16,7 @@ OF_SKETCH_VERSION=`./helpers/ofsketch_version.sh ../ofSketchApp/src/Constants.h`
 
 cd ../ofSketchApp/bin/data
 
-if [ -e "openFrameworks/CHANGELOG.md" ]
-then
+if [ -e "openFrameworks/CHANGELOG.md" ]; then
     INSTALLED_OF_VERSION=$(head -n 1 openFrameworks/CHANGELOG.md | awk '{print $2}')
 else
     echo "No openFrameworks distribution installed in the ofSketch/bin/data/openFrameworks folder."
@@ -26,7 +25,6 @@ else
 fi
 
 OF_SKETCH_RELEASE="ofSketch_v${OF_SKETCH_VERSION}_${OS}_release"
-
 
 echo ""
 echo "Building ofSketch Release"
@@ -41,10 +39,13 @@ echo ""
 echo "Initializing ofSketch repo ..."
 
 
-if [[ $OS == linux* ]]
-then
+if [[ $OS == linux* ]]; then
     SUFFIX="tar.gz"
     NUM_CORES=`grep -c ^processor /proc/cpuinfo`
+elif [[ $OS == windows ]]; then
+    SUFFIX="zip"
+    # Number of cores may be set as an environmental variable
+    NUM_CORES=8
 else
     SUFFIX="zip"
     NUM_CORES=`sysctl hw.ncpu | awk '{print $2}'`
@@ -63,17 +64,17 @@ cd $OF_SKETCH_RELEASE/data
 echo `pwd`
 
 echo "Copy app data ..."
-cp -r ../../../ofSketchApp/bin/data/* .
+cp -v -r ../../../ofSketchApp/bin/data/* .
 
 cd ..
 
 echo `pwd`
 
 echo "Copy text docs..."
-cp ../../CONTRIBUTING.md .
-cp ../../LICENSE.md .
-cp ../../README.md .
-cp ../../CHANGELOG.md .
+cp -v ../../CONTRIBUTING.md .
+cp -v ../../LICENSE.md .
+cp -v ../../README.md .
+cp -v ../../CHANGELOG.md .
 
 echo `pwd`
 echo "Cleaning distro..."
@@ -102,19 +103,20 @@ echo "Copy app ..."
 
 echo `pwd`
 
-if [[ $OS == linux* ]]
-then
-    cp ../../ofSketchApp/bin/ofSketchApp ofSketch
+if [[ $OS == linux* ]]; then
+    cp -v ../../ofSketchApp/bin/ofSketchApp ofSketch
+elif [[ $OS == windows ]]; then
+    cp -v ../../ofSketchApp/bin/*.dll .
+    cp -v ../../ofSketchApp/bin/ofSketchApp.exe ofSketch.exe
 else
-    cp -r ../../ofSketchApp/bin/ofSketchApp.app ofSketch.app
+    cp -r -v  ../../ofSketchApp/bin/ofSketchApp.app ofSketch.app
 fi
 
 echo "Compressing ..."
 
 cd ..
 
-if [[ $OS == linux* ]]
-then
+if [[ $OS == linux* ]]; then
     tar -cvzf $OF_SKETCH_RELEASE.tar.gz $OF_SKETCH_RELEASE
 else
     zip -r $OF_SKETCH_RELEASE.zip $OF_SKETCH_RELEASE
