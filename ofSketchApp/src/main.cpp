@@ -23,11 +23,21 @@
 // =============================================================================
 
 
+//#define NO_WINDOW 1
+
 #include "ofApp.h"
 
+#ifdef NO_WINDOW
+    #include "ofAppNoWindow.h"
+#endif
 
 int main()
 {
+#ifdef NO_WINDOW
+    ofAppNoWindow window;
+    ofSetWindow(&window);
+#else
     ofSetupOpenGL(200, 40, OF_WINDOW);
+#endif
     ofRunApp(new ofApp());
 }

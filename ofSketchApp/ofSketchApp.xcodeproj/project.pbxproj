@@ -1485,7 +1485,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "";
+			shellScript = "OF_SKETCH_VERSION_VALUE=`../scripts/helpers/./ofsketch_version.sh ../ofSketchApp/src/Constants.h`\nexport OF_SKETCH_VER=${OF_SKETCH_VERSION_VALUE}";
 		};
 /* End PBXShellScriptBuildPhase section */
 

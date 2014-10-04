@@ -54,7 +54,6 @@ void ofApp::draw()
     _font.drawString("Launch", 70, 30);
 }
 
-
 void ofApp::mousePressed(int x, int y, int button)
 {
     ofLaunchBrowser(app.getServer()->getURL());
