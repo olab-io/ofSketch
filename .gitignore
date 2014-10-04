@@ -3,6 +3,10 @@ tmp/
 raw/
 releases/
 
+ofSketchApp/bin/data/Toolchains
+scripts/openFrameworks
+
+
 ofSketchApp/bin/data/Projects/*/src
 ofSketchApp/bin/data/Projects/*/obj
 
