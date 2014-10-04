@@ -3,19 +3,20 @@
 	+ Fix bug that prevents new client connections when a project is compiling ([#82](https://github.com/olab-io/ofSketch/issues/82)).
 	+ Fix bug that hid resources bar on desktop sized screens ([#104](https://github.com/olab-io/ofSketch/issues/104)).
 	+ Disable autocomplete in inline comments: "//" ([#108](https://github.com/olab-io/ofSketch/issues/108)).
-	+ Xcode 6 / 10.9 compatible.
+	+ Now Xcode 6 / 10.9 compatible.
+	+ Require localhost for web connections ([#96](https://github.com/olab-io/ofSketch/issues/96)
 
 - 0.3.2 (08-31-2014)
 	+ Basic file upload support ([#16](https://github.com/olab-io/ofSketch/issues/16)).
 	+ New Class template ([#102](https://github.com/olab-io/ofSketch/issues/102)).
 	+ Responsive toolbar fix.
 	+ 1-line input modals can now be submitted with the return key.
-	
+
 - 0.3.1 (08-17-2014)
-	+ Basic dependency toolchain checking that alerts user of install instructions if they are missing dependencies ([#100](https://github.com/olab-io/ofSketch/issues/100])) ([#98](https://github.com/olab-io/ofSketch/issues/98])). 
+	+ Basic dependency toolchain checking that alerts user of install instructions if they are missing dependencies ([#100](https://github.com/olab-io/ofSketch/issues/100])) ([#98](https://github.com/olab-io/ofSketch/issues/98])).
 	+ Added ROADMAP.md document.
 	+ Added BUILDING.md document.
-	
+
 - 0.3.0 (08-07-2014)
 	+ Adapt default ACE Settings Menu to support global ofSketch editor settings ([#42](https://github.com/olab-io/ofSketch/issues/42)).
 	+ Added Raspberry Pi support, added workaround for ofSystem issue ([#58](https://github.com/olab-io/ofSketch/issues/58)).
@@ -29,13 +30,13 @@
 	+ Compilation errors and warnings now appear in-line in the editor ([#21](https://github.com/olab-io/ofSketch/issues/21)).
 	+ Fix stop button bug ([#45](https://github.com/olab-io/ofSketch/issues/45)).
 	+ Addon support ([#20](https://github.com/olab-io/ofSketch/issues/20))!
-	
+
 - 0.2.2 (07-22-14)
 	+ Add "About ofSketch" to settings ([#64](https://github.com/olab-io/ofSketch/issues/64)).
 	+ Basic localization support for Spanish, German, and Japanese ([#68](https://github.com/olab-io/ofSketch/issues/68)).
 	+ Fix bug that prevented new class tabs from displaying when a project was first created ([#76](https://github.com/olab-io/ofSketch/issues/76)).
 	+ Updated NewProject template ([#67](https://github.com/olab-io/ofSketch/issues/67)).
-	
+
 
 - 0.2.1 (07-19-14)
 	+ Editor fills browser window.
@@ -62,7 +63,7 @@
     + Updated README.md.
     + Updates version naming scheme.
     + Update ofSketch OSX App plist.
-    + Various bugfixes and source cleanup. 
+    + Various bugfixes and source cleanup.
 
 - 0.1.5 (06-16-2014)
     + Server now sends available addons to client.
@@ -81,7 +82,7 @@
 
 - 0.1.2 (06-13-2014)
     + Fix hang on quit https://github.com/olab-io/ofSketch/issues/52.
-    
+
 - 0.1.1 (06-09-2014)
     + Initial release.
 
