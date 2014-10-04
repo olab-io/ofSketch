@@ -61,7 +61,7 @@
 
 1407003720 c:\users\bakercp\desktop\openframeworks\addons\ofxhttp\libs\ofxhttp\include\ofx\http\baseauthenticationroute.h
 
-1411448243 source:c:\users\bakercp\desktop\openframeworks\addons\ofxhttp\libs\ofxhttp\src\baseclient.cpp
+1412392872 source:c:\users\bakercp\desktop\openframeworks\addons\ofxhttp\libs\ofxhttp\src\baseclient.cpp
 	"ofx/HTTP/BaseClient.h"
 
 1407003720 c:\users\bakercp\desktop\openframeworks\addons\ofxhttp\libs\ofxhttp\include\ofx\http\baseclient.h
@@ -470,7 +470,7 @@
 	<tr1/memory>
 	"Poco/Mutex.h"
 
-1411782189 c:\users\bakercp\desktop\openframeworks\libs\openframeworks\utils\ofconstants.h
+1412392756 c:\users\bakercp\desktop\openframeworks\libs\openframeworks\utils\ofconstants.h
 	<stdint.h>
 	<TargetConditionals.h>
 	<windows.h>
@@ -1162,7 +1162,7 @@
 
 1407003720 c:\users\bakercp\desktop\openframeworks\addons\ofxhttp\libs\ofxhttp\include\ofx\http\cookiestore.h
 
-1411448243 c:\users\bakercp\desktop\openframeworks\addons\ofxhttp\libs\ofxhttp\include\ofx\http\credentialstore.h
+1412392871 c:\users\bakercp\desktop\openframeworks\addons\ofxhttp\libs\ofxhttp\include\ofx\http\credentialstore.h
 	<map>
 	"Poco/Exception.h"
 	"Poco/String.h"
@@ -1202,7 +1202,7 @@
 1407003720 c:\users\bakercp\desktop\openframeworks\addons\ofxhttp\libs\ofxhttp\include\ofx\http\credentials.h
 	<string>
 
-1411448243 c:\users\bakercp\desktop\openframeworks\addons\ofxhttp\libs\ofxhttp\include\ofx\http\httputils.h
+1412392871 c:\users\bakercp\desktop\openframeworks\addons\ofxhttp\libs\ofxhttp\include\ofx\http\httputils.h
 	<string>
 	<vector>
 	"Poco/NullStream.h"
@@ -1231,7 +1231,7 @@
 	<cstddef>
 	<ostream>
 
-1411448243 c:\users\bakercp\desktop\openframeworks\addons\ofxhttp\libs\ofxhttp\include\ofx\http\sessionsettings.h
+1412392871 c:\users\bakercp\desktop\openframeworks\addons\ofxhttp\libs\ofxhttp\include\ofx\http\sessionsettings.h
 	<string>
 	"Poco/Timespan.h"
 	"Poco/Net/NameValueCollection.h"
@@ -1276,7 +1276,7 @@
 	"ofx/HTTP/BaseResponse.h"
 	"ofx/HTTP/Context.h"
 
-1411448243 source:c:\users\bakercp\desktop\openframeworks\addons\ofxhttp\libs\ofxhttp\src\baserequest.cpp
+1412392872 source:c:\users\bakercp\desktop\openframeworks\addons\ofxhttp\libs\ofxhttp\src\baserequest.cpp
 	"ofx/HTTP/BaseRequest.h"
 	"ofx/HTTP/HTTPUtils.h"
 
@@ -1321,14 +1321,15 @@
 	"Poco/Net/Net.h"
 	"Poco/Net/NameValueCollection.h"
 
-1407003720 source:c:\users\bakercp\desktop\openframeworks\addons\ofxhttp\libs\ofxhttp\src\baseserversettings.cpp
+1412392872 source:c:\users\bakercp\desktop\openframeworks\addons\ofxhttp\libs\ofxhttp\src\baseserversettings.cpp
 	"ofx/HTTP/BaseServerSettings.h"
 
-1407003720 c:\users\bakercp\desktop\openframeworks\addons\ofxhttp\libs\ofxhttp\include\ofx\http\baseserversettings.h
+1412392871 c:\users\bakercp\desktop\openframeworks\addons\ofxhttp\libs\ofxhttp\include\ofx\http\baseserversettings.h
 	<string>
 	"Poco/Thread.h"
 	"Poco/Timespan.h"
 	"Poco/URI.h"
+	"ofx/Net/IPAddressRange.h"
 
 1407003720 source:c:\users\bakercp\desktop\openframeworks\addons\ofxhttp\libs\ofxhttp\src\basicipvideoserver.cpp
 	"ofx/HTTP/BasicIPVideoServer.h"
@@ -1343,7 +1344,7 @@
 	"ofx/HTTP/FileSystemRoute.h"
 	"ofx/HTTP/FileSystemRouteSettings.h"
 
-1407003720 c:\users\bakercp\desktop\openframeworks\addons\ofxhttp\libs\ofxhttp\include\ofx\http\baseserver.h
+1412392871 c:\users\bakercp\desktop\openframeworks\addons\ofxhttp\libs\ofxhttp\include\ofx\http\baseserver.h
 	<string>
 	"Poco/ErrorHandler.h"
 	"Poco/Net/Context.h"
@@ -1461,7 +1462,7 @@
 
 1411782194 c:\users\bakercp\desktop\openframeworks\libs\poco\include\poco\version.h
 
-1407003720 c:\users\bakercp\desktop\openframeworks\addons\ofxhttp\libs\ofxhttp\include\ofx\http\baseroute.h
+1412392871 c:\users\bakercp\desktop\openframeworks\addons\ofxhttp\libs\ofxhttp\include\ofx\http\baseroute.h
 	<string>
 	"Poco/Net/HTTPServerRequest.h"
 	"Poco/Net/HTTPRequestHandler.h"
@@ -1478,7 +1479,7 @@
 	"Poco/Foundation.h"
 	<vector>
 
-1411448243 c:\users\bakercp\desktop\openframeworks\addons\ofxhttp\libs\ofxhttp\include\ofx\http\sessioncache.h
+1412392871 c:\users\bakercp\desktop\openframeworks\addons\ofxhttp\libs\ofxhttp\include\ofx\http\sessioncache.h
 	<string>
 	<map>
 	"Poco/Timestamp.h"
@@ -1543,7 +1544,7 @@
 	<string>
 	"ofx/HTTP/BaseRouteSettings.h"
 
-1411448243 c:\users\bakercp\desktop\openframeworks\addons\ofxhttp\libs\ofxhttp\include\ofx\http\ipvideoroute.h
+1412392871 c:\users\bakercp\desktop\openframeworks\addons\ofxhttp\libs\ofxhttp\include\ofx\http\ipvideoroute.h
 	<algorithm>
 	"ofImage.h"
 	"ofx/HTTP/BaseRoute.h"
@@ -1630,7 +1631,7 @@
 	"ofGLUtils.h"
 	<map>
 
-1411448243 c:\users\bakercp\desktop\openframeworks\addons\ofxhttp\libs\ofxhttp\include\ofx\http\ipvideoroutehandler.h
+1412392871 c:\users\bakercp\desktop\openframeworks\addons\ofxhttp\libs\ofxhttp\include\ofx\http\ipvideoroutehandler.h
 	<algorithm>
 	"Poco/CountingStream.h"
 	"Poco/Exception.h"
@@ -1728,7 +1729,7 @@
 	"Poco/Net/Net.h"
 	<istream>
 
-1407003720 c:\users\bakercp\desktop\openframeworks\addons\ofxhttp\libs\ofxhttp\include\ofx\http\postroutesettings.h
+1412392871 c:\users\bakercp\desktop\openframeworks\addons\ofxhttp\libs\ofxhttp\include\ofx\http\postroutesettings.h
 	<set>
 	<string>
 	<istream>
@@ -1842,14 +1843,14 @@
 	"ofx/HTTP/BaseRequest.h"
 	"ofx/HTTP/Context.h"
 
-1411448243 source:c:\users\bakercp\desktop\openframeworks\addons\ofxhttp\libs\ofxhttp\src\defaultclienttask.cpp
+1412392872 source:c:\users\bakercp\desktop\openframeworks\addons\ofxhttp\libs\ofxhttp\src\defaultclienttask.cpp
 	"ofx/HTTP/DefaultClientTask.h"
 	"Poco/TaskManager.h"
 	"Poco/Buffer.h"
 	"ofx/IO/ByteBuffer.h"
 	"ofx/IO/ByteBufferUtils.h"
 
-1411448243 c:\users\bakercp\desktop\openframeworks\addons\ofxhttp\libs\ofxhttp\include\ofx\http\defaultclienttask.h
+1412392871 c:\users\bakercp\desktop\openframeworks\addons\ofxhttp\libs\ofxhttp\include\ofx\http\defaultclienttask.h
 	"Poco/Task.h"
 	"Poco/TaskNotification.h"
 	"ofx/HTTP/ClientEvents.h"
@@ -1912,7 +1913,7 @@
 	"ofx/TaskQueue.h"
 	"ofx/TaskQueueEvents.h"
 
-1411448243 c:\users\bakercp\desktop\openframeworks\addons\ofxhttp\libs\ofxhttp\include\ofx\http\getrequest.h
+1412392871 c:\users\bakercp\desktop\openframeworks\addons\ofxhttp\libs\ofxhttp\include\ofx\http\getrequest.h
 	<string>
 	"ofx/HTTP/HTTPUtils.h"
 	"ofx/HTTP/BaseRequest.h"
@@ -2045,7 +2046,7 @@
 
 1407003720 c:\users\bakercp\desktop\openframeworks\addons\ofxhttp\libs\ofxhttp\include\ofx\http\httpauthenticationroute.h
 
-1411448243 source:c:\users\bakercp\desktop\openframeworks\addons\ofxhttp\libs\ofxhttp\src\httputils.cpp
+1412392872 source:c:\users\bakercp\desktop\openframeworks\addons\ofxhttp\libs\ofxhttp\src\httputils.cpp
 	"ofx/HTTP/HTTPUtils.h"
 
 1407003720 source:c:\users\bakercp\desktop\openframeworks\addons\ofxhttp\libs\ofxhttp\src\ipvideoframe.cpp
@@ -2060,7 +2061,7 @@
 1407003720 source:c:\users\bakercp\desktop\openframeworks\addons\ofxhttp\libs\ofxhttp\src\ipvideoroute.cpp
 	"ofx/HTTP/IPVideoRoute.h"
 
-1411448243 source:c:\users\bakercp\desktop\openframeworks\addons\ofxhttp\libs\ofxhttp\src\ipvideoroutehandler.cpp
+1412392872 source:c:\users\bakercp\desktop\openframeworks\addons\ofxhttp\libs\ofxhttp\src\ipvideoroutehandler.cpp
 	"ofx/HTTP/IPVideoRouteHandler.h"
 	"ofx/HTTP/IPVideoRoute.h"
 
@@ -2119,21 +2120,21 @@
 1407003720 source:c:\users\bakercp\desktop\openframeworks\addons\ofxhttp\libs\ofxhttp\src\postroute.cpp
 	"ofx/HTTP/PostRoute.h"
 
-1411448243 source:c:\users\bakercp\desktop\openframeworks\addons\ofxhttp\libs\ofxhttp\src\postroutefilehandler.cpp
+1412392873 source:c:\users\bakercp\desktop\openframeworks\addons\ofxhttp\libs\ofxhttp\src\postroutefilehandler.cpp
 	"ofx/HTTP/PostRouteFileHandler.h"
 	"ofx/HTTP/PostRoute.h"
 	"ofx/HTTP/HTTPUtils.h"
 	"Poco/UUID.h"
 	"Poco/UUIDGenerator.h"
 
-1411448243 source:c:\users\bakercp\desktop\openframeworks\addons\ofxhttp\libs\ofxhttp\src\postroutehandler.cpp
+1412392873 source:c:\users\bakercp\desktop\openframeworks\addons\ofxhttp\libs\ofxhttp\src\postroutehandler.cpp
 	"ofx/HTTP/PostRouteHandler.h"
 	"ofx/HTTP/PostRoute.h"
 	"ofx/HTTP/HTTPUtils.h"
 	"Poco/UUID.h"
 	"Poco/UUIDGenerator.h"
 
-1407003720 source:c:\users\bakercp\desktop\openframeworks\addons\ofxhttp\libs\ofxhttp\src\postroutesettings.cpp
+1412392873 source:c:\users\bakercp\desktop\openframeworks\addons\ofxhttp\libs\ofxhttp\src\postroutesettings.cpp
 	"ofx/HTTP/PostRouteSettings.h"
 
 1407003720 source:c:\users\bakercp\desktop\openframeworks\addons\ofxhttp\libs\ofxhttp\src\progressmonitor.cpp
@@ -2173,7 +2174,7 @@
 1407003720 source:c:\users\bakercp\desktop\openframeworks\addons\ofxhttp\libs\ofxhttp\src\threadsettings.cpp
 	"ofx/HTTP/ThreadSettings.h"
 
-1411448243 source:c:\users\bakercp\desktop\openframeworks\addons\ofxhttp\libs\ofxhttp\src\uribuilder.cpp
+1412392873 source:c:\users\bakercp\desktop\openframeworks\addons\ofxhttp\libs\ofxhttp\src\uribuilder.cpp
 	"ofx/HTTP/URIBuilder.h"
 	"ofx/HTTP/HTTPUtils.h"
 
@@ -2190,7 +2191,7 @@
 	"ofx/HTTP/WebSocketRoute.h"
 	"Poco/ByteOrder.h"
 
-1411448243 c:\users\bakercp\desktop\openframeworks\addons\ofxhttp\libs\ofxhttp\include\ofx\http\websocketconnection.h
+1412392872 c:\users\bakercp\desktop\openframeworks\addons\ofxhttp\libs\ofxhttp\include\ofx\http\websocketconnection.h
 	<queue>
 	"Poco/Buffer.h"
 	"Poco/Exception.h"
@@ -2668,11 +2669,12 @@
 	"ofx/HTTP/WebSocketRouteSettings.h"
 	"ofx/JSONRPC/MethodRegistry.h"
 
-1411448243 c:\users\bakercp\desktop\openframeworks\addons\ofxhttp\src\ofxhttp.h
+1412392873 c:\users\bakercp\desktop\openframeworks\addons\ofxhttp\src\ofxhttp.h
 	"ofSSLManager.h"
 	"ofxIO.h"
 	"ofxMediaType.h"
 	"ofxTaskQueue.h"
+	"ofxNetworkUtils.h"
 	"ofx/HTTP/HTTPUtils.h"
 	"ofx/HTTP/URIBuilder.h"
 	"ofx/HTTP/BasicIPVideoServer.h"
@@ -4127,29 +4129,12 @@
 	<json/json.h>
 	"ofxJSONElement.h"
 
-1411782169 source:c:\users\bakercp\desktop\openframeworks\apps\ofsketch\ofsketchapp\src\main.cpp
+1412392797 source:c:\users\bakercp\desktop\openframeworks\apps\ofsketch\ofsketchapp\src\main.cpp
 	"ofApp.h"
 
-1411784189 c:\users\bakercp\desktop\openframeworks\apps\ofsketch\ofsketchapp\src\ofapp.h
-	<json/json.h>
-	"Poco/Pipe.h"
-	"Poco/Process.h"
-	"Poco/StreamCopier.h"
-	"Poco/PipeStream.h"
-	"Poco/TaskManager.h"
+1412392797 c:\users\bakercp\desktop\openframeworks\apps\ofsketch\ofsketchapp\src\ofapp.h
 	"ofMain.h"
-	"ofxHTTP.h"
-	"ofxJSONRPC.h"
-	"AddonManager.h"
-	"Compiler.h"
-	"EditorSettings.h"
-	"OfSketchSettings.h"
-	"ProcessTaskQueue.h"
-	"Project.h"
-	"ProjectManager.h"
-	"UploadRouter.h"
-	"SketchUtils.h"
-	"WebSocketLoggerChannel.h"
+	"App.h"
 
 1405093946 c:\users\bakercp\desktop\openframeworks\addons\ofxjsonrpc\src\ofxjsonrpc.h
 	<json/json.h>
@@ -4187,7 +4172,7 @@
 	"ofxJSONElement.h"
 	"ofxHTTP.h"
 
-1411767800 c:\users\bakercp\desktop\openframeworks\apps\ofsketch\ofsketchapp\src\sketchutils.h
+1412392797 c:\users\bakercp\desktop\openframeworks\apps\ofsketch\ofsketchapp\src\sketchutils.h
 	<string>
 	<json/json.h>
 	"ofConstants.h"
@@ -4205,7 +4190,7 @@
 	"Poco/TaskNotification.h"
 	"Poco/Environment.h"
 
-1411784189 source:c:\users\bakercp\desktop\openframeworks\apps\ofsketch\ofsketchapp\src\ofapp.cpp
+1412392797 source:c:\users\bakercp\desktop\openframeworks\apps\ofsketch\ofsketchapp\src\ofapp.cpp
 	"ofApp.h"
 
 1411767800 source:c:\users\bakercp\desktop\openframeworks\apps\ofsketch\ofsketchapp\src\ofsketchsettings.cpp
@@ -4214,14 +4199,14 @@
 1411767800 source:c:\users\bakercp\desktop\openframeworks\apps\ofsketch\ofsketchapp\src\processtaskqueue.cpp
 	"ProcessTaskQueue.h"
 
-1411524220 source:c:\users\bakercp\desktop\openframeworks\apps\ofsketch\ofsketchapp\src\project.cpp
+1412392797 source:c:\users\bakercp\desktop\openframeworks\apps\ofsketch\ofsketchapp\src\project.cpp
 	"Project.h"
 	"ofUtils.h"
 
 1411767800 source:c:\users\bakercp\desktop\openframeworks\apps\ofsketch\ofsketchapp\src\projectmanager.cpp
 	"ProjectManager.h"
 
-1411782169 source:c:\users\bakercp\desktop\openframeworks\apps\ofsketch\ofsketchapp\src\runtask.cpp
+1412392797 source:c:\users\bakercp\desktop\openframeworks\apps\ofsketch\ofsketchapp\src\runtask.cpp
 	"RunTask.h"
 	"Poco/TaskNotification.h"
 
@@ -4239,12 +4224,13 @@
 	"Poco/Net/IPAddress.h"
 	"ofUtils.h"
 
-1411767800 source:c:\users\bakercp\desktop\openframeworks\apps\ofsketch\ofsketchapp\src\sketchutils.cpp
+1412392797 source:c:\users\bakercp\desktop\openframeworks\apps\ofsketch\ofsketchapp\src\sketchutils.cpp
 	"SketchUtils.h"
 	"Poco/Process.h"
 	"Poco/PipeStream.h"
 	"Poco/StreamCopier.h"
 	"ofxIO.h"
+	"Constants.h"
 
 1411767800 source:c:\users\bakercp\desktop\openframeworks\apps\ofsketch\ofsketchapp\src\uploadrouter.cpp
 	"UploadRouter.h"
@@ -4253,4 +4239,127 @@
 	"WebSocketLoggerChannel.h"
 	"Poco/Buffer.h"
 	"ofApp.h"
+
+1412393453 c:\users\bakercp\desktop\openframeworks\addons\ofxnetworkutils\src\ofxnetworkutils.h
+	"Poco/Net/HostEntry.h"
+	"Poco/Net/IPAddress.h"
+	"Poco/Net/NetworkInterface.h"
+	"Poco/Environment.h"
+	"Poco/Exception.h"
+	"Poco/StreamCopier.h"
+	"Poco/Net/DNS.h"
+	"Poco/Net/HostEntry.h"
+	"Poco/Net/NetException.h"
+	"Poco/Net/IPAddress.h"
+	"Poco/Net/NetworkInterface.h"
+	"Poco/Net/HTTPClientSession.h"
+	"Poco/Net/HTTPRequest.h"
+	"Poco/Net/HTTPResponse.h"
+	"ofx/Net/IPAddressRange.h"
+	"ofx/Net/NetworkUtils.h"
+	"ofx/Net/NetworkInterfaceListener.h"
+
+1411948942 c:\users\bakercp\desktop\openframeworks\addons\ofxnetworkutils\libs\libcidr\include\libcidr.h
+	<winsock2.h>
+	<stdint.h>
+	<inttypes.h>
+	<netinet/in.h>
+
+1411782191 c:\users\bakercp\desktop\openframeworks\libs\poco\include\poco\net\hostentry.h
+	"Poco/Net/Net.h"
+	"Poco/Net/SocketDefs.h"
+	"Poco/Net/IPAddress.h"
+	<vector>
+
+1411782192 c:\users\bakercp\desktop\openframeworks\libs\poco\include\poco\net\networkinterface.h
+	"Poco/Net/Net.h"
+	"Poco/Net/IPAddress.h"
+	"Poco/Mutex.h"
+	"Poco/Tuple.h"
+	<map>
+
+1411782194 c:\users\bakercp\desktop\openframeworks\libs\poco\include\poco\tuple.h
+	"Poco/Foundation.h"
+	"Poco/TypeList.h"
+
+1411782194 c:\users\bakercp\desktop\openframeworks\libs\poco\include\poco\typelist.h
+	"Poco/Foundation.h"
+	"Poco/MetaProgramming.h"
+
+1411782191 c:\users\bakercp\desktop\openframeworks\libs\poco\include\poco\net\dns.h
+	"Poco/Net/Net.h"
+	"Poco/Net/SocketDefs.h"
+	"Poco/Net/IPAddress.h"
+	"Poco/Net/HostEntry.h"
+
+1411947613 c:\users\bakercp\desktop\openframeworks\addons\ofxnetworkutils\libs\ofxnetworkutils\include\ofx\net\cidraddress.h
+	<libcidr.h>
+	"Poco/Net/IPAddress.h"
+
+1411947613 c:\users\bakercp\desktop\openframeworks\addons\ofxnetworkutils\libs\ofxnetworkutils\include\ofx\net\networkutils.h
+	<string>
+	"Poco/Environment.h"
+	"Poco/Exception.h"
+	"Poco/StreamCopier.h"
+	"Poco/Net/DNS.h"
+	"Poco/Net/HostEntry.h"
+	"Poco/Net/NetException.h"
+	"Poco/Net/IPAddress.h"
+	"Poco/Net/NetworkInterface.h"
+	"Poco/Net/HTTPClientSession.h"
+	"Poco/Net/HTTPRequest.h"
+	"Poco/Net/HTTPResponse.h"
+	"ofLog.h"
+	"ofURLFileLoader.h"
+
+1411947613 c:\users\bakercp\desktop\openframeworks\addons\ofxnetworkutils\libs\ofxnetworkutils\include\ofx\net\networkinterfacelistener.h
+
+1412392797 c:\users\bakercp\desktop\openframeworks\apps\ofsketch\ofsketchapp\src\app.h
+	<json/json.h>
+	"Poco/Pipe.h"
+	"Poco/Process.h"
+	"Poco/StreamCopier.h"
+	"Poco/PipeStream.h"
+	"Poco/TaskManager.h"
+	"ofMain.h"
+	"ofxHTTP.h"
+	"ofxJSONRPC.h"
+	"AddonManager.h"
+	"Compiler.h"
+	"EditorSettings.h"
+	"OfSketchSettings.h"
+	"ProcessTaskQueue.h"
+	"Project.h"
+	"ProjectManager.h"
+	"UploadRouter.h"
+	"SketchUtils.h"
+	"WebSocketLoggerChannel.h"
+	"Constants.h"
+
+1412392797 c:\users\bakercp\desktop\openframeworks\apps\ofsketch\ofsketchapp\src\constants.h
+
+1412393453 c:\users\bakercp\desktop\openframeworks\addons\ofxnetworkutils\libs\ofxnetworkutils\include\ofx\net\ipaddressrange.h
+	<vector>
+	"Poco/Net/IPAddress.h"
+
+1412393453 source:c:\users\bakercp\desktop\openframeworks\addons\ofxnetworkutils\libs\ofxnetworkutils\src\ipaddressrange.cpp
+	"ofx/Net/IPAddressRange.h"
+	"Poco/Net/NetException.h"
+	"Poco/NumberParser.h"
+	<iostream>
+	"ofLog.h"
+
+1411782192 c:\users\bakercp\desktop\openframeworks\libs\poco\include\poco\numberparser.h
+	"Poco/Foundation.h"
+	<string>
+	<limits>
+
+1411947613 source:c:\users\bakercp\desktop\openframeworks\addons\ofxnetworkutils\libs\ofxnetworkutils\src\networkinterfacelistener.cpp
+
+1411947613 source:c:\users\bakercp\desktop\openframeworks\addons\ofxnetworkutils\libs\ofxnetworkutils\src\networkutils.cpp
+	"ofx/Net/NetworkUtils.h"
+
+1412392797 source:c:\users\bakercp\desktop\openframeworks\apps\ofsketch\ofsketchapp\src\app.cpp
+	"ofApp.h"
+	"ofx/Net/IPAddressRange.h"
 

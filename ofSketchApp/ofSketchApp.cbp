@@ -119,6 +119,14 @@
 			<Add directory="../../../addons\ofxMediaType\libs\ofxMediaType\include\ofx" />
 			<Add directory="../../../addons\ofxMediaType\libs\ofxMediaType\src" />
 			<Add directory="../../../addons\ofxMediaType\src" />
+			<Add directory="../../../addons/ofxNetworkUtils/libs" />
+			<Add directory="../../../addons/ofxNetworkUtils/src" />
+			<Add directory="../../../addons\ofxNetworkUtils\libs\ofxNetworkUtils" />
+			<Add directory="../../../addons\ofxNetworkUtils\libs\ofxNetworkUtils\include" />
+			<Add directory="../../../addons\ofxNetworkUtils\libs\ofxNetworkUtils\include\ofx" />
+			<Add directory="../../../addons\ofxNetworkUtils\libs\ofxNetworkUtils\include\ofx\Net" />
+			<Add directory="../../../addons\ofxNetworkUtils\libs\ofxNetworkUtils\src" />
+			<Add directory="../../../addons\ofxNetworkUtils\src" />
 			<Add directory="../../../addons/ofxSSLManager/libs" />
 			<Add directory="../../../addons/ofxSSLManager/src" />
 			<Add directory="../../../addons\ofxSSLManager\src" />
@@ -210,6 +218,12 @@
 		<Unit filename="src\AddonManager.h">
 			<Option virtualFolder="src" />
 		</Unit>
+		<Unit filename="src\App.cpp">
+			<Option virtualFolder="src" />
+		</Unit>
+		<Unit filename="src\App.h">
+			<Option virtualFolder="src" />
+		</Unit>
 		<Unit filename="src\BaseProcessTask.cpp">
 			<Option virtualFolder="src" />
 		</Unit>
@@ -220,6 +234,9 @@
 			<Option virtualFolder="src" />
 		</Unit>
 		<Unit filename="src\Compiler.h">
+			<Option virtualFolder="src" />
+		</Unit>
+		<Unit filename="src\Constants.h">
 			<Option virtualFolder="src" />
 		</Unit>
 		<Unit filename="src\EditorSettings.cpp">
@@ -995,6 +1012,27 @@
 		</Unit>
 		<Unit filename="../../../addons\ofxMediaType\libs\ofxMediaType\src\MediaTypeMap.cpp">
 			<Option virtualFolder="addons\ofxMediaType\libs\ofxMediaType\src" />
+		</Unit>
+		<Unit filename="../../../addons\ofxNetworkUtils\src\ofxNetworkUtils.h">
+			<Option virtualFolder="addons\ofxNetworkUtils\src" />
+		</Unit>
+		<Unit filename="../../../addons\ofxNetworkUtils\libs\ofxNetworkUtils\include\ofx\Net\IPAddressRange.h">
+			<Option virtualFolder="addons\ofxNetworkUtils\libs\ofxNetworkUtils\include\ofx\Net" />
+		</Unit>
+		<Unit filename="../../../addons\ofxNetworkUtils\libs\ofxNetworkUtils\include\ofx\Net\NetworkInterfaceListener.h">
+			<Option virtualFolder="addons\ofxNetworkUtils\libs\ofxNetworkUtils\include\ofx\Net" />
+		</Unit>
+		<Unit filename="../../../addons\ofxNetworkUtils\libs\ofxNetworkUtils\include\ofx\Net\NetworkUtils.h">
+			<Option virtualFolder="addons\ofxNetworkUtils\libs\ofxNetworkUtils\include\ofx\Net" />
+		</Unit>
+		<Unit filename="../../../addons\ofxNetworkUtils\libs\ofxNetworkUtils\src\IPAddressRange.cpp">
+			<Option virtualFolder="addons\ofxNetworkUtils\libs\ofxNetworkUtils\src" />
+		</Unit>
+		<Unit filename="../../../addons\ofxNetworkUtils\libs\ofxNetworkUtils\src\NetworkInterfaceListener.cpp">
+			<Option virtualFolder="addons\ofxNetworkUtils\libs\ofxNetworkUtils\src" />
+		</Unit>
+		<Unit filename="../../../addons\ofxNetworkUtils\libs\ofxNetworkUtils\src\NetworkUtils.cpp">
+			<Option virtualFolder="addons\ofxNetworkUtils\libs\ofxNetworkUtils\src" />
 		</Unit>
 		<Unit filename="../../../addons\ofxSSLManager\src\ofSSLManager.cpp">
 			<Option virtualFolder="addons\ofxSSLManager\src" />
