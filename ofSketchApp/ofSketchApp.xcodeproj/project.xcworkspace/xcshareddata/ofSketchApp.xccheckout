@@ -58,21 +58,21 @@
 		<key>2DA181FA-D5FE-4C5F-A965-F9A408CDDEAD</key>
 		<string>../../../../openFrameworks/addons/ofxJSONRPC</string>
 		<key>2DE9C8846D9375EAACFABA8963120E8E7719BAF5</key>
-		<string>../../../../..</string>
+		<string>../../../..</string>
 		<key>3CF3B4471C84DF2543AAA0AEAE2EC9F5FB1BB5AC</key>
-		<string>../../../../../addons/ofxJSONRPC</string>
+		<string>../../../../addons/ofxJSONRPC</string>
 		<key>4401B78D6A43C47BEBBD941DAE88FAC3E6BE9980</key>
-		<string>../../../../../addons/ofxNetworkUtils</string>
+		<string>../../../../addons/ofxNetworkUtils</string>
 		<key>5B2175E7-F321-4229-9C81-0BE00A1080A8</key>
 		<string>../../../../openFrameworks/addons/ofxHTTP</string>
 		<key>5DB7C332A3A89035E93556A2A38BF414005BA671</key>
-		<string>../../../../../addons/ofxJSON</string>
+		<string>../../../../addons/ofxJSON</string>
 		<key>6D6BC8D80AA25FAFFA2C63ADDF6F89E726FDF2CD</key>
 		<string>../../..</string>
 		<key>6D6FDB373C9A9EB614FB047E30EC71CD5377F13C</key>
-		<string>../../../../../addons/ofxSSLManager</string>
+		<string>../../../../addons/ofxSSLManager</string>
 		<key>6DBA07F83F7AF99DB5F116332E6446603283BF4C</key>
-		<string>../../../../../addons/ofxHTTP</string>
+		<string>../../../../addons/ofxHTTP</string>
 		<key>762BBF9E-8DCC-40A4-8E44-1CBFED9D6BB3</key>
 		<string>../../../../openFrameworks</string>
 		<key>8F739BDB-65EF-4785-A31D-403668D25463</key>
@@ -80,11 +80,11 @@
 		<key>A4A76601-2738-4BB9-AC5E-1E3C9AABE39D</key>
 		<string>../../../../openFrameworks/addons/ofxIO</string>
 		<key>CA29DB320F881B85D76220FC5498A4D1FA4F037C</key>
-		<string>../../../../../addons/ofxIO</string>
+		<string>../../../../addons/ofxIO</string>
 		<key>CC64F4963C935629E4EEDB8221C0DA9B68D2313F</key>
-		<string>../../../../../addons/ofxMediaType</string>
+		<string>../../../../addons/ofxMediaType</string>
 		<key>CE427DFEAC7CF46E0343E32288BC15C14F0689BB</key>
-		<string>../../../../../addons/ofxTaskQueue</string>
+		<string>../../../../addons/ofxTaskQueue</string>
 		<key>DFA66B64-4CB9-4F96-A977-15E8BE97C3DC</key>
 		<string>../../../../openFrameworks/addons/ofxNetworkUtils</string>
 		<key>E25A0B5D-CA66-4660-9710-61C282E1207B</key>
@@ -92,7 +92,7 @@
 		<key>F0EACD0D-2AF2-4131-BA6D-44D8C791CD69</key>
 		<string>../../../../openFrameworks/addons/ofxTaskQueue</string>
 		<key>F1C45855-69DD-44B4-87F7-CA9A278AB03D</key>
-		<string>../../../../../../..</string>
+		<string>../../../..</string>
 		<key>FCEAF8CF-774E-4C17-9949-D6AD39F20A8B</key>
 		<string>../../../../openFrameworks/addons/ofxSSLManager</string>
 	</dict>
@@ -108,17 +108,17 @@
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>2DE9C8846D9375EAACFABA8963120E8E7719BAF5</string>
+			<string>F1C45855-69DD-44B4-87F7-CA9A278AB03D</string>
 			<key>IDESourceControlWCCName</key>
-			<string>..</string>
+			<string></string>
 		</dict>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>F1C45855-69DD-44B4-87F7-CA9A278AB03D</string>
+			<string>2DE9C8846D9375EAACFABA8963120E8E7719BAF5</string>
 			<key>IDESourceControlWCCName</key>
-			<string>..</string>
+			<string></string>
 		</dict>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
@@ -244,7 +244,7 @@
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>CE427DFEAC7CF46E0343E32288BC15C14F0689BB</string>
+			<string>F0EACD0D-2AF2-4131-BA6D-44D8C791CD69</string>
 			<key>IDESourceControlWCCName</key>
 			<string>ofxTaskQueue</string>
 		</dict>
@@ -252,7 +252,7 @@
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>F0EACD0D-2AF2-4131-BA6D-44D8C791CD69</string>
+			<string>CE427DFEAC7CF46E0343E32288BC15C14F0689BB</string>
 			<key>IDESourceControlWCCName</key>
 			<string>ofxTaskQueue</string>
 		</dict>
