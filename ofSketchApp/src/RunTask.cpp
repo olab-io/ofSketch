@@ -53,11 +53,15 @@ std::string RunTask::getExecutable(const Project& project, Target target)
 {
     std::string suffix = (target == DEBUG) ? "_debug" : "";
 
+    std::string relativeProjectPath = "";
+
 #if defined(TARGET_OSX)
-    return project.getPath() + "/bin/" + project.getName() + suffix + ".app/Contents/MacOS/" + project.getName() + suffix;
+    relativeProjectPath = project.getPath() + "/bin/" + project.getName() + suffix + ".app/Contents/MacOS/" + project.getName() + suffix;
 #else
-    return project.getPath() + "/bin/" + project.getName() + suffix;
+    relativeProjectPath = project.getPath() + "/bin/" + project.getName() + suffix;
 #endif
+
+    return ofToDataPath(relativeProjectPath, true);
 }
 
 

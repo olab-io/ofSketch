@@ -24,7 +24,17 @@ while read ADDON; do
 	cd ${ADDON}
 
 	# update to the latest
-	git checkout master
+
+  echo `pwd`
+
+	if [ ${ADDON} == ofxHTTP ]; then
+    git checkout develop
+  elif [ ${ADDON} == ofxNetworkUtils ]; then
+    git checkout develop
+  else
+    git checkout master
+  fi
+
 	git pull
 
 

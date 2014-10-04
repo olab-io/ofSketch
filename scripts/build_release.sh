@@ -12,7 +12,7 @@ SCRIPTS_DIR=`pwd`
 OS=`./helpers/ostype.sh`
 
 # the current semantic version number, strip the "v"
-OF_SKETCH_VERSION='0.4.0-RC1'
+OF_SKETCH_VERSION=`./helpers/ofsketch_version.sh ../ofSketchApp/src/Constants.h`
 
 cd ../ofSketchApp/bin/data
 
@@ -53,7 +53,7 @@ fi
 cd $SCRIPTS_DIR
 
 mkdir ../releases &> /dev/null
-cd ../releases 
+cd ../releases
 rm -rf $OF_SKETCH_RELEASE &> /dev/null
 
 mkdir -p $OF_SKETCH_RELEASE/data
@@ -115,9 +115,9 @@ cd ..
 
 if [[ $OS == linux* ]]
 then
-    tar -cvzf $OF_SKETCH_RELEASE.tar.gz $OF_SKETCH_RELEASE 
+    tar -cvzf $OF_SKETCH_RELEASE.tar.gz $OF_SKETCH_RELEASE
 else
-    zip -r $OF_SKETCH_RELEASE.zip $OF_SKETCH_RELEASE 
+    zip -r $OF_SKETCH_RELEASE.zip $OF_SKETCH_RELEASE
 fi
 
 echo "${OF_SKETCH_RELEASE} Complete!"

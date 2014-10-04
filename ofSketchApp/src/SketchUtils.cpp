@@ -29,6 +29,7 @@
 #include "Poco/PipeStream.h"
 #include "Poco/StreamCopier.h"
 #include "ofxIO.h"
+#include "Constants.h"
 
 
 namespace of {
@@ -178,6 +179,46 @@ std::string SketchUtils::toString(ofTargetPlatform targetPlatform)
         default:
             return "UNKNOWN";
     }
+}
+
+
+std::string SketchUtils::getVersion()
+{
+    std::stringstream ss;
+
+    ss << VERSION_MAJOR << ".";
+    ss << VERSION_MINOR << ".";
+    ss << VERSION_PATCH;
+
+    if (!getVersionSpecial().empty())
+    {
+        ss << "-" << getVersionSpecial();
+    }
+
+    return ss.str();
+}
+
+int SketchUtils::getVersionMajor()
+{
+    return VERSION_MAJOR;
+}
+
+
+int SketchUtils::getVersionMinor()
+{
+    return VERSION_MINOR;
+}
+
+
+int SketchUtils::getVersionPatch()
+{
+    return VERSION_PATCH;
+}
+
+
+std::string SketchUtils::getVersionSpecial()
+{
+    return VERSION_SPECIAL;
 }
 
 
