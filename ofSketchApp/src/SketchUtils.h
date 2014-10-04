@@ -59,6 +59,12 @@ public:
 
     static std::string toString(ofTargetPlatform targetPlatform);
 
+    static std::string getVersion();
+    static int getVersionMajor();
+    static int getVersionMinor();
+    static int getVersionPatch();
+    static std::string getVersionSpecial();
+
 };
 
 

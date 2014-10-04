@@ -1,6 +1,7 @@
 // =============================================================================
 //
 // Copyright (c) 2013-2014 Christopher Baker <http://christopherbaker.net>
+// Copyright (c) 2014 Brannon Dorsey <http://brannondorsey.com>
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -23,11 +24,10 @@
 // =============================================================================
 
 
-#include "ofApp.h"
+#pragma once
 
 
-int main()
-{
-    ofSetupOpenGL(200, 40, OF_WINDOW);
-    ofRunApp(new ofApp());
-}
+#define VERSION_MAJOR 0
+#define VERSION_MINOR 4
+#define VERSION_PATCH 0
+#define VERSION_SPECIAL "RC2"
