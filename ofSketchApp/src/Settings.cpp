@@ -24,8 +24,10 @@
 
 
 #include "Settings.h"
+#include "json/json.h"
 #include "ofUtils.h"
 #include "SketchUtils.h"
+#include "Poco/FileStream.h"
 #include "Poco/Net/NetException.h"
 
 
@@ -33,242 +35,137 @@ namespace of {
 namespace Sketch {
 
 
-const Poco::Path Settings::DEFAULT_SETTINGS_PATH("Resources/Settings/Defaults.json", Poco::Path::PATH_UNIX);
-const Poco::Path Settings::USER_SETTINGS_PATH(Poco::Path::home(), ".ofsketch.json");
-
-
 Settings::Settings()
 {
-    Poco::File defaultSettingsFile(ofToDataPath(DEFAULT_SETTINGS_PATH.toString(),
-                                                true));
-
-    if (!defaultSettingsFile.exists())
-    {
-        ofLogFatalError("Settings::Settings()") << "Default settings file not found: " << defaultSettingsFile.path();
-        return;
-    }
-
-    if (SketchUtils::JSONfromFile(defaultSettingsFile.path(), _defaultSettings))
-    {
-        ofLogFatalError("Settings::Settings()") << "Unable to parse default settings file.";
-        return;
-    }
-
-    Poco::File userSettingsFile(USER_SETTINGS_PATH);
-
-    if (!userSettingsFile.exists())
-    {
-        _userSettings = _defaultSettings;
-        save();
-    }
-    else if (!SketchUtils::JSONfromFile(userSettingsFile.path(), _userSettings))
-    {
-        ofLogFatalError("Settings::Settings()") << "Default settings file not found: " << defaultSettingsFile.path();
-        _userSettings = _defaultSettings;
-    }
-    else
-    {
-        // It was successful and set already.
-    }
 }
 
 
-bool Settings::save() const
+Settings::Settings(const Paths& paths,
+                   const ClientSettings& clientSettings,
+                   const ServerSettings& serverSettings):
+    _paths(paths),
+    _clientSettings(clientSettings),
+    _serverSettings(serverSettings)
 {
-    return SketchUtils::JSONtoFile(USER_SETTINGS_PATH.toString(), _userSettings);
 }
 
 
-bool Settings::update(const Json::Value& settings)
-{
-    // TODO:: validate these settings, as they come
-    // from the web client and could be manipulated.
-    _userSettings = settings;
+//void Settings::save()
+//{
+////    Poco::Path settingsDirectoryPath(Poco::Path::home(),
+////                                     Poco::Path(USER_SETTINGS_PATH,
+////                                                SETTINGS_FILENAME));
+////    try
+////    {
+////        Poco::FileOutputStream fos(settingsDirectoryPath.toString());
+////        Poco::Util::JSONConfiguration::save(fos);
+////        fos.close();
+////    }
+////    catch (const Poco::Exception& exc)
+////    {
+////        ofLogError("Settings::save") << exc.displayText();
+////    }
+//}
 
-	return true;
+
+//void Settings::setup()
+//{
+////    Poco::Path settingsDirectoryPath(Poco::Path::home(),
+////                                     Poco::Path(USER_SETTINGS_PATH));
+////
+////    Poco::File settingsDirectory(settingsDirectoryPath);
+////
+////    try
+////    {
+////        if (!settingsDirectory.exists())
+////        {
+////            ofLogVerbose("Settings::setup") << "Settings directory " << settingsDirectory.path() << " does not exist.";
+////
+////            if (settingsDirectory.createDirectory())
+////            {
+////                ofLogVerbose("Settings::setup") << "Creating settings directory " << settingsDirectory.path();
+////            }
+////            else
+////            {
+////                ofLogError("Settings::setup") << "Unable to create settings directory: " << settingsDirectory.path();
+////            }
+////        }
+////
+////        Poco::Path userSettingsPath(settingsDirectoryPath, SETTINGS_FILENAME);
+////        Poco::File userSettingsFile(userSettingsPath);
+////
+////        if (!userSettingsFile.exists())
+////        {
+////            Poco::Path defaultSettingsPath(ofToDataPath(DEFAULT_SETTINGS_PATH,
+////                                                        true),
+////                                           SETTINGS_FILENAME);
+////
+////            Poco::File defaultSettingsFile(defaultSettingsPath);
+////
+////            ofLogVerbose("Settings::setup") << "Default settings at: " << defaultSettingsFile.path();
+////
+////            if (defaultSettingsFile.exists())
+////            {
+////                ofLogVerbose("Settings::setup") << "Default settings at: " << defaultSettingsFile.path() << " are being copied to " << settingsDirectory.path();
+////                defaultSettingsFile.copyTo(userSettingsFile.path());
+////            }
+////            else
+////            {
+////                ofLogFatalError("Settings::setup") << "Unable to locate default settings: " << defaultSettingsFile.path();
+////            }
+////        }
+////
+////        try
+////        {
+////            Poco::FileInputStream fis(userSettingsFile.path());
+////            load(fis);
+////            fis.close();
+////        }
+////        catch (const Poco::Exception& exc)
+////        {
+////            ofLogError("Settings::setup") << exc.displayText();
+////        }
+////    }
+////    catch (const Poco::Exception& exc)
+////    {
+////        ofLogError("Settings::setup") << exc.displayText();
+////    }
+//}
+
+
+const Paths& Settings::getPaths() const
+{
+    return _paths;
 }
 
 
-Json::Value Settings::toJSON() const
+const ClientSettings& Settings::getClientSettings() const
 {
-    return _userSettings;
+    return _clientSettings;
 }
 
 
-Poco::Path Settings::getDataPath() const
+const ServerSettings& Settings::getServerSettings() const
 {
-//    ofToDataPath(<#const string &path#>)
-	return Poco::Path();
+    return _serverSettings;
 }
 
 
-Poco::Path Settings::addonsPath() const
+Paths& Settings::getPathsRef()
 {
-    return Poco::Path(_userSettings["paths"]["addons"].asString());
+    return _paths;
 }
 
 
-Poco::Path Settings::openFrameworksPath() const
+ClientSettings& Settings::getClientSettingsRef()
 {
-    return Poco::Path(_userSettings["paths"]["openFrameworks"].asString());
+    return _clientSettings;
 }
 
 
-Poco::Path Settings::projectsPath() const
+ServerSettings& Settings::getServerSettingsRef()
 {
-    return Poco::Path(_userSettings["paths"]["projects"].asString());
-}
-
-
-Poco::Path Settings::compilerTemplatesPath() const
-{
-    return Poco::Path(_userSettings["paths"]["compilerTemplatesPath"].asString());
-}
-
-
-Poco::Path Settings::editorTemplates() const
-{
-    return Poco::Path(_userSettings["paths"]["editorTemplates"].asString());
-}
-
-
-Poco::Path Settings::projectTemplate() const
-{
-    return Poco::Path(_userSettings["paths"]["projectTemplate"].asString());
-}
-
-
-std::size_t Settings::webSocketBufferSize() const
-{
-    return _userSettings["server"]["webSocketBufferSize"].asLargestUInt();
-}
-
-
-unsigned short Settings::port() const
-{
-    return _userSettings["server"]["port"].asUInt();
-}
-
-
-bool Settings::useSSL() const
-{
-    return _userSettings["server"]["ssl"].asBool();
-}
-
-
-unsigned long Settings::maxiumFileUploadSize() const
-{
-    return _userSettings["server"]["maxiumFileUploadSize"].asUInt64();
-}
-
-
-bool Settings::allowRemoteConnections() const
-{
-    return _userSettings["server"]["security"]["connections"]["allowRemote"].asBool();
-}
-
-std::vector<Poco::Net::IPAddress> Settings::whitelistedIPs() const
-{
-    std::vector<Poco::Net::IPAddress> addresses;
-
-    Json::Value whiteListedIPs = _userSettings["server"]["security"]["connections"]["whitelistedIPs"];
-
-    if (whiteListedIPs.isArray())
-    {
-        for (Json::ArrayIndex i = 0; i < whiteListedIPs.size(); ++i)
-        {
-            Json::Value jsonIP = whiteListedIPs.get(i, Json::nullValue);
-
-            if (!jsonIP.isNull() && jsonIP.isString())
-            {
-                try
-                {
-                    Poco::Net::IPAddress ip(jsonIP.asString());
-                    addresses.push_back(ip);
-                }
-                catch (const Poco::Net::InvalidAddressException& exc)
-                {
-                    ofLogError("Settings::whitelistedIPs") << exc.displayText();
-                }
-            }
-            else
-            {
-                // nothing
-            }
-        }
-
- 
-    }
-    else
-    {
-    }
-
-	return addresses;
-}
-
-Poco::Path Settings::sslPrivateKeyPath() const
-{
-    return Poco::Path(_userSettings["server"]["security"]["ssl"]["privateKey"].asString());
-}
-
-Poco::Path Settings::sslSelfSignedCertificatePath() const
-{
-    return Poco::Path(_userSettings["server"]["security"]["ssl"]["selfSignedCertificate"].asString());
-}
-
-Poco::Path Settings::sslCACertPath() const
-{
-    return Poco::Path(_userSettings["server"]["security"]["ssl"]["cacert"].asString());
-}
-
-Poco::Net::Context::VerificationMode Settings::sslVerificationMode() const
-{
-    std::string mode = _userSettings["server"]["security"]["ssl"]["cacert"].asString();
-
-    if (mode == "VERIFY_NONE")
-    {
-        return Poco::Net::Context::VERIFY_NONE;
-    }
-    else if (mode == "VERIFY_RELAXED")
-    {
-        return Poco::Net::Context::VERIFY_RELAXED;
-    }
-    else if (mode == "VERIFY_STRICT")
-    {
-        return Poco::Net::Context::VERIFY_STRICT;
-    }
-    else if (mode == "VERIFY_ONCE")
-    {
-        return Poco::Net::Context::VERIFY_ONCE;
-    }
-    else
-    {
-        ofLogWarning("Settings::sslVerificationMode") << "Unrecognized verification mode: " << mode;
-        return Poco::Net::Context::VERIFY_RELAXED;
-    }
-}
-
-
-int Settings::sslVerificationDepth() const
-{
-    return _userSettings["server"]["security"]["ssl"]["verificationDepth"].asInt();
-}
-
-
-bool Settings::sslLoadDefaultCAs() const
-{
-    return _userSettings["server"]["security"]["ssl"]["loadDefaultCAs"].asBool();
-}
-
-
-std::string Settings::sslCipherList() const
-{
-    return _userSettings["server"]["security"]["ssl"]["cipherList"].asString();
-}
-
-Json::Value Settings::editorSettings() const
-{
-    return _userSettings["editor"];
+    return _serverSettings;
 }
 
 

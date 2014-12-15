@@ -1,5 +1,6 @@
 // =============================================================================
 //
+// Copyright (c) 2013-2014 Christopher Baker <http://christopherbaker.net>
 // Copyright (c) 2014 Brannon Dorsey <http://brannondorsey.com>
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -26,12 +27,15 @@
 #pragma once
 
 
-#include <string>
-#include <json/json.h>
-#include "Poco/Environment.h"
-#include "Poco/Net/Context.h"
-#include "Poco/Net/IPAddress.h"
-#include "ofUtils.h"
+//#include <string>
+//#include <json/json.h>
+//#include "Poco/Environment.h"
+//#include "Poco/Net/Context.h"
+//#include "ofx/Net/IPAddressRange.h"
+//#include "ofUtils.h"
+#include "Paths.h"
+#include "ServerSettings.h"
+#include "ClientSettings.h"
 
 
 namespace of {
@@ -42,55 +46,28 @@ namespace Sketch {
 class Settings
 {
 public:
-    /// \brief Create a default settings object.
+    /// \brief Create a default Settings instance.
     Settings();
+    Settings(const Paths& paths,
+             const ClientSettings& clientSettings,
+             const ServerSettings& serverSettings);
 
-    bool save() const;
-    bool update(const Json::Value& settings);
+//    void setup();
+//    void save();
 
-    Json::Value toJSON() const;
+    const Paths& getPaths() const;
+    const ClientSettings& getClientSettings() const;
+    const ServerSettings& getServerSettings() const;
 
-    Poco::Path getDataPath() const;
+    Paths& getPathsRef();
+    ClientSettings& getClientSettingsRef();
+    ServerSettings& getServerSettingsRef();
 
-    Poco::Path addonsPath() const;
-    Poco::Path openFrameworksPath() const;
-    Poco::Path projectsPath() const;
-    Poco::Path compilerTemplatesPath() const;
-    Poco::Path editorTemplates() const;
-    Poco::Path projectTemplate() const;
-
-    std::size_t webSocketBufferSize() const;
-    unsigned short port() const;
-    bool useSSL() const;
-
-    unsigned long maxiumFileUploadSize() const;
-
-    bool allowRemoteConnections() const;
-    std::vector<Poco::Net::IPAddress> whitelistedIPs() const;
-
-    Poco::Path sslPrivateKeyPath() const;
-    Poco::Path sslSelfSignedCertificatePath() const;
-    Poco::Path sslCACertPath() const;
-    Poco::Net::Context::VerificationMode sslVerificationMode() const;
-    int sslVerificationDepth() const;
-    bool sslLoadDefaultCAs() const;
-    std::string sslCipherList() const;
-
-    Json::Value editorSettings() const;
-
-    /// \brief The path for the default ofSketch settings, relative to bin/data.
-    static const Poco::Path DEFAULT_SETTINGS_PATH;
-
-    /// \brief The absolute path for the user-specific ofSketch settings.
-    static const Poco::Path USER_SETTINGS_PATH;
-
-private:
-    /// \brief An internal copy of the default settings.
-    Json::Value _defaultSettings;
-
-    /// \brief A JSON object containing all settings.
-    Json::Value _userSettings;
-
+protected:
+    Paths _paths;
+    ClientSettings _clientSettings;
+    ServerSettings _serverSettings;
+    
 };
 
 
