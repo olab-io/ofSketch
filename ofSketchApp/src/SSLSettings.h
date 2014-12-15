@@ -23,47 +23,56 @@
 // =============================================================================
 
 
-#include "ofApp.h"
+#pragma once
 
 
-void ofApp::setup()
+#include "Poco/Net/Context.h"
+#include "ofx/Net/IPAddressRange.h"
+
+
+namespace of {
+namespace Sketch {
+
+
+class SSLSettings
 {
-#ifndef NO_WINDOW
-    ofSetVerticalSync(true);
-    ofSetFrameRate(30);
-    _logo.loadImage("media/openFrameworks.jpg");
-    _font.loadFont(OF_TTF_SANS, 24);
-#endif
+public:
+    SSLSettings();
+    SSLSettings(const std::string& privateKeyPath,
+                const std::string& certificatePath,
+                const std::string& CACertPath,
+                Poco::Net::Context::VerificationMode verificationMode,
+                int verificationDepth,
+                bool loadDefaultCAs,
+                const std::string cipherList);
 
-    app.setup();
+    std::string getPrivateKeyPath() const;
+    std::string getCertificatePath() const;
+    std::string getCACertPath() const;
+    Poco::Net::Context::VerificationMode getVerificationMode() const;
+    int getVerificationDepth() const;
+    bool getLoadDefaultCAs() const;
+    std::string getCipherList() const;
 
-    ofTargetPlatform arch = of::Sketch::SketchUtils::getTargetPlatform();
+    static const Poco::Net::Context::VerificationMode DEFAULT_VERIFICATION_MODE;
+    static const bool DEFAULT_LOAD_CA;
+    static const std::string DEFAULT_CIPHER_LIST;
 
-    if (arch != OF_TARGET_LINUXARMV6L && arch != OF_TARGET_LINUXARMV7L)
+    enum
     {
-        // Launch a browser with the address of the server.
-        // ofLaunchBrowser(app.getServer()->getURL());
-    }
+        DEFAULT_VERIFICATION_DEPTH = 9
+    };
 
-}
+private:
+    std::string _privateKeyPath;
+    std::string _certificatePath;
+    std::string _CACertPath;
+    Poco::Net::Context::VerificationMode _verificationMode;
+    int _verificationDepth;
+    bool _loadDefaultCAs;
+    std::string _cipherList;
 
-
-void ofApp::draw()
-{
-#ifndef NO_WINDOW
-    ofBackground(255);
-
-    ofSetColor(255);
-    _logo.draw(10, 0);
-
-    ofSetColor(80);
-    _font.drawString("Launch", 70, 30);
-#endif
-    
-}
+};
 
 
-void ofApp::mousePressed(int x, int y, int button)
-{
-    ofLaunchBrowser(app.getServer()->getURL());
-}
+} } // namespace of::Sketch

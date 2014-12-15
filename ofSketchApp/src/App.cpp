@@ -26,6 +26,7 @@
 
 #include "ofApp.h"
 #include "ofx/Net/IPAddressRange.h"
+#include "Serializer.h"
 
 
 namespace of {
@@ -33,87 +34,70 @@ namespace Sketch {
 
 
 App::App():
-    _editorSettings("Resources/Settings/EditorSettings.json"),
-    _ofSketchSettings(),
     _threadPool("ofSketchThreadPool"),
     _taskQueue(ofx::TaskQueue_<std::string>::UNLIMITED_TASKS, _threadPool),
-    _compiler(_taskQueue, "Resources/Templates/CompilerTemplates", "openFrameworks"),
-    _addonManager("openFrameworks/addons"),
-    _projectManager("Projects"),
-    _uploadRouter("Projects"),
+    _compiler(_settings, _taskQueue),
+    _addonManager(_settings),
+    _projectManager(_settings),
+    _uploadRouter(_settings),
     _missingDependencies(true)
 {
+    // Hack to make sure that the net sybsystem is initialized on windows.
+    Poco::Net::initializeNetwork();
+
+    ofSSLManager::registerAllEvents(this);
+    _taskQueue.registerAllEvents(this);
 }
 
 
 App::~App()
 {
     _taskQueue.unregisterAllEvents(this);
-
-    server->getWebSocketRoute()->unregisterWebSocketEvents(this);
-    server->getPostRoute()->unregisterPostEvents(&_uploadRouter);
-
     ofSSLManager::unregisterAllEvents(this);
 }
 
 
 void App::setup()
 {
+    ofSetLogLevel(OF_LOG_VERBOSE);
     ofSetLogLevel("ofThread", OF_LOG_ERROR);
     ofSetLogLevel(OF_LOG_NOTICE);
 
-    // Hack to make sure that the net sybsystem is initialized on windows.
-    Poco::Net::initializeNetwork();
 
-#ifdef TARGET_WIN32
-	// Set up toolchain path information for Windows.
-	std::string pathVar = Poco::Environment::get("PATH","");
+    // Load the settings from the user's home directory if available.
+    _settings = Serializer::loadSettings();
 
-	std::string pathToolChain0 = ofToDataPath("Toolchains/ofMinGW/MinGW/msys/1.0/bin", true);
-	std::string pathToolChain1 = ofToDataPath("Toolchains/ofMinGW/MinGW/bin", true);
-
-	std::stringstream pathSS;
-	pathSS << pathToolChain0 << ";" << pathToolChain1 << ";" << pathVar;
-	Poco::Environment::set("PATH", pathSS.str());
-#endif
-
-    _editorSettings.load();
-    _ofSketchSettings.load();
-    _compiler.setup();
     _addonManager.setup();
     _projectManager.setup();
     _uploadRouter.setup();
 
     try 
 	{
-        if (hasDependency("make"))
+        if (SketchUtils::hasDependency("make"))
         {
             _missingDependencies = false;
         }
 
-        ofLogNotice("App::App") << "Editor setting's projectDir: " << _ofSketchSettings.getProjectDir();
+        ofx::HTTP::BasicJSONRPCServerSettings settings;
+        settings.setBufferSize(_settings.getServerSettings().getWebSocketBufferSize());
 
-        _taskQueue.registerAllEvents(this);
+        if (0 == _settings.getServerSettings().getPort())
+        {
+            settings.setPort((unsigned short)ofRandom(8888,9999));
+        }
+        else
+        {
+            settings.setPort(_settings.getServerSettings().getPort());
+        }
 
-        ofLogNotice("App::App") << "Starting server on port: " << _ofSketchSettings.getPort() << " With Websocket Buffer Size: " << _ofSketchSettings.getBufferSize();
-
-        ofx::HTTP::BasicJSONRPCServerSettings settings; // TODO: load from file.
-        settings.setBufferSize(_ofSketchSettings.getBufferSize());
-        settings.setPort(_ofSketchSettings.getPort());
         settings.setUploadRedirect("");
+        settings.setMaximumFileUploadSize(_settings.getServerSettings().getMaxiumFileUploadSize() * 1024);
+        settings.setWhitelist(_settings.getServerSettings().getWhitelist());
 
-        unsigned long long maximumFileUploadSize = 5120000000; // 50 GB
-
-        settings.setMaximumFileUploadSize(maximumFileUploadSize);
-
-        ofx::Net::IPAddressRange::IPAddressRange::List whitelist;
-        whitelist.push_back(ofx::Net::IPAddressRange("127.0.0.1/32"));
-        settings.setWhitelist(whitelist);
+        // Override for testing.
+        settings.setPort(9178);
 
         server = ofx::HTTP::BasicJSONRPCServer::makeShared(settings);
-
-        // Must register for all events before initializing server.
-        ofSSLManager::registerAllEvents(this);
 
         server->getPostRoute()->registerPostEvents(&_uploadRouter);
         server->getWebSocketRoute()->registerWebSocketEvents(this);
@@ -123,10 +107,12 @@ void App::setup()
         // _loggerChannel->setWebSocketRoute(server->getWebSocketRoute());
         // ofSetLoggerChannel(_loggerChannel);
 
+        const SSLSettings& sslSettings = _settings.getServerSettings().getSSLSettings();
+
 		ofSSLManager::initializeServer(new Poco::Net::Context(Poco::Net::Context::SERVER_USE,
-															  ofToDataPath("ssl/privateKey.nopassword.pem"),
-															  ofToDataPath("ssl/selfSignedCertificate.nopassword.pem"),
-															  ofToDataPath("ssl/cacert.pem")));
+															  ofToDataPath(sslSettings.getPrivateKeyPath(), true),
+															  ofToDataPath(sslSettings.getCertificatePath(), true),
+                                                              ofToDataPath(sslSettings.getCACertPath(), true)));
 
         // TODO: configure these via settings files
         server->registerMethod("load-project",
@@ -261,6 +247,9 @@ void App::setup()
     {
 		ofLogError() << exc.displayText();
     }
+
+    Serializer::saveSettings(_settings);
+
 }
 
 
@@ -270,36 +259,15 @@ void App::exit()
     Json::Value params;
     params["foo"] = "bar";
     Json::Value json = SketchUtils::toJSONMethod("Server", "appExit", params);
-    ofx::HTTP::WebSocketFrame frame(SketchUtils::toJSONString(json));
+    ofx::HTTP::WebSocketFrame frame(Serializer::toString(json));
     server->getWebSocketRoute()->broadcast(frame);
     ofLogNotice("App::exit") << "appExit frame broadcasted" << endl;
 
+    server->getWebSocketRoute()->unregisterWebSocketEvents(this);
+    server->getPostRoute()->unregisterPostEvents(&_uploadRouter);
+
     // Reset default logger.
     ofLogToConsole();
-}
-
-
-bool App::hasDependency(const std::string& command)
-{
-	try 
-	{
-		std::string cmd("which");
-		std::vector<std::string> args;
-		args.push_back(command);
-		Poco::Pipe outPipe;
-		Poco::ProcessHandle ph = Poco::Process::launch(cmd, args, 0, &outPipe, 0);
-		Poco::PipeInputStream istr(outPipe);
-		std::stringstream ostr;
-		Poco::StreamCopier::copyStream(istr, ostr);
-		std::string result = ostr.str();
-		return !result.empty();
-	} 
-	catch (const Poco::Exception& exc)
-	{
-		// This probably happened because the which program was not available on Windows.
-		ofLogError() << exc.displayText();
-		return true;
-	}
 }
 
 
@@ -392,7 +360,7 @@ void App::requestProjectClosed(const void* pSender, ofx::JSONRPC::MethodArgs& ar
     params["projectName"] = projectName;
     params["clientUUID"] = clientUUID;
     Json::Value json = SketchUtils::toJSONMethod("Server", "requestProjectClosed", params);
-    ofx::HTTP::WebSocketFrame frame(SketchUtils::toJSONString(json));
+    ofx::HTTP::WebSocketFrame frame(Serializer::toString(json));
     server->getWebSocketRoute()->broadcast(frame);
 }
 
@@ -522,15 +490,12 @@ void App::getAddonList(const void *pSender, ofx::JSONRPC::MethodArgs &args)
     ofLogVerbose("App::getAddonList") << " sending addon list.";
 
     Json::Value addonsJSON;
-    std::vector<Addon::SharedPtr> addons = _addonManager.getAddons();
-    std::vector<Addon::SharedPtr>::const_iterator iter = addons.begin();
+    const std::vector<Addon>& addons = _addonManager.getAddons();
+    std::vector<Addon>::const_iterator iter = addons.begin();
 
     while (iter != addons.end())
     {
-        Json::Value addon;
-        addon["name"] = (*iter)->getName();
-        addon["path"] = (*iter)->getPath().toString();
-        addonsJSON.append(addon);
+        addonsJSON.append(Serializer::toJSON(*iter));
         ++iter;
     }
 
@@ -597,7 +562,7 @@ void App::removeProjectAddon(const void* pSender, ofx::JSONRPC::MethodArgs& args
 
 void App::loadEditorSettings(const void *pSender, ofx::JSONRPC::MethodArgs &args)
 {
-    args.result = _editorSettings.getData();
+    args.result = _settings.getClientSettings().getEditorSettings();
 }
 
 
@@ -605,8 +570,8 @@ void App::saveEditorSettings(const void *pSender, ofx::JSONRPC::MethodArgs &args
 {
     ofLogVerbose("App::saveEditorSettings") << "Saving editor settings" << endl;
     Json::Value settings = args.params["data"]; // must make a copy
-    _editorSettings.update(settings);
-    _editorSettings.save();
+
+    _settings.getClientSettingsRef().setEditorSettings(settings);
 
     // broadcast new editor settings to all connected clients
     Json::Value params;
@@ -614,13 +579,13 @@ void App::saveEditorSettings(const void *pSender, ofx::JSONRPC::MethodArgs &args
     params["clientUUID"] = args.params["clientUUID"];
     ofLogNotice("App::saveEditorSettings") << "clientUUID: " << params["clientUUID"] << endl;
     Json::Value json = SketchUtils::toJSONMethod("Server", "updateEditorSettings", params);
-    ofx::HTTP::WebSocketFrame frame(SketchUtils::toJSONString(json));
+    ofx::HTTP::WebSocketFrame frame(Serializer::toString(json));
     server->getWebSocketRoute()->broadcast(frame);
 }
 
 void App::loadOfSketchSettings(const void *pSender, ofx::JSONRPC::MethodArgs &args)
 {
-    args.result = _ofSketchSettings.getData();
+    args.result = Serializer::toJSON(_settings.getClientSettings());
 }
 
 void App::saveOfSketchSettings(const void *pSender, ofx::JSONRPC::MethodArgs &args)
@@ -629,8 +594,9 @@ void App::saveOfSketchSettings(const void *pSender, ofx::JSONRPC::MethodArgs &ar
 
     Json::Value settings = args.params["data"]; // must make a copy
 
-    _ofSketchSettings.update(settings);
-    _ofSketchSettings.save();
+// \todo
+//    _ofSketchSettings.update(settings);
+//    _ofSketchSettings.save();
 
     // broadcast new editor settings to all connected clients
     Json::Value params;
@@ -638,7 +604,7 @@ void App::saveOfSketchSettings(const void *pSender, ofx::JSONRPC::MethodArgs &ar
     params["clientUUID"] = args.params["clientUUID"];
 
     Json::Value json = SketchUtils::toJSONMethod("Server", "updateOfSketchSettings", params);
-    ofx::HTTP::WebSocketFrame frame(SketchUtils::toJSONString(json));
+    ofx::HTTP::WebSocketFrame frame(Serializer::toString(json));
     server->getWebSocketRoute()->broadcast(frame);
 }
 
@@ -668,12 +634,12 @@ bool App::onWebSocketOpenEvent(ofx::HTTP::WebSocketOpenEventArgs& args)
     // Send version info.
     // params.clear();
     Json::Value params;
-    params["version"] = SketchUtils::getVersion();
-    params["major"] = SketchUtils::getVersionMajor();
-    params["minor"] = SketchUtils::getVersionMinor();
-    params["patch"] = SketchUtils::getVersionPatch();
-    params["special"] = SketchUtils::getVersionSpecial();
-    params["target"] = SketchUtils::toString(SketchUtils::getTargetPlatform());
+    params["version"] = Version::asString();
+    params["major"] = Version::major();
+    params["minor"] = Version::minor();
+    params["patch"] = Version::patch();
+    params["special"] = Version::special();
+    params["target"] = SketchUtils::TargetPlatformToString(SketchUtils::getTargetPlatform());
 
     Json::Value host;
     Json::Value os;
@@ -694,7 +660,7 @@ bool App::onWebSocketOpenEvent(ofx::HTTP::WebSocketOpenEventArgs& args)
     params["host"] = host;
 
     Json::Value json = SketchUtils::toJSONMethod("Server", "version", params);
-    ofx::HTTP::WebSocketFrame frame = ofx::HTTP::WebSocketFrame(SketchUtils::toJSONString(json));
+    ofx::HTTP::WebSocketFrame frame = ofx::HTTP::WebSocketFrame(Serializer::toString(json));
 
     args.getConnectionRef().sendFrame(frame);
 
@@ -702,7 +668,7 @@ bool App::onWebSocketOpenEvent(ofx::HTTP::WebSocketOpenEventArgs& args)
     {
         params = Json::nullValue;
         json = SketchUtils::toJSONMethod("Server", "missingDependencies", params);
-        frame = ofx::HTTP::WebSocketFrame(SketchUtils::toJSONString(json));
+        frame = ofx::HTTP::WebSocketFrame(Serializer::toString(json));
         args.getConnectionRef().sendFrame(frame);
     }
 
@@ -800,7 +766,7 @@ bool App::onTaskQueued(const ofx::TaskQueueEventArgs& args)
     params["name"] = args.getTaskName();
     params["uuid"] = args.getTaskId().toString();
     Json::Value json = SketchUtils::toJSONMethod("TaskQueue", "taskQueued", params);
-    ofx::HTTP::WebSocketFrame frame(SketchUtils::toJSONString(json));
+    ofx::HTTP::WebSocketFrame frame(Serializer::toString(json));
     server->getWebSocketRoute()->broadcast(frame);
     return false;
 }
@@ -812,7 +778,7 @@ bool App::onTaskStarted(const ofx::TaskQueueEventArgs& args)
     params["name"] = args.getTaskName();
     params["uuid"] = args.getTaskId().toString();
     Json::Value json = SketchUtils::toJSONMethod("TaskQueue", "taskStarted", params);
-    ofx::HTTP::WebSocketFrame frame(SketchUtils::toJSONString(json));
+    ofx::HTTP::WebSocketFrame frame(Serializer::toString(json));
     server->getWebSocketRoute()->broadcast(frame);
     return false;
 }
@@ -824,7 +790,7 @@ bool App::onTaskCancelled(const ofx::TaskQueueEventArgs& args)
     params["name"] = args.getTaskName();
     params["uuid"] = args.getTaskId().toString();
     Json::Value json = SketchUtils::toJSONMethod("TaskQueue", "taskCancelled", params);
-    ofx::HTTP::WebSocketFrame frame(SketchUtils::toJSONString(json));
+    ofx::HTTP::WebSocketFrame frame(Serializer::toString(json));
     server->getWebSocketRoute()->broadcast(frame);
     return false;
 }
@@ -836,7 +802,7 @@ bool App::onTaskFinished(const ofx::TaskQueueEventArgs& args)
     params["name"] = args.getTaskName();
     params["uuid"] = args.getTaskId().toString();
     Json::Value json = SketchUtils::toJSONMethod("TaskQueue", "taskFinished", params);
-    ofx::HTTP::WebSocketFrame frame(SketchUtils::toJSONString(json));
+    ofx::HTTP::WebSocketFrame frame(Serializer::toString(json));
     server->getWebSocketRoute()->broadcast(frame);
     return false;
 }
@@ -849,7 +815,7 @@ bool App::onTaskFailed(const ofx::TaskFailedEventArgs& args)
     params["uuid"] = args.getTaskId().toString();
     params["exception"] = args.getException().displayText();
     Json::Value json = SketchUtils::toJSONMethod("TaskQueue", "taskFailed", params);
-    ofx::HTTP::WebSocketFrame frame(SketchUtils::toJSONString(json));
+    ofx::HTTP::WebSocketFrame frame(Serializer::toString(json));
     server->getWebSocketRoute()->broadcast(frame);
     return false;
 }
@@ -862,7 +828,7 @@ bool App::onTaskProgress(const ofx::TaskProgressEventArgs& args)
     params["uuid"] = args.getTaskId().toString();
     params["progress"] = args.getProgress();
     Json::Value json = SketchUtils::toJSONMethod("TaskQueue", "taskProgress", params);
-    ofx::HTTP::WebSocketFrame frame(SketchUtils::toJSONString(json));
+    ofx::HTTP::WebSocketFrame frame(Serializer::toString(json));
     server->getWebSocketRoute()->broadcast(frame);
     return false;
 }
@@ -885,7 +851,7 @@ bool App::onTaskData(const ProcessTaskQueue::EventArgs& args)
     }
 
     Json::Value json = SketchUtils::toJSONMethod("TaskQueue", "taskMessage", params);
-    ofx::HTTP::WebSocketFrame frame(SketchUtils::toJSONString(json));
+    ofx::HTTP::WebSocketFrame frame(Serializer::toString(json));
     server->getWebSocketRoute()->broadcast(frame);
 	return false;
 }

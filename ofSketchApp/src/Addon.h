@@ -34,21 +34,64 @@ namespace of {
 namespace Sketch {
 
 
+/// \brief A class representing and openFrameworks addon.
 class Addon
 {
 public:
-    typedef std::shared_ptr<Addon> SharedPtr;
+    /// \brief Create an addon with the given path.
+    /// \param path The path to the addon.
+    Addon(const Poco::Path& path);
 
-    Addon(const std::string& name, const Poco::Path& path);
+    /// \brief Create an addon with the given parameters.
+    /// \param path The path to the addon.
+    /// \param name The addon name.
+    /// \param description The addon description.
+    /// \param author The addon author.
+    /// \param tags The addon tags.
+    /// \param URL the addon URL.
+    Addon(const Poco::Path& path,
+          const std::string& name,
+          const std::string& description,
+          const std::string& author,
+          const std::vector<std::string> tags,
+          const std::string& URL);
 
     virtual ~Addon();
 
-    const std::string& getName() const;
+    /// \returns the absolute path to the addon.
     const Poco::Path& getPath() const;
 
+    /// \returns the name of the addon.
+    const std::string& getName() const;
+
+    /// \returns the description of the addon.
+    const std::string& getDesription() const;
+
+    /// \returns the author of the addon.
+    const std::string& getAuthor() const;
+
+    /// \returns the tags of the addon.
+    const std::vector<std::string> getTags() const;
+
+    /// \returns the URL of the addon.
+    const std::string& getURL() const;
+
+//    /// \returns true iff this is a core addon.
+//    bool isCoreAddon() const;
+
 private:
-    std::string _name;
-    Poco::Path _path;
+    Poco::Path _path; ///< The absolute path to the addon.
+
+    std::string _name; ///< The name of the addon.
+
+    std::string _description; ///< An addon description.
+
+    std::string _author; ///< The addon author.
+
+    std::vector<std::string> _tags; ///< The addon tags.
+
+    std::string _URL; ///< The addon URL.
+
 
 };
 

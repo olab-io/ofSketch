@@ -30,9 +30,23 @@ namespace of {
 namespace Sketch {
 
 
-Addon::Addon(const std::string& name, const Poco::Path& path):
+Addon::Addon(const Poco::Path& path): _path(path)
+{
+}
+
+
+Addon::Addon(const Poco::Path& path,
+             const std::string& name,
+             const std::string& description,
+             const std::string& author,
+             const std::vector<std::string> tags,
+             const std::string& URL):
+    _path(path),
     _name(name),
-    _path(path)
+    _description(description),
+    _author(author),
+    _tags(tags),
+    _URL(URL)
 {
 }
 
@@ -42,16 +56,46 @@ Addon::~Addon()
 }
 
 
+const Poco::Path& Addon::getPath() const
+{
+    return _path;
+}
+
+
 const std::string& Addon::getName() const
 {
     return _name;
 }
 
 
-const Poco::Path& Addon::getPath() const
+const std::string& Addon::getDesription() const
 {
-    return _path;
+    return _description;
 }
+
+
+const std::string& Addon::getAuthor() const
+{
+    return _author;
+}
+
+
+const std::vector<std::string> Addon::getTags() const
+{
+    return _tags;
+}
+
+
+const std::string& Addon::getURL() const
+{
+    return _URL;
+}
+
+
+//bool Addon::isCoreAddon() const
+//{
+//    returns false;
+//}
 
 
 } } // namespace of::Sketch

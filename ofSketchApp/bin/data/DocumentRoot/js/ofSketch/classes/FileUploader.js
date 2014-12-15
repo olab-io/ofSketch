@@ -22,68 +22,67 @@
 //
 // =============================================================================
 
-function FileUploader() 
-{
-    var _uploadUrl = '/post';
-    var _uploadButton = $('<button/>')
-        .addClass('btn btn-primary')
-        .prop('disabled', true)
-        .text('Processing...')
-        .on('click', function () {
-            var $this = $(this),
-                data = $this.data();
-            $this
-                .off('click')
-                .text('Abort')
-                .on('click', function () {
-                    $this.remove();
-                    data.abort();
-                });
-            data.submit().always(function () {
-                $this.remove();
-            });
+function FileUploader() {
+  var _uploadUrl = '/post';
+  var _uploadButton = $('<button/>')
+    .addClass('btn btn-primary')
+    .prop('disabled', true)
+    .text('Processing...')
+    .on('click', function() {
+      var $this = $(this),
+        data = $this.data();
+      $this
+        .off('click')
+        .text('Abort')
+        .on('click', function() {
+          $this.remove();
+          data.abort();
         });
+      data.submit().always(function() {
+        $this.remove();
+      });
+    });
 
-    this.init = function(projectName)
-    {
+  this.init = function(projectName) {
 
-        $('#fileupload').fileupload({
-            url: _uploadUrl,
-            dataType: 'json',
-            formData: {
-                projectName: projectName
-            },
-            progressall: function (e, data) {
-                var progress = parseInt(data.loaded / data.total * 100, 10);
-                $('#progress .progress-bar').css(
-                    'width',
-                    progress + '%'
-                );
+    $('#fileupload').fileupload({
+        url: _uploadUrl,
+        dataType: 'json',
+        formData: {
+          projectName: projectName
+        },
+        progressall: function(e, data) {
+          var progress = parseInt(data.loaded / data.total * 100, 10);
+          $('#progress .progress-bar').css(
+            'width',
+            progress + '%'
+          );
 
-                if (progress == 100) {
-                    setTimeout(function(){
-                        $('#progress .progress-bar').css(
-                            'width',
-                            0 + '%'
-                        );
-                    }, 1500);
-                }
-            }
-        }).on('fileuploaddone', function(e, data){
-            $.each(data.result.files, function (index, file) {
-                var p = $('<p/>');
-                p.text(file.name).appendTo('#files');
-                p.append('<span style="float: right; color: #5cb85c" class="glyphicon glyphicon-ok"></span>');
-            });
-        }).on('fileuploadfail', function(e, data){
-            // NOTE: this callback is not currently working
-        }).prop('disabled', !$.support.fileInput)
-            .parent().addClass($.support.fileInput ? undefined : 'disabled');
-    }
+          if (progress == 100) {
+            setTimeout(function() {
+              $('#progress .progress-bar').css(
+                'width',
+                0 + '%'
+              );
+            }, 1500);
+          }
+        }
+      }).on('fileuploaddone', function(e, data) {
+        $.each(data.result.files, function(index, file) {
+          var p = $('<p/>');
+          p.text(file.name).appendTo('#files');
+          p.append(
+            '<span style="float: right; color: #5cb85c" class="glyphicon glyphicon-ok"></span>'
+          );
+        });
+      }).on('fileuploadfail', function(e, data) {
+        // NOTE: this callback is not currently working
+      }).prop('disabled', !$.support.fileInput)
+      .parent().addClass($.support.fileInput ? undefined : 'disabled');
+  }
 
-    this.reset = function()
-    {
-        $('#files').empty();
-        $('#progress .progress-bar').css('width', 0 + '%');
-    }
+  this.reset = function() {
+    $('#files').empty();
+    $('#progress .progress-bar').css('width', 0 + '%');
+  }
 }

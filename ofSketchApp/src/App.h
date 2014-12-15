@@ -33,20 +33,24 @@
 #include "Poco/StreamCopier.h"
 #include "Poco/PipeStream.h"
 #include "Poco/TaskManager.h"
+#include "Poco/Util/JSONConfiguration.h"
 #include "ofMain.h"
 #include "ofxHTTP.h"
 #include "ofxJSONRPC.h"
 #include "AddonManager.h"
 #include "Compiler.h"
 #include "EditorSettings.h"
-#include "OfSketchSettings.h"
 #include "ProcessTaskQueue.h"
 #include "Project.h"
 #include "ProjectManager.h"
 #include "UploadRouter.h"
 #include "SketchUtils.h"
+#include "Settings.h"
 #include "WebSocketLoggerChannel.h"
-#include "Constants.h"
+#include "Version.h"
+
+
+#include "Paths.h"
 
 
 namespace of {
@@ -65,28 +69,33 @@ public:
 
     void exit();
 
-    bool hasDependency(const std::string& command);
-
     void loadProject(const void* pSender, ofx::JSONRPC::MethodArgs& args);
     void loadTemplateProject(const void* pSender, ofx::JSONRPC::MethodArgs& args);
     void saveProject(const void* pSender, ofx::JSONRPC::MethodArgs& args);
     void createProject(const void* pSender, ofx::JSONRPC::MethodArgs& args);
     void deleteProject(const void* pSender, ofx::JSONRPC::MethodArgs& args);
     void renameProject(const void* pSender, ofx::JSONRPC::MethodArgs& args);
+    
     void createClass(const void* pSender, ofx::JSONRPC::MethodArgs& args);
     void deleteClass(const void* pSender, ofx::JSONRPC::MethodArgs& args);
     void renameClass(const void* pSender, ofx::JSONRPC::MethodArgs& args);
+    
     void runProject(const void* pSender, ofx::JSONRPC::MethodArgs& args);
     void compileProject(const void* pSender, ofx::JSONRPC::MethodArgs& args);
     void stop(const void* pSender, ofx::JSONRPC::MethodArgs& args);
+    
     void getProjectList(const void* pSender, ofx::JSONRPC::MethodArgs& args);
+    
     void loadEditorSettings(const void* pSender, ofx::JSONRPC::MethodArgs& args);
     void saveEditorSettings(const void* pSender, ofx::JSONRPC::MethodArgs& args);
     void loadOfSketchSettings(const void* pSender, ofx::JSONRPC::MethodArgs& args);
     void saveOfSketchSettings(const void* pSender, ofx::JSONRPC::MethodArgs& args);
+    
     void requestProjectClosed(const void* pSender, ofx::JSONRPC::MethodArgs& args);
     void notifyProjectClosed(const void* pSender, ofx::JSONRPC::MethodArgs& args);
+    
     void requestAppQuit(const void* pSender, ofx::JSONRPC::MethodArgs& args);
+    
     void getAddonList(const void* pSender, ofx::JSONRPC::MethodArgs& args);
     void getProjectAddonList(const void* pSender, ofx::JSONRPC::MethodArgs& args);
     void addProjectAddon(const void* pSender, ofx::JSONRPC::MethodArgs& args);
@@ -120,17 +129,14 @@ public:
 private:
     ofx::HTTP::BasicJSONRPCServer::SharedPtr server;
 
-//    WebSocketLoggerChannel::SharedPtr _loggerChannel;
+    Settings _settings;
 
-    EditorSettings      _editorSettings;
-    OfSketchSettings    _ofSketchSettings;
-
-    Poco::ThreadPool    _threadPool;
-    ProcessTaskQueue    _taskQueue;
-    Compiler            _compiler;
-    AddonManager        _addonManager;
-    ProjectManager      _projectManager;
-    UploadRouter        _uploadRouter;
+    Poco::ThreadPool _threadPool;
+    ProcessTaskQueue _taskQueue;
+    Compiler _compiler;
+    AddonManager _addonManager;
+    ProjectManager _projectManager;
+    UploadRouter _uploadRouter;
 
     bool _missingDependencies;
 

@@ -36,38 +36,44 @@
 #include "ofEvents.h"
 #include "ofLog.h"
 #include "Addon.h"
+#include "Settings.h"
 
 
 namespace of {
 namespace Sketch {
 
 
+using ofx::DirectoryWatcher;
+using ofx::IO::DirectoryFilter;
+using ofx::IO::DirectoryUtils;
+using ofx::IO::DirectoryWatcherManager;
+
+
 class AddonManager
 {
 public:
-    AddonManager(const Poco::Path& addonsPath);
+    AddonManager(Settings& settings);
     virtual ~AddonManager();
 
     void setup();
 
-    void onDirectoryWatcherItemAdded(const ofx::DirectoryWatcher::DirectoryEvent& evt);
-    void onDirectoryWatcherItemRemoved(const ofx::DirectoryWatcher::DirectoryEvent& evt);
-    void onDirectoryWatcherItemModified(const ofx::DirectoryWatcher::DirectoryEvent& evt);
-    void onDirectoryWatcherItemMovedFrom(const ofx::DirectoryWatcher::DirectoryEvent& evt);
-    void onDirectoryWatcherItemMovedTo(const ofx::DirectoryWatcher::DirectoryEvent& evt);
+    const std::vector<Addon>& getAddons() const;
+
+    void onDirectoryWatcherItemAdded(const DirectoryWatcher::DirectoryEvent& evt);
+    void onDirectoryWatcherItemRemoved(const DirectoryWatcher::DirectoryEvent& evt);
+    void onDirectoryWatcherItemModified(const DirectoryWatcher::DirectoryEvent& evt);
+    void onDirectoryWatcherItemMovedFrom(const DirectoryWatcher::DirectoryEvent& evt);
+    void onDirectoryWatcherItemMovedTo(const DirectoryWatcher::DirectoryEvent& evt);
     void onDirectoryWatcherError(const Poco::Exception& exc);
 
-    std::vector<Addon::SharedPtr> getAddons() const;
-
-    static const std::string DEFAULT_ADDON_PATH;
-
 private:
-    Poco::Path _path;
+    Settings& _settings;
 
-    std::map<std::string, Addon::SharedPtr> _addons;
-    ofx::IO::DirectoryWatcherManager _addonWatcher;
+    std::vector<Addon> _addons;
 
-    ofx::IO::DirectoryFilter _directoryFilter;
+    DirectoryWatcherManager _addonWatcher;
+
+    DirectoryFilter _directoryFilter;
 
 };
 

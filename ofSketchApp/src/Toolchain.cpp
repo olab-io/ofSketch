@@ -23,19 +23,53 @@
 // =============================================================================
 
 
-#include "ofApp.h"
+#include "Toolchain.h"
 
-#ifdef NO_WINDOW
-    #include "ofAppNoWindow.h"
-#endif
 
-int main()
+namespace of {
+namespace Sketch {
+
+
+Toolchain::Toolchain()
 {
-#ifdef NO_WINDOW
-    ofAppNoWindow window;
-    ofSetWindow(&window);
-#else
-    ofSetupOpenGL(200, 40, OF_WINDOW);
-#endif
-    ofRunApp(new ofApp());
 }
+
+
+Toolchain::Toolchain(const std::string& name,
+                     const std::vector<std::string>& targetPlatforms):
+    _name(name),
+    _targetPlatforms(targetPlatforms)
+{
+}
+
+    
+Toolchain::~Toolchain()
+{
+}
+
+//#ifdef TARGET_WIN32
+//    // Set up toolchain path information for Windows.
+//    std::string pathVar = Poco::Environment::get("PATH","");
+//
+//    std::string pathToolChain0 = ofToDataPath("Toolchains/ofMinGW/MinGW/msys/1.0/bin", true);
+//    std::string pathToolChain1 = ofToDataPath("Toolchains/ofMinGW/MinGW/bin", true);
+//
+//    std::stringstream pathSS;
+//    pathSS << pathToolChain0 << ";" << pathToolChain1 << ";" << pathVar;
+//    Poco::Environment::set("PATH", pathSS.str());
+//#endif
+
+
+const std::string Toolchain::getName() const
+{
+    return _name;
+}
+
+
+const std::vector<std::string>& Toolchain::getTargetPlatforms() const
+{
+    return _targetPlatforms;
+}
+
+
+} } // namespace of::Sketch

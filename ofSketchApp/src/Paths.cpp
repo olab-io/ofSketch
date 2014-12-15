@@ -23,59 +23,86 @@
 // =============================================================================
 
 
-#pragma once
-
-
-#include <string>
-#include <vector>
-#include <json/json.h>
-#include "ofx/TaskQueue.h"
+#include "Paths.h"
+#include "ofUtils.h"
+#include "ofx/IO/PathUtils.h"
 
 
 namespace of {
 namespace Sketch {
 
 
-class ProcessTaskQueue: public ofx::TaskQueue
+Paths::Paths():
+    _projectsPath(ofx::IO::PathUtils::getUserDocumentsPath(),
+                  Poco::Path::forDirectory("ofSketch"))
 {
-public:
-    typedef ofx::TaskDataEventArgs_<Poco::UUID, std::string> EventArgs;
+}
 
-    ProcessTaskQueue(int maximumTasks, Poco::ThreadPool& threadPool);
-
-    virtual ~ProcessTaskQueue();
-
-    ofEvent<const EventArgs> onTaskData;
-
-    template<typename ListenerClass>
-    void registerAllEvents(ListenerClass* listener);
-
-    template<typename ListenerClass>
-    void unregisterAllEvents(ListenerClass* listener);
-
-protected:
-    virtual void handleTaskCustomNotification(const Poco::UUID& taskID,
-                                             TaskNotificationPtr pNotification);
-
-};
-
-
-template<typename ListenerClass>
-void ProcessTaskQueue::registerAllEvents(ListenerClass* listener)
+    
+Paths::~Paths()
 {
-    registerTaskProgressEvents(listener);
-    ofAddListener(onTaskData, listener, &ListenerClass::onTaskData);
 }
 
 
-template<typename ListenerClass>
-void ProcessTaskQueue::unregisterAllEvents(ListenerClass* listener)
+Poco::Path Paths::getProjectsPath() const
 {
-    unregisterTaskProgressEvents(listener);
-    ofRemoveListener(onTaskData, listener, &ListenerClass::onTaskData);
+    return _projectsPath;
 }
 
 
+void Paths::setProjectsPath(const Poco::Path& projectsPath)
+{
+    _projectsPath = projectsPath;
+}
+
+
+Poco::Path Paths::getOpenFrameworksPath() const
+{
+    return Poco::Path::forDirectory(ofToDataPath("openFrameworks", true));
+}
+
+
+Poco::Path Paths::getCoreAddonsPath() const
+{
+    return Poco::Path(getOpenFrameworksPath(), Poco::Path::forDirectory("addons"));
+}
+
+
+Poco::Path Paths::getResourcesPath() const
+{
+    return Poco::Path::forDirectory(ofToDataPath("Resources", true));
+}
+
+
+Poco::Path Paths::getTemplatesPath() const
+{
+    return Poco::Path::forDirectory(ofToDataPath("Templates", true));
+}
+
+
+Poco::Path Paths::getToolchainsPath() const
+{
+    return Poco::Path::forDirectory(ofToDataPath("Toolchains", true));
+}
+
+
+Poco::Path Paths::getExamplesPath() const
+{
+    return Poco::Path::forDirectory(ofToDataPath("Examples", true));
+}
+
+
+Poco::Path Paths::getAddonsPath() const
+{
+    return Poco::Path(_projectsPath, Poco::Path::forDirectory("addons"));
+}
+
+
+Poco::Path Paths::getSettingsPath()
+{
+    return Poco::Path(Poco::Path::home(),
+                      Poco::Path::forDirectory(".config/ofSketch"));
+}
 
 
 } } // namespace of::Sketch

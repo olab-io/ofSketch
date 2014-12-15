@@ -26,6 +26,7 @@
 #include "WebSocketLoggerChannel.h"
 #include "Poco/Buffer.h"
 #include "ofApp.h"
+#include "Serializer.h"
 
 
 namespace of {
@@ -61,7 +62,7 @@ void WebSocketLoggerChannel::log(ofLogLevel level,
                                                      "message",
                                                      params);
 
-        ofx::HTTP::WebSocketFrame frame(SketchUtils::toJSONString(json));
+        ofx::HTTP::WebSocketFrame frame(Serializer::toString(json));
 
         route->broadcast(frame);
     }

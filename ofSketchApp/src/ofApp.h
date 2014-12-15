@@ -26,6 +26,9 @@
 #pragma once
 
 
+//#define NO_WINDOW
+
+
 #include "ofMain.h"
 #include "App.h"
 
@@ -41,7 +44,9 @@ public:
 private:
     of::Sketch::App app;
 
+#ifndef NO_WINDOW
     ofImage _logo;
     ofTrueTypeFont _font;
+#endif
 
 };

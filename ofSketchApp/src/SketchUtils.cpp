@@ -29,58 +29,11 @@
 #include "Poco/PipeStream.h"
 #include "Poco/StreamCopier.h"
 #include "ofxIO.h"
-#include "Constants.h"
+#include "Version.h"
 
 
 namespace of {
 namespace Sketch {
-
-
-bool SketchUtils::JSONfromFile(const std::string& path, Json::Value& value)
-{
-    try
-    {
-        ofx::IO::ByteBuffer buffer;
-        ofx::IO::ByteBufferUtils::loadFromFile(path, buffer);
-        return JSONfromString(buffer.toString(), value);
-    }
-    catch (const Poco::Exception& exc)
-    {
-        ofLogError("Utils::fromFile") << exc.displayText();
-        return false;
-    }
-}
-
-
-bool SketchUtils::JSONtoFile(const std::string& path, const Json::Value& value)
-{
-    try
-    {
-        ofx::IO::ByteBuffer buffer(SketchUtils::toJSONString(value));
-        return ofx::IO::ByteBufferUtils::saveToFile(buffer, path);
-    }
-    catch (const Poco::Exception& exc)
-    {
-        ofLogError("Utils::fromFile") << exc.displayText();
-        return false;
-    }
-}
-
-
-bool SketchUtils::JSONfromString(const std::string& jsonString, Json::Value& value)
-{
-    Json::Reader reader;
-
-    if (!reader.parse(jsonString, value))
-    {
-        ofLogError("Utils::fromFile") << "Unable to parse " << jsonString << ": " << reader.getFormattedErrorMessages();
-        return false;
-    }
-    else
-    {
-        return true;
-    }
-}
 
 
 Json::Value SketchUtils::toJSONMethod(const std::string& module,
@@ -93,13 +46,6 @@ Json::Value SketchUtils::toJSONMethod(const std::string& module,
     json["method"] = method;
     json["params"] = params;
     return json;
-}
-
-
-std::string SketchUtils::toJSONString(const Json::Value& json)
-{
-    Json::FastWriter writer;
-    return writer.write(json);
 }
 
 
@@ -154,7 +100,7 @@ ofTargetPlatform SketchUtils::getTargetPlatform()
 }
 
 
-std::string SketchUtils::toString(ofTargetPlatform targetPlatform)
+std::string SketchUtils::TargetPlatformToString(ofTargetPlatform targetPlatform)
 {
     switch (targetPlatform)
     {
@@ -182,43 +128,77 @@ std::string SketchUtils::toString(ofTargetPlatform targetPlatform)
 }
 
 
-std::string SketchUtils::getVersion()
+ofTargetPlatform SketchUtils::TargetPlatformFromString(const std::string& targetPlatform)
 {
-    std::stringstream ss;
-
-    ss << VERSION_MAJOR << ".";
-    ss << VERSION_MINOR << ".";
-    ss << VERSION_PATCH;
-
-    if (!getVersionSpecial().empty())
+    if ("OSX" == targetPlatform)
     {
-        ss << "-" << getVersionSpecial();
+        return OF_TARGET_OSX;
     }
-
-    return ss.str();
+    else if ("WINGCC" == targetPlatform)
+    {
+        return OF_TARGET_WINGCC;
+    }
+    else if ("WINVS" == targetPlatform)
+    {
+        return OF_TARGET_WINVS;
+    }
+    else if ("IOS" == targetPlatform)
+    {
+        return OF_TARGET_IOS;
+    }
+    else if ("ANDROID" == targetPlatform)
+    {
+        return OF_TARGET_ANDROID;
+    }
+    else if ("LINUX" == targetPlatform)
+    {
+        return OF_TARGET_LINUX;
+    }
+    else if ("LINUX64" == targetPlatform)
+    {
+        return OF_TARGET_LINUX;
+    }
+    else if ("LINUXARMV6L" == targetPlatform)
+    {
+        return OF_TARGET_LINUXARMV6L;
+    }
+    else if ("LINUXARMV7L" == targetPlatform)
+    {
+        return OF_TARGET_LINUXARMV7L;
+    }
+    else
+    {
+        ofLogError("SketchUtils::TargetPlatformFromString") << "Unknown targetPlatform: " << targetPlatform;
+        return getTargetPlatform();
+    }
 }
 
-int SketchUtils::getVersionMajor()
+
+bool SketchUtils::hasDependency(const std::string& command)
 {
-    return VERSION_MAJOR;
-}
-
-
-int SketchUtils::getVersionMinor()
-{
-    return VERSION_MINOR;
-}
-
-
-int SketchUtils::getVersionPatch()
-{
-    return VERSION_PATCH;
-}
-
-
-std::string SketchUtils::getVersionSpecial()
-{
-    return VERSION_SPECIAL;
+    try
+    {
+        std::string cmd("which");
+        std::vector<std::string> args;
+        args.push_back(command);
+        Poco::Pipe outPipe;
+        Poco::ProcessHandle ph = Poco::Process::launch(cmd,
+                                                       args,
+                                                       0,
+                                                       &outPipe,
+                                                       0);
+        Poco::PipeInputStream istr(outPipe);
+        std::stringstream ostr;
+        Poco::StreamCopier::copyStream(istr, ostr);
+        std::string result = ostr.str();
+        return !result.empty();
+    }
+    catch (const Poco::Exception& exc)
+    {
+        // This probably happened because the `which` program was not available on Windows.
+        ofLogError("SketchUtils::hasDependency") << exc.displayText();
+        return true;
+    }
 }
 
 

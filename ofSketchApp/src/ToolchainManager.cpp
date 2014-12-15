@@ -23,19 +23,21 @@
 // =============================================================================
 
 
-#include "ofApp.h"
+#include "ToolchainManager.h"
 
-#ifdef NO_WINDOW
-    #include "ofAppNoWindow.h"
-#endif
 
-int main()
+namespace of {
+namespace Sketch {
+
+
+ToolchainManager::ToolchainManager()
 {
-#ifdef NO_WINDOW
-    ofAppNoWindow window;
-    ofSetWindow(&window);
-#else
-    ofSetupOpenGL(200, 40, OF_WINDOW);
-#endif
-    ofRunApp(new ofApp());
 }
+
+    
+ToolchainManager::~ToolchainManager()
+{
+}
+
+
+} } // namespace of::Sketch

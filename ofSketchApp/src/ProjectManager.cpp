@@ -31,9 +31,9 @@ namespace of {
 namespace Sketch {
 
 
-ProjectManager::ProjectManager(const std::string& path):
-    _path(path),
-    _templateProject("Resources/Templates/NewProject")
+ProjectManager::ProjectManager(Settings& settings):
+    _settings(settings),
+    _templateProject(Poco::Path(_settings.getPathsRef().getTemplatesPath(), Poco::Path::forDirectory("SimpleProject")).toString())
 {
 }
 
@@ -42,15 +42,14 @@ ProjectManager::~ProjectManager()
 {
 }
 
+    
 void ProjectManager::setup()
 {
-    ofLogNotice("ProjectManager::ProjectManager") << "_path: " <<_path;
-
     std::vector<std::string> files;
 
     ofx::IO::DirectoryFilter filter;
 
-    ofx::IO::DirectoryUtils::list(ofToDataPath(_path, true),
+    ofx::IO::DirectoryUtils::list(_settings.getPaths().getProjectsPath().toString(),
                                   files,
                                   true,
                                   &filter);
@@ -217,13 +216,13 @@ void ProjectManager::createProject(const void* pSender,
 
     ofDirectory projectDir(_templateProject.getPath());
 
-    projectDir.copyTo(_path + "/" + projectName);
+    projectDir.copyTo(_settings.getPaths().getProjectsPath().toString() + "/" + projectName);
 
-    ofFile templateProjectFile(_path + "/" + projectName + "/sketch/NewProject." + Project::SKETCH_FILE_EXTENSION);
+    ofFile templateProjectFile(_settings.getPaths().getProjectsPath().toString() + "/" + projectName + "/sketch/NewProject." + Project::SKETCH_FILE_EXTENSION);
 
     templateProjectFile.remove();
 
-    Project project(_path + "/" + projectName);
+    Project project(_settings.getPaths().getProjectsPath().toString() + "/" + projectName);
     project.save(projectData);
     _projects.push_back(project);
     args.result = project.getData();

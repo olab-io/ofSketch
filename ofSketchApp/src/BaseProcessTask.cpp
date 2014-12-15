@@ -35,7 +35,7 @@
 namespace of {
 namespace Sketch {
 
-
+    
 BaseProcessTask::BaseProcessTask(const std::string& taskName,
                                  const std::string& command,
                                  const std::vector<std::string>& args,

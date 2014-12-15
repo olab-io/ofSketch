@@ -24,17 +24,16 @@
 
 
 #include "AddonManager.h"
+#include "SketchUtils.h"
 
 
 namespace of {
 namespace Sketch {
 
 
-const std::string AddonManager::DEFAULT_ADDON_PATH = "addons/";
-
-
-AddonManager::AddonManager(const Poco::Path& path): _path(path)
+AddonManager::AddonManager(Settings& settings): _settings(settings)
 {
+    _addonWatcher.registerAllEvents(this);
 }
 
 
@@ -46,114 +45,136 @@ AddonManager::~AddonManager()
 
 void AddonManager::setup()
 {
-    Poco::Path fullPath(ofToDataPath(_path.toString(), true));
+    Poco::File addonsDirectory(_settings.getPaths().getAddonsPath());
+    Poco::File coreAddonsDirectory(_settings.getPaths().getCoreAddonsPath());
 
-    Poco::File file(fullPath);
-
-    if (!file.exists())
+    try
     {
-        Poco::FileNotFoundException exc(fullPath.toString());
-        throw exc;
+        addonsDirectory.createDirectories();
+
+        std::vector<Poco::File> files;
+
+        DirectoryUtils::list(coreAddonsDirectory, files, true, &_directoryFilter);
+
+        std::vector<Poco::File>::iterator iter = files.begin();
+
+        while (iter != files.end())
+        {
+            const Poco::File& addon = *iter;
+
+            std::string addonName = Poco::Path(addon.path()).getBaseName();
+
+            Poco::Path targetAddonPath(_settings.getPaths().getAddonsPath(),
+                                       Poco::Path::forDirectory(addonName));
+
+            Poco::File targetAddon(targetAddonPath);
+
+            if (!targetAddon.exists())
+            {
+                ofLogNotice("AddonManager::setup") << "Copying core addon: " << addonName;
+                addon.copyTo(addonsDirectory.path());
+                targetAddon.setReadOnly();
+            }
+
+            ++iter;
+        }
+
+    }
+    catch (const Poco::Exception& exc)
+    {
+        ofLogFatalError("AddonManager::setup") << "Unable to create projects directory: " << exc.displayText();
     }
 
-    std::vector<Poco::File> files;
+    _addonWatcher.addPath(_settings.getPaths().getAddonsPath(),
+                          true,
+                          true,
+                          &_directoryFilter);
 
-    ofx::IO::DirectoryUtils::list(file, files, true, &_directoryFilter);
+}
 
-    std::vector<Poco::File>::iterator iter = files.begin();
 
-    while (iter != files.end())
+const std::vector<Addon>& AddonManager::getAddons() const
+{
+    return _addons;
+}
+
+
+void AddonManager::onDirectoryWatcherItemAdded(const DirectoryWatcher::DirectoryEvent& evt)
+{
+    ofLogNotice("AddonManager::onDirectoryWatcherItemAdded") << evt.event << " " << evt.item.path();
+
+    Poco::Path path(evt.item.path());
+
+    std::string name = path.getBaseName();
+
+    // \todo Parse from addon_config.mk.
+    Addon addon(path,
+                name,
+                "",
+                "",
+                std::vector<std::string>(),
+                "");
+
+    _addons.push_back(addon);
+}
+
+
+void AddonManager::onDirectoryWatcherItemRemoved(const DirectoryWatcher::DirectoryEvent& evt)
+{
+    ofLogNotice("AddonManager::onDirectoryWatcherItemRemoved") << evt.event << " " << evt.item.path();
+
+    Poco::Path path(evt.item.path());
+
+    std::string name = path.getBaseName();
+
+    // \todo Parse from addon_config.mk.
+    Addon addon(path,
+                name,
+                "",
+                "",
+                std::vector<std::string>(),
+                "");
+
+    std::vector<Addon>::iterator iter = _addons.begin();
+
+    while (iter != _addons.end())
     {
-        std::string addonPath = (*iter).path();
-        std::string addonName = Poco::Path(addonPath).getBaseName();
+        const Addon& _addon = *iter;
 
-        Poco::RegularExpression addonExpression("ofx.+$", Poco::RegularExpression::RE_ANCHORED);
-
-        if (addonExpression.match(addonName))
+        if (_addon.getName() == addon.getName())
         {
-            _addons[addonName] = Addon::SharedPtr(new Addon(addonName, addonPath));
+            _addons.erase(iter);
+            return;
         }
 
         ++iter;
     }
 
-    _addonWatcher.registerAllEvents(this);
-    _addonWatcher.addPath(fullPath.toString(),
-                          false,
-                          true,
-                          &_directoryFilter);
+    ofLogError("AddonManager::onDirectoryWatcherItemRemoved") << "Unable to remove " << path.toString();
 }
 
 
-void AddonManager::onDirectoryWatcherItemAdded(const ofx::DirectoryWatcher::DirectoryEvent& evt)
+void AddonManager::onDirectoryWatcherItemModified(const DirectoryWatcher::DirectoryEvent& evt)
 {
-    ofLogNotice("AddonManager::onDirectoryWatcherItemAdded") << evt.event << " " << evt.item.path();
-
-    std::string path = evt.item.path();
-    std::string name = Poco::Path(path).getBaseName();
-
-    _addons[name] = Addon::SharedPtr(new Addon(name, path));
-
+    ofLogNotice("AddonManager::onDirectoryWatcherItemModified") << evt.event << " " << evt.item.path();
 }
 
 
-void AddonManager::onDirectoryWatcherItemRemoved(const ofx::DirectoryWatcher::DirectoryEvent& evt)
-{
-    ofLogNotice("AddonManager::onDirectoryWatcherItemRemoved") << evt.event << " " << evt.item.path();
-
-    std::string path = evt.item.path();
-    std::string name = Poco::Path(path).getBaseName();
-
-    std::map<std::string, Addon::SharedPtr>::iterator iter = _addons.find(name);
-
-    if (iter != _addons.end())
-    {
-        _addons.erase(iter);
-    }
-    else
-    {
-        ofLogError("AddonManager::onDirectoryWatcherItemRemoved") << "Unable to find " << path;
-    }
-}
-
-
-void AddonManager::onDirectoryWatcherItemModified(const ofx::DirectoryWatcher::DirectoryEvent& evt)
-{
-     ofLogNotice("AddonManager::onDirectoryWatcherItemModified") << evt.event << " " << evt.item.path();
-}
-
-
-void AddonManager::onDirectoryWatcherItemMovedFrom(const ofx::DirectoryWatcher::DirectoryEvent& evt)
+void AddonManager::onDirectoryWatcherItemMovedFrom(const DirectoryWatcher::DirectoryEvent& evt)
 {
     ofLogNotice("AddonManager::onDirectoryWatcherItemMovedFrom") << evt.event << " " << evt.item.path();
 }
 
 
-void AddonManager::onDirectoryWatcherItemMovedTo(const ofx::DirectoryWatcher::DirectoryEvent& evt)
+void AddonManager::onDirectoryWatcherItemMovedTo(const DirectoryWatcher::DirectoryEvent& evt)
 {
-     ofLogNotice("AddonManager::onDirectoryWatcherItemMovedTo") << evt.event << " " << evt.item.path();
+    ofLogNotice("AddonManager::onDirectoryWatcherItemMovedTo") << evt.event << " " << evt.item.path();
 }
 
 
 void AddonManager::onDirectoryWatcherError(const Poco::Exception& exc)
 {
     ofLogError("AddonManager::onDirectoryWatcherError") << exc.displayText();
-}
-
-
-std::vector<Addon::SharedPtr> AddonManager::getAddons() const
-{
-    std::vector<Addon::SharedPtr> addons;
-
-    std::map<std::string, Addon::SharedPtr>::const_iterator iter = _addons.begin();
-
-    while (iter != _addons.end())
-    {
-        addons.push_back(iter->second);
-        ++iter;
-    }
-
-    return addons;
 }
 
 

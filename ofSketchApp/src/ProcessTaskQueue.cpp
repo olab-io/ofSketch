@@ -42,38 +42,6 @@ ProcessTaskQueue::~ProcessTaskQueue()
 }
 
 
-Json::Value ProcessTaskQueue::toJson() const
-{
-    /// TODO: This method may need to be syncrhonized (which means that
-    /// all of our ProcessTaskQueue may need to be synchronized depending on
-    /// how our websocket route is synchronized.
-
-    Json::Value json;
-
-    ProgressMap::const_iterator iter = _IDTaskProgressMap.begin();
-
-    while (iter != _IDTaskProgressMap.end())
-    {
-        const ofx::TaskProgressEventArgs_<Poco::UUID> info = iter->second;
-
-        Json::Value progressJson;
-
-        progressJson["name"] = info.getTaskName();
-        progressJson["uuid"] = info.getTaskId().toString();
-        progressJson["progress"] = info.getProgress();
-        progressJson["message"] = ""; // None for now.
-
-        // Add each of the current tasks to the json array.
-        json.append(progressJson);
-
-        ++iter;
-    }
-
-    return json;
-}
-
-
-
 void ProcessTaskQueue::handleTaskCustomNotification(const Poco::UUID& taskID,
                                                     TaskNotificationPtr pNotification)
 {

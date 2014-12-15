@@ -35,12 +35,8 @@ namespace Sketch {
 const std::string Project::SKETCH_FILE_EXTENSION = "sketch";
 
 
-Project::~Project()
-{
-}
 
-
-Project::Project(const std::string& path): _path(path), _isLoaded(false)
+Project::Project(const std::string& path): _path(path), _isLoaded(false), _readOnly(false)
 {
     // this is not efficient at all! I am just keeping these FileTemplate loads in the project
     // constructor because it makes the most sense architecure wise.
@@ -48,6 +44,12 @@ Project::Project(const std::string& path): _path(path), _isLoaded(false)
     load(_path, getName());
 }
 
+
+Project::~Project()
+{
+}
+
+    
 void Project::load(const std::string& path, const std::string& name)
 {
     _sketchDir = ofDirectory(ofToDataPath(path + "/sketch"));

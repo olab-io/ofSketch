@@ -40,6 +40,7 @@
 #include "ProcessTaskQueue.h"
 #include "MakeTask.h"
 #include "RunTask.h"
+#include "Settings.h"
 
 
 namespace of {
@@ -49,27 +50,31 @@ namespace Sketch {
 class Compiler
 {
 public:
-    Compiler(ProcessTaskQueue& taskQueue,
-             const std::string& pathToTemplates,
-             const std::string& openFrameworksDir);
-
-    void setup();
+    Compiler(Settings& settings, ProcessTaskQueue& taskQueue);
 
     Poco::UUID compile(const Project& project);
     Poco::UUID run(const Project& project);
 
     void generateSourceFiles(const Project& project);
     Json::Value parseError(std::string message) const;
-    
+
+    const std::string& getProjectFileTemplate() const;
+    const std::string& getClassTemplate() const;
+
 private:
+    Settings& _settings;
+
     ProcessTaskQueue& _taskQueue;
 
-    std::string _pathToTemplates;
-    std::string _pathToSrc;
-    std::string _projectFileTemplate;
-    std::string _classTemplate;
-    std::string _openFrameworksDir;
-    
+//    std::string _pathToSrc;
+//    std::string _projectFileTemplate;
+//    std::string _classTemplate;
+//    std::string _openFrameworksDir;
+
+
+    mutable std::string _projectFileTemplate;
+    mutable std::string _classFileTemplate;
+
     void _parseAddons();
     void _getAddons();
 

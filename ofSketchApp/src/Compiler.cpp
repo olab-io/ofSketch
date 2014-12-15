@@ -24,36 +24,56 @@
 
 
 #include "Compiler.h"
+//#include "Poco/FileStream.h"
+//#include "Poco/StreamCopier.h"
+//
+#include "ofx/IO/ByteBufferUtils.h"
 
 
 namespace of {
 namespace Sketch {
 
 
-Compiler::Compiler(ProcessTaskQueue& taskQueue,
-                   const std::string& pathToTemplates,
-                   const std::string& openFrameworksDir):
-    _taskQueue(taskQueue),
-    _pathToTemplates(pathToTemplates),
-    _projectFileTemplate(""),
-    _classTemplate(""),
-    _openFrameworksDir(openFrameworksDir)
+Compiler::Compiler(Settings& settings, ProcessTaskQueue& taskQueue):
+    _settings(settings),
+    _taskQueue(taskQueue)
 {
 }
 
 
-void Compiler::setup()
+    std::string _projectFileTemplate;
+    std::string _classFileTemplate;
+
+
+const std::string& Compiler::getProjectFileTemplate() const
 {
-    _projectFileTemplate = ofBufferFromFile(_pathToTemplates + "/main.tmpl").getText();
-    _classTemplate = ofBufferFromFile(_pathToTemplates + "/class.tmpl").getText();
+    if (_projectFileTemplate.empty())
+    {
+        Poco::Path templatePath(_settings.getPaths().getTemplatesPath(), "CompilerMain.tmpl");
+         _projectFileTemplate = ofBufferFromFile(templatePath.toString());
+    }
+
+    return _projectFileTemplate;
+}
+
+
+const std::string& Compiler::getClassTemplate() const
+{
+    if (_projectFileTemplate.empty())
+    {
+        Poco::Path templatePath(_settings.getPaths().getTemplatesPath(), "CompilerClass.tmpl");
+        _projectFileTemplate = ofBufferFromFile(templatePath.toString());
+    }
+
+    return _classFileTemplate;
 }
 
 
 Poco::UUID Compiler::compile(const Project& project)
 {
     MakeTask::Settings settings;
-    settings.ofRoot = ofToDataPath(_openFrameworksDir, true);
-    return _taskQueue.start(new MakeTask(settings, project, "ReleaseProject"));
+    settings.ofRoot = _settings.getPaths().getOpenFrameworksPath().toString();
+    return _taskQueue.start(new MakeTask(settings, project, "Release"));
 }
 
 
@@ -83,7 +103,7 @@ void Compiler::generateSourceFiles(const Project& project)
         {
             Json::Value c = projectData["classes"][i];
         
-            std::string classFile = _classTemplate;
+            std::string classFile = _classFileTemplate;
             ofStringReplace(classFile, "<classname>", c["name"].asString());
             ofStringReplace(classFile, "<classfile>", c["fileContents"].asString());
             _replaceIncludes(classFile);

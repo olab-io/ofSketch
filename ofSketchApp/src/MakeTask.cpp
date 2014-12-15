@@ -52,7 +52,6 @@ MakeTask::MakeTask(const Settings& settings,
     _project(project),
     _target(target)
 {
-
     Poco::Path projectPath = Poco::Path::forDirectory(ofToDataPath(_project.getPath()));
 	std::string projectPathString = projectPath.toString(Poco::Path::PATH_UNIX);
 
@@ -79,7 +78,7 @@ MakeTask::MakeTask(const Settings& settings,
 
     if (_settings.isSilent)
     {
-		_args.push_back("-s");
+		//_args.push_back("-s");
     }
 
     if (!_settings.CC.empty())

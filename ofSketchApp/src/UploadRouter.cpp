@@ -25,14 +25,15 @@
 
 #include "UploadRouter.h"
 
+
 namespace of {
 namespace Sketch {
 
 
-UploadRouter::UploadRouter(const std::string& projectDir):
-    _path(projectDir)
+UploadRouter::UploadRouter(Settings& settings): _settings(settings)
 {
 }
+
 
 void UploadRouter::setup()
 {
@@ -54,9 +55,9 @@ bool UploadRouter::onHTTPFormEvent(ofx::HTTP::PostFormEventArgs& args)
     UploadRouter::UploadedFile uploadedFile = _uploadedFiles[args.getPostId().toString()];
     ofFile tempFile(uploadedFile.tempFilename);
 
-    ofLogNotice("UploadRouter::onHTTPFormEvent") << "Project path" << _path << "/" << projectName;
+    ofLogNotice("UploadRouter::onHTTPFormEvent") << "Project path" << _settings.getPaths().getProjectsPath().toString() << "/" << projectName;
 
-    ofDirectory project(_path + "/" + projectName);
+    ofDirectory project(_settings.getPaths().getProjectsPath().toString() + "/" + projectName);
 
     Json::Value result;
 

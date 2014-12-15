@@ -31,6 +31,8 @@
 #include "Poco/Net/NameValueCollection.h"
 #include "ofxJSONElement.h"
 #include "ofxHTTP.h"
+#include "Settings.h"
+
 
 namespace of {
 namespace Sketch {
@@ -39,7 +41,7 @@ namespace Sketch {
 class UploadRouter
 {
 public:
-    UploadRouter(const std::string& projectDir);
+    UploadRouter(Settings& settings);
 
     void setup();
 
@@ -56,7 +58,8 @@ public:
     };
 
 private:
-    std::string _path;
+    Settings& _settings;
+
     std::map<std::string, UploadRouter::UploadedFile> _uploadedFiles;
 
 };

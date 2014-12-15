@@ -30,65 +30,62 @@ Assumes that the following are globally pre-defined:
 - underscore.js
  */
 
-function ConsoleEmulator() 
-{
-    var _self = this;
-    
-    var _editor = ace.edit('console');
+function ConsoleEmulator() {
+  var _self = this;
 
-    var _applySettings = function()
-    {
-        _editor.setTheme('ace/theme/twilight');
-        _editor.setHighlightActiveLine(false);
-        _editor.setShowPrintMargin(false);
-        _editor.setReadOnly(true);
-        _editor.getSession().setUseWrapMode(true);
-        _editor.renderer.setShowGutter(false);
-        _editor.renderer.$cursorLayer.element.style.opacity=0
-    }
+  var _editor = ace.edit('console');
 
-    var _registerEvents = function()
-    {
-        // disable settings menu
-        _editor.commands.addCommand({
-            name: 'Show Editor Settings',
-            bindKey: {mac: 'Command-,', win: 'Ctrl-,'},
-            exec: function(editor) {
-            }
-        });
-    }
+  var _applySettings = function() {
+    _editor.setTheme('ace/theme/twilight');
+    _editor.setHighlightActiveLine(false);
+    _editor.setShowPrintMargin(false);
+    _editor.setReadOnly(true);
+    _editor.getSession().setUseWrapMode(true);
+    _editor.renderer.setShowGutter(false);
+    _editor.renderer.$cursorLayer.element.style.opacity = 0
+  }
 
-    this.log = function(text)
-    {
-        _editor.getSession().insert(_self.getEndPosition(), text);
-    }
-
-    this.placeCursorAtEnd = function()
-    {
-        _editor.moveCursorToPosition(_self.getEndPosition());
-    }
-
-    this.getEndPosition = function()
-    {
-        var lastRow = _editor.getSession().getLength();
-        var lastColumn = _editor.getSession().getLine(lastRow).length;
-        return { row: lastRow, column: lastColumn };
-    }
-
-    this.clear = function()
-    {
-        _editor.setValue('');
-    }
-
-    this.resize = function()
-    {
-        _editor.resize();
-    }
-
-    _applySettings();
-    _registerEvents();
-    
-    _editor.on('blur', function() {
-        _self.placeCursorAtEnd();
+  var _registerEvents = function() {
+    // disable settings menu
+    _editor.commands.addCommand({
+      name: 'Show Editor Settings',
+      bindKey: {
+        mac: 'Command-,',
+        win: 'Ctrl-,'
+      },
+      exec: function(editor) {}
     });
+  }
+
+  this.log = function(text) {
+    _editor.getSession().insert(_self.getEndPosition(), text);
+  }
+
+  this.placeCursorAtEnd = function() {
+    _editor.moveCursorToPosition(_self.getEndPosition());
+  }
+
+  this.getEndPosition = function() {
+    var lastRow = _editor.getSession().getLength();
+    var lastColumn = _editor.getSession().getLine(lastRow).length;
+    return {
+      row: lastRow,
+      column: lastColumn
+    };
+  }
+
+  this.clear = function() {
+    _editor.setValue('');
+  }
+
+  this.resize = function() {
+    _editor.resize();
+  }
+
+  _applySettings();
+  _registerEvents();
+
+  _editor.on('blur', function() {
+    _self.placeCursorAtEnd();
+  });
 }

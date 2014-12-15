@@ -28,7 +28,7 @@
 
 
 #include <string>
-#include <json/json.h>
+#include "json/json.h"
 #include "Poco/URI.h"
 #include "ofTypes.h"
 #include "ofFileUtils.h"
@@ -83,6 +83,10 @@ public:
     static const std::string SKETCH_FILE_EXTENSION;
 
 private:
+//    Settings& _settings;
+
+    bool _readOnly;
+
     std::string _path;
     std::string _classFileTemplate;
     std::vector<std::string> _addons;

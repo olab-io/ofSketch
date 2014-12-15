@@ -23,19 +23,43 @@
 // =============================================================================
 
 
-#include "ofApp.h"
+#pragma once
 
-#ifdef NO_WINDOW
-    #include "ofAppNoWindow.h"
-#endif
 
-int main()
+#include "Poco/Path.h"
+
+
+namespace of {
+namespace Sketch {
+
+
+class Toolchain
 {
-#ifdef NO_WINDOW
-    ofAppNoWindow window;
-    ofSetWindow(&window);
-#else
-    ofSetupOpenGL(200, 40, OF_WINDOW);
-#endif
-    ofRunApp(new ofApp());
-}
+public:
+    Toolchain(const std::string& name);
+
+    virtual ~Toolchain();
+
+protected:
+    std::string _name; ///< The toolchain name.
+
+};
+
+
+/// \brief
+class ToolchainManager
+{
+public:
+    /// \brief Create a default ToolchainManager instance.
+    ToolchainManager();
+
+    /// \brief Destroy the ToolchainManager instance.
+    virtual ~ToolchainManager();
+
+
+private:
+
+};
+
+
+} } // namespace of::Sketch

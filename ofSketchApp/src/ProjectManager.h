@@ -34,6 +34,7 @@
 #include "ofx/JSONRPC/MethodArgs.h"
 #include "ofx/JSONRPC/JSONRPCUtils.h"
 #include "Project.h"
+#include "Settings.h"
 
 
 namespace of {
@@ -43,14 +44,12 @@ namespace Sketch {
 class ProjectManager
 {
 public:
-    typedef std::shared_ptr<ProjectManager> SharedPtr;
+    ProjectManager(Settings& settings);
 
-    ProjectManager(const std::string& path);
     virtual ~ProjectManager();
 
     void setup();
 
-    // const std::vector<std::string>& getOpenProjectNames() const;
     const std::vector<Project>& getProjects() const;
 
     void getProjectList(const void* pSender, ofx::JSONRPC::MethodArgs& args);
@@ -60,6 +59,7 @@ public:
     void createProject(const void* pSender, ofx::JSONRPC::MethodArgs& args);
     void deleteProject(const void* pSender, ofx::JSONRPC::MethodArgs& args);
     void renameProject(const void* pSender, ofx::JSONRPC::MethodArgs& args);
+
     void notifyProjectClosed(const std::string& projectName);
     void reloadProjects();
     void updateProject(const std::string& projectName);
@@ -68,13 +68,9 @@ public:
     const Project& getProject(const std::string& projectName) const;
     Project& getProjectRef(const std::string& projectName);
 
-    static SharedPtr makeShared(const std::string& projectsPath)
-    {
-        return SharedPtr(new ProjectManager(projectsPath));
-    }
-
 private:
-    std::string _path;
+    Settings& _settings;
+
     std::vector<std::string> _openProjectNames;
     std::vector<Project> _projects;
     Project _templateProject;

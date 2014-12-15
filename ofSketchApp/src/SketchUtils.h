@@ -37,33 +37,37 @@ namespace of {
 namespace Sketch {
 
 
+/// \brief A collection of utilities for ofSketch.
+///
+/// Generally these do not fit well elsewhere.
 class SketchUtils
 {
 public:
-    static bool JSONfromFile(const std::string& path, Json::Value& value);
-    static bool JSONtoFile(const std::string& path, const Json::Value& value);
-    static bool JSONfromString(const std::string& jsonString, Json::Value& value);
-
     // Wraps a json method in the ofSketch protocol headers.
     static Json::Value toJSONMethod(const std::string& module,
                                     const std::string& method,
                                     const Json::Value& params);
 
-    // This is a utility method for quickly converting a json value to a string.
-    static std::string toJSONString(const Json::Value& json);
 
     // TODO: HACK while openFrameworks core is updated.
     // - https://github.com/openframeworks/openFrameworks/issues/2162
     // - https://github.com/openframeworks/openFrameworks/pull/3109
     static ofTargetPlatform getTargetPlatform();
 
-    static std::string toString(ofTargetPlatform targetPlatform);
+    /// \brief Convert an ofTargetPlatform to a std::string.
+    /// \param targetPlatform The ofTargetPlatform to convert.
+    /// \returns the std::string representation.
+    static std::string TargetPlatformToString(ofTargetPlatform targetPlatform);
 
-    static std::string getVersion();
-    static int getVersionMajor();
-    static int getVersionMinor();
-    static int getVersionPatch();
-    static std::string getVersionSpecial();
+    /// \brief Convert a std::string to an ofTargetPlatform.
+    /// \param targetPlatform The std::string to convert.
+    /// \returns the ofTargetPlatform representation.
+    static ofTargetPlatform TargetPlatformFromString(const std::string& targetPlatform);
+
+    /// \brief Check to see if the current build system contains a commend.
+    /// \param command The command to check for.
+    /// \returns true iff the current build system contains the command.
+    static bool hasDependency(const std::string& command);
 
 };
 
