@@ -146,14 +146,10 @@ $(document).ready(function () {
 
     function handleServerEvent(evt) {
         if (evt.method == "systemInfo") {
+            
             // Add version information.
-
-            console.log("Handling server event.");
-
             systemInfo = evt.params;
-            systemInfo.userAgent: navigator.userAgent;
-
-            console.log(systemInfo);
+            systemInfo.userAgent = navigator.userAgent;
 
             var versionString = "";
             versionString += systemInfo.version.version;
