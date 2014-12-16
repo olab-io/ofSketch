@@ -617,7 +617,7 @@ void App::exportProject(const void *pSender, ofx::JSONRPC::MethodArgs &args)
 
 bool App::onWebSocketOpenEvent(ofx::HTTP::WebSocketOpenEventArgs& args)
 {
-    ofLogVerbose("App::onWebSocketOpenEvent") << "Connection opened from: " << args.getConnectionRef().getClientAddress().toString();
+    ofLogVerbose("App::onWebSocketOpenEvent") << "Connection opened from: " << args.getConnection().getClientAddress().toString();
 
     // Here, we need to send all initial values, settings, etc to the
     // client before any other messages arrive.
@@ -633,43 +633,18 @@ bool App::onWebSocketOpenEvent(ofx::HTTP::WebSocketOpenEventArgs& args)
 
     // Send version info.
     // params.clear();
-    Json::Value params;
-    params["version"] = Version::asString();
-    params["major"] = Version::major();
-    params["minor"] = Version::minor();
-    params["patch"] = Version::patch();
-    params["special"] = Version::special();
-    params["target"] = SketchUtils::TargetPlatformToString(SketchUtils::getTargetPlatform());
 
-    Json::Value host;
-    Json::Value os;
-    Json::Value node;
+    const ofx::HTTP::WebSocketConnection& webSocket = args.getConnection();
 
-    os["architecture"] = Poco::Environment::osArchitecture();
-    os["display_name"] = Poco::Environment::osDisplayName();
-    os["name"] = Poco::Environment::osName();
-    os["version"] = Poco::Environment::osVersion();
-
-    node["name"] = Poco::Environment::nodeName();
-    node["id"] = Poco::Environment::nodeId();
-
-    host["processor_count"] = Poco::Environment::processorCount();
-    host["node"] = node;
-    host["os"] = os;
-
-    params["host"] = host;
-
-    Json::Value json = SketchUtils::toJSONMethod("Server", "version", params);
-    ofx::HTTP::WebSocketFrame frame = ofx::HTTP::WebSocketFrame(Serializer::toString(json));
-
-    args.getConnectionRef().sendFrame(frame);
+    webSocket.sendFrame(SketchUtils::makeFrame(SketchUtils::toJSONMethod("Server",
+                                                                         "systemInfo",
+                                                                         SketchUtils::systemInfo())));
 
     if (_missingDependencies)
     {
-        params = Json::nullValue;
-        json = SketchUtils::toJSONMethod("Server", "missingDependencies", params);
-        frame = ofx::HTTP::WebSocketFrame(Serializer::toString(json));
-        args.getConnectionRef().sendFrame(frame);
+        webSocket.sendFrame(SketchUtils::makeFrame(SketchUtils::toJSONMethod("Server",
+                                                                             "missingDependencies",
+                                                                             Json::nullValue)));
     }
 
     return false; // did not handle it
@@ -680,7 +655,7 @@ bool App::onWebSocketCloseEvent(ofx::HTTP::WebSocketCloseEventArgs& args)
 {
     std::stringstream ss;
 
-    ss << "Connection closed from: " << args.getConnectionRef().getClientAddress().toString() << " ";
+    ss << "Connection closed from: " << args.getConnection().getClientAddress().toString() << " ";
     ss << "Code: " << args.getCode() << " Reason: " << args.getReason();
 
     ofLogVerbose("App::onWebSocketCloseEvent") << ss.str();
@@ -691,14 +666,14 @@ bool App::onWebSocketCloseEvent(ofx::HTTP::WebSocketCloseEventArgs& args)
 
 bool App::onWebSocketFrameReceivedEvent(ofx::HTTP::WebSocketFrameEventArgs& args)
 {
-    ofLogVerbose("App::onWebSocketFrameReceivedEvent") << "Frame received from: " << args.getConnectionRef().getClientAddress().toString();
+    ofLogVerbose("App::onWebSocketFrameReceivedEvent") << "Frame received from: " << args.getConnection().getClientAddress().toString();
     return false; // did not handle it
 }
 
 
 bool App::onWebSocketFrameSentEvent(ofx::HTTP::WebSocketFrameEventArgs& args)
 {
-    ofLogVerbose("App::onWebSocketFrameSentEvent") << "Frame sent to: " << args.getConnectionRef().getClientAddress().toString();
+    ofLogVerbose("App::onWebSocketFrameSentEvent") << "Frame sent to: " << args.getConnection().getClientAddress().toString();
     return false; // did not handle it
 }
 
@@ -752,7 +727,7 @@ void App::onSSLClientVerificationError(Poco::Net::VerificationErrorArgs& args)
 
 void App::onSSLPrivateKeyPassphraseRequired(std::string& args)
 {
-    ofLogVerbose("ofApp::onPrivateKeyPassphraseRequired") << args;
+    ofLogVerbose("ofApp::onPrivateKeyPassphraseRequired") << "Password required.";
 
     // if you want to proceed, you should allow your user set the
     // the certificate and set:

@@ -33,7 +33,6 @@
 #include "Poco/StreamCopier.h"
 #include "Poco/PipeStream.h"
 #include "Poco/TaskManager.h"
-#include "Poco/Util/JSONConfiguration.h"
 #include "ofMain.h"
 #include "ofxHTTP.h"
 #include "ofxJSONRPC.h"

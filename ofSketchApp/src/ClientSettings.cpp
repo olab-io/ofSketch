@@ -69,9 +69,6 @@ ClientSettings::ClientSettings():
         ss << ": " << reader.getFormattedErrorMessages();
         ofLogError("ClientSettings::ClientSettings") << ss;
     }
-
-    cout << _editorSettings.toStyledString() << endl;
-
 }
 
     

@@ -31,6 +31,7 @@
 #include <json/json.h>
 #include "ofConstants.h"
 #include "ofUtils.h"
+#include "ofx/HTTP/WebSocketFrame.h"
 
 
 namespace of {
@@ -43,6 +44,14 @@ namespace Sketch {
 class SketchUtils
 {
 public:
+    /// \returns A collection of platform info as json.
+    static Json::Value systemInfo();
+
+    /// \brief Create a WebSocketFrame.
+    /// \param data The data to send in the websocket frame.
+    /// \returns a WebSocketFrame.
+    static ofx::HTTP::WebSocketFrame makeFrame(const Json::Value& data);
+
     // Wraps a json method in the ofSketch protocol headers.
     static Json::Value toJSONMethod(const std::string& module,
                                     const std::string& method,

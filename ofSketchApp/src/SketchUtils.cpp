@@ -25,15 +25,54 @@
 
 
 #include "SketchUtils.h"
+#include "Poco/Environment.h"
 #include "Poco/Process.h"
 #include "Poco/PipeStream.h"
 #include "Poco/StreamCopier.h"
 #include "ofxIO.h"
 #include "Version.h"
+#include "Serializer.h"
 
 
 namespace of {
 namespace Sketch {
+
+
+Json::Value SketchUtils::systemInfo()
+{
+    Json::Value json;
+
+    json["version"]["major"] = Version::major();
+    json["version"]["minor"] = Version::minor();
+    json["version"]["patch"] = Version::patch();
+    json["version"]["special"] = Version::special();
+    json["version"]["version"] = Version::asString();
+
+    json["os"]["architecture"] = Poco::Environment::osArchitecture();
+    json["os"]["displayName"] = Poco::Environment::osDisplayName();
+    json["os"]["name"] = Poco::Environment::osName();
+    json["os"]["version"] = Poco::Environment::osVersion();
+
+    json["environment"]["node"]["name"] = Poco::Environment::nodeName();
+
+    try
+    {
+        json["environment"]["node"]["id"] = Poco::Environment::nodeId();
+    }
+    catch (const Poco::SystemException& exc)
+    {
+        ofLogWarning("SketchUtils::hostInfo") << exc.displayText();
+    }
+
+    json["environment"]["processorCount"] = Poco::Environment::processorCount();
+
+    return json;
+}
+
+ofx::HTTP::WebSocketFrame SketchUtils::makeFrame(const Json::Value& json)
+{
+    return ofx::HTTP::WebSocketFrame(Serializer::toString(json));
+}
 
 
 Json::Value SketchUtils::toJSONMethod(const std::string& module,
