@@ -50,32 +50,46 @@ public:
 
     void setup();
 
-    const std::vector<Project>& getProjects() const;
 
-    void getProjectList(const void* pSender, ofx::JSONRPC::MethodArgs& args);
-    void loadProject(const void* pSender, ofx::JSONRPC::MethodArgs& args);
-    void loadTemplateProject(const void* pSender, ofx::JSONRPC::MethodArgs& args);
-    void saveProject(const void* pSender, ofx::JSONRPC::MethodArgs& args);
-    void createProject(const void* pSender, ofx::JSONRPC::MethodArgs& args);
-    void deleteProject(const void* pSender, ofx::JSONRPC::MethodArgs& args);
-    void renameProject(const void* pSender, ofx::JSONRPC::MethodArgs& args);
+    
 
-    void notifyProjectClosed(const std::string& projectName);
-    void reloadProjects();
-    void updateProject(const std::string& projectName);
 
-    bool projectExists(const std::string& projectName) const;
-    const Project& getProject(const std::string& projectName) const;
-    Project& getProjectRef(const std::string& projectName);
+
+
+
+//    const std::vector<Project>& getProjects() const;
+
+
+
+//    void getProjectList(const void* pSender, ofx::JSONRPC::MethodArgs& args);
+//    void loadProject(const void* pSender, ofx::JSONRPC::MethodArgs& args);
+//    void loadTemplateProject(const void* pSender, ofx::JSONRPC::MethodArgs& args);
+//    void saveProject(const void* pSender, ofx::JSONRPC::MethodArgs& args);
+//    void createProject(const void* pSender, ofx::JSONRPC::MethodArgs& args);
+//    void deleteProject(const void* pSender, ofx::JSONRPC::MethodArgs& args);
+//    void renameProject(const void* pSender, ofx::JSONRPC::MethodArgs& args);
+//
+//    void notifyProjectClosed(const std::string& projectName);
+//    void reloadProjects();
+//    void updateProject(const std::string& projectName);
+//
+//    bool projectExists(const std::string& projectName) const;
+//    const Project& getProject(const std::string& projectName) const;
+//    Project& getProjectRef(const std::string& projectName);
+
 
 private:
     Settings& _settings;
 
-    std::vector<std::string> _openProjectNames;
-    std::vector<Project> _projects;
-    Project _templateProject;
+//    std::vector<Project> _examples;
 
-    bool _removeFromOpenProjectNames(const std::string& projectName);
+
+//    std::vector<std::string> _openProjectNames;
+//    std::vector<Project> _projects;
+//
+//    Project _templateProject;
+//
+//    bool _removeFromOpenProjectNames(const std::string& projectName);
 };
 
 

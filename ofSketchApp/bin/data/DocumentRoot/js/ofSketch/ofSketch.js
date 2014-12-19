@@ -145,8 +145,8 @@ $(document).ready(function () {
     }
 
     function handleServerEvent(evt) {
+
         if (evt.method == "systemInfo") {
-            
             // Add version information.
             systemInfo = evt.params;
             systemInfo.userAgent = navigator.userAgent;
@@ -181,9 +181,13 @@ $(document).ready(function () {
             if (evt.params.clientUUID != CLIENT_UUID) {
                 sketchEditor.updateSettings(evt.params.data);
             }
+            else
+            {
+                console.log("Not updating settings, b/c they were ours.");
+            }
         }
         else if (evt.method == "updateProjectSettings") {
-
+            console.log("updateProjectSettings - nothing here.");
         }
         else if (evt.method == "requestProjectClosed") {
             if (evt.params.clientUUID != CLIENT_UUID &&
@@ -435,12 +439,14 @@ $(document).ready(function () {
 
     function parseURLParameters() {
         var project = getURLParameter('project');
-        if (project) {
 
+        if (project) {
             sketchEditor.getProjectList(function (result) {
+
                 var match = _.findWhere(result, {
                     projectName: project
                 });
+
                 if (match) {
                     sketchEditor.loadProject(project,
                         function (result) {
@@ -449,17 +455,14 @@ $(document).ready(function () {
 
                             fileUploader.init(project);
 
-                            if (result.alreadyOpen ==
-                                true) {
-                                $(
-                                    '#project-already-open-modal'
-                                ).modal('show');
-                                sketchEditor.setDisabled(
-                                    true);
+                            if (result.alreadyOpen == true) {
+                                $('#project-already-open-modal').modal('show');
+                                sketchEditor.setDisabled(true);
                             }
                         }, loadError);
                 }
-                else {
+                else
+                {
                     sketchEditor.loadTemplateProject(
                         function () {
                             $(
@@ -468,16 +471,13 @@ $(document).ready(function () {
                         }, loadError);
                 }
             }, function (err) {
-                console.log(
-                    "Error requesting project list: ");
+                console.log("Error requesting project list: ");
                 console.log(err);
             });
 
         }
         else {
-
-            sketchEditor.loadTemplateProject(function () {},
-                loadError);
+            sketchEditor.loadTemplateProject(function () {}, loadError);
         }
     }
 

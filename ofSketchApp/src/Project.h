@@ -29,10 +29,11 @@
 
 #include <string>
 #include "json/json.h"
+#include "Poco/Path.h"
+#include "Poco/RegularExpression.h"
 #include "Poco/URI.h"
 #include "ofTypes.h"
 #include "ofFileUtils.h"
-#include "Poco/RegularExpression.h"
 
 
 namespace of {
@@ -42,62 +43,72 @@ namespace Sketch {
 class Project
 {
 public:
-    typedef std::shared_ptr<Project> SharedPtr;
-    typedef std::weak_ptr<Project> WeakPtr;
-
     Project(const std::string& path);
-    ~Project();
 
-    const std::string& getPath() const;
-    std::string getName() const;
-    bool isLoaded() const;
-    bool hasClasses() const;
-    bool hasAddons() const;
-    bool usingAddon(std::string& addon) const;
+    virtual ~Project();
 
-    bool create(const std::string& path);
-    bool remove();
-    bool rename(const std::string& newName);
+    /// \brief Get the name of the project.
+    /// \returns the name of the project.
+    const std::string& getName() const;
 
-    void save(const Json::Value& data);
-    void load(const std::string& path,
-              const std::string& name);
+    /// \brief Get the absolute path of the project.
+    /// \returns the absolute path of the project.
+    const Poco::Path& getPath() const;
 
-    void addAddon(std::string& addon);
-    bool removeAddon(std::string& addon);
 
-    bool deleteClass(const std::string& className);
-    bool renameClass(const std::string& currentName,
-                     const std::string& newName);
-
-    bool isClassName(const std::string& className) const;
-
-    unsigned int getNumClasses() const;
-
-    Json::Value createClass(const std::string& className);
-
-    std::vector<std::string> getAddons() const;
-
-    const Json::Value& getData() const;
-
-    static const std::string SKETCH_FILE_EXTENSION;
+//    bool isLoaded() const;
+//    bool hasClasses() const;
+//    bool hasAddons() const;
+//    bool usingAddon(std::string& addon) const;
+//
+//    bool create(const std::string& path);
+//    bool remove();
+//    bool rename(const std::string& newName);
+//
+//    void save(const Json::Value& data);
+//    void load(const std::string& path,
+//              const std::string& name);
+//
+//    void addAddon(std::string& addon);
+//    bool removeAddon(std::string& addon);
+//
+//    bool deleteClass(const std::string& className);
+//    bool renameClass(const std::string& currentName,
+//                     const std::string& newName);
+//
+//    bool isClassName(const std::string& className) const;
+//
+//    unsigned int getNumClasses() const;
+//
+//    Json::Value createClass(const std::string& className);
+//
+//    std::vector<std::string> getAddons() const;
+//
+//    const Json::Value& getData() const;
+//
+//    static const std::string SKETCH_FILE_EXTENSION;
 
 private:
+    std::string _name; ///< The project name.
+
+    Poco::Path _path; ///< The absolute path of the project.
+
+
 //    Settings& _settings;
-
-    bool _readOnly;
-
-    std::string _path;
-    std::string _classFileTemplate;
-    std::vector<std::string> _addons;
-    ofDirectory _sketchDir;
-
-    bool _isLoaded;
-    Json::Value _data;
-
-    void _saveFile(const Json::Value& fileData);
-    void _loadAddons();
-    void _saveAddons();
+//
+//    bool _readOnly;
+//
+//    std::string _path;
+//    std::string _classFileTemplate;
+//    std::vector<std::string> _addons;
+//    ofDirectory _sketchDir;
+//
+//    bool _isLoaded;
+//    Json::Value _data;
+//
+//    void _saveFile(const Json::Value& fileData);
+//    void _loadAddons();
+//    void _saveAddons();
 
 };
 

@@ -212,6 +212,10 @@ ofTargetPlatform SketchUtils::TargetPlatformFromString(const std::string& target
     }
 }
 
+    /// \brief Check to see if the current build system contains a commend.
+    /// \param command The command to check for.
+    /// \returns true iff the current build system contains the command.
+    static bool hasDependency(const std::string& command);
 
 bool SketchUtils::hasDependency(const std::string& command)
 {

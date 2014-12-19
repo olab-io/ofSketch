@@ -26,52 +26,37 @@
 #pragma once
 
 
-#include <iostream>
-#include <set>
-#include "Poco/Process.h"
-#include "Poco/PipeStream.h"
-#include "Poco/StreamCopier.h"
-#include "Poco/Task.h"
-#include "Poco/Net/SocketAddress.h"
-#include "ofUtils.h"
-#include "Project.h"
-#include "BaseProcessTask.h"
+#include "BaseToolchain.h"
+#include "Poco/Path.h"
 
 
 namespace of {
 namespace Sketch {
 
 
-class MakeTask: public BaseProcessTask
+/// \brief A base class for MakeTool chains.
+class MakeToolchain: public BaseToolchain
 {
 public:
-    struct Settings;
+    /// \brief Create a named Make toolchain.
+    /// \param name The name of the Toolchain.
+    MakeToolchain(const std::string& name);
 
-    MakeTask(const Settings& settings,
-             const Project& project,
-             const std::string& target);
+    /// \brief Destroy the MakeToolchain.
+    virtual ~MakeToolchain();
 
-    virtual ~MakeTask();
+    virtual Poco::Task* newBuildTask(const Project& project,
+                                     const std::string& target) const;
 
-    virtual void processLine(const std::string& line);
+    virtual Poco::Task* newRunTask(const Project& project,
+                                   const std::string& target) const;
 
-    struct Settings
-    {
-        std::string ofRoot;
-        std::size_t numProcessors; // -j
-        bool isSilent; // -s
-        std::string CXX; // CXX=/usr/lib/distcc/arm-linux-gnueabihf-g++
-        std::string CC;  // CC=/usr/lib/distcc/arm-linux-gnueabihf-gcc
-        std::string platformVariant; // e.g. PLATFORM_VARIANT=udoo
-        bool makefileDebug; // e.g. MAKEFILE_DEBUG=1
-
-        Settings();
-    };
-
-private:
-    Settings _settings;
-    const Project& _project;
-    std::string _target;
+    /// \brief Get the project's exectuable's path given the target.
+    /// \param project The project to examine.
+    /// \param target The target to look for.
+    /// \returns the absolute path to the project's executable's path.
+    static Poco::Path getExecutablePath(const Project& project,
+                                        const std::string& target);
 
 };
 

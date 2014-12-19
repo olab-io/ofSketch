@@ -42,7 +42,6 @@ _data = {
 function Project(projectName, onSuccess, onError, isTemplate) {
   var _self = this;
   var _needsSave = false;
-  var _settings;
   var _data;
   var _isTemplate;
 

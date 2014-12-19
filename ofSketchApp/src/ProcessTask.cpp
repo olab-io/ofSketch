@@ -1,6 +1,6 @@
 // =============================================================================
 //
-// Copyright (c) 2013 Christopher Baker <http://christopherbaker.net>
+// Copyright (c) 2013-2014 Christopher Baker <http://christopherbaker.net>
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -23,10 +23,11 @@
 // =============================================================================
 
 
-#include "BaseProcessTask.h"
-#include "Poco/StreamCopier.h"
+#include "ProcessTask.h"
 #include "Poco/Buffer.h"
+#include "Poco/StreamCopier.h"
 #include "Poco/Thread.h"
+#include "Poco/TaskNotification.h"
 #include <iostream>
 #include "ofLog.h"
 #include "ofUtils.h"
@@ -35,14 +36,14 @@
 namespace of {
 namespace Sketch {
 
-    
-BaseProcessTask::BaseProcessTask(const std::string& taskName,
-                                 const std::string& command,
-                                 const std::vector<std::string>& args,
-                                 const std::string& initialDirectory,
-                                 const Poco::Process::Env& env,
-                                 std::size_t bufferSize):
-    Poco::Task(taskName),
+
+ProcessTaskSettings::ProcessTaskSettings(const std::string& taskName,
+                                         const std::string& command,
+                                         const std::vector<std::string>& args,
+                                         const Poco::Path& initialDirectory,
+                                         const Poco::Process::Env& env,
+                                         std::size_t bufferSize):
+    _taskName(taskName),
     _command(command),
     _args(args),
     _initialDirectory(initialDirectory),
@@ -52,33 +53,84 @@ BaseProcessTask::BaseProcessTask(const std::string& taskName,
 }
 
 
-BaseProcessTask::~BaseProcessTask()
+ProcessTaskSettings::~ProcessTaskSettings()
 {
 }
 
 
-void BaseProcessTask::runTask()
+const std::string& ProcessTaskSettings::getTaskName() const
 {
+    return _taskName;
+}
+
+
+const std::string& ProcessTaskSettings::getCommand() const
+{
+    return _command;
+}
+
+
+const std::vector<std::string> ProcessTaskSettings::getArgs() const
+{
+    return _args;
+}
+
+
+const Poco::Path& ProcessTaskSettings::getInitialDirectory() const
+{
+    return _initialDirectory;
+}
+
+
+const Poco::Process::Env& ProcessTaskSettings::getEnvironment() const
+{
+    return _env;
+}
+
+
+std::size_t ProcessTaskSettings::getBufferSize() const
+{
+    return _bufferSize;
+}
+
+
+ProcessTask::ProcessTask(const ProcessTaskSettings& settings):
+    Poco::Task(settings.getTaskName()),
+    _settings(settings)
+{
+}
+
+
+ProcessTask::~ProcessTask()
+{
+}
+
+
+void ProcessTask::runTask()
+{
+    /// \todo Break apart out and err pipe.
     Poco::Pipe _outAndErrPipe;
     Poco::PipeInputStream istr(_outAndErrPipe);
 
     try
     {
 
-		Poco::ProcessHandle ph = Poco::Process::launch(_command,
-													   _args,
-													   _initialDirectory.toString(),
+		Poco::ProcessHandle ph = Poco::Process::launch(_settings.getCommand(),
+													   _settings.getArgs(),
+													   _settings.getInitialDirectory().toString(),
 													   0,
 													   &_outAndErrPipe,
 													   &_outAndErrPipe,
-													   _env);
+													   _settings.getEnvironment());
 
-		ofLogVerbose("BaseProcessTask::runTask") << "Launching Task: " << _command << " Args: " << ofToString(_args) << " PID: " << ph.id();
+		ofLogVerbose("BaseProcessTask::runTask") << "Launching Task: " << _settings.getCommand() << " Args: " << ofToString(_settings.getArgs()) << " PID: " << ph.id();
 
-		Poco::Buffer<char> buffer(_bufferSize);
+		Poco::Buffer<char> buffer(_settings.getBufferSize());
 
 		while (istr.good() && !istr.fail() && !isCancelled())
 		{
+
+            /// \todo http://www.cplusplus.com/reference/istream/istream/read/
 
 #if !defined(TARGET_WIN32)
 			fd_set readset;
@@ -90,7 +142,11 @@ void BaseProcessTask::runTask()
 			tv.tv_sec = 0;
 			tv.tv_usec = 50 * 1000; // 50 ms.
 
-			int rc = ::select(_outAndErrPipe.readHandle() + 1, &readset, 0, 0, &tv);
+			int rc = ::select(_outAndErrPipe.readHandle() + 1,
+                              &readset,
+                              0,
+                              0,
+                              &tv);
 #else
 			// Temporary hack to get around the fact that
 			// there is no "select" on Windows platforms.
@@ -116,14 +172,22 @@ void BaseProcessTask::runTask()
 		}
 
 		Poco::Process::kill(ph);
+
 	    int exitCode = ph.wait();
-	    ofLogVerbose("BaseProcessTask::runTask") << "Exit PID: " << ph.id() << " with: " << exitCode;
+
+        ofLogVerbose("BaseProcessTask::runTask") << "Exit PID: " << ph.id() << " with: " << exitCode;
 
 	}
     catch(Poco::Exception& exc)
     {
         ofLogError("BaseProcessTask::runTask") << exc.displayText();
     }
+}
+
+
+void ProcessTask::processLine(const std::string& line)
+{
+    postNotification(new Poco::TaskCustomNotification<std::string>(this, line));
 }
 
 

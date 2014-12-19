@@ -36,6 +36,7 @@ namespace of {
 namespace Sketch {
 
 
+/// \brief A specialized ofx::TaskQueue for handling task notifications.
 class ProcessTaskQueue: public ofx::TaskQueue
 {
 public:
@@ -55,7 +56,7 @@ public:
 
 protected:
     virtual void handleTaskCustomNotification(const Poco::UUID& taskID,
-                                             TaskNotificationPtr pNotification);
+                                              TaskNotificationPtr pNotification);
 
 };
 
@@ -74,8 +75,6 @@ void ProcessTaskQueue::unregisterAllEvents(ListenerClass* listener)
     unregisterTaskProgressEvents(listener);
     ofRemoveListener(onTaskData, listener, &ListenerClass::onTaskData);
 }
-
-
 
 
 } } // namespace of::Sketch

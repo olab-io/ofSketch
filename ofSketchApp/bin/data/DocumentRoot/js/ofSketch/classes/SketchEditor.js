@@ -158,23 +158,31 @@ function SketchEditor(callback) {
   var _initTabs = function() {
     _tabs = [];
 
+    // Get the project file from the current project.
+    // The project file is the main file representing the project.
     var projectFile = _project.getProjectFile();
+
+    // Add a tab for the project file.
     _addTab(getPrettyFileName(projectFile.fileName),
-      projectFile.fileName,
-      true,
-      new ace.createEditSession(_project.getProjectFile().fileContents,
-        _settings.getData().setMode));
+            projectFile.fileName,
+            true,
+            new ace.createEditSession(_project.getProjectFile().fileContents,
+                                      _settings.getData().setMode)
+            );
 
     var classes = _project.getClasses();
+
     _.each(classes, function(c) {
-      _addTab(getPrettyFileName(c.fileName),
-        c.fileName,
-        false,
-        new ace.createEditSession(c.fileContents, _settings.getData()
-          .setMode));
+        _addTab(getPrettyFileName(c.fileName),
+                c.fileName,
+                false,
+                new ace.createEditSession(c.fileContents,
+                                          _settings.getData().setMode)
+                );
     });
 
     _resizeTabs(true);
+
     _self.selectTab(_project.getName());
 
   }
@@ -333,13 +341,10 @@ function SketchEditor(callback) {
   }
 
   this.loadTemplateProject = function(onSuccess, onError) {
-    _project = new Project('', function(result) {
-
-        _initTabs();
-        onSuccess(result);
-
-      }, onError,
-      true); // signifies isTemplate
+      _project = new Project('', function(result) {
+          _initTabs();
+          onSuccess(result);
+      }, onError, true); // signifies isTemplate
   }
 
   this.saveProject = function(onSuccess, onError) {

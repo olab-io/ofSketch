@@ -24,13 +24,15 @@
 
 
 #include "ToolchainManager.h"
+#include "MakeToolchain.h"
+#include "ofLog.h"
 
 
 namespace of {
 namespace Sketch {
 
 
-ToolchainManager::ToolchainManager()
+ToolchainManager::ToolchainManager(Settings& settings): _settings(settings)
 {
 }
 
@@ -38,6 +40,78 @@ ToolchainManager::ToolchainManager()
 ToolchainManager::~ToolchainManager()
 {
 }
+
+
+void ToolchainManager::setup()
+{
+    Poco::Path toolchainPath = _settings.getPaths().getToolchainsPath();
+
+    try
+    {
+        std::vector<Poco::File> files;
+
+        DirectoryUtils::list(toolchainPath, files, true, &_directoryFilter);
+
+        std::vector<Poco::File>::iterator iter = files.begin();
+
+        while (iter != files.end())
+        {
+            const Poco::File& toolchain = *iter;
+
+            std::string toolchainName = Poco::Path(toolchain.path()).getBaseName();
+
+            ofLogNotice("ToolchainManager::setup") << "Loading Toolchain: " << toolchainName;
+
+            ++iter;
+        }
+
+    }
+    catch (const Poco::Exception& exc)
+    {
+        ofLogFatalError("ToolchainManager::setup") << exc.displayText();
+    }
+
+
+    /// \todo More sophisticated toolchain selection from the filesystem.
+    _toolchains["default"] = std::shared_ptr<BaseToolchain>(new MakeToolchain("default"));
+}
+
+
+Poco::Task* ToolchainManager::newBuildTask(const Project& project,
+                                           const std::string& target,
+                                           const std::string& toolchain)
+{
+    ToolchainMap::iterator iter = _toolchains.find(toolchain);
+
+    if (iter != _toolchains.end())
+    {
+        return iter->second->newBuildTask(project, target);
+    }
+    else
+    {
+        ofLogError("ToolchainManager::build") << "No toolchain called " << toolchain;
+        return 0;
+    }
+}
+
+
+Poco::Task* ToolchainManager::newRunTask(const Project& project,
+                                         const std::string& target,
+                                         const std::string& toolchain)
+{
+    ToolchainMap::iterator iter = _toolchains.find(toolchain);
+
+    if (iter != _toolchains.end())
+    {
+        return iter->second->newRunTask(project, target);
+    }
+    else
+    {
+        ofLogError("ToolchainManager::run") << "No toolchain called " << toolchain;
+        return 0;
+    }
+}
+
 
 
 } } // namespace of::Sketch

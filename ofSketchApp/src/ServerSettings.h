@@ -43,14 +43,14 @@ public:
 
     /// \brief Create server settings with parameters.
     /// \param port The server port.
-    /// \param webSocketBufferSize The WebSocket buffer size in megabytes.
-    /// \param maximumFileUploadSize The maximum gile upload size in megabytes.
+    /// \param webSocketBufferSize The WebSocket buffer size in bytes.
+    /// \param maximumFileUploadSize The maximum gile upload size in bytes.
     /// \param whitelist A list of IP addresses that can connect to the server.
     /// \param useSSL True if the server should use SSL encryption.
     /// \param sslSettings The SSL encryption settings.
     ServerSettings(unsigned short port,
                    std::size_t webSocketBufferSize,
-                   unsigned long maximumFileUploadSize,
+                   std::size_t maximumFileUploadSize,
                    const ofx::Net::IPAddressRange::List& whitelist,
                    bool useSSL,
                    const SSLSettings& sslSettings);
@@ -58,11 +58,11 @@ public:
     /// \returns The server port.
     unsigned short getPort() const;
 
-    /// \returns The WebSocket buffer size in megabytes.
+    /// \returns The WebSocket buffer size in bytes.
     std::size_t getWebSocketBufferSize() const;
 
-    /// \returns The maximum gile upload size in megabytes.
-    unsigned long getMaxiumFileUploadSize() const;
+    /// \returns The maximum gile upload size in bytes.
+    std::size_t getMaxiumFileUploadSize() const;
 
     /// \returns A list of IP addresses that can connect to the server.
     const ofx::Net::IPAddressRange::List& getWhitelist() const;
@@ -83,21 +83,21 @@ public:
     {
         /// \brief Default port, 0 indicates use any.
         DEFAULT_PORT = 0,
-        /// \brief Default websocket buffer size in megabytes.
-        DEFAULT_WEBSOCKET_BUFFER_SIZE = 4,
-        /// \brief Default maximum file upload size in megabytes.
-        DEFAULT_MAXIMUM_FILE_UPLOAD_SIZE = 5120,
+        /// \brief Default websocket buffer size in bytes (40 Megabytes).
+        DEFAULT_WEBSOCKET_BUFFER_SIZE = 4194304,
+        /// \brief Default maximum file upload size in bytes (Maximum allowed).
+        DEFAULT_MAXIMUM_FILE_UPLOAD_SIZE = SIZE_T_MAX
     };
 
 private:
     /// \brief The server port. 0 indicates use any.
     unsigned short _port;
 
-    /// \brief WebSocket buffer size in megabytes.
+    /// \brief WebSocket buffer size in bytes.
     std::size_t _webSocketBufferSize;
 
-    /// \brief Maximum file upload size in megabytes.
-    unsigned long _maximumFileUploadSize;
+    /// \brief Maximum file upload size in bytes.
+    std::size_t _maximumFileUploadSize;
 
     /// \brief The valid IPs that can connect to this server.
     ofx::Net::IPAddressRange::List _whitelist;

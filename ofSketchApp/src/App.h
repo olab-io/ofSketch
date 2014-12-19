@@ -47,6 +47,7 @@
 #include "Settings.h"
 #include "WebSocketLoggerChannel.h"
 #include "Version.h"
+#include "ToolchainManager.h"
 
 
 #include "Paths.h"
@@ -133,6 +134,7 @@ private:
     Poco::ThreadPool _threadPool;
     ProcessTaskQueue _taskQueue;
     Compiler _compiler;
+    ToolchainManager _toolchainManager;
     AddonManager _addonManager;
     ProjectManager _projectManager;
     UploadRouter _uploadRouter;

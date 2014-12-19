@@ -26,38 +26,59 @@
 #pragma once
 
 
-#include "Poco/Path.h"
+#include <map>
+#include "Poco/Task.h"
+#include "ofTypes.h"
+#include "ofx/IO/DirectoryUtils.h"
+#include "ofx/IO/DirectoryFilter.h"
+#include "ofx/IO/DirectoryWatcherManager.h"
+#include "Settings.h"
 
 
 namespace of {
 namespace Sketch {
 
 
-class Toolchain
-{
-public:
-    Toolchain(const std::string& name);
-
-    virtual ~Toolchain();
-
-protected:
-    std::string _name; ///< The toolchain name.
-
-};
+class BaseToolchain;
+class Project;
 
 
-/// \brief
+using ofx::DirectoryWatcher;
+using ofx::IO::DirectoryFilter;
+using ofx::IO::DirectoryUtils;
+using ofx::IO::DirectoryWatcherManager;
+
+
+/// \brief The ToolchainManager.
 class ToolchainManager
 {
 public:
     /// \brief Create a default ToolchainManager instance.
-    ToolchainManager();
+    ToolchainManager(Settings& settings);
 
     /// \brief Destroy the ToolchainManager instance.
     virtual ~ToolchainManager();
 
+    void setup();
+
+    Poco::Task* newBuildTask(const Project& project,
+                             const std::string& target,
+                             const std::string& toolchian);
+
+    Poco::Task* newRunTask(const Project& project,
+                           const std::string& target,
+                           const std::string& toolchian);
 
 private:
+    typedef std::shared_ptr<BaseToolchain> Toolchain;
+    typedef std::map<std::string, Toolchain> ToolchainMap;
+
+    /// \brief Settings.
+    Settings& _settings;
+
+    ToolchainMap _toolchains;
+
+    DirectoryFilter _directoryFilter;
 
 };
 

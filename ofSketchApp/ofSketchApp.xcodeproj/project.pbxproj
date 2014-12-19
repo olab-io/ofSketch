@@ -10,16 +10,14 @@
 		06A8B8112D2257097B9ECBBF /* AddonManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 211CC999BA5BE068E22D2D61 /* AddonManager.cpp */; };
 		1389E591EFDE2CC2F5BC57C6 /* SketchUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB85D9A4B8E5CD06461906F6 /* SketchUtils.cpp */; };
 		20F4EC760302321CC218D15E /* Project.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FFE96AA616BC97AEB4FCED47 /* Project.cpp */; };
-		217F728022E0ABAADF26E8F0 /* BaseProcessTask.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 805432FD02D669F8AB87523A /* BaseProcessTask.cpp */; };
+		217F728022E0ABAADF26E8F0 /* ProcessTask.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 805432FD02D669F8AB87523A /* ProcessTask.cpp */; };
 		3D2BFE7FC7B8D160CA004132 /* Addon.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E91C4375638A4E613A6A8358 /* Addon.cpp */; };
 		4280FE72330EE80A9929046F /* Settings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A0800123A129E9BC12ED207 /* Settings.cpp */; };
-		49013A27384B897487644C72 /* RunTask.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8E2344D1D4899D32D6C66D54 /* RunTask.cpp */; };
 		6474CBF619BCE019003C94E2 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6474CBF019BCE00B003C94E2 /* AVFoundation.framework */; };
 		6474CBF719BCE019003C94E2 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6474CBF119BCE00B003C94E2 /* CoreMedia.framework */; };
 		6474CBF819BCE019003C94E2 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6474CBF219BCE00B003C94E2 /* QuartzCore.framework */; };
 		82A4AA658687D7DB5BCA0B0D /* Compiler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BA556D3D36C8D01C120B7F53 /* Compiler.cpp */; };
 		99AA06F2A95DE5875FC51C41 /* ProcessTaskQueue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 15F4C733C5146045751FEEEB /* ProcessTaskQueue.cpp */; };
-		A3A89D02D2411FA23A03836B /* MakeTask.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 71B9D10D4931309E684AA1FD /* MakeTask.cpp */; };
 		A6F00D1D3DFC8863E97E995A /* UploadRouter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7E491E6995A2802A3CB51AF8 /* UploadRouter.cpp */; };
 		AC301114E6ADFB873BBEBB11 /* EditorSettings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 96F00995B100422D0488B930 /* EditorSettings.cpp */; };
 		D3D24B66BB67C5908159948D /* WebSocketLoggerChannel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 20FC7645D6AAF1D6542B0C48 /* WebSocketLoggerChannel.cpp */; };
@@ -156,8 +154,9 @@
 		FDD49B9E1A3D257000BDC72C /* ServerSettings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FDD49B9C1A3D257000BDC72C /* ServerSettings.cpp */; };
 		FDD49BA11A3D323400BDC72C /* SSLSettings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FDD49B9F1A3D323400BDC72C /* SSLSettings.cpp */; };
 		FDE52EF31A3E2B2F001610FF /* Version.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FDE52EF21A3E2B2F001610FF /* Version.cpp */; };
+		FDED59C01A432587001B66A1 /* MakeToolchain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FDED59BE1A432587001B66A1 /* MakeToolchain.cpp */; };
 		FDFF7F4E1A3E039F00C170C3 /* ToolchainManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FDFF7F4C1A3E039F00C170C3 /* ToolchainManager.cpp */; };
-		FDFF7F511A3E056300C170C3 /* Toolchain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FDFF7F4F1A3E056300C170C3 /* Toolchain.cpp */; };
+		FDFF7F511A3E056300C170C3 /* BaseToolchain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FDFF7F4F1A3E056300C170C3 /* BaseToolchain.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -182,7 +181,7 @@
 		0D275B6F94E944D0689BED10 /* Compiler.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = Compiler.h; path = src/Compiler.h; sourceTree = SOURCE_ROOT; };
 		10E6BC8B44697FB1F52FB823 /* WebSocketLoggerChannel.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = WebSocketLoggerChannel.h; path = src/WebSocketLoggerChannel.h; sourceTree = SOURCE_ROOT; };
 		15F4C733C5146045751FEEEB /* ProcessTaskQueue.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ProcessTaskQueue.cpp; path = src/ProcessTaskQueue.cpp; sourceTree = SOURCE_ROOT; };
-		16BF8CD7F23D5D051DE9B8AC /* BaseProcessTask.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = BaseProcessTask.h; path = src/BaseProcessTask.h; sourceTree = SOURCE_ROOT; };
+		16BF8CD7F23D5D051DE9B8AC /* ProcessTask.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ProcessTask.h; path = src/ProcessTask.h; sourceTree = SOURCE_ROOT; };
 		20FC7645D6AAF1D6542B0C48 /* WebSocketLoggerChannel.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = WebSocketLoggerChannel.cpp; path = src/WebSocketLoggerChannel.cpp; sourceTree = SOURCE_ROOT; };
 		211CC999BA5BE068E22D2D61 /* AddonManager.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = AddonManager.cpp; path = src/AddonManager.cpp; sourceTree = SOURCE_ROOT; };
 		342D481B54AD38916A274FC1 /* UploadRouter.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = UploadRouter.h; path = src/UploadRouter.h; sourceTree = SOURCE_ROOT; };
@@ -193,13 +192,9 @@
 		6474CBF019BCE00B003C94E2 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		6474CBF119BCE00B003C94E2 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		6474CBF219BCE00B003C94E2 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
-		6EB042BFE6D256A232CD82F7 /* MakeTask.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = MakeTask.h; path = src/MakeTask.h; sourceTree = SOURCE_ROOT; };
-		71B9D10D4931309E684AA1FD /* MakeTask.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = MakeTask.cpp; path = src/MakeTask.cpp; sourceTree = SOURCE_ROOT; };
 		78BC8088D555F49447175CED /* Project.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = Project.h; path = src/Project.h; sourceTree = SOURCE_ROOT; };
-		7DF358F770A9AA90E0CAB6FC /* RunTask.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = RunTask.h; path = src/RunTask.h; sourceTree = SOURCE_ROOT; };
 		7E491E6995A2802A3CB51AF8 /* UploadRouter.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = UploadRouter.cpp; path = src/UploadRouter.cpp; sourceTree = SOURCE_ROOT; };
-		805432FD02D669F8AB87523A /* BaseProcessTask.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = BaseProcessTask.cpp; path = src/BaseProcessTask.cpp; sourceTree = SOURCE_ROOT; };
-		8E2344D1D4899D32D6C66D54 /* RunTask.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = RunTask.cpp; path = src/RunTask.cpp; sourceTree = SOURCE_ROOT; };
+		805432FD02D669F8AB87523A /* ProcessTask.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ProcessTask.cpp; path = src/ProcessTask.cpp; sourceTree = SOURCE_ROOT; };
 		8E9BF742600BDD67A2C1C707 /* ProjectManager.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ProjectManager.cpp; path = src/ProjectManager.cpp; sourceTree = SOURCE_ROOT; };
 		96F00995B100422D0488B930 /* EditorSettings.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = EditorSettings.cpp; path = src/EditorSettings.cpp; sourceTree = SOURCE_ROOT; };
 		A1A567FBAE494BF84E54E83C /* Settings.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = Settings.h; path = src/Settings.h; sourceTree = SOURCE_ROOT; };
@@ -501,10 +496,12 @@
 		FDD49B9F1A3D323400BDC72C /* SSLSettings.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SSLSettings.cpp; sourceTree = "<group>"; };
 		FDD49BA01A3D323400BDC72C /* SSLSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSLSettings.h; sourceTree = "<group>"; };
 		FDE52EF21A3E2B2F001610FF /* Version.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Version.cpp; sourceTree = "<group>"; };
+		FDED59BE1A432587001B66A1 /* MakeToolchain.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MakeToolchain.cpp; sourceTree = "<group>"; };
+		FDED59BF1A432587001B66A1 /* MakeToolchain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MakeToolchain.h; sourceTree = "<group>"; };
 		FDFF7F4C1A3E039F00C170C3 /* ToolchainManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ToolchainManager.cpp; sourceTree = "<group>"; };
 		FDFF7F4D1A3E039F00C170C3 /* ToolchainManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToolchainManager.h; sourceTree = "<group>"; };
-		FDFF7F4F1A3E056300C170C3 /* Toolchain.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Toolchain.cpp; sourceTree = "<group>"; };
-		FDFF7F501A3E056300C170C3 /* Toolchain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Toolchain.h; sourceTree = "<group>"; };
+		FDFF7F4F1A3E056300C170C3 /* BaseToolchain.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BaseToolchain.cpp; sourceTree = "<group>"; };
+		FDFF7F501A3E056300C170C3 /* BaseToolchain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseToolchain.h; sourceTree = "<group>"; };
 		FFE96AA616BC97AEB4FCED47 /* Project.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = Project.cpp; path = src/Project.cpp; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
@@ -640,26 +637,24 @@
 				0A7B769C45381FBF374DC71B /* Addon.h */,
 				211CC999BA5BE068E22D2D61 /* AddonManager.cpp */,
 				4AFDEBB7DE39F350B20F5E5B /* AddonManager.h */,
-				805432FD02D669F8AB87523A /* BaseProcessTask.cpp */,
-				16BF8CD7F23D5D051DE9B8AC /* BaseProcessTask.h */,
+				805432FD02D669F8AB87523A /* ProcessTask.cpp */,
+				16BF8CD7F23D5D051DE9B8AC /* ProcessTask.h */,
 				BA556D3D36C8D01C120B7F53 /* Compiler.cpp */,
 				0D275B6F94E944D0689BED10 /* Compiler.h */,
 				96F00995B100422D0488B930 /* EditorSettings.cpp */,
 				C750666299F5ACF18B5B7070 /* EditorSettings.h */,
-				71B9D10D4931309E684AA1FD /* MakeTask.cpp */,
-				6EB042BFE6D256A232CD82F7 /* MakeTask.h */,
 				15F4C733C5146045751FEEEB /* ProcessTaskQueue.cpp */,
 				D52FD95E10E97565087691BF /* ProcessTaskQueue.h */,
 				FFE96AA616BC97AEB4FCED47 /* Project.cpp */,
 				78BC8088D555F49447175CED /* Project.h */,
 				8E9BF742600BDD67A2C1C707 /* ProjectManager.cpp */,
 				3621818EA5FF99900091C481 /* ProjectManager.h */,
-				8E2344D1D4899D32D6C66D54 /* RunTask.cpp */,
-				7DF358F770A9AA90E0CAB6FC /* RunTask.h */,
 				FDFF7F4C1A3E039F00C170C3 /* ToolchainManager.cpp */,
 				FDFF7F4D1A3E039F00C170C3 /* ToolchainManager.h */,
-				FDFF7F4F1A3E056300C170C3 /* Toolchain.cpp */,
-				FDFF7F501A3E056300C170C3 /* Toolchain.h */,
+				FDFF7F4F1A3E056300C170C3 /* BaseToolchain.cpp */,
+				FDFF7F501A3E056300C170C3 /* BaseToolchain.h */,
+				FDED59BE1A432587001B66A1 /* MakeToolchain.cpp */,
+				FDED59BF1A432587001B66A1 /* MakeToolchain.h */,
 				BB85D9A4B8E5CD06461906F6 /* SketchUtils.cpp */,
 				3B0FA5EA966B2F77877F2609 /* SketchUtils.h */,
 				7E491E6995A2802A3CB51AF8 /* UploadRouter.cpp */,
@@ -1602,7 +1597,7 @@
 				FD5AB44E1A3F72E9009E88AE /* PathUtils.cpp in Sources */,
 				FD5AB44A1A3F72E9009E88AE /* HexBinaryEncoding.cpp in Sources */,
 				FD5AB5531A3F730F009E88AE /* Errors.cpp in Sources */,
-				217F728022E0ABAADF26E8F0 /* BaseProcessTask.cpp in Sources */,
+				217F728022E0ABAADF26E8F0 /* ProcessTask.cpp in Sources */,
 				FD5AB4491A3F72E9009E88AE /* FileSystemTasks.cpp in Sources */,
 				FD5AB4441A3F72E9009E88AE /* DirectoryFilter.cpp in Sources */,
 				FD5AB50C1A3F72FE009E88AE /* FileSystemRouteHandler.cpp in Sources */,
@@ -1629,7 +1624,6 @@
 				FD5AB4501A3F72E9009E88AE /* RecursiveDirectoryIteratorStategies.cpp in Sources */,
 				FD5AB43C1A3F72E9009E88AE /* Base64Encoding.cpp in Sources */,
 				FD5AB4531A3F72E9009E88AE /* snappy-sinksource.cc in Sources */,
-				A3A89D02D2411FA23A03836B /* MakeTask.cpp in Sources */,
 				FD5AB4451A3F72E9009E88AE /* DirectoryUtils.cpp in Sources */,
 				FD5AB5661A3F731B009E88AE /* ofxJSONElement.cpp in Sources */,
 				FD5AB5291A3F72FE009E88AE /* WebSocketRouteSettings.cpp in Sources */,
@@ -1644,7 +1638,6 @@
 				F7BE9B8CD3F35077ADA4E3D4 /* ProjectManager.cpp in Sources */,
 				FD5AB5221A3F72FE009E88AE /* SessionSettings.cpp in Sources */,
 				FD5AB4FB1A3F72FE009E88AE /* Context.cpp in Sources */,
-				49013A27384B897487644C72 /* RunTask.cpp in Sources */,
 				FD5AB4411A3F72E9009E88AE /* COBSEncoding.cpp in Sources */,
 				FD5AB4481A3F72E9009E88AE /* FileExtensionFilter.cpp in Sources */,
 				FDFF7F4E1A3E039F00C170C3 /* ToolchainManager.cpp in Sources */,
@@ -1681,8 +1674,9 @@
 				D3D24B66BB67C5908159948D /* WebSocketLoggerChannel.cpp in Sources */,
 				FD5AB58A1A3F734C009E88AE /* MediaTypeMap.cpp in Sources */,
 				FD5AB4F21A3F72FE009E88AE /* BaseRouteSettings.cpp in Sources */,
+				FDED59C01A432587001B66A1 /* MakeToolchain.cpp in Sources */,
 				FD5AB51B1A3F72FE009E88AE /* PostRouteSettings.cpp in Sources */,
-				FDFF7F511A3E056300C170C3 /* Toolchain.cpp in Sources */,
+				FDFF7F511A3E056300C170C3 /* BaseToolchain.cpp in Sources */,
 				FD5AB50D1A3F72FE009E88AE /* FileSystemRouteSettings.cpp in Sources */,
 				FD5AB5131A3F72FE009E88AE /* IPVideoFrameSettings.cpp in Sources */,
 				FD5AB5011A3F72FE009E88AE /* DefaultClient.cpp in Sources */,

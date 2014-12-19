@@ -47,7 +47,7 @@ ServerSettings::ServerSettings():
 
 ServerSettings::ServerSettings(unsigned short port,
                                std::size_t webSocketBufferSize,
-                               unsigned long maximumFileUploadSize,
+                               std::size_t maximumFileUploadSize,
                                const ofx::Net::IPAddressRange::List& whitelist,
                                bool useSSL,
                                const SSLSettings& sslSettings):
@@ -79,7 +79,7 @@ bool ServerSettings::useSSL() const
 }
 
 
-unsigned long ServerSettings::getMaxiumFileUploadSize() const
+std::size_t ServerSettings::getMaxiumFileUploadSize() const
 {
     return _maximumFileUploadSize;
 }

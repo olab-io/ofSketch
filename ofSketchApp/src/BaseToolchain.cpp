@@ -23,44 +23,58 @@
 // =============================================================================
 
 
-#pragma once
-
-
-#include <iostream>
-#include <set>
-#include "Poco/Process.h"
-#include "Poco/PipeStream.h"
-#include "Poco/StreamCopier.h"
-#include "Poco/Task.h"
-#include "Poco/Net/SocketAddress.h"
-#include "ofUtils.h"
-#include "Project.h"
-#include "BaseProcessTask.h"
+#include "BaseToolchain.h"
 
 
 namespace of {
 namespace Sketch {
 
 
-class RunTask: public BaseProcessTask
+BaseToolchain::BaseToolchain(const std::string& name): _name(name)
 {
-public:
-    enum Target
-    {
-        DEBUG,
-        RELEASE
-    };
+}
 
-    RunTask(const Project& project, Target target);
+    
+BaseToolchain::~BaseToolchain()
+{
+}
 
-    virtual ~RunTask();
+//#ifdef TARGET_WIN32
+//    // Set up toolchain path information for Windows.
+//    std::string pathVar = Poco::Environment::get("PATH","");
+//
+//    std::string pathToolChain0 = ofToDataPath("Toolchains/ofMinGW/MinGW/msys/1.0/bin", true);
+//    std::string pathToolChain1 = ofToDataPath("Toolchains/ofMinGW/MinGW/bin", true);
+//
+//    std::stringstream pathSS;
+//    pathSS << pathToolChain0 << ";" << pathToolChain1 << ";" << pathVar;
+//    Poco::Environment::set("PATH", pathSS.str());
+//#endif
 
-    virtual void processLine(const std::string& line);
+const std::string& BaseToolchain::getName() const
+{
+    return _name;
+}
 
-    static std::string getExecutable(const Project& project, Target target);
-    static std::string getExecutablePath(const Project& project, Target target);
 
-};
+const std::vector<std::string>& BaseToolchain::getTargets() const
+{
+    return _targets;
+}
+
+
+Poco::Task* BaseToolchain::newBuildTask(const Project& project,
+                                        const std::string& target) const
+{
+    return 0;
+}
+
+
+Poco::Task* BaseToolchain::newRunTask(const Project& project,
+                                      const std::string& target) const
+{
+    return 0;
+}
 
 
 } } // namespace of::Sketch
