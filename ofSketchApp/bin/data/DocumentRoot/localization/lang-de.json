@@ -6,7 +6,10 @@
 	"reference-link": "Referenz",
 	"forum-link": "Forum",
 	"ofxaddons-link": "ofxAddons",
-	"bug-report-link": "Fehler melden",
+	"bug-report-link": {
+		"text" : "Problem melden",
+		"title" : "Bug / Problem melden"
+	},
 	"upload-media": "Medien hochladen",
 	"close": "Schließen",
 	"save-changes": "Änderungen speichern",
@@ -35,5 +38,36 @@
 	"cancel-all": "Alle abbrechen",
 	"logger": "Logger",
 	"connection-error": "Verbindungsfehler",
-	"loading": "Lade ..."
+	"loading": "Lade ...",
+	"upload-files": "Datei(en) hochladen",
+	"include-addons": "Addons hinzufügen",
+	"save-project": "Projekt speichern",
+	"toolbar-run": {
+		"title": "Programm ausführen"
+	},
+	"toolbar-stop" : {
+		"title": "Programm beenden"
+	},
+	"toolbar-save" : {
+		"title": "Projekt speichern"
+	},
+	"toolbar-open-project" : {
+		"title": "Projekt öffnen"
+	},
+	"toolbar-create-project" : {
+		"title": "Neues Projekt"
+	},
+	"toolbar-upload-media" : {
+		"title": "Datei(en) hochladen"
+	},
+	"toolbar-addons" : {
+		"title": "Addons hinzufügen / entfernen"
+	},
+	"toolbar-settings" : {
+		"title": "Einstellungen"
+	},
+	"version-alert" : {
+		"title": "Versionswarnung"
+	},
+	"about-ofsketch" : "Über ofSketch"
 }
