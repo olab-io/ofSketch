@@ -27,7 +27,7 @@
 
 
 #include <string>
-#include <json/json.h>
+#include "json/json.h"
 #include "Poco/Pipe.h"
 #include "Poco/UUID.h"
 #include "Poco/Process.h"

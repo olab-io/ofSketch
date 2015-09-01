@@ -1,6 +1,6 @@
 // =============================================================================
 //
-// Copyright (c) 2013-2014 Christopher Baker <http://christopherbaker.net>
+// Copyright (c) 2013-2015 Christopher Baker <http://christopherbaker.net>
 // Copyright (c) 2014 Brannon Dorsey <http://brannondorsey.com>
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -28,7 +28,7 @@
 
 
 #include <string>
-#include <json/json.h>
+#include "json/json.h"
 #include "ofConstants.h"
 #include "ofUtils.h"
 #include "ofx/HTTP/WebSocketFrame.h"
