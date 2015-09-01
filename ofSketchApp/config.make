@@ -139,4 +139,4 @@
 #   Note: Leave a leading space when adding list items with the += operator
 ################################################################################
 # PROJECT_CXX = 
-PROJECT_CC = gcc 
+# PROJECT_CC = 

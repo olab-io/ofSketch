@@ -6,21 +6,17 @@
 	<string>English</string>
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
-	<key>CFBundleIconFile</key>
-	<string>${ICON}</string>
 	<key>CFBundleIdentifier</key>
-	<string>io.olab.ofsketch</string>
+	<string>cc.openFrameworks.ofapp</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
-	<key>CFBundleShortVersionString</key>
-	<string>${OF_SKETCH_VER}</string>
 	<key>CFBundleSignature</key>
-	<string>ofsk</string>
+	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>1.0</string>
-	<key>LSApplicationCategoryType</key>
-	<string>public.app-category.developer-tools</string>
+	<key>CFBundleIconFile</key>
+	<string>${ICON}</string>
 </dict>
 </plist>
