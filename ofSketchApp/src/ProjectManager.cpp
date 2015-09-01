@@ -25,6 +25,9 @@
 
 
 #include "ProjectManager.h"
+#include "ofx/IO/DirectoryFilter.h"
+#include "ofx/IO/RegexPathFilter.h"
+#include "ofx/IO/PathFilterCollection.h"
 
 
 namespace of {
@@ -36,6 +39,8 @@ ProjectManager::ProjectManager(Settings& settings):
 //    _templateProject(Poco::Path(_settings.getPathsRef().getTemplatesPath(),
 //                                Poco::Path::forDirectory("SimpleProject")).toString())
 {
+    cout << "CONSTRUCT " <<  _settings.paths().getProjectsPath().toString() << endl;
+
 }
 
 
@@ -46,23 +51,31 @@ ProjectManager::~ProjectManager()
     
 void ProjectManager::setup()
 {
-//    std::vector<std::string> files;
+    std::vector<std::string> files;
+
+    cout << _settings.paths().getProjectsPath().toString() << endl;
+
+    ofx::IO::DirectoryFilter _directoryFilter;
+    ofx::IO::RegexPathFilter _regexFilter("!(.*/addons/?)");
+    ofx::IO::PathFilterCollection _filter;
+    _filter.addFilter(&_directoryFilter);
+//    _filter.addFilter(&_regexFilter);
+
+    ofx::IO::DirectoryUtils::list(_settings.paths().getProjectsPath().toString(),
+                                  files,
+                                  true,
+                                  &_filter);
 //
-//    ofx::IO::DirectoryFilter filter;
-//
-//    ofx::IO::DirectoryUtils::list(_settings.getPaths().getProjectsPath().toString(),
-//                                  files,
-//                                  true,
-//                                  &filter);
-//
-//    std::vector<std::string>::iterator iter = files.begin();
-//
-//    while (iter != files.end())
-//    {
-//        ofLogVerbose("ProjectManager::ProjectManager") << *iter;
-//        _projects.push_back(Project(*iter));
-//        ++iter;
-//    }
+    std::vector<std::string>::iterator iter = files.begin();
+
+    cout << "found " << files.size() << endl;
+
+    while (iter != files.end())
+    {
+        ofLogNotice("ProjectManager::ProjectManager") << *iter;
+        //_projects.push_back(Project(*iter));
+        ++iter;
+    }
 }
 
 

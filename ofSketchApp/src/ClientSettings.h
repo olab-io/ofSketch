@@ -54,11 +54,11 @@ public:
 
     /// \brief Get the autosave frequency.
     /// \returns the autosave frequency in milliseconds.
-    unsigned long long getAutosaveFrequency() const;
+    uint64_t getAutosaveFrequency() const;
 
     /// \brief Set the autosave frequency.
     /// \param autosaveFrequency The autosave frequency in milliseconds.
-    void setAutosaveFrequency(unsigned long long autosaveFrequency);
+    void setAutosaveFrequency(uint64_t autosaveFrequency);
 
     /// \brief Get the ACE editor settings.
     /// \warning These settings are not validated on the server side.
@@ -80,11 +80,14 @@ public:
     static const std::string DEFAULT_EDITOR_SETTINGS;
 
 private:
-    bool _isAutosaveEnabled; ///< True if autosave is enabled.
+	/// \brief True if autosave is enabled.
+	bool _isAutosaveEnabled;
 
-    unsigned long long _autosaveFrequency; ///< Autosave frequency in milliseconds.
+	/// \brief Autosave frequency in milliseconds.
+	uint64_t _autosaveFrequency;
 
-    Json::Value _editorSettings; ///< The ACE editor settings as JSON.
+	/// \brief The ACE editor settings as JSON.
+	Json::Value _editorSettings;
     
 };
 

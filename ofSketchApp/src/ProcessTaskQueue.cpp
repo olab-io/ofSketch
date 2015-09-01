@@ -42,7 +42,7 @@ ProcessTaskQueue::~ProcessTaskQueue()
 }
 
 
-void ProcessTaskQueue::handleTaskCustomNotification(const Poco::UUID& taskID,
+void ProcessTaskQueue::handleTaskCustomNotification(const std::string& taskID,
                                                     TaskNotificationPtr pNotification)
 {
     Poco::AutoPtr<Poco::TaskCustomNotification<std::string> > dataTask = 0;

@@ -45,7 +45,7 @@ ServerSettings::ServerSettings():
 }
 
 
-ServerSettings::ServerSettings(unsigned short port,
+ServerSettings::ServerSettings(uint16_t port,
                                std::size_t webSocketBufferSize,
                                std::size_t maximumFileUploadSize,
                                const ofx::Net::IPAddressRange::List& whitelist,
@@ -67,7 +67,7 @@ std::size_t ServerSettings::getWebSocketBufferSize() const
 }
 
 
-unsigned short ServerSettings::getPort() const
+uint16_t ServerSettings::getPort() const
 {
     return _port;
 }

@@ -32,18 +32,23 @@ namespace Sketch {
 
 
 Paths::Paths():
-    _projectsPath(ofx::IO::PathUtils::getUserDocumentsPath(),
-                  Poco::Path::forDirectory("ofSketch"))
+	_projectsPath(Poco::Path::forDirectory(Poco::Path::home() + "/Documents/ofSketch"))
 {
 }
 
-    
+
+Paths::Paths(const Poco::Path& projectsPath):
+    _projectsPath(projectsPath)
+{
+}
+
+
 Paths::~Paths()
 {
 }
 
 
-Poco::Path Paths::getProjectsPath() const
+const Poco::Path& Paths::getProjectsPath() const
 {
     return _projectsPath;
 }
@@ -55,49 +60,49 @@ void Paths::setProjectsPath(const Poco::Path& projectsPath)
 }
 
 
-Poco::Path Paths::getOpenFrameworksPath() const
-{
-    return Poco::Path::forDirectory(ofToDataPath("openFrameworks", true));
-}
-
-
-Poco::Path Paths::getCoreAddonsPath() const
-{
-    return Poco::Path(getOpenFrameworksPath(), Poco::Path::forDirectory("addons"));
-}
-
-
-Poco::Path Paths::getResourcesPath() const
-{
-    return Poco::Path::forDirectory(ofToDataPath("Resources", true));
-}
-
-
-Poco::Path Paths::getTemplatesPath() const
-{
-    return Poco::Path::forDirectory(ofToDataPath("Templates", true));
-}
-
-
-Poco::Path Paths::getToolchainsPath() const
-{
-    return Poco::Path::forDirectory(ofToDataPath("Toolchains", true));
-}
-
-
-Poco::Path Paths::getExamplesPath() const
-{
-    return Poco::Path::forDirectory(ofToDataPath("Examples", true));
-}
-
-
-Poco::Path Paths::getAddonsPath() const
+Poco::Path Paths::addonsPath() const
 {
     return Poco::Path(_projectsPath, Poco::Path::forDirectory("addons"));
 }
 
 
-Poco::Path Paths::getSettingsPath()
+Poco::Path Paths::openFrameworksPath()
+{
+    return Poco::Path::forDirectory(ofToDataPath("openFrameworks", true));
+}
+
+
+Poco::Path Paths::coreAddonsPath()
+{
+    return Poco::Path(openFrameworksPath(), Poco::Path::forDirectory("addons"));
+}
+
+
+Poco::Path Paths::resourcesPath()
+{
+    return Poco::Path::forDirectory(ofToDataPath("Resources", true));
+}
+
+
+Poco::Path Paths::templatesPath()
+{
+    return Poco::Path::forDirectory(ofToDataPath("Templates", true));
+}
+
+
+Poco::Path Paths::toolchainsPath()
+{
+    return Poco::Path::forDirectory(ofToDataPath("Toolchains", true));
+}
+
+
+Poco::Path Paths::examplesPath()
+{
+    return Poco::Path::forDirectory(ofToDataPath("Examples", true));
+}
+
+
+Poco::Path Paths::settingsPath()
 {
     return Poco::Path(Poco::Path::home(),
                       Poco::Path::forDirectory(".config/ofSketch"));

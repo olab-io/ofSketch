@@ -67,7 +67,7 @@ ClientSettings::ClientSettings():
         std::stringstream ss;
         ss <<  "Unable to parse " << DEFAULT_EDITOR_SETTINGS;
         ss << ": " << reader.getFormattedErrorMessages();
-        ofLogError("ClientSettings::ClientSettings") << ss;
+        ofLogError("ClientSettings::ClientSettings") << ss.str();
     }
 }
 
@@ -89,13 +89,13 @@ void ClientSettings::setAutosaveEnabled(bool isAutosaveEnabled)
 }
 
     
-unsigned long long ClientSettings::getAutosaveFrequency() const
+uint64_t ClientSettings::getAutosaveFrequency() const
 {
     return _autosaveFrequency;
 }
 
 
-void ClientSettings::setAutosaveFrequency(unsigned long long autosaveFrequency)
+void ClientSettings::setAutosaveFrequency(uint64_t autosaveFrequency)
 {
     _autosaveFrequency = autosaveFrequency;
 }

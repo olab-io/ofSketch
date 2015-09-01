@@ -45,9 +45,14 @@ AddonManager::~AddonManager()
 
 void AddonManager::setup()
 {
-    Poco::File addonsDirectory(_settings.getPaths().getAddonsPath());
-    Poco::File coreAddonsDirectory(_settings.getPaths().getCoreAddonsPath());
+    Poco::File templatesDirectory(_settings.paths().templatesPath());
+    Poco::File projectsDirectory(_settings.paths().getProjectsPath());
+    Poco::File addonsDirectory(_settings.paths().addonsPath());
+    Poco::File coreAddonsDirectory(_settings.paths().coreAddonsPath());
 
+	// Here we copy all core addons to the user's project folder.
+	// In the future, core addons will be accessed directly from the
+	// resources folder.
     try
     {
         addonsDirectory.createDirectories();
@@ -64,7 +69,7 @@ void AddonManager::setup()
 
             std::string addonName = Poco::Path(addon.path()).getBaseName();
 
-            Poco::Path targetAddonPath(_settings.getPaths().getAddonsPath(),
+            Poco::Path targetAddonPath(_settings.paths().addonsPath(),
                                        Poco::Path::forDirectory(addonName));
 
             Poco::File targetAddon(targetAddonPath);
@@ -85,7 +90,7 @@ void AddonManager::setup()
         ofLogFatalError("AddonManager::setup") << "Unable to create projects directory: " << exc.displayText();
     }
 
-    _addonWatcher.addPath(_settings.getPaths().getAddonsPath(),
+    _addonWatcher.addPath(_settings.paths().addonsPath(),
                           true,
                           true,
                           &_directoryFilter);

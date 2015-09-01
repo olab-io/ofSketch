@@ -40,7 +40,7 @@ namespace Sketch {
 class ProcessTaskQueue: public ofx::TaskQueue
 {
 public:
-    typedef ofx::TaskDataEventArgs_<Poco::UUID, std::string> EventArgs;
+    typedef ofx::TaskDataEventArgs_<std::string, std::string> EventArgs;
 
     ProcessTaskQueue(int maximumTasks, Poco::ThreadPool& threadPool);
 
@@ -55,7 +55,7 @@ public:
     void unregisterAllEvents(ListenerClass* listener);
 
 protected:
-    virtual void handleTaskCustomNotification(const Poco::UUID& taskID,
+    virtual void handleTaskCustomNotification(const std::string& taskID,
                                               TaskNotificationPtr pNotification);
 
 };

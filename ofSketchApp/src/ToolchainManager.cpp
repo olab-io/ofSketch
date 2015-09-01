@@ -44,36 +44,33 @@ ToolchainManager::~ToolchainManager()
 
 void ToolchainManager::setup()
 {
-    Poco::Path toolchainPath = _settings.getPaths().getToolchainsPath();
+	// Currently this method simply lists the contents of the Toolchain
+	// directory and does little more.  Future versions may allow the
+	// possibility of choosing from various toolchains using the
+	// ToolChainManager.
+	Poco::Path toolchainPath = _settings.paths().toolchainsPath();
 
     try
     {
-        std::vector<Poco::File> files;
+		std::vector<Poco::File> files;
 
         DirectoryUtils::list(toolchainPath, files, true, &_directoryFilter);
 
-        std::vector<Poco::File>::iterator iter = files.begin();
-
-        while (iter != files.end())
-        {
-            const Poco::File& toolchain = *iter;
-
-            std::string toolchainName = Poco::Path(toolchain.path()).getBaseName();
-
-            ofLogNotice("ToolchainManager::setup") << "Loading Toolchain: " << toolchainName;
-
-            ++iter;
-        }
-
+		for (const auto& toolchain: files)
+		{
+			std::string toolchainName = Poco::Path(toolchain.path()).getBaseName();
+			ofLogVerbose("ToolchainManager::setup") << "Loading Toolchain: " << toolchainName;
+		}
     }
     catch (const Poco::Exception& exc)
     {
         ofLogFatalError("ToolchainManager::setup") << exc.displayText();
     }
 
-
     /// \todo More sophisticated toolchain selection from the filesystem.
-    _toolchains["default"] = std::shared_ptr<BaseToolchain>(new MakeToolchain("default"));
+	/// for now, all building is done with the default system makefile.
+    _toolchains["default"] = std::make_shared<MakeToolchain>("default");
+
 }
 
 

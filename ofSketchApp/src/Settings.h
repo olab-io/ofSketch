@@ -55,13 +55,14 @@ public:
 //    void setup();
 //    void save();
 
-    const Paths& getPaths() const;
-    const ClientSettings& getClientSettings() const;
-    const ServerSettings& getServerSettings() const;
+	Paths& paths();
+    const Paths& paths() const;
 
-    Paths& getPathsRef();
-    ClientSettings& getClientSettingsRef();
-    ServerSettings& getServerSettingsRef();
+	ClientSettings& clientSettings();
+	const ClientSettings& clientSettings() const;
+
+	ServerSettings& serverSettings();
+	const ServerSettings& serverSettings() const;
 
 protected:
     Paths _paths;

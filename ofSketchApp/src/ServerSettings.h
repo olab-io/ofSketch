@@ -48,7 +48,7 @@ public:
     /// \param whitelist A list of IP addresses that can connect to the server.
     /// \param useSSL True if the server should use SSL encryption.
     /// \param sslSettings The SSL encryption settings.
-    ServerSettings(unsigned short port,
+    ServerSettings(uint16_t port,
                    std::size_t webSocketBufferSize,
                    std::size_t maximumFileUploadSize,
                    const ofx::Net::IPAddressRange::List& whitelist,
@@ -56,7 +56,7 @@ public:
                    const SSLSettings& sslSettings);
 
     /// \returns The server port.
-    unsigned short getPort() const;
+    uint16_t getPort() const;
 
     /// \returns The WebSocket buffer size in bytes.
     std::size_t getWebSocketBufferSize() const;
@@ -91,7 +91,7 @@ public:
 
 private:
     /// \brief The server port. 0 indicates use any.
-    unsigned short _port;
+    uint16_t _port;
 
     /// \brief WebSocket buffer size in bytes.
     std::size_t _webSocketBufferSize;

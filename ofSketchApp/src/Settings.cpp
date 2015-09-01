@@ -134,37 +134,37 @@ Settings::Settings(const Paths& paths,
 //}
 
 
-const Paths& Settings::getPaths() const
+Paths& Settings::paths()
+{
+	return _paths;
+}
+
+	
+const Paths& Settings::paths() const
 {
     return _paths;
 }
 
 
-const ClientSettings& Settings::getClientSettings() const
+ClientSettings& Settings::clientSettings()
+{
+	return _clientSettings;
+}
+
+	
+const ClientSettings& Settings::clientSettings() const
 {
     return _clientSettings;
 }
 
 
-const ServerSettings& Settings::getServerSettings() const
+ServerSettings& Settings::serverSettings()
 {
-    return _serverSettings;
+	return _serverSettings;
 }
 
-
-Paths& Settings::getPathsRef()
-{
-    return _paths;
-}
-
-
-ClientSettings& Settings::getClientSettingsRef()
-{
-    return _clientSettings;
-}
-
-
-ServerSettings& Settings::getServerSettingsRef()
+	
+const ServerSettings& Settings::serverSettings() const
 {
     return _serverSettings;
 }

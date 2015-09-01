@@ -33,65 +33,65 @@ namespace of {
 namespace Sketch {
 
 
-WebSocketLoggerChannel::WebSocketLoggerChannel()
-{
-}
-
-
-WebSocketLoggerChannel::~WebSocketLoggerChannel()
-{
-}
-
-
-void WebSocketLoggerChannel::log(ofLogLevel level,
-                                 const std::string& module,
-                                 const std::string& message)
-{
-    ofConsoleLoggerChannel::log(level, module, message);
-
-    ofx::HTTP::WebSocketRoute::SharedPtr route = _webSocketRoute.lock();
-
-    if (route)
-    {
-        Json::Value params;
-        params["level"] = level;
-        params["module"] = module;
-        params["message"] = message;
-
-        Json::Value json = SketchUtils::toJSONMethod("Logger",
-                                                     "message",
-                                                     params);
-
-        ofx::HTTP::WebSocketFrame frame(Serializer::toString(json));
-
-        route->broadcast(frame);
-    }
-}
-
-void WebSocketLoggerChannel::log(ofLogLevel level,
-                                 const std::string& module,
-                                 const char* format, ...)
-{
-    va_list args;
-    va_start(args, format);
-    log(level, module, format, args);
-    va_end(args);
-}
-
-void WebSocketLoggerChannel::log(ofLogLevel level,
-                                 const std::string& module,
-                                 const char* format,
-                                 va_list args)
-{
-    ofConsoleLoggerChannel::log(level, module, format, args);
-    std::cerr << "WebSocketLoggerChannel::log Message was not passed to WebSocket." << std::endl;
-}
-
-
-void WebSocketLoggerChannel::setWebSocketRoute(ofx::HTTP::WebSocketRoute::SharedPtr webSocketRoute)
-{
-    _webSocketRoute = webSocketRoute;
-}
+//WebSocketLoggerChannel::WebSocketLoggerChannel()
+//{
+//}
+//
+//
+//WebSocketLoggerChannel::~WebSocketLoggerChannel()
+//{
+//}
+//
+//
+//void WebSocketLoggerChannel::log(ofLogLevel level,
+//                                 const std::string& module,
+//                                 const std::string& message)
+//{
+//    ofConsoleLoggerChannel::log(level, module, message);
+//
+//    ofx::HTTP::WebSocketRoute::SharedPtr route = _webSocketRoute.lock();
+//
+//    if (route)
+//    {
+//        Json::Value params;
+//        params["level"] = level;
+//        params["module"] = module;
+//        params["message"] = message;
+//
+//        Json::Value json = SketchUtils::toJSONMethod("Logger",
+//                                                     "message",
+//                                                     params);
+//
+//        ofx::HTTP::WebSocketFrame frame(Serializer::toString(json));
+//
+//        route->broadcast(frame);
+//    }
+//}
+//
+//void WebSocketLoggerChannel::log(ofLogLevel level,
+//                                 const std::string& module,
+//                                 const char* format, ...)
+//{
+//    va_list args;
+//    va_start(args, format);
+//    log(level, module, format, args);
+//    va_end(args);
+//}
+//
+//void WebSocketLoggerChannel::log(ofLogLevel level,
+//                                 const std::string& module,
+//                                 const char* format,
+//                                 va_list args)
+//{
+//    ofConsoleLoggerChannel::log(level, module, format, args);
+//    std::cerr << "WebSocketLoggerChannel::log Message was not passed to WebSocket." << std::endl;
+//}
+//
+//
+//void WebSocketLoggerChannel::setWebSocketRoute(ofx::HTTP::WebSocketRoute::SharedPtr webSocketRoute)
+//{
+//    _webSocketRoute = webSocketRoute;
+//}
 
 
 } } // namespace of::Sketch

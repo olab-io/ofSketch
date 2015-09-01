@@ -121,23 +121,18 @@ public:
 
     bool onTaskData(const ProcessTaskQueue::EventArgs& args);
 
-    ofx::HTTP::BasicJSONRPCServer::SharedPtr getServer()
-    {
-        return server;
-    }
-
 private:
-    ofx::HTTP::BasicJSONRPCServer::SharedPtr server;
+	std::shared_ptr<ofx::HTTP::JSONRPCServer> _server;
 
     Settings _settings;
 
     Poco::ThreadPool _threadPool;
     ProcessTaskQueue _taskQueue;
-    Compiler _compiler;
+//    Compiler _compiler;
     ToolchainManager _toolchainManager;
     AddonManager _addonManager;
     ProjectManager _projectManager;
-    UploadRouter _uploadRouter;
+//    UploadRouter _uploadRouter;
 
     bool _missingDependencies;
 

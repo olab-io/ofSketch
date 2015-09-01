@@ -53,12 +53,12 @@ bool UploadRouter::onHTTPFormEvent(ofx::HTTP::PostFormEventArgs& args)
     const Poco::Net::NameValueCollection& form = args.getForm();
     std::string projectName = form["projectName"];
 
-    UploadRouter::UploadedFile uploadedFile = _uploadedFiles[args.getPostId().toString()];
+    UploadRouter::UploadedFile uploadedFile = _uploadedFiles[args.getPostId()];
     ofFile tempFile(uploadedFile.tempFilename);
 
-    ofLogNotice("UploadRouter::onHTTPFormEvent") << "Project path" << _settings.getPaths().getProjectsPath().toString() << "/" << projectName;
+    ofLogNotice("UploadRouter::onHTTPFormEvent") << "Project path" << _settings.paths().getProjectsPath().toString() << "/" << projectName;
 
-    ofDirectory project(_settings.getPaths().getProjectsPath().toString() + "/" + projectName);
+    ofDirectory project(_settings.paths().getProjectsPath().toString() + "/" + projectName);
 
     Json::Value result;
 
@@ -85,7 +85,7 @@ bool UploadRouter::onHTTPFormEvent(ofx::HTTP::PostFormEventArgs& args)
 
     Json::FastWriter writer;
     std::string jsonString = writer.write(result);
-    args.response.sendBuffer(jsonString.c_str(), jsonString.size());
+    args.getResponse().sendBuffer(jsonString.c_str(), jsonString.size());
 
     return true;
 }
@@ -117,9 +117,9 @@ bool UploadRouter::onHTTPUploadEvent(ofx::HTTP::PostUploadEventArgs& args)
         file.type = args.getFileType().toString();
         file.size = args.getNumBytesTransferred();
 
-        _uploadedFiles[args.getPostId().toString()] = file;
+        _uploadedFiles[args.getPostId()] = file;
 
-        ofLogNotice("UploadManager::onHTTPUploadEvent") << "Post ID: " << args.getPostId().toString() << endl;
+        ofLogNotice("UploadManager::onHTTPUploadEvent") << "Post ID: " << args.getPostId() << endl;
         ofLogNotice("UploadManager::onHTTPUploadEvent") << "FINISHED";
         ofLogNotice("UploadManager::onHTTPUploadEvent") << "";
         ofLogNotice("UploadManager::onHTTPUploadEvent") << "         state: " << stateString;

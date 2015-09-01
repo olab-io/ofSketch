@@ -104,8 +104,7 @@ Settings Serializer::loadSettings()
     Settings defaults;
     Json::Value settingsJSON;
 
-    if (fromFile(Poco::Path(Paths::getSettingsPath(), "Settings.json").toString(),
-                 settingsJSON))
+    if (fromFile(Poco::Path(Paths::settingsPath(), "Settings.json").toString(), settingsJSON))
     {
         fromJSON(settingsJSON, defaults);
     }
@@ -116,13 +115,12 @@ Settings Serializer::loadSettings()
 
 bool Serializer::saveSettings(const Settings& settings)
 {
-    Poco::File settingsFolder(Paths::getSettingsPath());
+    Poco::File settingsFolder(Paths::settingsPath());
 
     // If the settings folder does not exist, create it.
     settingsFolder.createDirectories();
 
-    return toFile(Poco::Path(Paths::getSettingsPath(), "Settings.json").toString(),
-                  toJSON(settings));
+    return toFile(Poco::Path(Paths::settingsPath(), "Settings.json").toString(), toJSON(settings));
 }
 
 
@@ -156,9 +154,9 @@ bool Serializer::fromJSON(const Json::Value& json, Settings& object)
 Json::Value Serializer::toJSON(const Settings& object)
 {
     Json::Value json;
-    json["paths"] = toJSON(object.getPaths());
-    json["client"] = toJSON(object.getServerSettings());
-    json["server"] = toJSON(object.getClientSettings());
+    json["paths"] = toJSON(object.paths());
+    json["client"] = toJSON(object.serverSettings());
+    json["server"] = toJSON(object.clientSettings());
     return json;
 }
 

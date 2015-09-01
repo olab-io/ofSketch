@@ -42,6 +42,11 @@ namespace of {
 namespace Sketch {
 
 
+using ofx::DirectoryWatcher;
+using ofx::IO::DirectoryUtils;
+using ofx::IO::DirectoryWatcherManager;
+
+
 class ProjectManager
 {
 public:
