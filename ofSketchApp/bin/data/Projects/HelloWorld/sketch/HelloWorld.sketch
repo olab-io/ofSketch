@@ -1,5 +1,0 @@
-
-void setup() {
-    std::string s;
-    s.substring(0);
-}
