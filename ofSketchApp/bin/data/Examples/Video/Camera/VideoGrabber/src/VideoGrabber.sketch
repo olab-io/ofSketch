@@ -1,0 +1,25 @@
+ofVideoGrabber grabber; // Declare the video grabber object.
+
+void setup() {
+    ofSetWindowShape(1280, 720);  // Set the window shape.
+	grabber.initGrabber(1280, 720); // Iniitialize the video grabber with a size.
+}
+
+void update() {
+    grabber.update(); // Updating the video player allows it to download any new frames from the camera.
+}
+
+void draw() {
+    if (ofGetKeyPressed('f'))
+    {
+        ofPushMatrix();
+        ofTranslate(grabber.getWidth(), 0); // We shift it over to the right before we scale it.
+        ofScale(-1, 1, 1);
+        grabber.draw(0, 0);  // Underneath, the video grabber has a similar interface to ofImage, etc, so you can just draw it.
+        ofPopMatrix();
+    }
+    else
+    {
+        grabber.draw(0, 0);  // Underneath, the video grabber has a similar interface to ofImage, etc, so you can just draw it.
+    }
+}
