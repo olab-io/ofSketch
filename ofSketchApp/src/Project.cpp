@@ -26,17 +26,27 @@
 
 #include "Project.h"
 #include "ofUtils.h"
+#include "Poco/File.h"
+#include "ofx/IO/DirectoryUtils.h"
+
+//#include "ofx/IO/DirectoryFilter.h"
+//#include "ofx/IO/DirectoryWatcherManager.h"
+
 
 
 namespace of {
 namespace Sketch {
 
 
-//const std::string Project::SKETCH_FILE_EXTENSION = "sketch";
-
-
-Project::Project(const std::string& path) //: _path(path), _isLoaded(false), _readOnly(false)
+Project::Project(const std::string& path):
+	_path(path),
+	_name(_path.getBaseName()),
+	_isLoaded(false),
+	_readOnly(false)
 {
+
+	cout << "the >" <<  _name  << " project was loaded from " << _path.toString() << endl;
+
     // this is not efficient at all! I am just keeping these FileTemplate loads in the project
     // constructor because it makes the most sense architecure wise.
     // _classFileTemplate = ofBufferFromFile(ofToDataPath("Resources/Templates/SketchTemplates/class.tmpl")).getText();
@@ -44,6 +54,8 @@ Project::Project(const std::string& path) //: _path(path), _isLoaded(false), _re
     // std::cout << _classFileTemplate << std::endl;
 
     // load(_path, getName());
+
+	load();
 }
 
 
@@ -52,64 +64,153 @@ Project::~Project()
 }
 
 
-const std::string& Project::getName() const
+const std::string& Project::name() const
 {
     return _name;
 }
 
 
-const Poco::Path& Project::getPath() const
+const Poco::Path& Project::path() const
 {
     return _path;
 }
 
-   
-//void Project::load(const std::string& path, const std::string& name)
-//{
-//    _sketchDir = ofDirectory(ofToDataPath(path + "/sketch"));
+
+Poco::Path Project::sketchPath() const
+{
+	return Poco::Path::forDirectory(path().toString() + "/sketch/" );
+}
+
+
+bool Project::isLoaded() const
+{
+    return _isLoaded;
+}
+
+
+void Project::load()
+{
+	// Load addons from addons.make.
+	_addons = parseAddonsMake(path().toString());
+	
+	Poco::File _sketchDir(sketchPath());
+
+	if (_sketchDir.exists())
+	{
+		std::vector<Poco::File> files;
+
+		ofx::IO::DirectoryUtils::list(_sketchDir.path(),
+									  files,
+									  true,
+									  &_projectFileFilter);
+
+		for (Poco::File& file: files)
+		{
+			_sourceFiles.emplace_back(SourceFile(*this, file.path()));
+
+			cout << "FILE : " << _sourceFiles.back().project().name() << " : " << _sourceFiles.back().getContents() << std::endl;
+
+//			if (file.getBaseName() == name)
+//			{
+//				file.open(file.getAbsolutePath());
+//				_data["projectFile"]["name"] = file.getBaseName();
+//				_data["projectFile"]["fileName"] = file.getFileName();
+//				_data["projectFile"]["fileContents"] = file.readToBuffer().getText();
+//			}
+//			else if (file.getExtension() == SKETCH_FILE_EXTENSION)
+//			{
+//				file.open(file.getAbsolutePath());
+//				_data["classes"][classCounter]["name"] = file.getBaseName();
+//				_data["classes"][classCounter]["fileName"] = file.getFileName();
+//				_data["classes"][classCounter]["fileContents"] = file.readToBuffer().getText();
+//				classCounter++;
+//			}
+		}
+
+//		_loadAddons();
+		_isLoaded = true;
+	}
+	else
+	{
+		ofLogError("Project::load()") << "No Sketch Path found for " << _sketchDir.path();
+	}
+
+
+
+
 //
-//    _data.clear();
-//
-//    if (_sketchDir.exists()) 
-//    {
-//        _sketchDir.listDir();
-//
-//        std::vector<ofFile> files = _sketchDir.getFiles();
-//
-//        int classCounter = 0;
-//
-//        for (std::size_t i = 0; i < files.size(); ++i) 
-//        {
-//            ofFile file = files[i];
-//
-//            if (file.getBaseName() == name)
-//            {
-//                file.open(file.getAbsolutePath());
-//                _data["projectFile"]["name"] = file.getBaseName();
-//                _data["projectFile"]["fileName"] = file.getFileName();
-//                _data["projectFile"]["fileContents"] = file.readToBuffer().getText();
-//            } 
-//            else if (file.getExtension() == SKETCH_FILE_EXTENSION)
-//            {
-//                file.open(file.getAbsolutePath());
-//                _data["classes"][classCounter]["name"] = file.getBaseName();
-//                _data["classes"][classCounter]["fileName"] = file.getFileName();
-//                _data["classes"][classCounter]["fileContents"] = file.readToBuffer().getText();
-//                classCounter++;
-//            }
-//        }
-//
-//        _loadAddons();
-//        _isLoaded = true;
-//    }
-//}
-//
-//
-//bool Project::isLoaded() const
-//{
-//    return _isLoaded;
-//}
-//
+//	    _sketchDir = ofDirectory(ofToDataPath(path + "/sketch"));
+//	
+//	    _data.clear();
+//	
+//	    if (_sketchDir.exists())
+//	    {
+//	        _sketchDir.listDir();
+//	
+//	        std::vector<ofFile> files = _sketchDir.getFiles();
+//	
+//	        int classCounter = 0;
+//	
+//	        for (std::size_t i = 0; i < files.size(); ++i)
+//	        {
+//	            ofFile file = files[i];
+//	
+//	            if (file.getBaseName() == name)
+//	            {
+//	                file.open(file.getAbsolutePath());
+//	                _data["projectFile"]["name"] = file.getBaseName();
+//	                _data["projectFile"]["fileName"] = file.getFileName();
+//	                _data["projectFile"]["fileContents"] = file.readToBuffer().getText();
+//	            }
+//	            else if (file.getExtension() == SKETCH_FILE_EXTENSION)
+//	            {
+//	                file.open(file.getAbsolutePath());
+//	                _data["classes"][classCounter]["name"] = file.getBaseName();
+//	                _data["classes"][classCounter]["fileName"] = file.getFileName();
+//	                _data["classes"][classCounter]["fileContents"] = file.readToBuffer().getText();
+//	                classCounter++;
+//	            }
+//	        }
+//	
+//	        _loadAddons();
+//	        _isLoaded = true;
+//	    }
+
+
+}
+
+
+std::vector<std::string> Project::parseAddonsMake(const std::string& projectPath)
+{
+	std::vector<std::string> addons;
+
+	ofFile addonsMakeFile(ofFilePath::join(projectPath, "addons.make"));
+
+	ofBuffer addonsMakeBuffer;
+
+	addonsMakeFile >> addonsMakeBuffer;
+
+	for (auto line: addonsMakeBuffer.getLines())
+	{
+		std::string addon = ofTrim(line);
+
+		if (!addon.empty() && addon[0] != '#')
+		{
+			addons.push_back(addon);
+		}
+		else
+		{
+			continue;
+		}
+	}
+
+	return addons;
+}
+
+
+
+
+
 //
 //void Project::save(const Json::Value& data)
 //{
@@ -429,17 +530,18 @@ const Poco::Path& Project::getPath() const
 //    }
 //}
 //
-//void Project::_saveAddons()
-//{
+
+void Project::_saveAddons()
+{
 //    ofBuffer buffer(ofJoinString(_addons, "\n"));
 //    ofBufferToFile(_path + "/addons.make", buffer);
-//}
-//
-//void Project::_saveFile(const Json::Value& fileData)
-//{
+}
+
+void Project::_saveFile(const Json::Value& fileData)
+{
 //    ofBuffer fileBuffer(fileData["fileContents"].asString());
 //    ofBufferToFile(getPath() + "/sketch/" + fileData["fileName"].asString(), fileBuffer);
-//}
+}
 
 
 } } // namespace of::Sketch

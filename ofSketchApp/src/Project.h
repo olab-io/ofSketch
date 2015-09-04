@@ -32,31 +32,50 @@
 #include "Poco/Path.h"
 #include "Poco/RegularExpression.h"
 #include "Poco/URI.h"
+#include "ofx/IO/FileExtensionFilter.h"
 #include "ofTypes.h"
 #include "ofFileUtils.h"
+#include "FileFilters.h"
+#include "SourceFile.h"
 
 
 namespace of {
 namespace Sketch {
 
 
+/// \brief A Project represents an ofSketch Project.
+///
+/// ofSketch projects are constructed by examining the user's Projects folder.
+///
+/// Projects remain "unloaded" until explicitly loaded.
 class Project
 {
 public:
-    Project(const std::string& path);
+	struct File;
 
-    virtual ~Project();
+	/// \brief Create a Project using the Project's absolute path.
+	Project(const std::string& path);
 
-    /// \brief Get the name of the project.
-    /// \returns the name of the project.
-    const std::string& getName() const;
+	/// \brief Destroy the Project.
+    ~Project();
 
-    /// \brief Get the absolute path of the project.
-    /// \returns the absolute path of the project.
-    const Poco::Path& getPath() const;
+    /// \brief Get the absolute path of the Project.
+    /// \returns the absolute path of the Project.
+    const Poco::Path& path() const;
 
+	Poco::Path sketchPath() const;
 
-//    bool isLoaded() const;
+	/// \brief Get the name of the Project.
+	/// \returns the name of the Project.
+	const std::string& name() const;
+
+	/// \brief Determine if the Project is loaded.
+	/// \returns true iff the Project is loaded.
+	bool isLoaded() const;
+
+	/// \brief Load the Project from the Project path.
+	void load();
+
 //    bool hasClasses() const;
 //    bool hasAddons() const;
 //    bool usingAddon(std::string& addon) const;
@@ -86,29 +105,44 @@ public:
 //
 //    const Json::Value& getData() const;
 //
-//    static const std::string SKETCH_FILE_EXTENSION;
+
+
+
+	static std::vector<std::string> parseAddonsMake(const std::string& projectPath);
 
 private:
-    std::string _name; ///< The project name.
+	/// \brief The absolute path of the project.
+	Poco::Path _path;
 
-    Poco::Path _path; ///< The absolute path of the project.
+	/// \brief The project's name.
+    std::string _name;
+
+	/// \brief True if the project is loaded.
+	bool _isLoaded;
+
+	/// \brief True if the project is read-only.
+	bool _readOnly;
+
+	/// \brief A collection of addon names.
+	std::vector<std::string> _addons;
+
+	of::Sketch::ProjectFileFilter _projectFileFilter;
+
+	std::vector<SourceFile> _sourceFiles;
 
 
 //    Settings& _settings;
 //
-//    bool _readOnly;
 //
-//    std::string _path;
 //    std::string _classFileTemplate;
-//    std::vector<std::string> _addons;
-//    ofDirectory _sketchDir;
 //
-//    bool _isLoaded;
 //    Json::Value _data;
 //
-//    void _saveFile(const Json::Value& fileData);
-//    void _loadAddons();
-//    void _saveAddons();
+
+	void _loadAddons();
+
+	void _saveAddons();
+    void _saveFile(const Json::Value& fileData);
 
 };
 
