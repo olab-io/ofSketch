@@ -31,20 +31,19 @@
 #include <string>
 #include "json/json.h"
 #include "ofx/IO/DirectoryUtils.h"
+#include "ofx/IO/DirectoryFilter.h"
 #include "ofx/IO/DirectoryWatcherManager.h"
+#include "ofx/IO/PathFilterCollection.h"
+#include "ofx/IO/RegexPathFilter.h"
 #include "ofx/JSONRPC/MethodArgs.h"
 #include "ofx/JSONRPC/JSONRPCUtils.h"
 #include "Project.h"
 #include "Settings.h"
+#include "FileFilters.h"
 
 
 namespace of {
 namespace Sketch {
-
-
-using ofx::DirectoryWatcher;
-using ofx::IO::DirectoryUtils;
-using ofx::IO::DirectoryWatcherManager;
 
 
 class ProjectManager
@@ -55,13 +54,6 @@ public:
     virtual ~ProjectManager();
 
     void setup();
-
-
-    
-
-
-
-
 
 //    const std::vector<Project>& getProjects() const;
 
@@ -83,9 +75,20 @@ public:
 //    const Project& getProject(const std::string& projectName) const;
 //    Project& getProjectRef(const std::string& projectName);
 
+	void onDirectoryWatcherItemAdded(const ofx::DirectoryWatcher::DirectoryEvent& evt);
+	void onDirectoryWatcherItemRemoved(const ofx::DirectoryWatcher::DirectoryEvent& evt);
+	void onDirectoryWatcherItemModified(const ofx::DirectoryWatcher::DirectoryEvent& evt);
+	void onDirectoryWatcherItemMovedFrom(const ofx::DirectoryWatcher::DirectoryEvent& evt);
+	void onDirectoryWatcherItemMovedTo(const ofx::DirectoryWatcher::DirectoryEvent& evt);
+	void onDirectoryWatcherError(const Poco::Exception& exc);
+
 
 private:
     Settings& _settings;
+
+	ofx::IO::DirectoryWatcherManager _projectWatcher;
+
+	ProjectFilter _projectFilter;
 
 //    std::vector<Project> _examples;
 

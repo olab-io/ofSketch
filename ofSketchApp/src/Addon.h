@@ -59,39 +59,44 @@ public:
     virtual ~Addon();
 
     /// \returns the absolute path to the addon.
-    const Poco::Path& getPath() const;
+    const Poco::Path& path() const;
 
     /// \returns the name of the addon.
-    const std::string& getName() const;
+    const std::string& name() const;
 
     /// \returns the description of the addon.
-    const std::string& getDesription() const;
+    const std::string& desription() const;
 
     /// \returns the author of the addon.
-    const std::string& getAuthor() const;
+    const std::string& author() const;
 
     /// \returns the tags of the addon.
-    const std::vector<std::string> getTags() const;
+    const std::vector<std::string> tags() const;
 
     /// \returns the URL of the addon.
-    const std::string& getURL() const;
+    const std::string& url() const;
 
 //    /// \returns true iff this is a core addon.
 //    bool isCoreAddon() const;
 
 private:
-    Poco::Path _path; ///< The absolute path to the addon.
+	/// \brief The absolute path to the Addon.
+    Poco::Path _path;
 
-    std::string _name; ///< The name of the addon.
+	/// \brief The name of the Addon.
+    std::string _name;
 
-    std::string _description; ///< An addon description.
+	/// \brief An Addon description.
+	std::string _description;
 
-    std::string _author; ///< The addon author.
+	/// \brief The Addon author.
+    std::string _author;
 
-    std::vector<std::string> _tags; ///< The addon tags.
+	/// \brief The Addon tags.
+    std::vector<std::string> _tags;
 
-    std::string _URL; ///< The addon URL.
-
+	/// \brief The Addon URL.
+    std::string _url;
 
 };
 

@@ -1,6 +1,6 @@
 // =============================================================================
 //
-// Copyright (c) 2013-2015 Christopher Baker <http://christopherbaker.net>
+// Copyright (c) 2013-2015_ Christopher Baker <http://christopherbaker.net>
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -40,13 +40,13 @@ Addon::Addon(const Poco::Path& path,
              const std::string& description,
              const std::string& author,
              const std::vector<std::string> tags,
-             const std::string& URL):
+             const std::string& url):
     _path(path),
     _name(name),
     _description(description),
     _author(author),
     _tags(tags),
-    _URL(URL)
+    _url(url)
 {
 }
 
@@ -56,39 +56,39 @@ Addon::~Addon()
 }
 
 
-const Poco::Path& Addon::getPath() const
+const Poco::Path& Addon::path() const
 {
     return _path;
 }
 
 
-const std::string& Addon::getName() const
+const std::string& Addon::name() const
 {
     return _name;
 }
 
 
-const std::string& Addon::getDesription() const
+const std::string& Addon::desription() const
 {
     return _description;
 }
 
 
-const std::string& Addon::getAuthor() const
+const std::string& Addon::author() const
 {
     return _author;
 }
 
 
-const std::vector<std::string> Addon::getTags() const
+const std::vector<std::string> Addon::tags() const
 {
     return _tags;
 }
 
 
-const std::string& Addon::getURL() const
+const std::string& Addon::url() const
 {
-    return _URL;
+    return _url;
 }
 
 

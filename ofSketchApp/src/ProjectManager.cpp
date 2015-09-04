@@ -25,9 +25,6 @@
 
 
 #include "ProjectManager.h"
-#include "ofx/IO/DirectoryFilter.h"
-#include "ofx/IO/RegexPathFilter.h"
-#include "ofx/IO/PathFilterCollection.h"
 
 
 namespace of {
@@ -35,47 +32,27 @@ namespace Sketch {
 
 
 ProjectManager::ProjectManager(Settings& settings):
-    _settings(settings)//,
+    _settings(settings)
 //    _templateProject(Poco::Path(_settings.getPathsRef().getTemplatesPath(),
 //                                Poco::Path::forDirectory("SimpleProject")).toString())
 {
-    cout << "CONSTRUCT " <<  _settings.paths().getProjectsPath().toString() << endl;
 
+	_projectWatcher.registerAllEvents(this);
 }
 
 
 ProjectManager::~ProjectManager()
 {
+	_projectWatcher.unregisterAllEvents(this);
 }
 
     
 void ProjectManager::setup()
 {
-    std::vector<std::string> files;
-
-    cout << _settings.paths().getProjectsPath().toString() << endl;
-
-    ofx::IO::DirectoryFilter _directoryFilter;
-    ofx::IO::RegexPathFilter _regexFilter("!(.*/addons/?)");
-    ofx::IO::PathFilterCollection _filter;
-    _filter.addFilter(&_directoryFilter);
-//    _filter.addFilter(&_regexFilter);
-
-    ofx::IO::DirectoryUtils::list(_settings.paths().getProjectsPath().toString(),
-                                  files,
-                                  true,
-                                  &_filter);
-//
-    std::vector<std::string>::iterator iter = files.begin();
-
-    cout << "found " << files.size() << endl;
-
-    while (iter != files.end())
-    {
-        ofLogNotice("ProjectManager::ProjectManager") << *iter;
-        //_projects.push_back(Project(*iter));
-        ++iter;
-    }
+	_projectWatcher.addPath(_settings.paths().getProjectsPath().toString(),
+							true,
+							true,
+							&_projectFilter);
 }
 
 
@@ -333,6 +310,51 @@ void ProjectManager::setup()
 //
 //    return false;
 //}
+
+
+void ProjectManager::onDirectoryWatcherItemAdded(const ofx::DirectoryWatcher::DirectoryEvent& evt)
+{
+	ofLogNotice("ProjectManager::onDirectoryWatcherItemAdded") << evt.event << " " << evt.item.path();
+
+	Project project(evt.item.path());
+
+}
+
+
+void ProjectManager::onDirectoryWatcherItemRemoved(const ofx::DirectoryWatcher::DirectoryEvent& evt)
+{
+	ofLogNotice("ProjectManager::onDirectoryWatcherItemRemoved") << evt.event << " " << evt.item.path();
+
+	Poco::Path path(evt.item.path());
+
+	std::string name = path.getBaseName();
+
+}
+
+
+void ProjectManager::onDirectoryWatcherItemModified(const ofx::DirectoryWatcher::DirectoryEvent& evt)
+{
+	ofLogNotice("ProjectManager::onDirectoryWatcherItemModified") << evt.event << " " << evt.item.path();
+}
+
+
+void ProjectManager::onDirectoryWatcherItemMovedFrom(const ofx::DirectoryWatcher::DirectoryEvent& evt)
+{
+	ofLogNotice("ProjectManager::onDirectoryWatcherItemMovedFrom") << evt.event << " " << evt.item.path();
+}
+
+
+void ProjectManager::onDirectoryWatcherItemMovedTo(const ofx::DirectoryWatcher::DirectoryEvent& evt)
+{
+	ofLogNotice("ProjectManager::onDirectoryWatcherItemMovedTo") << evt.event << " " << evt.item.path();
+}
+
+
+void ProjectManager::onDirectoryWatcherError(const Poco::Exception& exc)
+{
+	ofLogError("ProjectManager::onDirectoryWatcherError") << exc.displayText();
+}
+
 
 
 } } // namespace of::Sketch

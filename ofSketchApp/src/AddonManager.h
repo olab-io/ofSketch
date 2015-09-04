@@ -43,12 +43,6 @@ namespace of {
 namespace Sketch {
 
 
-using ofx::DirectoryWatcher;
-using ofx::IO::DirectoryFilter;
-using ofx::IO::DirectoryUtils;
-using ofx::IO::DirectoryWatcherManager;
-
-
 class AddonManager
 {
 public:
@@ -59,11 +53,11 @@ public:
 
     const std::vector<Addon>& getAddons() const;
 
-    void onDirectoryWatcherItemAdded(const DirectoryWatcher::DirectoryEvent& evt);
-    void onDirectoryWatcherItemRemoved(const DirectoryWatcher::DirectoryEvent& evt);
-    void onDirectoryWatcherItemModified(const DirectoryWatcher::DirectoryEvent& evt);
-    void onDirectoryWatcherItemMovedFrom(const DirectoryWatcher::DirectoryEvent& evt);
-    void onDirectoryWatcherItemMovedTo(const DirectoryWatcher::DirectoryEvent& evt);
+	void onDirectoryWatcherItemAdded(const ofx::DirectoryWatcher::DirectoryEvent& evt);
+    void onDirectoryWatcherItemRemoved(const ofx::DirectoryWatcher::DirectoryEvent& evt);
+    void onDirectoryWatcherItemModified(const ofx::DirectoryWatcher::DirectoryEvent& evt);
+    void onDirectoryWatcherItemMovedFrom(const ofx::DirectoryWatcher::DirectoryEvent& evt);
+    void onDirectoryWatcherItemMovedTo(const ofx::DirectoryWatcher::DirectoryEvent& evt);
     void onDirectoryWatcherError(const Poco::Exception& exc);
 
 private:
@@ -71,9 +65,9 @@ private:
 
     std::vector<Addon> _addons;
 
-    DirectoryWatcherManager _addonWatcher;
+	ofx::IO::DirectoryWatcherManager _addonWatcher;
 
-    DirectoryFilter _directoryFilter;
+	ofx::IO::DirectoryFilter _directoryFilter;
 
 };
 

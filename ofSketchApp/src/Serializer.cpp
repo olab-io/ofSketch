@@ -338,19 +338,19 @@ Json::Value Serializer::toJSON(const Addon& object)
 {
     Json::Value json;
 
-    json["path"] = object.getPath().toString();
-    json["name"] = object.getName();
-    json["author"] = object.getAuthor();
+    json["path"] = object.path().toString();
+    json["name"] = object.name();
+    json["author"] = object.author();
 
-    std::vector<std::string>::const_iterator iter = object.getTags().begin();
+    std::vector<std::string>::const_iterator iter = object.tags().begin();
 
-    while (iter != object.getTags().end())
+    while (iter != object.tags().end())
     {
         json["tags"].append(*iter);
         ++iter;
     }
 
-    json["url"] = object.getURL();
+    json["url"] = object.url();
 
     return json;
 }

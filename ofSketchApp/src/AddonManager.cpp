@@ -59,7 +59,10 @@ void AddonManager::setup()
 
         std::vector<Poco::File> files;
 
-        DirectoryUtils::list(coreAddonsDirectory, files, true, &_directoryFilter);
+		ofx::IO::DirectoryUtils::list(coreAddonsDirectory,
+									  files,
+									  true,
+									  &_directoryFilter);
 
         std::vector<Poco::File>::iterator iter = files.begin();
 
@@ -104,7 +107,7 @@ const std::vector<Addon>& AddonManager::getAddons() const
 }
 
 
-void AddonManager::onDirectoryWatcherItemAdded(const DirectoryWatcher::DirectoryEvent& evt)
+void AddonManager::onDirectoryWatcherItemAdded(const ofx::DirectoryWatcher::DirectoryEvent& evt)
 {
     ofLogNotice("AddonManager::onDirectoryWatcherItemAdded") << evt.event << " " << evt.item.path();
 
@@ -124,7 +127,7 @@ void AddonManager::onDirectoryWatcherItemAdded(const DirectoryWatcher::Directory
 }
 
 
-void AddonManager::onDirectoryWatcherItemRemoved(const DirectoryWatcher::DirectoryEvent& evt)
+void AddonManager::onDirectoryWatcherItemRemoved(const ofx::DirectoryWatcher::DirectoryEvent& evt)
 {
     ofLogNotice("AddonManager::onDirectoryWatcherItemRemoved") << evt.event << " " << evt.item.path();
 
@@ -146,7 +149,7 @@ void AddonManager::onDirectoryWatcherItemRemoved(const DirectoryWatcher::Directo
     {
         const Addon& _addon = *iter;
 
-        if (_addon.getName() == addon.getName())
+        if (_addon.name() == addon.name())
         {
             _addons.erase(iter);
             return;
@@ -159,19 +162,19 @@ void AddonManager::onDirectoryWatcherItemRemoved(const DirectoryWatcher::Directo
 }
 
 
-void AddonManager::onDirectoryWatcherItemModified(const DirectoryWatcher::DirectoryEvent& evt)
+void AddonManager::onDirectoryWatcherItemModified(const ofx::DirectoryWatcher::DirectoryEvent& evt)
 {
     ofLogNotice("AddonManager::onDirectoryWatcherItemModified") << evt.event << " " << evt.item.path();
 }
 
 
-void AddonManager::onDirectoryWatcherItemMovedFrom(const DirectoryWatcher::DirectoryEvent& evt)
+void AddonManager::onDirectoryWatcherItemMovedFrom(const ofx::DirectoryWatcher::DirectoryEvent& evt)
 {
     ofLogNotice("AddonManager::onDirectoryWatcherItemMovedFrom") << evt.event << " " << evt.item.path();
 }
 
 
-void AddonManager::onDirectoryWatcherItemMovedTo(const DirectoryWatcher::DirectoryEvent& evt)
+void AddonManager::onDirectoryWatcherItemMovedTo(const ofx::DirectoryWatcher::DirectoryEvent& evt)
 {
     ofLogNotice("AddonManager::onDirectoryWatcherItemMovedTo") << evt.event << " " << evt.item.path();
 }

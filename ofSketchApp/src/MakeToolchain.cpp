@@ -127,7 +127,7 @@ Poco::Task* MakeToolchain::newBuildTask(const Project& project,
 Poco::Task* MakeToolchain::newRunTask(const Project& project,
                                       const std::string& target) const
 {
-    return new ProcessTask(ProcessTaskSettings(project.getName(),
+    return new ProcessTask(ProcessTaskSettings(project.name(),
                                                getExecutablePath(project, target).toString()));
 
 }
@@ -138,9 +138,9 @@ Poco::Path MakeToolchain::getExecutablePath(const Project& project,
 {
     std::string suffix = (target == "debug") ? "_debug" : "";
 
-    Poco::Path projectPath = project.getPath();
+    Poco::Path projectPath = project.path();
 
-    std::string exectuableName = project.getName();
+    std::string exectuableName = project.name();
 
     if (target == "debug")
     {
