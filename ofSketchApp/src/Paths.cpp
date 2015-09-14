@@ -25,6 +25,7 @@
 
 #include "Paths.h"
 #include "ofUtils.h"
+#include "Poco/Path.h"
 
 
 namespace of {
@@ -32,12 +33,12 @@ namespace Sketch {
 
 
 Paths::Paths():
-	_projectsPath(Poco::Path::forDirectory(Poco::Path::home() + "/Documents/ofSketch"))
+	_projectsPath(Poco::Path::forDirectory(Poco::Path::home() + "/Documents/ofSketch").toString())
 {
 }
 
 
-Paths::Paths(const Poco::Path& projectsPath):
+Paths::Paths(const std::string& projectsPath):
     _projectsPath(projectsPath)
 {
 }
@@ -48,64 +49,64 @@ Paths::~Paths()
 }
 
 
-const Poco::Path& Paths::getProjectsPath() const
+const std::string& Paths::getProjectsPath() const
 {
     return _projectsPath;
 }
 
 
-void Paths::setProjectsPath(const Poco::Path& projectsPath)
+void Paths::setProjectsPath(const std::string& projectsPath)
 {
     _projectsPath = projectsPath;
 }
 
 
-Poco::Path Paths::addonsPath() const
+std::string Paths::addonsPath() const
 {
-    return Poco::Path(_projectsPath, Poco::Path::forDirectory("addons"));
+    return Poco::Path(_projectsPath, Poco::Path::forDirectory("addons")).toString();
 }
 
 
-Poco::Path Paths::openFrameworksPath()
+std::string Paths::openFrameworksPath()
 {
-    return Poco::Path::forDirectory(ofToDataPath("openFrameworks", true));
+    return Poco::Path::forDirectory(ofToDataPath("openFrameworks", true)).toString();
 }
 
 
-Poco::Path Paths::coreAddonsPath()
+std::string Paths::coreAddonsPath()
 {
-    return Poco::Path(openFrameworksPath(), Poco::Path::forDirectory("addons"));
+    return Poco::Path(openFrameworksPath(), Poco::Path::forDirectory("addons")).toString();
 }
 
 
-Poco::Path Paths::resourcesPath()
+std::string Paths::resourcesPath()
 {
-    return Poco::Path::forDirectory(ofToDataPath("Resources", true));
+    return Poco::Path::forDirectory(ofToDataPath("Resources", true)).toString();
 }
 
 
-Poco::Path Paths::templatesPath()
+std::string Paths::templatesPath()
 {
-    return Poco::Path::forDirectory(ofToDataPath("Templates", true));
+    return Poco::Path::forDirectory(ofToDataPath("Templates", true)).toString();
 }
 
 
-Poco::Path Paths::toolchainsPath()
+std::string Paths::toolchainsPath()
 {
-    return Poco::Path::forDirectory(ofToDataPath("Toolchains", true));
+    return Poco::Path::forDirectory(ofToDataPath("Toolchains", true)).toString();
 }
 
 
-Poco::Path Paths::examplesPath()
+std::string Paths::examplesPath()
 {
-    return Poco::Path::forDirectory(ofToDataPath("Examples", true));
+    return Poco::Path::forDirectory(ofToDataPath("Examples", true)).toString();
 }
 
 
-Poco::Path Paths::settingsPath()
+std::string Paths::settingsPath()
 {
     return Poco::Path(Poco::Path::home(),
-                      Poco::Path::forDirectory(".config/ofSketch"));
+                      Poco::Path::forDirectory(".config/ofSketch")).toString();
 }
 
 

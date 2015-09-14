@@ -32,11 +32,11 @@ namespace Sketch {
 
 
 ProjectManager::ProjectManager(Settings& settings):
-    _settings(settings)
-//    _templateProject(Poco::Path(_settings.getPathsRef().getTemplatesPath(),
-//                                Poco::Path::forDirectory("SimpleProject")).toString())
-{
+    _settings(settings),
+	_templateProject(ofFilePath::join(_settings.paths().templatesPath(),
+									  ofFilePath::join("Projects", "NewProject")))
 
+{
 	_projectWatcher.registerAllEvents(this);
 }
 
@@ -49,47 +49,46 @@ ProjectManager::~ProjectManager()
     
 void ProjectManager::setup()
 {
-	_projectWatcher.addPath(_settings.paths().getProjectsPath().toString(),
+	_projectWatcher.addPath(_settings.paths().getProjectsPath(),
 							true,
 							true,
 							&_projectFilter);
 }
 
 
-//// can this function be: return getProjectRef(projectName); only?
-//const Project& ProjectManager::getProject(const std::string& projectName) const
-//{
-//    for (std::size_t i = 0; i < _projects.size(); ++i) 
-//    {
-//        if (_projects[i].getName() == projectName) 
-//        {
-//            return _projects[i];
-//        }
-//    }
-//
-//    return _projects[0]; //fallback
-//}
-//
-//
-//Project& ProjectManager::getProjectRef(const std::string& projectName)
-//{
-//    for (std::size_t i = 0; i < _projects.size(); ++i) 
-//    {
-//        if (_projects[i].getName() == projectName) 
-//        {
-//            return _projects[i];
-//        }
-//    }
-//
-//    return _projects[0]; //fallback
-//}
-//
-//
-//const std::vector<Project>& ProjectManager::getProjects() const
-//{
-//    return _projects;
-//}
-//
+Project* ProjectManager::getProject(const std::string& projectName)
+{
+	auto findIter = std::find_if(_projects.begin(),
+								 _projects.end(),
+								 [projectName](const Project& project) {
+									 return 0 == project.name().compare(projectName);
+								 });
+
+	if (findIter != _projects.end())
+	{
+		return &(*findIter);
+	}
+	else
+	{
+		return nullptr;
+	}
+}
+
+
+const Project* ProjectManager::getProject(const std::string& projectName) const
+{
+	return getProject(projectName);
+}
+
+
+const std::vector<Project>& ProjectManager::projects() const
+{
+	return _projects;
+}
+
+
+
+
 ////    std::string sketchPath = ofToDataPath("HelloWorldSketch/src/main.cpp",true);
 ////
 ////    ofBuffer buffer = ofBufferFromFile(sketchPath);
@@ -107,18 +106,6 @@ void ProjectManager::setup()
 ////    cout << "Connection opened from: " << evt.getConnectionRef().getClientAddress().toString() << endl;
 //
 //
-//void ProjectManager::getProjectList(const void* pSender,
-//                                    ofx::JSONRPC::MethodArgs& args)
-//{
-//    Json::Value projectList;
-//
-//    for (unsigned int i = 0; i < _projects.size(); ++i) {
-//        projectList[i]["projectName"] = _projects[i].getName();
-//    }
-//
-//    args.result = projectList;
-//    ofLogNotice("Project::getProjectList") << "Project list requested";
-//}
 //
 //
 //void ProjectManager::loadProject(const void* pSender,
@@ -316,8 +303,7 @@ void ProjectManager::onDirectoryWatcherItemAdded(const ofx::DirectoryWatcher::Di
 {
 	ofLogNotice("ProjectManager::onDirectoryWatcherItemAdded") << evt.event << " " << evt.item.path();
 
-	Project project(evt.item.path());
-
+	_projects.push_back(Project(evt.item.path()));
 }
 
 
@@ -355,6 +341,18 @@ void ProjectManager::onDirectoryWatcherError(const Poco::Exception& exc)
 	ofLogError("ProjectManager::onDirectoryWatcherError") << exc.displayText();
 }
 
+
+const Project& ProjectManager::getTemplateProject() const
+{
+    ofLogNotice("Project::loadTemplateProject") << "loading a template project.";
+
+	if (!_templateProject.isLoaded())
+	{
+		_templateProject.load();
+	}
+
+	return _templateProject;
+}
 
 
 } } // namespace of::Sketch

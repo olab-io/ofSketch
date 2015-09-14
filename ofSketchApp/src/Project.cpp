@@ -40,12 +40,12 @@ namespace Sketch {
 
 Project::Project(const std::string& path):
 	_path(path),
-	_name(_path.getBaseName()),
+	_name(ofFilePath::getBaseName(_path)),
 	_isLoaded(false),
 	_readOnly(false)
 {
 
-	cout << "the >" <<  _name  << " project was loaded from " << _path.toString() << endl;
+	cout << "the >" <<  _name  << " project was loaded from " << _path << endl;
 
     // this is not efficient at all! I am just keeping these FileTemplate loads in the project
     // constructor because it makes the most sense architecure wise.
@@ -70,15 +70,15 @@ const std::string& Project::name() const
 }
 
 
-const Poco::Path& Project::path() const
+const std::string& Project::path() const
 {
     return _path;
 }
 
 
-Poco::Path Project::sketchPath() const
+std::string Project::sketchPath() const
 {
-	return Poco::Path::forDirectory(path().toString() + "/sketch/" );
+	return ofFilePath::join(path(), "/sketch/");
 }
 
 
@@ -91,7 +91,7 @@ bool Project::isLoaded() const
 void Project::load()
 {
 	// Load addons from addons.make.
-	_addons = parseAddonsMake(path().toString());
+	_addons = parseAddonsMake(path());
 	
 	Poco::File _sketchDir(sketchPath());
 
@@ -104,85 +104,23 @@ void Project::load()
 									  true,
 									  &_projectFileFilter);
 
-		for (Poco::File& file: files)
+		for (const auto& file: files)
 		{
 			_sourceFiles.emplace_back(SourceFile(*this, file.path()));
-
-			cout << "FILE : " << _sourceFiles.back().project().name() << " : " << _sourceFiles.back().getContents() << std::endl;
-
-//			if (file.getBaseName() == name)
-//			{
-//				file.open(file.getAbsolutePath());
-//				_data["projectFile"]["name"] = file.getBaseName();
-//				_data["projectFile"]["fileName"] = file.getFileName();
-//				_data["projectFile"]["fileContents"] = file.readToBuffer().getText();
-//			}
-//			else if (file.getExtension() == SKETCH_FILE_EXTENSION)
-//			{
-//				file.open(file.getAbsolutePath());
-//				_data["classes"][classCounter]["name"] = file.getBaseName();
-//				_data["classes"][classCounter]["fileName"] = file.getFileName();
-//				_data["classes"][classCounter]["fileContents"] = file.readToBuffer().getText();
-//				classCounter++;
-//			}
 		}
 
-//		_loadAddons();
 		_isLoaded = true;
 	}
 	else
 	{
 		ofLogError("Project::load()") << "No Sketch Path found for " << _sketchDir.path();
 	}
-
-
-
-
-//
-//	    _sketchDir = ofDirectory(ofToDataPath(path + "/sketch"));
-//	
-//	    _data.clear();
-//	
-//	    if (_sketchDir.exists())
-//	    {
-//	        _sketchDir.listDir();
-//	
-//	        std::vector<ofFile> files = _sketchDir.getFiles();
-//	
-//	        int classCounter = 0;
-//	
-//	        for (std::size_t i = 0; i < files.size(); ++i)
-//	        {
-//	            ofFile file = files[i];
-//	
-//	            if (file.getBaseName() == name)
-//	            {
-//	                file.open(file.getAbsolutePath());
-//	                _data["projectFile"]["name"] = file.getBaseName();
-//	                _data["projectFile"]["fileName"] = file.getFileName();
-//	                _data["projectFile"]["fileContents"] = file.readToBuffer().getText();
-//	            }
-//	            else if (file.getExtension() == SKETCH_FILE_EXTENSION)
-//	            {
-//	                file.open(file.getAbsolutePath());
-//	                _data["classes"][classCounter]["name"] = file.getBaseName();
-//	                _data["classes"][classCounter]["fileName"] = file.getFileName();
-//	                _data["classes"][classCounter]["fileContents"] = file.readToBuffer().getText();
-//	                classCounter++;
-//	            }
-//	        }
-//	
-//	        _loadAddons();
-//	        _isLoaded = true;
-//	    }
-
-
 }
 
 
-std::vector<std::string> Project::parseAddonsMake(const std::string& projectPath)
+std::unordered_set<std::string> Project::parseAddonsMake(const std::string& projectPath)
 {
-	std::vector<std::string> addons;
+	std::unordered_set<std::string> addons;
 
 	ofFile addonsMakeFile(ofFilePath::join(projectPath, "addons.make"));
 
@@ -196,7 +134,7 @@ std::vector<std::string> Project::parseAddonsMake(const std::string& projectPath
 
 		if (!addon.empty() && addon[0] != '#')
 		{
-			addons.push_back(addon);
+			addons.insert(addon);
 		}
 		else
 		{
@@ -208,10 +146,42 @@ std::vector<std::string> Project::parseAddonsMake(const std::string& projectPath
 }
 
 
+bool Project::hasAddons() const
+{
+	return !_addons.empty();
+}
+
+	
+bool Project::isUsingAddon(const std::string& addon) const
+{
+	return _addons.find(addon) != _addons.end();
+}
 
 
+void Project::addAddon(const std::string& addon)
+{
+	_addons.insert(addon);
+}
 
-//
+
+void Project::removeAddon(const std::string& addon)
+{
+	_addons.erase(_addons.find(addon));
+}
+
+
+const std::unordered_set<std::string>& Project::addons() const
+{
+	return _addons;
+}
+
+
+const std::vector<SourceFile>& Project::sourceFiles() const
+{
+	return _sourceFiles;
+}
+
+
 //void Project::save(const Json::Value& data)
 //{
 //    // This method saves differences only
@@ -510,26 +480,7 @@ std::vector<std::string> Project::parseAddonsMake(const std::string& projectPath
 //{
 //    return _addons;
 //}
-//
-//void Project::_loadAddons()
-//{
-//    _addons.clear();
-//    ofFile addonsMakefile(_path + "/addons.make");
-//
-//    if (addonsMakefile.exists()) {
-//
-//        std::vector<std::string> lines = ofSplitString(ofBufferFromFile(addonsMakefile.path()), "\n");
-//
-//        for (unsigned int i = 0; i < lines.size(); i++) {
-//
-//            if (lines[i] != "") {
-//
-//                _addons.push_back(lines[i]);
-//            }
-//        }
-//    }
-//}
-//
+
 
 void Project::_saveAddons()
 {

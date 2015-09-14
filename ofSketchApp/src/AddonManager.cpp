@@ -101,7 +101,7 @@ void AddonManager::setup()
 }
 
 
-const std::vector<Addon>& AddonManager::getAddons() const
+const std::vector<Addon>& AddonManager::addons() const
 {
     return _addons;
 }
@@ -111,13 +111,9 @@ void AddonManager::onDirectoryWatcherItemAdded(const ofx::DirectoryWatcher::Dire
 {
     ofLogNotice("AddonManager::onDirectoryWatcherItemAdded") << evt.event << " " << evt.item.path();
 
-    Poco::Path path(evt.item.path());
-
-    std::string name = path.getBaseName();
-
     // \todo Parse from addon_config.mk.
-    Addon addon(path,
-                name,
+    Addon addon(evt.item.path(),
+                ofFilePath::getBaseName(evt.item.path()),
                 "",
                 "",
                 std::vector<std::string>(),
@@ -136,14 +132,14 @@ void AddonManager::onDirectoryWatcherItemRemoved(const ofx::DirectoryWatcher::Di
     std::string name = path.getBaseName();
 
     // \todo Parse from addon_config.mk.
-    Addon addon(path,
-                name,
+    Addon addon(evt.item.path(),
+                ofFilePath::getBaseName(evt.item.path()),
                 "",
                 "",
                 std::vector<std::string>(),
                 "");
 
-    std::vector<Addon>::iterator iter = _addons.begin();
+    auto iter = _addons.begin();
 
     while (iter != _addons.end())
     {

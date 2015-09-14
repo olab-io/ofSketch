@@ -40,6 +40,7 @@ class Paths;
 class SSLSettings;
 class ServerSettings;
 class Addon;
+class Project;
 
 
 class Serializer
@@ -120,6 +121,12 @@ public:
     /// \brief The object to save.
     /// \returns the object as JSON.
     static Json::Value toJSON(const Addon& object);
+
+	/// \brief Save the object to JSON.
+	/// \brief The object to save.
+	/// \returns the object as JSON.
+	static Json::Value toJSON(const Project& project);
+
 
 };
 

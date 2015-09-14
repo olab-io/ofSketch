@@ -55,11 +55,28 @@ public:
 
     void setup();
 
-//    const std::vector<Project>& getProjects() const;
+	/// \brief Get a pointer to a Project by name.
+	///
+	/// The ProjectManager retains ownership of the project.
+	///
+	/// \param name The name of the Project to get.
+	/// \returns a pointer to the Project or a nullptr if not found.
+	Project* getProject(const std::string& name);
 
+	/// \brief Get a pointer to a Project by name.
+	///
+	/// The ProjectManager retains ownership of the project.
+	///
+	/// \param name The name of the Project to get.
+	/// \returns a pointer to the Project or a nullptr if not found.
+    const Project* getProject(const std::string& projectName) const;
 
+	/// \brief Get a list of the Projects.
+	/// \returns a list of the Projects.
+	const std::vector<Project>& projects() const;
 
-//    void getProjectList(const void* pSender, ofx::JSONRPC::MethodArgs& args);
+	const Project& getTemplateProject() const;
+
 //    void loadProject(const void* pSender, ofx::JSONRPC::MethodArgs& args);
 //    void loadTemplateProject(const void* pSender, ofx::JSONRPC::MethodArgs& args);
 //    void saveProject(const void* pSender, ofx::JSONRPC::MethodArgs& args);
@@ -71,9 +88,6 @@ public:
 //    void reloadProjects();
 //    void updateProject(const std::string& projectName);
 //
-//    bool projectExists(const std::string& projectName) const;
-//    const Project& getProject(const std::string& projectName) const;
-//    Project& getProjectRef(const std::string& projectName);
 
 	void onDirectoryWatcherItemAdded(const ofx::DirectoryWatcher::DirectoryEvent& evt);
 	void onDirectoryWatcherItemRemoved(const ofx::DirectoryWatcher::DirectoryEvent& evt);
@@ -90,13 +104,17 @@ private:
 
 	ProjectFilter _projectFilter;
 
+	std::vector<Project> _projects;
+
+	mutable Project _templateProject;
+
+
 //    std::vector<Project> _examples;
 
 
 //    std::vector<std::string> _openProjectNames;
 //    std::vector<Project> _projects;
 //
-//    Project _templateProject;
 //
 //    bool _removeFromOpenProjectNames(const std::string& projectName);
 };

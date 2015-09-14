@@ -123,6 +123,8 @@
 		FD8DA5091B94F34400D33306 /* NetworkInterfaceListener.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FD8DA5061B94F34400D33306 /* NetworkInterfaceListener.cpp */; };
 		FD8DA50A1B94F34400D33306 /* NetworkUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FD8DA5071B94F34400D33306 /* NetworkUtils.cpp */; };
 		FD8DA50F1B94F34D00D33306 /* ofSSLManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FD8DA50D1B94F34D00D33306 /* ofSSLManager.cpp */; };
+		FD9FB0EA1B98E53500FAA764 /* SourceFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FD9FB0E81B98E53500FAA764 /* SourceFile.cpp */; };
+		FDED6D961B98C165006C084A /* FileFilters.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FDED6D941B98C165006C084A /* FileFilters.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -424,6 +426,10 @@
 		FD8DA5121B94F35B00D33306 /* ofxTaskQueue.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxTaskQueue.h; sourceTree = "<group>"; };
 		FD8DA5171B94F35B00D33306 /* TaskQueue.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TaskQueue.h; sourceTree = "<group>"; };
 		FD8DA5181B94F35B00D33306 /* TaskQueueEvents.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TaskQueueEvents.h; sourceTree = "<group>"; };
+		FD9FB0E81B98E53500FAA764 /* SourceFile.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SourceFile.cpp; sourceTree = "<group>"; };
+		FD9FB0E91B98E53500FAA764 /* SourceFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SourceFile.h; sourceTree = "<group>"; };
+		FDED6D941B98C165006C084A /* FileFilters.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FileFilters.cpp; sourceTree = "<group>"; };
+		FDED6D951B98C165006C084A /* FileFilters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileFilters.h; sourceTree = "<group>"; };
 		FFE96AA616BC97AEB4FCED47 /* Project.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = Project.cpp; path = src/Project.cpp; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
@@ -485,6 +491,8 @@
 		E4B69E1C0A3A1BDC003C02F2 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				FDED6D941B98C165006C084A /* FileFilters.cpp */,
+				FDED6D951B98C165006C084A /* FileFilters.h */,
 				E4B69E1D0A3A1BDC003C02F2 /* main.cpp */,
 				E4B69E1E0A3A1BDC003C02F2 /* ofApp.cpp */,
 				E4B69E1F0A3A1BDC003C02F2 /* ofApp.h */,
@@ -512,6 +520,8 @@
 				D52FD95E10E97565087691BF /* ProcessTaskQueue.h */,
 				FFE96AA616BC97AEB4FCED47 /* Project.cpp */,
 				78BC8088D555F49447175CED /* Project.h */,
+				FD9FB0E81B98E53500FAA764 /* SourceFile.cpp */,
+				FD9FB0E91B98E53500FAA764 /* SourceFile.h */,
 				8E9BF742600BDD67A2C1C707 /* ProjectManager.cpp */,
 				3621818EA5FF99900091C481 /* ProjectManager.h */,
 				AA4F9395F779F56E5CD2E96F /* Serializer.cpp */,
@@ -1389,6 +1399,7 @@
 				FD8DA4651B94F33200D33306 /* DefaultProxyProcessor.cpp in Sources */,
 				E4B69E210A3A1BDC003C02F2 /* ofApp.cpp in Sources */,
 				FD8DA4671B94F33200D33306 /* DefaultResponseStreamFilter.cpp in Sources */,
+				FDED6D961B98C165006C084A /* FileFilters.cpp in Sources */,
 				FD8DA4761B94F33200D33306 /* Session.cpp in Sources */,
 				FD8DA4711B94F33200D33306 /* PostRoute.cpp in Sources */,
 				FD8DA47A1B94F33200D33306 /* SimplePostServer.cpp in Sources */,
@@ -1429,6 +1440,7 @@
 				FD8DA3D61B94F32E00D33306 /* Error.cpp in Sources */,
 				FD8DA4DB1B94F33500D33306 /* DeviceFilter.cpp in Sources */,
 				AC301114E6ADFB873BBEBB11 /* EditorSettings.cpp in Sources */,
+				FD9FB0EA1B98E53500FAA764 /* SourceFile.cpp in Sources */,
 				FD8DA4561B94F33200D33306 /* ClientEvents.cpp in Sources */,
 				FD8DA4E41B94F33500D33306 /* PathFilterCollection.cpp in Sources */,
 				FD8DA4EB1B94F33500D33306 /* snappy-stubs-internal.cc in Sources */,

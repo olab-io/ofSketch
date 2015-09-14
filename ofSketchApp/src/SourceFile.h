@@ -28,7 +28,6 @@
 
 
 #include <string>
-#include "Poco/File.h"
 #include "ofFileUtils.h"
 
 
@@ -58,7 +57,7 @@ public:
 	/// \brief Create a SourceFile with the given parameters.
 	/// \param project The parent Project.
 	/// param file The SourceFile's file.
-	SourceFile(const Project& project, const Poco::Path& path);
+	SourceFile(const Project& project, const std::string& path);
 	
 	/// \brief Destroy the SourceFile.
 	virtual ~SourceFile();
@@ -69,7 +68,7 @@ public:
 
 	/// \brief Get the SourceFile's file.
 	/// \returns the SourceFile's file.
-	const Poco::File& file() const;
+	const ofFile& file() const;
 
 	/// \brief Set the contents of the SourceFile.
 	/// \param contents The contents of the SourceFile to set.
@@ -89,7 +88,7 @@ public:
 
 	/// \brief Get the SourceFile Type.
 	/// \returns the SourceFile Type.
-	Type getType();
+	Type getType() const;
 
 	/// \brief Get the SourceFile Type for a given file extension.
 	/// \param fileExtension The file extension to test.
@@ -103,8 +102,8 @@ private:
 	/// \brief A reference to the parent Project;
 	const Project& _project;
 
-	/// \brief The SourceFile's Poco::File object.
-	Poco::File _file;
+	/// \brief The SourceFile's ofFile object.
+	ofFile _file;
 
 	/// \brief The SourceFile's Type.
 	Type _type;

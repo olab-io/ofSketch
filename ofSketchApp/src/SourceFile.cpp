@@ -33,18 +33,18 @@ namespace Sketch {
 
 
 
-	const std::map<SourceFile::Type, std::vector<std::string>> SourceFile::SOURCE_FILE_TYPE_MAP =
-													 {
-														 { Type::SKETCH, { "sketch" } },
-														 { Type::HEADER, { "h", "hpp" } },
-														 { Type::SOURCE, { "cpp", "c", "m", "mm" } }
-													 };
+const std::map<SourceFile::Type, std::vector<std::string>> SourceFile::SOURCE_FILE_TYPE_MAP =
+												 {
+													 { Type::SKETCH, { "sketch" } },
+													 { Type::HEADER, { "h", "hpp" } },
+													 { Type::SOURCE, { "cpp", "c", "m", "mm" } }
+												 };
 
 
-SourceFile::SourceFile(const Project& project, const Poco::Path& path):
+SourceFile::SourceFile(const Project& project, const std::string& path):
 	_project(project),
 	_file(path),
-	_type(typeForFileExtension(path.getExtension())),
+	_type(typeForFileExtension(_file.getExtension())),
 	_isLoaded(false)
 {
 }
@@ -60,16 +60,19 @@ const Project& SourceFile::project() const
 	return _project;
 }
 
-const Poco::File& SourceFile::file() const
+
+const ofFile& SourceFile::file() const
 {
 	return _file;
 }
+
 
 void SourceFile::setContents(const ofBuffer& contents) const
 {
 	_contents = contents;
 	_isLoaded = true;
 }
+
 
 const ofBuffer& SourceFile::getContents() const
 {
@@ -81,17 +84,20 @@ const ofBuffer& SourceFile::getContents() const
 	return _contents;
 }
 
+
 bool SourceFile::save() const
 {
 	return ofBufferToFile(_file.path(), _contents);
 }
+
 
 void SourceFile::setType(Type type)
 {
 	_type = type;
 }
 
-SourceFile::Type SourceFile::getType()
+
+SourceFile::Type SourceFile::getType() const
 {
 	return _type;
 }

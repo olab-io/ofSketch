@@ -39,6 +39,7 @@
 #include "ofSSLManager.h"
 #include "Poco/Net/NetException.h"
 #include "Addon.h"
+#include "Project.h"
 
 
 namespace of {
@@ -205,7 +206,7 @@ bool Serializer::fromJSON(const Json::Value& json, Paths& object)
     Paths defaults;
 
     object.setProjectsPath(json.get("projects",
-                                    defaults.getProjectsPath().toString()).asString());
+                                    defaults.getProjectsPath()).asString());
 
     return true;
 }
@@ -214,8 +215,18 @@ bool Serializer::fromJSON(const Json::Value& json, Paths& object)
 Json::Value Serializer::toJSON(const Paths& object)
 {
     Json::Value json;
-    json["projects"] = object.getProjectsPath().toString();
-    return json;
+
+	json["projects"] = object.getProjectsPath();
+	json["addons"] = object.addonsPath();
+	json["openFrameworks"] = object.openFrameworksPath();
+	json["coreAddons"] = object.coreAddonsPath();
+	json["examples"] = object.examplesPath();
+	json["resources"] = object.resourcesPath();
+	json["templates"] = object.templatesPath();
+	json["toolchains"] = object.toolchainsPath();
+	json["settings"] = object.settingsPath();
+
+	return json;
 }
 
 
@@ -338,7 +349,7 @@ Json::Value Serializer::toJSON(const Addon& object)
 {
     Json::Value json;
 
-    json["path"] = object.path().toString();
+    json["path"] = object.path();
     json["name"] = object.name();
     json["author"] = object.author();
 
@@ -353,6 +364,41 @@ Json::Value Serializer::toJSON(const Addon& object)
     json["url"] = object.url();
 
     return json;
+}
+
+
+Json::Value Serializer::toJSON(const Project& project)
+{
+	Json::Value _data;
+
+	Json::ArrayIndex classCounter = 0;
+
+	const std::vector<SourceFile>& sourceFiles = project.sourceFiles();
+
+	for (const SourceFile& sourceFile: project.sourceFiles())
+	{
+		ofFile file = sourceFile.file();
+
+		if (sourceFile.file().getBaseName() == project.name())
+		{
+			_data["projectFile"]["name"] = file.getBaseName();
+			_data["projectFile"]["fileName"] = file.getFileName();
+			_data["projectFile"]["fileContents"] = file.readToBuffer().getText();
+		}
+		else if (sourceFile.getType() == SourceFile::Type::SKETCH)
+		{
+			_data["classes"][classCounter]["name"] = file.getBaseName();
+			_data["classes"][classCounter]["fileName"] = file.getFileName();
+			_data["classes"][classCounter]["fileContents"] = file.readToBuffer().getText();
+			classCounter++;
+		}
+		else
+		{
+			ofLogWarning("Serializer::toJSON") << "Unrecognized project file: " << file.path();
+		}
+	}
+
+	return _data;
 }
 
 

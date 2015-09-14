@@ -26,7 +26,7 @@
 #pragma once
 
 
-#include "Poco/Path.h"
+#include <string>
 
 
 namespace of {
@@ -42,18 +42,18 @@ public:
 
     /// \brief Create a Paths instance with a project path.
     /// \param projectsPath The path to the user's projects.
-    Paths(const Poco::Path& projectsPath);
+    Paths(const std::string& projectsPath);
 
     /// \brief Destroy the Paths instance.
     ~Paths();
 
     /// \brief Get the projects path.
     /// \returns The absolute projects path.
-    const Poco::Path& getProjectsPath() const;
+    const std::string& getProjectsPath() const;
 
     /// \brief Set the projects path.
     /// \projectsPath The absolute projects path.
-    void setProjectsPath(const Poco::Path& projectsPath);
+    void setProjectsPath(const std::string& projectsPath);
 
     /// \brief Get the addons path.
     ///
@@ -61,21 +61,21 @@ public:
     /// within the user's projects path.
     ///
     /// \returns The absolute path to the user's addons.
-    Poco::Path addonsPath() const;
+    std::string addonsPath() const;
 
     /// \brief Get the openFrameworks core path.
     ///
     /// This is the location of the openFrameworks core folder.
     ///
     /// \returns The absolute path to the openFrameworks core folder.
-    static Poco::Path openFrameworksPath();
+    static std::string openFrameworksPath();
 
     /// \brief Get the core addons path.
     ///
     /// This is the addons/ path within the openFrameworks path.
     ///
     /// \returns The absolute openFrameworks/addons path.
-    static Poco::Path coreAddonsPath();
+    static std::string coreAddonsPath();
 
     /// \brief Get the examples path.
     ///
@@ -83,7 +83,7 @@ public:
     /// is within the application's data folder.
     ///
     /// \returns The absolute examples path.
-    static Poco::Path examplesPath();
+    static std::string examplesPath();
 
     /// \brief Get the resources path.
     ///
@@ -91,7 +91,7 @@ public:
     /// is within the application's data folder.
     ///
     /// \returns The absolute resources path.
-    static Poco::Path resourcesPath();
+    static std::string resourcesPath();
 
     /// \brief Get the templates path.
     ///
@@ -99,7 +99,7 @@ public:
     /// is within the application's data folder.
     ///
     /// \returns The absolute templates path.
-    static Poco::Path templatesPath();
+	static std::string templatesPath();
 
     /// \brief Get the toolchains path.
     ///
@@ -107,7 +107,7 @@ public:
     /// is within the application's data folder.
     ///
     /// \returns The absolute toolchains path.
-    static Poco::Path toolchainsPath();
+    static std::string toolchainsPath();
 
     /// \brief Get the settings path.
     ///
@@ -115,11 +115,11 @@ public:
     /// the user's home directory in a hidden folder.
     ///
     /// \returns The absolute settings path.
-    static Poco::Path settingsPath();
+    static std::string settingsPath();
 
 private:
     /// \brief The absolute projects path.
-    Poco::Path _projectsPath;
+    std::string _projectsPath;
 
 };
 

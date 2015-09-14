@@ -28,10 +28,8 @@
 
 
 #include <string>
+#include <unordered_set>
 #include "json/json.h"
-#include "Poco/Path.h"
-#include "Poco/RegularExpression.h"
-#include "Poco/URI.h"
 #include "ofx/IO/FileExtensionFilter.h"
 #include "ofTypes.h"
 #include "ofFileUtils.h"
@@ -51,8 +49,6 @@ namespace Sketch {
 class Project
 {
 public:
-	struct File;
-
 	/// \brief Create a Project using the Project's absolute path.
 	Project(const std::string& path);
 
@@ -61,9 +57,9 @@ public:
 
     /// \brief Get the absolute path of the Project.
     /// \returns the absolute path of the Project.
-    const Poco::Path& path() const;
+	const std::string& path() const;
 
-	Poco::Path sketchPath() const;
+	std::string sketchPath() const;
 
 	/// \brief Get the name of the Project.
 	/// \returns the name of the Project.
@@ -76,9 +72,34 @@ public:
 	/// \brief Load the Project from the Project path.
 	void load();
 
+	/// \brief Determine if any addons are being used.
+	/// \returns true if any addons are being used.
+	bool hasAddons() const;
+
+	/// \brief Determine if an addon is being used.
+	/// \param addon The addon to check.
+	bool isUsingAddon(const std::string& addon) const;
+
+	/// \brief Add an addon.
+	/// \param addon The addon to add.
+    void addAddon(const std::string& addon);
+
+	/// \brief Remove an addon.
+	/// \param addon The addon to remove.
+	void removeAddon(const std::string& addon);
+
+	/// \brief Get a list of the active addons.
+	/// \returns a list of the active addons.
+	const std::unordered_set<std::string>& addons() const;
+
+	const std::vector<SourceFile>& sourceFiles() const;
+
+
+
+//	void addSource
+
+
 //    bool hasClasses() const;
-//    bool hasAddons() const;
-//    bool usingAddon(std::string& addon) const;
 //
 //    bool create(const std::string& path);
 //    bool remove();
@@ -88,8 +109,6 @@ public:
 //    void load(const std::string& path,
 //              const std::string& name);
 //
-//    void addAddon(std::string& addon);
-//    bool removeAddon(std::string& addon);
 //
 //    bool deleteClass(const std::string& className);
 //    bool renameClass(const std::string& currentName,
@@ -101,18 +120,21 @@ public:
 //
 //    Json::Value createClass(const std::string& className);
 //
-//    std::vector<std::string> getAddons() const;
 //
 //    const Json::Value& getData() const;
 //
 
 
-
-	static std::vector<std::string> parseAddonsMake(const std::string& projectPath);
+	/// \brief Parse the addons.make file for a list of the addons.
+	/// \param projectPath A path to the project where the addons.make should be found.
+	/// \returns a set of addon names / paths strings.
+	/// \todo This method and the writing method currently ignore and remove
+	/// commented lines, spaces, etc.  Some users may want a "smarter" system.
+	static std::unordered_set<std::string> parseAddonsMake(const std::string& projectPath);
 
 private:
 	/// \brief The absolute path of the project.
-	Poco::Path _path;
+	std::string _path;
 
 	/// \brief The project's name.
     std::string _name;
@@ -124,7 +146,7 @@ private:
 	bool _readOnly;
 
 	/// \brief A collection of addon names.
-	std::vector<std::string> _addons;
+	std::unordered_set<std::string> _addons;
 
 	of::Sketch::ProjectFileFilter _projectFileFilter;
 

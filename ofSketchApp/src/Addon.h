@@ -26,7 +26,6 @@
 #pragma once
 
 
-#include "Poco/Path.h"
 #include "ofTypes.h"
 
 
@@ -40,7 +39,7 @@ class Addon
 public:
     /// \brief Create an addon with the given path.
     /// \param path The path to the addon.
-    Addon(const Poco::Path& path);
+	Addon(const std::string& path);
 
     /// \brief Create an addon with the given parameters.
     /// \param path The path to the addon.
@@ -49,7 +48,7 @@ public:
     /// \param author The addon author.
     /// \param tags The addon tags.
     /// \param URL the addon URL.
-    Addon(const Poco::Path& path,
+    Addon(const std::string& path,
           const std::string& name,
           const std::string& description,
           const std::string& author,
@@ -59,7 +58,7 @@ public:
     virtual ~Addon();
 
     /// \returns the absolute path to the addon.
-    const Poco::Path& path() const;
+    const std::string& path() const;
 
     /// \returns the name of the addon.
     const std::string& name() const;
@@ -81,7 +80,7 @@ public:
 
 private:
 	/// \brief The absolute path to the Addon.
-    Poco::Path _path;
+    std::string _path;
 
 	/// \brief The name of the Addon.
     std::string _name;

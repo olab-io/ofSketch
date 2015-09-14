@@ -51,7 +51,7 @@ public:
 
     void setup();
 
-    const std::vector<Addon>& getAddons() const;
+    const std::vector<Addon>& addons() const;
 
 	void onDirectoryWatcherItemAdded(const ofx::DirectoryWatcher::DirectoryEvent& evt);
     void onDirectoryWatcherItemRemoved(const ofx::DirectoryWatcher::DirectoryEvent& evt);

@@ -69,14 +69,14 @@ void App::setup()
 
 	const Paths& paths = _settings.paths();
 
-	ofLogVerbose("App::setup()") << "Paths:       Projects: " << paths.getProjectsPath().toString();
-	ofLogVerbose("App::setup()") << "Paths:         Addons: " << paths.addonsPath().toString();
-	ofLogVerbose("App::setup()") << "Paths: openFrameworks: " << Paths::openFrameworksPath().toString();
-	ofLogVerbose("App::setup()") << "Paths:    Core Addons: " << Paths::coreAddonsPath().toString();
-	ofLogVerbose("App::setup()") << "Paths:       Examples: " << Paths::examplesPath().toString();
-	ofLogVerbose("App::setup()") << "Paths:      Resources: " << Paths::resourcesPath().toString();
-	ofLogVerbose("App::setup()") << "Paths:     Toolchains: " << Paths::toolchainsPath().toString();
-	ofLogVerbose("App::setup()") << "Paths:   	  Settings: " << Paths::settingsPath().toString();
+	ofLogVerbose("App::setup()") << "Paths:       Projects: " << paths.getProjectsPath();
+	ofLogVerbose("App::setup()") << "Paths:         Addons: " << paths.addonsPath();
+	ofLogVerbose("App::setup()") << "Paths: openFrameworks: " << Paths::openFrameworksPath();
+	ofLogVerbose("App::setup()") << "Paths:    Core Addons: " << Paths::coreAddonsPath();
+	ofLogVerbose("App::setup()") << "Paths:       Examples: " << Paths::examplesPath();
+	ofLogVerbose("App::setup()") << "Paths:      Resources: " << Paths::resourcesPath();
+	ofLogVerbose("App::setup()") << "Paths:     Toolchains: " << Paths::toolchainsPath();
+	ofLogVerbose("App::setup()") << "Paths:   	  Settings: " << Paths::settingsPath();
 
 	// Set up the toolchains.
 	_toolchainManager.setup();
@@ -293,6 +293,9 @@ void App::exit()
 
 void App::loadProject(const void* pSender, ofx::JSONRPC::MethodArgs& args)
 {
+	ofLogNotice("App::loadProject") << "";
+
+
 //    if (args.params.isMember("projectName"))
 //    {
 //        std::string projectName = args.params["projectName"].asString();
@@ -301,20 +304,32 @@ void App::loadProject(const void* pSender, ofx::JSONRPC::MethodArgs& args)
 //        {
 //            _projectManager.loadProject(pSender, args);
 //        }
-//        else args.error["message"] = "The requested project does not exist.";
+//        else
+//		{
+//
+//		}args.error["message"] = "The requested project does not exist.";
 //    }
-//    else args.error["message"] = "Incorrect parameters sent to load-project method.";
+//	else {
+//		args.error = ofx::JSONRPC::Error(ofx::JSONRPC::Errors::RPC_ERROR_INVALID_PARAMETERS, "missing project");
+//	}args.error["message"] = "Incorrect parameters sent to load-project method.";
 }
 
 
 void App::loadTemplateProject(const void* pSender, ofx::JSONRPC::MethodArgs& args)
 {
-//    _projectManager.loadTemplateProject(pSender, args);
+	ofLogNotice("App::loadTemplateProject") << "";
+
+	args.result = Serializer::toJSON(_projectManager.getTemplateProject());
+
+	cout << args.result.toStyledString() << endl;
+
 }
 
 
 void App::saveProject(const void* pSender, ofx::JSONRPC::MethodArgs& args)
 {
+	ofLogNotice("App::saveProject") << "";
+
 //    std::string projectName = args.params["projectData"]["projectFile"]["name"].asString();
 //
 //    if (_projectManager.projectExists(projectName))
@@ -329,6 +344,8 @@ void App::saveProject(const void* pSender, ofx::JSONRPC::MethodArgs& args)
 
 void App::createProject(const void* pSender, ofx::JSONRPC::MethodArgs& args)
 {
+	ofLogNotice("App::createProject") << "";
+
 //    std::string projectName = args.params["projectName"].asString();
 //    if (!_projectManager.projectExists(projectName))
 //    {
@@ -340,6 +357,8 @@ void App::createProject(const void* pSender, ofx::JSONRPC::MethodArgs& args)
 
 void App::deleteProject(const void* pSender, ofx::JSONRPC::MethodArgs& args)
 {
+	ofLogNotice("App::deleteProject") << "";
+
 //    std::string projectName = args.params["projectName"].asString();
 //    if (_projectManager.projectExists(projectName))
 //    {
@@ -352,7 +371,9 @@ void App::deleteProject(const void* pSender, ofx::JSONRPC::MethodArgs& args)
 
 void App::renameProject(const void* pSender, ofx::JSONRPC::MethodArgs& args)
 {
-//    std::string projectName = args.params["projectName"].asString();
+	ofLogNotice("App::renameProject") << "";
+
+	//    std::string projectName = args.params["projectName"].asString();
 //    if (_projectManager.projectExists(projectName))
 //    {
 //        _projectManager.renameProject(pSender, args);
@@ -364,6 +385,8 @@ void App::renameProject(const void* pSender, ofx::JSONRPC::MethodArgs& args)
 
 void App::notifyProjectClosed(const void* pSender, ofx::JSONRPC::MethodArgs& args)
 {
+	ofLogNotice("App::notifyProjectClosed") << "";
+
 //    std::string projectName = args.params["projectName"].asString();
 //    _projectManager.notifyProjectClosed(projectName);
 //    ofLogNotice("App::notifyProjectClosed") << projectName << " closed.";
@@ -372,6 +395,8 @@ void App::notifyProjectClosed(const void* pSender, ofx::JSONRPC::MethodArgs& arg
 
 void App::requestProjectClosed(const void* pSender, ofx::JSONRPC::MethodArgs& args)
 {
+	ofLogNotice("App::requestProjectClosed") << "";
+
     std::string projectName = args.params["projectName"].asString();
     std::string clientUUID = args.params["clientUUID"].asString();
 
@@ -387,6 +412,8 @@ void App::requestProjectClosed(const void* pSender, ofx::JSONRPC::MethodArgs& ar
 
 void App::requestAppQuit(const void *pSender, ofx::JSONRPC::MethodArgs &args)
 {
+	ofLogNotice("App::requestAppQuit") << "";
+
 //    args.result = "App quit";
 //    ofExit();
 }
@@ -394,6 +421,8 @@ void App::requestAppQuit(const void *pSender, ofx::JSONRPC::MethodArgs &args)
 
 void App::createClass(const void* pSender, ofx::JSONRPC::MethodArgs& args)
 {
+	ofLogNotice("App::createClass") << "";
+
 //    std::string projectName = args.params["projectName"].asString();
 //
 //    if (_projectManager.projectExists(projectName))
@@ -409,6 +438,8 @@ void App::createClass(const void* pSender, ofx::JSONRPC::MethodArgs& args)
 
 void App::deleteClass(const void* pSender, ofx::JSONRPC::MethodArgs& args)
 {
+	ofLogNotice("App::deleteClass") << "";
+
 //    std::string projectName = args.params["projectName"].asString();
 //    if (_projectManager.projectExists(projectName))
 //    {
@@ -426,6 +457,8 @@ void App::deleteClass(const void* pSender, ofx::JSONRPC::MethodArgs& args)
 
 void App::renameClass(const void* pSender, ofx::JSONRPC::MethodArgs& args)
 {
+	ofLogNotice("App::renameClass") << "";
+
 //    std::string projectName = args.params["projectName"].asString();
 //    if (_projectManager.projectExists(projectName))
 //    {
@@ -444,6 +477,8 @@ void App::renameClass(const void* pSender, ofx::JSONRPC::MethodArgs& args)
 
 void App::runProject(const void* pSender, ofx::JSONRPC::MethodArgs& args)
 {
+	ofLogNotice("App::runProject") << "";
+
 //    std::string projectName = args.params["projectName"].asString();
 //    if (_projectManager.projectExists(projectName))
 //    {
@@ -459,6 +494,8 @@ void App::runProject(const void* pSender, ofx::JSONRPC::MethodArgs& args)
 
 void App::compileProject(const void* pSender, ofx::JSONRPC::MethodArgs& args)
 {
+	ofLogNotice("App::compileProject") << "";
+
 //    std::string projectName = args.params["projectName"].asString();
 //    if (_projectManager.projectExists(projectName))
 //    {
@@ -474,6 +511,8 @@ void App::compileProject(const void* pSender, ofx::JSONRPC::MethodArgs& args)
 
 void App::stop(const void* pSender, ofx::JSONRPC::MethodArgs& args)
 {
+	ofLogNotice("App::stop") << "";
+
     if (args.params.isMember("taskId"))
     {
 		std::string taskId(args.params["taskId"].asString());
@@ -501,30 +540,36 @@ void App::stop(const void* pSender, ofx::JSONRPC::MethodArgs& args)
 
 void App::getProjectList(const void* pSender, ofx::JSONRPC::MethodArgs& args)
 {
-//    _projectManager.getProjectList(pSender, args);
+	ofLogNotice("Project::getProjectList") << "Project list requested.";
+
+	args.result.clear();
+
+	for (auto project: _projectManager.projects())
+	{
+		Json::Value projectJson;
+		projectJson["projectName"] = project.name();
+		args.result.append(projectJson);
+	}
 }
 
 
 void App::getAddonList(const void *pSender, ofx::JSONRPC::MethodArgs &args)
 {
-    ofLogVerbose("App::getAddonList") << " sending addon list.";
+	ofLogNotice("App::getAddonList") << "Addon list requested.";
 
-    Json::Value addonsJSON;
-    const std::vector<Addon>& addons = _addonManager.getAddons();
-    std::vector<Addon>::const_iterator iter = addons.begin();
+	args.result.clear();
 
-    while (iter != addons.end())
-    {
-        addonsJSON.append(Serializer::toJSON(*iter));
-        ++iter;
-    }
-
-    args.result = addonsJSON;
+	for (auto addon: _addonManager.addons())
+	{
+		args.result.append(Serializer::toJSON(addon));
+	}
 }
 
 
 void App::getProjectAddonList(const void *pSender, ofx::JSONRPC::MethodArgs &args)
 {
+	ofLogNotice("App::getProjectAddonList") << "";
+
 //    std::string projectName = args.params["projectName"].asString();
 //
 //    if (_projectManager.projectExists(projectName))
@@ -568,6 +613,8 @@ void App::addProjectAddon(const void* pSender, ofx::JSONRPC::MethodArgs& args)
 
 void App::removeProjectAddon(const void* pSender, ofx::JSONRPC::MethodArgs& args)
 {
+	ofLogNotice("App::removeProjectAddon") << "";
+
 //    std::string projectName = args.params["projectName"].asString();
 //    std::string addon = args.params["addon"].asString();
 //
@@ -588,7 +635,8 @@ void App::loadEditorSettings(const void *pSender, ofx::JSONRPC::MethodArgs &args
 
 void App::saveEditorSettings(const void *pSender, ofx::JSONRPC::MethodArgs &args)
 {
-    ofLogVerbose("App::saveEditorSettings") << "Saving editor settings" << endl;
+    ofLogNotice("App::saveEditorSettings") << "Saving editor settings.";
+
     Json::Value settings = args.params["data"]; // must make a copy
 
     _settings.clientSettings().setEditorSettings(settings);
@@ -605,12 +653,14 @@ void App::saveEditorSettings(const void *pSender, ofx::JSONRPC::MethodArgs &args
 
 void App::loadOfSketchSettings(const void *pSender, ofx::JSONRPC::MethodArgs &args)
 {
+	ofLogNotice("App::loadOfSketchSettings") << "";
+
     args.result = Serializer::toJSON(_settings.clientSettings());
 }
 
 void App::saveOfSketchSettings(const void *pSender, ofx::JSONRPC::MethodArgs &args)
 {
-    ofLogVerbose("App::saveOfSketchSettings") << "Saving ofSketch settings" << endl;
+    ofLogNotice("App::saveOfSketchSettings") << "Saving ofSketch settings.";
 
     Json::Value settings = args.params["data"]; // must make a copy
 
@@ -628,8 +678,11 @@ void App::saveOfSketchSettings(const void *pSender, ofx::JSONRPC::MethodArgs &ar
     _server->getWebSocketRoute().broadcast(frame);
 }
 
+
 void App::exportProject(const void *pSender, ofx::JSONRPC::MethodArgs &args) 
 {
+	ofLogNotice("App::exportProject") << "";
+
     std::string platform = args.params["platform"].asString();
     std::string projectName = args.params["projectName"].asString();
 //    Project& project = _projectManager.getProjectRef(projectName);
@@ -637,7 +690,7 @@ void App::exportProject(const void *pSender, ofx::JSONRPC::MethodArgs &args)
 
 bool App::onWebSocketOpenEvent(ofx::HTTP::WebSocketOpenEventArgs& args)
 {
-    ofLogVerbose("App::onWebSocketOpenEvent") << "Connection opened from: " << args.getConnection().getClientAddress().toString();
+    ofLogNotice("App::onWebSocketOpenEvent") << "Connection opened from: " << args.getConnection().getClientAddress().toString();
 
     // Here, we need to send all initial values, settings, etc to the
     // client before any other messages arrive.
